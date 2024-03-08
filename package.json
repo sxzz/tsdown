@@ -27,6 +27,9 @@
     },
     "./package.json": "./package.json"
   },
+  "bin": {
+    "tsdown": "./dist/cli-run.js"
+  },
   "publishConfig": {
     "access": "public"
   },
