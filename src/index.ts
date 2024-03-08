@@ -1,36 +1,27 @@
 import { rolldown } from '@rolldown/node'
-import { consola } from 'consola'
-import { PrettyError } from './error'
 import { type Options, normalizeOptions } from './options'
-import { removeFiles } from './utils'
-
-const logger = consola.withTag('tsdown')
+import { logger, removeFiles } from './utils'
 
 export async function build(userOptions: Options = {}) {
-  const options = normalizeOptions(userOptions)
+  const { entry, external, plugins, outDir, format, clean } =
+    await normalizeOptions(userOptions)
 
-  const { input } = options
-  if (!input || Object.keys(input).length === 0) {
-    throw new PrettyError(`No input files, try "tsdown <your-file>" instead`)
-  }
-
-  if (options.clean) {
-    const extraPatterns = Array.isArray(options.clean) ? options.clean : []
-    await removeFiles(['**/*', ...extraPatterns], options.outDir)
+  if (clean) {
+    await removeFiles(['**/*', ...clean], outDir)
     logger.info('Cleaning output folder')
   }
 
   const build = await rolldown({
-    input: options.input,
-    plugins: options.plugins,
-    external: options.external,
+    input: entry,
+    external,
+    plugins,
   })
 
   await Promise.all(
-    options.format.map((format) =>
+    format.map((format) =>
       build.write({
         format,
-        dir: options.outDir,
+        dir: outDir,
       }),
     ),
   )

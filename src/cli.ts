@@ -1,6 +1,7 @@
 import process from 'node:process'
 import { cac } from 'cac'
 import { version } from '../package.json'
+import { logger } from './utils'
 import type { Options } from './options'
 
 export async function main() {
@@ -13,9 +14,10 @@ export async function main() {
     .option('--clean', 'Clean output directory')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .action(async (input: string[], flags: Options) => {
+      logger.info(`tsdown v${version}`)
       const { build } = await import('./index')
       await build({
-        input,
+        entry: input,
         ...flags,
       })
     })
