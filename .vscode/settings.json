@@ -1,0 +1,5 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.experimental.useFlatConfig": true,
+  "cSpell.words": ["tsdown"]
+}
