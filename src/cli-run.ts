@@ -1,3 +1,3 @@
-import { main } from './cli'
+import { runCLI } from './cli'
 
-await main()
+runCLI()

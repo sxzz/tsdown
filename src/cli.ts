@@ -4,22 +4,21 @@ import { version } from '../package.json'
 import { logger } from './utils'
 import type { Options } from './options'
 
-export async function main() {
+export async function runCLI() {
   const cli = cac('tsdown')
 
   cli
     .command('[...files]', 'Bundle files', {
       ignoreOptionDefaultValue: true,
     })
+    .option('--config <filename>', 'Use a custom config file')
     .option('--clean', 'Clean output directory')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .action(async (input: string[], flags: Options) => {
       logger.info(`tsdown v${version}`)
       const { build } = await import('./index')
-      await build({
-        entry: input,
-        ...flags,
-      })
+      if (input.length > 0) flags.entry = input
+      await build(flags)
     })
 
   cli.help()

@@ -28,3 +28,7 @@ export async function build(userOptions: Options = {}) {
 
   logger.info('Build complete')
 }
+
+export function defineConfig(options: Options) {
+  return options
+}

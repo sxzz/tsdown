@@ -48,7 +48,8 @@
     "@rolldown/node": "^0.0.5",
     "cac": "^6.7.14",
     "consola": "^3.2.3",
-    "globby": "^14.0.1"
+    "globby": "^14.0.1",
+    "unconfig": "^0.3.11"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.8.4",
