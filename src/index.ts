@@ -1,5 +1,5 @@
-import { rolldown } from '@rolldown/node'
-import { type Options, normalizeOptions } from './options'
+import { rolldown } from 'rolldown'
+import { type Options, normalizeOptions, resolveFormat } from './options'
 import { logger, removeFiles } from './utils'
 
 export async function build(userOptions: Options = {}) {
@@ -20,7 +20,7 @@ export async function build(userOptions: Options = {}) {
   await Promise.all(
     format.map((format) =>
       build.write({
-        format,
+        format: resolveFormat(format),
         dir: outDir,
       }),
     ),

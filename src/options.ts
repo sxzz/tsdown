@@ -6,9 +6,9 @@ import { globby } from 'globby'
 import { loadConfig } from 'unconfig'
 import { PrettyError } from './error'
 import { logger } from './utils'
-import type { InputOptions, OutputOptions } from '@rolldown/node'
+import type { InputOptions, OutputOptions } from 'rolldown'
 
-export type Format = NonNullable<OutputOptions['format']>
+export type Format = 'es' | 'esm'
 
 export interface Options {
   entry?: InputOptions['input']
@@ -43,7 +43,7 @@ export async function normalizeOptions(
 
   let {
     entry,
-    format = ['esm'],
+    format = ['es'],
     plugins = [],
     external = [],
     clean = false,
@@ -81,7 +81,7 @@ export async function normalizeOptions(
   }
 
   if (!Array.isArray(format)) format = [format]
-  if (format.length === 0) format = ['esm']
+  if (format.length === 0) format = ['es']
 
   if (clean && !Array.isArray(clean)) clean = []
 
@@ -140,4 +140,10 @@ async function loadConfigFile(options: Options): Promise<Options> {
   }
 
   return config
+}
+
+export function resolveFormat(
+  format: Format,
+): NonNullable<OutputOptions['format']> {
+  return format === 'esm' ? 'es' : format
 }
