@@ -5,7 +5,7 @@ An even faster bundler powered by Rolldown.
 > [!NOTE]
 > 🚧 **Work in Progress**
 >
-> tsdown is currently in active development and not usable for production yet.
+> Both Rolldown and tsdown are currently under active development and not yet ready for production use.
 
 ## Install
 
