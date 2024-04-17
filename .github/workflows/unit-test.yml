@@ -13,23 +13,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3.0.0
+      - name: Setup pnpm
+        run: corepack enable
 
-      - name: Set node LTS
+      - name: Set node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: pnpm
 
+      - name: Setup
+        run: npm i -g @antfu/ni
+
       - name: Install
-        run: pnpm install
+        run: nci
 
       - name: Lint
-        run: pnpm run lint
+        run: nr lint
 
       - name: Typecheck
-        run: pnpm run typecheck
+        run: nr typecheck
 
   test:
     runs-on: ${{ matrix.os }}
@@ -41,23 +44,24 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        run: corepack enable
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3.0.0
-
-      - name: Set node ${{ matrix.node }}
+      - name: Set node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
 
+      - name: Setup
+        run: npm i -g @antfu/ni
+
       - name: Install
-        run: pnpm install
+        run: nci
 
       - name: Build
-        run: pnpm run build
+        run: nr build
 
       - name: Test
-        run: pnpm run test
+        run: nr test
