@@ -2,7 +2,7 @@ import { rolldown } from 'rolldown'
 import { type Options, normalizeOptions, resolveFormat } from './options'
 import { logger, removeFiles } from './utils'
 
-export async function build(userOptions: Options = {}) {
+export async function build(userOptions: Options = {}): Promise<void> {
   const { entry, external, plugins, outDir, format, clean } =
     await normalizeOptions(userOptions)
 
@@ -29,6 +29,6 @@ export async function build(userOptions: Options = {}) {
   logger.info('Build complete')
 }
 
-export function defineConfig(options: Options) {
+export function defineConfig(options: Options): Options {
   return options
 }

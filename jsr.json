@@ -1,0 +1,8 @@
+{
+  "name": "@sxzz/tsdown",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src", "package.json", "jsr.json", "README.md", "LICENSE"]
+  }
+}
