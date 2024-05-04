@@ -49,19 +49,19 @@
     "consola": "^3.2.3",
     "globby": "^14.0.1",
     "rolldown": "nightly",
-    "unconfig": "^0.3.11"
+    "unconfig": "^0.3.13"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.11.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^20.11.30",
-    "bumpp": "^9.4.0",
+    "@types/node": "^20.12.8",
+    "bumpp": "^9.4.1",
     "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "tsup": "^8.0.2",
-    "tsx": "^4.7.1",
-    "typescript": "^5.4.3",
-    "vitest": "^1.4.0"
+    "tsx": "^4.9.1",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18.0.0"
