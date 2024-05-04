@@ -52,11 +52,11 @@
     "unconfig": "^0.3.11"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^3.8.7",
-    "@sxzz/prettier-config": "^2.0.1",
+    "@sxzz/eslint-config": "^3.11.0",
+    "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^20.11.30",
     "bumpp": "^9.4.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.2.0",
     "prettier": "^3.2.5",
     "tsup": "^8.0.2",
     "tsx": "^4.7.1",
