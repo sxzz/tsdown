@@ -1,5 +1,5 @@
 // @ts-expect-error missing type
-import { rolldown } from 'rolldown'
+import { type InputOptions, rolldown } from 'rolldown'
 import { type Options, normalizeOptions, resolveFormat } from './options'
 import { logger, removeFiles } from './utils'
 
@@ -12,11 +12,12 @@ export async function build(userOptions: Options = {}): Promise<void> {
     logger.info('Cleaning output folder')
   }
 
-  const build = await rolldown({
+  const inputOptions: InputOptions = {
     input: entry,
     external,
     plugins,
-  })
+  }
+  const build = await rolldown(inputOptions)
 
   await Promise.all(
     format.map((format) =>
@@ -26,6 +27,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
       }),
     ),
   )
+  await build.destroy()
 
   logger.info('Build complete')
 }
