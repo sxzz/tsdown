@@ -1,3 +1,4 @@
+import process from 'node:process'
 // @ts-expect-error missing type
 import { type InputOptions, rolldown } from 'rolldown'
 import { type Options, normalizeOptions, resolveFormat } from './options'
@@ -30,6 +31,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
   await build.destroy()
 
   logger.info('Build complete')
+  process.exit(0)
 }
 
 export function defineConfig(options: Options): Options {
