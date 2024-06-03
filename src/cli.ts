@@ -4,7 +4,7 @@ import { version } from '../package.json'
 import { logger } from './utils'
 import type { Options } from './options'
 
-export async function runCLI() {
+export async function runCLI(): Promise<void> {
   const cli = cac('tsdown')
 
   cli

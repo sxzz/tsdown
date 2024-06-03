@@ -8,6 +8,8 @@
     "types": ["node"],
     "strict": true,
     "noUnusedLocals": true,
+    "declaration": true,
+    "isolatedDeclarations": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true
