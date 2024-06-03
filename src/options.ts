@@ -6,6 +6,7 @@ import { globby } from 'globby'
 import { loadConfig } from 'unconfig'
 import { PrettyError } from './error'
 import { logger } from './utils'
+// @ts-expect-error missing type
 import type { InputOptions, OutputOptions } from 'rolldown'
 
 export type Format = 'es' | 'esm'
