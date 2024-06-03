@@ -1,3 +1,4 @@
+// @ts-expect-error missing type
 import { rolldown } from 'rolldown'
 import { type Options, normalizeOptions, resolveFormat } from './options'
 import { logger, removeFiles } from './utils'
