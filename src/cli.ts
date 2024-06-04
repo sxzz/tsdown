@@ -12,6 +12,9 @@ export async function runCLI(): Promise<void> {
       ignoreOptionDefaultValue: true,
     })
     .option('--config <filename>', 'Use a custom config file')
+    .option('--format <format>', 'Bundle format: esm, cjs, iife', {
+      default: 'esm',
+    })
     .option('--clean', 'Clean output directory')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .action(async (input: string[], flags: Options) => {

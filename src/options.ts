@@ -8,7 +8,7 @@ import { PrettyError } from './error'
 import { logger } from './utils'
 import type { InputOptions } from 'rolldown'
 
-export type Format = 'es' | 'esm'
+export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
 
 export interface Options {
   entry?: InputOptions['input']
