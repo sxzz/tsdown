@@ -1,5 +1,4 @@
 import process from 'node:process'
-// @ts-expect-error missing type
 import { type InputOptions, rolldown } from 'rolldown'
 import { type Options, normalizeOptions, resolveFormat } from './options'
 import { logger, removeFiles } from './utils'
