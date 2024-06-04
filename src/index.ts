@@ -1,6 +1,6 @@
 import process from 'node:process'
 import { type InputOptions, rolldown } from 'rolldown'
-import { type Options, normalizeOptions, resolveFormat } from './options'
+import { type Options, normalizeOptions } from './options'
 import { logger, removeFiles } from './utils'
 
 export async function build(userOptions: Options = {}): Promise<void> {
@@ -22,7 +22,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
   await Promise.all(
     format.map((format) =>
       build.write({
-        format: resolveFormat(format),
+        format,
         dir: outDir,
       }),
     ),

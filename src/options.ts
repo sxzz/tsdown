@@ -6,7 +6,7 @@ import { globby } from 'globby'
 import { loadConfig } from 'unconfig'
 import { PrettyError } from './error'
 import { logger } from './utils'
-import type { InputOptions, OutputOptions } from 'rolldown'
+import type { InputOptions } from 'rolldown'
 
 export type Format = 'es' | 'esm'
 
@@ -140,10 +140,4 @@ async function loadConfigFile(options: Options): Promise<Options> {
   }
 
   return config
-}
-
-export function resolveFormat(
-  format: Format,
-): NonNullable<OutputOptions['format']> {
-  return format === 'esm' ? 'es' : format
 }
