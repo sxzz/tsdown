@@ -1,6 +1,10 @@
 import process from 'node:process'
 import { type InputOptions, rolldown } from 'rolldown'
-import { type Options, normalizeOptions } from './options'
+import {
+  type Options,
+  type OptionsWithoutConfig,
+  normalizeOptions,
+} from './options'
 import { logger, removeFiles } from './utils'
 
 export async function build(userOptions: Options = {}): Promise<void> {
@@ -16,6 +20,9 @@ export async function build(userOptions: Options = {}): Promise<void> {
     input: entry,
     external,
     plugins,
+    resolve: {
+      alias: userOptions.alias,
+    },
   }
   const build = await rolldown(inputOptions)
 
@@ -33,6 +40,8 @@ export async function build(userOptions: Options = {}): Promise<void> {
   process.exit(0)
 }
 
-export function defineConfig(options: Options): Options {
+export function defineConfig(
+  options: OptionsWithoutConfig,
+): OptionsWithoutConfig {
   return options
 }

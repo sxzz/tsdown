@@ -18,7 +18,10 @@ export interface Options {
   outDir?: string
   clean?: boolean | string[]
   config?: boolean | string
+  alias?: Record<string, string>
 }
+
+export type OptionsWithoutConfig = Omit<Options, 'config'>
 
 type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U
 
@@ -92,6 +95,7 @@ export async function normalizeOptions(
     format,
     outDir: options.outDir || 'dist',
     clean: clean ?? false,
+    alias: {},
   }
 }
 
