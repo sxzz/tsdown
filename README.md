@@ -17,6 +17,9 @@ npm i tsdown
 
 This project also partially contains code derived or copied from [tsup](https://github.com/egoist/tsup).
 
+- [tsup](https://github.com/egoist/tsup)
+- [pkgroll](https://github.com/privatenumber/pkgroll)
+
 ## Sponsors
 
 <p align="center">
