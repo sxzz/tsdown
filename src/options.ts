@@ -5,6 +5,7 @@ import { loadConfig } from 'unconfig'
 import { logger } from './utils/logger'
 import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
+import type { External } from './features/external'
 import type { Stats } from 'node:fs'
 import type { InputOptions } from 'rolldown'
 
@@ -14,13 +15,15 @@ export interface Options {
   entry?: InputOptions['input']
   format?: Format | Format[]
   plugins?: InputOptions['plugins']
-  external?: InputOptions['external']
+  external?: External
   outDir?: string
   clean?: boolean | string[]
   config?: boolean | string
   alias?: Record<string, string>
   /** @default true */
   treeshake?: boolean
+  /** @default 'node' */
+  platform?: 'node' | 'neutral'
 }
 
 export type OptionsWithoutConfig = Omit<Options, 'config'>
@@ -53,6 +56,8 @@ export async function normalizeOptions(
     external = [],
     clean = false,
     treeshake = true,
+    platform = 'node',
+    outDir = 'dist',
   } = options
 
   entry = await resolveEntry(entry)
@@ -64,10 +69,11 @@ export async function normalizeOptions(
     plugins,
     external,
     format,
-    outDir: options.outDir || 'dist',
+    outDir,
     clean,
     alias: {},
     treeshake,
+    platform,
   }
 }
 

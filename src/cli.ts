@@ -18,6 +18,9 @@ export async function runCLI(): Promise<void> {
     .option('--clean', 'Clean output directory')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .option('--treeshake', 'Tree-shake bundle', { default: true })
+    .option('--platform <platform>', 'Target platform', {
+      default: 'node',
+    })
     .action(async (input: string[], flags: Options) => {
       logger.info(`tsdown v${version}`)
       const { build } = await import('./index')

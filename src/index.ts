@@ -9,9 +9,10 @@ import { logger } from './utils/logger'
 import { cleanOutDir } from './features/clean'
 import { readPackageJson } from './utils/package'
 import { resolveOutputExtension } from './features/output'
+import { ExternalPlugin } from './features/external'
 
 export async function build(userOptions: Options = {}): Promise<void> {
-  const { entry, external, plugins, outDir, format, clean } =
+  const { entry, external, plugins, outDir, format, clean, platform } =
     await normalizeOptions(userOptions)
 
   if (clean) await cleanOutDir(outDir, clean)
@@ -21,11 +22,11 @@ export async function build(userOptions: Options = {}): Promise<void> {
   const inputOptions: InputOptions = {
     input: entry,
     external,
-    plugins,
     resolve: {
       alias: userOptions.alias,
     },
     treeshake: userOptions.treeshake,
+    plugins: [ExternalPlugin(pkg, platform), ...plugins],
   }
   const build = await rolldown(inputOptions)
 
