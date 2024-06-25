@@ -5,16 +5,18 @@ import {
   type OptionsWithoutConfig,
   normalizeOptions,
 } from './options'
-import { logger, removeFiles } from './utils'
+import { logger } from './utils/logger'
+import { cleanOutDir } from './features/clean'
+import { readPackageJson } from './utils/package'
+import { resolveOutputExtension } from './features/output'
 
 export async function build(userOptions: Options = {}): Promise<void> {
   const { entry, external, plugins, outDir, format, clean } =
     await normalizeOptions(userOptions)
 
-  if (clean) {
-    await removeFiles(['**/*', ...clean], outDir)
-    logger.info('Cleaning output folder')
-  }
+  if (clean) await cleanOutDir(outDir, clean)
+
+  const pkg = await readPackageJson(process.cwd())
 
   const inputOptions: InputOptions = {
     input: entry,
@@ -23,16 +25,20 @@ export async function build(userOptions: Options = {}): Promise<void> {
     resolve: {
       alias: userOptions.alias,
     },
+    treeshake: userOptions.treeshake,
   }
   const build = await rolldown(inputOptions)
 
   await Promise.all(
-    format.map((format) =>
-      build.write({
+    format.map((format) => {
+      const extension = resolveOutputExtension(pkg, format)
+      return build.write({
         format,
         dir: outDir,
-      }),
-    ),
+        entryFileNames: `[name].${extension}`,
+        chunkFileNames: `[name]-[hash].${extension}`,
+      })
+    }),
   )
   await build.destroy()
 

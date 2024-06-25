@@ -1,11 +1,11 @@
-import { type Stats, existsSync } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import process from 'node:process'
 import path from 'node:path'
-import { globby } from 'globby'
 import { loadConfig } from 'unconfig'
-import { PrettyError } from './error'
-import { logger } from './utils'
+import { logger } from './utils/logger'
+import { resolveEntry } from './features/entry'
+import { toArray } from './utils/general'
+import type { Stats } from 'node:fs'
 import type { InputOptions } from 'rolldown'
 
 export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
@@ -19,6 +19,8 @@ export interface Options {
   clean?: boolean | string[]
   config?: boolean | string
   alias?: Record<string, string>
+  /** @default true */
+  treeshake?: boolean
 }
 
 export type OptionsWithoutConfig = Omit<Options, 'config'>
@@ -50,43 +52,12 @@ export async function normalizeOptions(
     plugins = [],
     external = [],
     clean = false,
+    treeshake = true,
   } = options
 
-  if (!entry || Object.keys(entry).length === 0) {
-    throw new PrettyError(`No input files, try "tsdown <your-file>" instead`)
-  }
-
-  if (typeof entry === 'string') {
-    entry = [entry]
-  }
-  if (Array.isArray(entry)) {
-    const resolvedEntry = await globby(entry)
-
-    // Ensure entry exists
-    if (resolvedEntry.length > 0) {
-      entry = resolvedEntry
-      logger.info(`Building entry: ${entry}`)
-    } else {
-      throw new PrettyError(`Cannot find ${entry}`)
-    }
-  } else {
-    Object.keys(entry).forEach((alias) => {
-      const filename = (
-        entry as {
-          [entryAlias: string]: string
-        }
-      )[alias]!
-      if (!existsSync(filename)) {
-        throw new PrettyError(`Cannot find ${alias}: ${filename}`)
-      }
-    })
-    logger.info(`Building entry: ${JSON.stringify(entry)}`)
-  }
-
-  if (!Array.isArray(format)) format = [format]
-  if (format.length === 0) format = ['es']
-
-  if (clean && !Array.isArray(clean)) clean = []
+  entry = await resolveEntry(entry)
+  format = toArray(format, 'es')
+  if (clean === true) clean = []
 
   return {
     entry,
@@ -94,8 +65,9 @@ export async function normalizeOptions(
     external,
     format,
     outDir: options.outDir || 'dist',
-    clean: clean ?? false,
+    clean,
     alias: {},
+    treeshake,
   }
 }
 

@@ -28,7 +28,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "tsdown": "./dist/cli-run.js"
+    "tsdown": "./dist/run.js"
   },
   "publishConfig": {
     "access": "public"
@@ -36,8 +36,8 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
-    "build": "tsup",
-    "dev": "tsx ./src/cli-run.ts",
+    "build": "tsx ./src/run.ts",
+    "dev": "tsx ./src/run.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "format": "prettier --cache --write .",
@@ -60,7 +60,7 @@
     "prettier": "^3.3.2",
     "tsup": "^8.1.0",
     "tsx": "^4.15.7",
-    "typescript": "5.5.2",
+    "typescript": "~5.5.2",
     "vitest": "^1.6.0"
   },
   "engines": {
