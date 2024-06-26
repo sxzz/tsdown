@@ -1,3 +1,4 @@
+import IsolatedDecl from 'unplugin-isolated-decl'
 import { defineConfig } from './src'
 
 export default defineConfig({
@@ -5,6 +6,7 @@ export default defineConfig({
   format: 'esm',
   clean: true,
   platform: 'node',
+  plugins: [IsolatedDecl.rolldown()],
 
   // TODO
   // target: 'node18',

@@ -25,6 +25,14 @@
     "./plugins": "./dist/plugins.js",
     "./package.json": "./package.json"
   },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
   "bin": {
     "tsdown": "./dist/run.js"
   },
@@ -59,6 +67,7 @@
     "tsup": "^8.1.0",
     "tsx": "^4.15.7",
     "typescript": "~5.5.2",
+    "unplugin-isolated-decl": "^0.1.0",
     "vitest": "^1.6.0"
   },
   "engines": {

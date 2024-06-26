@@ -51,6 +51,9 @@ importers:
       typescript:
         specifier: ~5.5.2
         version: 5.5.2
+      unplugin-isolated-decl:
+        specifier: ^0.1.0
+        version: 0.1.0(rollup@4.18.0)
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.8)
@@ -440,6 +443,46 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
+  '@oxc-transform/binding-darwin-arm64@0.15.1':
+    resolution: {integrity: sha512-rwrJOwLEFXK/9VXfw03MKEYZdVbhsO4OAhXKwWmJ+I6uy8FrrEaidYWYRfdri1iCD5+R8zYLaUig40LQny8v0Q==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@oxc-transform/binding-darwin-x64@0.15.1':
+    resolution: {integrity: sha512-XSTa5HzpAsn9prhmAFuEHqAv1K7YTNqxhbT0XI0qjttzfNhePrpKcx5TUgXZ4i8kFryiF0cAtEAifdiBRTLPkA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@oxc-transform/binding-linux-arm64-gnu@0.15.1':
+    resolution: {integrity: sha512-3eQKiaD80pnXujNP3viYw9g8LV9QMHqv4DW17vSxp/JNydjaR/3lfPU2wsNnUu5UgTKNFsrdbcbJchoUStspsw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-arm64-musl@0.15.1':
+    resolution: {integrity: sha512-TDqjxdgpJqjuVFrn8iekClA4ryDs0xlBQbk4Es8zsAM8cKFLWHO7XyDzvSQ8RfP3xcdkC+TauTZzPpXyJfldag==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-x64-gnu@0.15.1':
+    resolution: {integrity: sha512-yYfzqENFsi42oftdSq7x5WA8tBZK66dDjmwAdmEq8IBlzmF4Qq5cW5btJ57FQX8LjFKkJgGwRFYrUVL7MM9AXA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-x64-musl@0.15.1':
+    resolution: {integrity: sha512-u0YjPDNPvOMRxwFADi9/m2LoFiaYXFz2s95QoDe5GR8A+dQPJD+8rfrMgr1CSL9oErPAQVCJDw4LV+IESAYyQw==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxc-transform/binding-win32-arm64-msvc@0.15.1':
+    resolution: {integrity: sha512-vEMe7uhBmzvy9SwtJzb+koT16sTnRO8HkgfavXnKcyyzO1hsjrHm+98kgO95KhSo+0kgGEOq78PKM0H9Y31htw==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@oxc-transform/binding-win32-x64-msvc@0.15.1':
+    resolution: {integrity: sha512-KhgWbOZXSE8OYEHnLGiF/VZzA/LobMQ67cxXdEqjN9FuYDAcR5oparNgTYZhxmj70Nav3VmDbDK0EGy4VezxXg==}
+    cpu: [x64]
+    os: [win32]
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -502,6 +545,15 @@ packages:
     resolution: {integrity: sha512-bBKLygAZQJi6uA+gKx0H1ZHqbeD/7RPRVX0BVMMk7dGZrB6PW9UBOBQlp2kxIQ8b9WHllyLgfAMdsKCFEFD8rA==}
     cpu: [x64]
     os: [win32]
+
+  '@rollup/pluginutils@5.1.0':
+    resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     resolution: {integrity: sha512-Tya6xypR10giZV1XzxmH5wr25VcZSncG0pZIjfePT0OVBvqNEurzValetGNarVrGiq66EBVAFn15iYX4w6FKgQ==}
@@ -1175,6 +1227,9 @@ packages:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
 
+  estree-walker@2.0.2:
+    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
+
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
 
@@ -1646,6 +1701,9 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
+  oxc-transform@0.15.1:
+    resolution: {integrity: sha512-pr0myS11rcOYdCHN1TbttJBIraRkQ3AlzRsC8FwkJrQihIHBEak9XfT3IBwhC9jJ3CEPbDNCQcB/WDtzTWDjXA==}
+
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -2102,6 +2160,14 @@ packages:
   unist-util-stringify-position@2.0.3:
     resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
 
+  unplugin-isolated-decl@0.1.0:
+    resolution: {integrity: sha512-giwV2sZdAxmbfXgscFdX/qV1Qad5gnjA3xx/FGivsGn/YUwNJuUtvDjiZrEAB838Osdzj0SZrTL4Hf/kdKd8qw==}
+    engines: {node: '>=18.12.0'}
+
+  unplugin@1.10.1:
+    resolution: {integrity: sha512-d6Mhq8RJeGA8UfKCu54Um4lFA0eSaRa3XxdAJg8tIdxbu1ubW0hBCZUL7yI2uGyYCRndvbK8FLHzqy2XKfeMsg==}
+    engines: {node: '>=14.0.0'}
+
   update-browserslist-db@1.0.16:
     resolution: {integrity: sha512-KVbTxlBYlckhF5wgfyZXTWnMn7MMZjMu9XG8bPlliUOP9ThaF4QnhP8qrjrH7DRzHfSk0oQv1wToW+iA5GajEQ==}
     hasBin: true
@@ -2183,6 +2249,13 @@ packages:
 
   webidl-conversions@4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
+
+  webpack-sources@3.2.3:
+    resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
+    engines: {node: '>=10.13.0'}
+
+  webpack-virtual-modules@0.6.2:
+    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   whatwg-url@7.1.0:
     resolution: {integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==}
@@ -2510,6 +2583,30 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
+  '@oxc-transform/binding-darwin-arm64@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-darwin-x64@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-arm64-gnu@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-arm64-musl@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-x64-gnu@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-x64-musl@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-win32-arm64-msvc@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-win32-x64-msvc@0.15.1':
+    optional: true
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -2549,6 +2646,14 @@ snapshots:
 
   '@rolldown/binding-win32-x64-msvc@0.10.4-snapshot-06d73a8-20240624002901':
     optional: true
+
+  '@rollup/pluginutils@5.1.0(rollup@4.18.0)':
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+    optionalDependencies:
+      rollup: 4.18.0
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     optional: true
@@ -3344,6 +3449,8 @@ snapshots:
 
   estraverse@5.3.0: {}
 
+  estree-walker@2.0.2: {}
+
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.5
@@ -3803,6 +3910,17 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
+  oxc-transform@0.15.1:
+    optionalDependencies:
+      '@oxc-transform/binding-darwin-arm64': 0.15.1
+      '@oxc-transform/binding-darwin-x64': 0.15.1
+      '@oxc-transform/binding-linux-arm64-gnu': 0.15.1
+      '@oxc-transform/binding-linux-arm64-musl': 0.15.1
+      '@oxc-transform/binding-linux-x64-gnu': 0.15.1
+      '@oxc-transform/binding-linux-x64-musl': 0.15.1
+      '@oxc-transform/binding-win32-arm64-msvc': 0.15.1
+      '@oxc-transform/binding-win32-x64-msvc': 0.15.1
+
   p-limit@2.3.0:
     dependencies:
       p-try: 2.2.0
@@ -4254,6 +4372,22 @@ snapshots:
     dependencies:
       '@types/unist': 2.0.10
 
+  unplugin-isolated-decl@0.1.0(rollup@4.18.0):
+    dependencies:
+      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      magic-string: 0.30.10
+      oxc-transform: 0.15.1
+      unplugin: 1.10.1
+    transitivePeerDependencies:
+      - rollup
+
+  unplugin@1.10.1:
+    dependencies:
+      acorn: 8.11.3
+      chokidar: 3.6.0
+      webpack-sources: 3.2.3
+      webpack-virtual-modules: 0.6.2
+
   update-browserslist-db@1.0.16(browserslist@4.23.1):
     dependencies:
       browserslist: 4.23.1
@@ -4344,6 +4478,10 @@ snapshots:
       - supports-color
 
   webidl-conversions@4.0.2: {}
+
+  webpack-sources@3.2.3: {}
+
+  webpack-virtual-modules@0.6.2: {}
 
   whatwg-url@7.1.0:
     dependencies:
