@@ -1,19 +1,20 @@
 import { isBuiltin } from 'node:module'
+import type { PackageJson } from 'pkg-types'
 import type { ResolvedOptions } from '../options'
 import type { InputOptions, Plugin } from 'rolldown'
 
 export type External = InputOptions['external']
 
 export function ExternalPlugin(
-  pkg: any,
+  pkg: PackageJson | undefined,
   platform: ResolvedOptions['platform'],
 ): Plugin {
-  const deps = getProductionDeps(pkg)
+  const deps = pkg && getProductionDeps(pkg)
 
   return {
     name: 'tsdown:external',
     resolveId(id) {
-      let shouldExternal = deps.has(id)
+      let shouldExternal = deps?.has(id)
       shouldExternal ||= platform === 'node' && isBuiltin(id)
 
       if (shouldExternal) {
@@ -26,7 +27,7 @@ export function ExternalPlugin(
 /*
  * Production deps should be excluded from the bundle
  */
-export function getProductionDeps(pkg: any): Set<string> {
+export function getProductionDeps(pkg: PackageJson): Set<string> {
   return new Set([
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),

@@ -54,6 +54,7 @@
     "cac": "^6.7.14",
     "consola": "^3.2.3",
     "globby": "^14.0.1",
+    "pkg-types": "^1.1.1",
     "rolldown": "nightly",
     "unconfig": "^0.4.4"
   },

@@ -44,6 +44,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
   await build.destroy()
 
   logger.info('Build complete')
+  // FIXME https://github.com/rolldown/rolldown/issues/1274
   process.exit(0)
 }
 

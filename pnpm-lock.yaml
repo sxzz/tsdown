@@ -17,6 +17,9 @@ importers:
       globby:
         specifier: ^14.0.1
         version: 14.0.1
+      pkg-types:
+        specifier: ^1.1.1
+        version: 1.1.1
       rolldown:
         specifier: nightly
         version: 0.10.4-snapshot-06d73a8-20240624002901
