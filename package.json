@@ -34,7 +34,7 @@
     }
   },
   "bin": {
-    "tsdown": "./dist/run.js"
+    "tsdown": "./bin/tsdown.js"
   },
   "publishConfig": {
     "access": "public"
