@@ -32,5 +32,10 @@ export async function runCLI(): Promise<void> {
   cli.version(version)
   cli.parse(process.argv, { run: false })
 
-  await cli.runMatchedCommand()
+  try {
+    await cli.runMatchedCommand()
+  } catch (error) {
+    logger.fatal(error)
+    process.exit(1)
+  }
 }
