@@ -1,5 +1,6 @@
 import process from 'node:process'
 import { type InputOptions, rolldown } from 'rolldown'
+import { IsolatedDecl } from 'unplugin-isolated-decl'
 import {
   type Options,
   type OptionsWithoutConfig,
@@ -12,8 +13,18 @@ import { resolveOutputExtension } from './features/output'
 import { ExternalPlugin } from './features/external'
 
 export async function build(userOptions: Options = {}): Promise<void> {
-  const { entry, external, plugins, outDir, format, clean, platform } =
-    await normalizeOptions(userOptions)
+  const {
+    entry,
+    external,
+    plugins,
+    outDir,
+    format,
+    clean,
+    platform,
+    alias,
+    treeshake,
+    dts,
+  } = await normalizeOptions(userOptions)
 
   if (clean) await cleanOutDir(outDir, clean)
 
@@ -22,11 +33,13 @@ export async function build(userOptions: Options = {}): Promise<void> {
   const inputOptions: InputOptions = {
     input: entry,
     external,
-    resolve: {
-      alias: userOptions.alias,
-    },
-    treeshake: userOptions.treeshake,
-    plugins: [ExternalPlugin(pkg, platform), ...plugins],
+    resolve: { alias },
+    treeshake,
+    plugins: [
+      ExternalPlugin(pkg, platform),
+      dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+      ...plugins,
+    ].filter((plugin) => !!plugin),
   }
   const build = await rolldown(inputOptions)
 

@@ -8,6 +8,7 @@ import { toArray } from './utils/general'
 import type { External } from './features/external'
 import type { Stats } from 'node:fs'
 import type { InputOptions } from 'rolldown'
+import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
 
@@ -24,6 +25,10 @@ export interface Options {
   treeshake?: boolean
   /** @default 'node' */
   platform?: 'node' | 'neutral'
+  /**
+   * Enable dts generation with `isolatedDeclarations` (experimental)
+   */
+  dts?: boolean | IsolatedDeclOptions
 }
 
 export type OptionsWithoutConfig = Omit<Options, 'config'>
@@ -58,6 +63,8 @@ export async function normalizeOptions(
     treeshake = true,
     platform = 'node',
     outDir = 'dist',
+    dts = false,
+    alias = {},
   } = options
 
   entry = await resolveEntry(entry)
@@ -71,9 +78,10 @@ export async function normalizeOptions(
     format,
     outDir,
     clean,
-    alias: {},
+    alias,
     treeshake,
     platform,
+    dts,
   }
 }
 

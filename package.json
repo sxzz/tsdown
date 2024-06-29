@@ -56,7 +56,8 @@
     "globby": "^14.0.1",
     "pkg-types": "^1.1.1",
     "rolldown": "nightly",
-    "unconfig": "^0.4.4"
+    "unconfig": "^0.4.4",
+    "unplugin-isolated-decl": "^0.3.0"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.13.0",
@@ -68,7 +69,6 @@
     "tsup": "^8.1.0",
     "tsx": "^4.15.7",
     "typescript": "~5.5.2",
-    "unplugin-isolated-decl": "^0.1.0",
     "vitest": "^1.6.0"
   },
   "engines": {

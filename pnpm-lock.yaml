@@ -26,6 +26,9 @@ importers:
       unconfig:
         specifier: ^0.4.4
         version: 0.4.4
+      unplugin-isolated-decl:
+        specifier: ^0.3.0
+        version: 0.3.0(rollup@4.18.0)
     devDependencies:
       '@sxzz/eslint-config':
         specifier: ^3.13.0
@@ -54,9 +57,6 @@ importers:
       typescript:
         specifier: ~5.5.2
         version: 5.5.2
-      unplugin-isolated-decl:
-        specifier: ^0.1.0
-        version: 0.1.0(rollup@4.18.0)
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.8)
@@ -2163,8 +2163,8 @@ packages:
   unist-util-stringify-position@2.0.3:
     resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
 
-  unplugin-isolated-decl@0.1.0:
-    resolution: {integrity: sha512-giwV2sZdAxmbfXgscFdX/qV1Qad5gnjA3xx/FGivsGn/YUwNJuUtvDjiZrEAB838Osdzj0SZrTL4Hf/kdKd8qw==}
+  unplugin-isolated-decl@0.3.0:
+    resolution: {integrity: sha512-KjZrCpWasFXalp8b5ndyb60d0d1IOYH7U5fLfr9ET4x8ODadxgEZJ4aXFs4E0Qv/HQBuK1w7IvViE2CeRGz4sg==}
     engines: {node: '>=18.12.0'}
 
   unplugin@1.10.1:
@@ -4375,10 +4375,9 @@ snapshots:
     dependencies:
       '@types/unist': 2.0.10
 
-  unplugin-isolated-decl@0.1.0(rollup@4.18.0):
+  unplugin-isolated-decl@0.3.0(rollup@4.18.0):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
-      magic-string: 0.30.10
       oxc-transform: 0.15.1
       unplugin: 1.10.1
     transitivePeerDependencies:
