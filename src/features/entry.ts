@@ -1,4 +1,4 @@
-import { globby } from 'globby'
+import glob from 'fast-glob'
 import { fsExists } from '../utils/fs'
 import { logger } from '../utils/logger'
 import type { Options } from '../options'
@@ -15,7 +15,7 @@ export async function resolveEntry(
     entry = [entry]
   }
   if (Array.isArray(entry)) {
-    const resolvedEntry = await globby(entry)
+    const resolvedEntry = await glob(entry)
 
     // Ensure entry exists
     if (resolvedEntry.length > 0) {

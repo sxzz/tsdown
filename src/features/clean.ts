@@ -1,6 +1,6 @@
 import { readdir, rm } from 'node:fs/promises'
 import path from 'node:path'
-import { globby } from 'globby'
+import glob from 'fast-glob'
 import { logger } from '../utils/logger'
 import { fsExists } from '../utils/fs'
 
@@ -15,7 +15,7 @@ export async function cleanOutDir(
     files.push(...(await readdir(cwd)).map((file) => path.resolve(cwd, file)))
 
   if (patterns.length) {
-    files.push(...(await globby(patterns, { cwd, absolute: true })))
+    files.push(...(await glob(patterns, { cwd, absolute: true })))
   }
 
   logger.info('Cleaning output folder')

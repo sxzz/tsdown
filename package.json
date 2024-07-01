@@ -53,7 +53,7 @@
   "dependencies": {
     "cac": "^6.7.14",
     "consola": "^3.2.3",
-    "globby": "^14.0.2",
+    "fast-glob": "^3.3.2",
     "pkg-types": "^1.1.1",
     "rolldown": "nightly",
     "unconfig": "^0.4.5",
