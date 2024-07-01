@@ -53,21 +53,21 @@
   "dependencies": {
     "cac": "^6.7.14",
     "consola": "^3.2.3",
-    "globby": "^14.0.1",
+    "globby": "^14.0.2",
     "pkg-types": "^1.1.1",
     "rolldown": "nightly",
-    "unconfig": "^0.4.4",
-    "unplugin-isolated-decl": "^0.3.0"
+    "unconfig": "^0.4.5",
+    "unplugin-isolated-decl": "^0.4.0"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.13.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^20.14.8",
+    "@types/node": "^20.14.9",
     "bumpp": "^9.4.1",
-    "eslint": "^9.5.0",
+    "eslint": "^9.6.0",
     "prettier": "^3.3.2",
     "tsup": "^8.1.0",
-    "tsx": "^4.15.7",
+    "tsx": "^4.16.0",
     "typescript": "~5.5.2",
     "vitest": "^1.6.0"
   },
