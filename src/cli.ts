@@ -12,6 +12,7 @@ export async function runCLI(): Promise<void> {
       ignoreOptionDefaultValue: true,
     })
     .option('-c, --config <filename>', 'Use a custom config file')
+    .option('--no-config', 'Disable config file')
     .option('--format <format>', 'Bundle format: esm, cjs, iife', {
       default: 'esm',
     })
