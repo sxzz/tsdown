@@ -8,7 +8,7 @@ beforeEach(async () => {
 })
 
 test('basic', async () => {
-  const content = `console.log('Hello, world!')`
+  const content = `console.log("Hello, world!")`
   const { outputContent } = await testBuild({
     'index.ts': content,
   })
