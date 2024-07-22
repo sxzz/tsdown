@@ -3,9 +3,10 @@
 exports[`basic 1`] = `
 "
 //#region index.ts
-console.log('Hello, world!');
+console.log("Hello, world!");
 
-//#endregion"
+//#endregion
+"
 `;
 
 exports[`cjs import 1`] = `
@@ -17,7 +18,8 @@ const foo = 1;
 
 //#endregion
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.foo = foo;"
+exports.foo = foo;
+"
 `;
 
 exports[`esm import 1`] = `
@@ -26,5 +28,6 @@ exports[`esm import 1`] = `
 const foo = 1;
 
 //#endregion
-export { foo };"
+export { foo };
+"
 `;
