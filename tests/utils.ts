@@ -53,8 +53,8 @@ export async function testBuild(
     .crawl(outputDir)
     .withPromise()
 
-  const getContent = (filename: string) =>
-    readFile(path.resolve(outputDir, filename), 'utf8')
+  const getContent = async (filename: string) =>
+    (await readFile(path.resolve(outputDir, filename), 'utf8')).trim()
 
   return {
     outputFiles,

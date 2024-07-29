@@ -1,33 +1,27 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic 1`] = `
-"
-//#region index.ts
+"//#region index.ts
 console.log("Hello, world!");
 
-//#endregion
-"
+//#endregion"
 `;
 
 exports[`cjs import 1`] = `
 ""use strict";
-
 
 //#region foo.ts
 const foo = 1;
 
 //#endregion
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.foo = foo;
-"
+exports.foo = foo;"
 `;
 
 exports[`esm import 1`] = `
-"
-//#region foo.ts
+"//#region foo.ts
 const foo = 1;
 
 //#endregion
-export { foo };
-"
+export { foo };"
 `;
