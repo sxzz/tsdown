@@ -1,9 +1,9 @@
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { execa } from 'execa'
-import { expect } from 'vitest'
 import { fdir } from 'fdir'
+import { expect } from 'vitest'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
@@ -73,5 +73,5 @@ function getTestName(): string {
 }
 
 function filenamify(input: string) {
-  return input.replaceAll(/[^\dA-Za-z]/g, '-')
+  return input.replaceAll(/[^\da-z]/gi, '-')
 }

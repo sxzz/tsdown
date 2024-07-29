@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { type PackageJson, readPackageJSON } from 'pkg-types'
+import { readPackageJSON, type PackageJson } from 'pkg-types'
 import { fsExists } from './fs'
 
 export async function readPackageJson(

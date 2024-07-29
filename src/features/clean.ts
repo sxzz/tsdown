@@ -1,8 +1,8 @@
 import { readdir, rm } from 'node:fs/promises'
 import path from 'node:path'
 import glob from 'fast-glob'
-import { logger } from '../utils/logger'
 import { fsExists } from '../utils/fs'
+import { logger } from '../utils/logger'
 
 // clean cwd dir + patterns
 export async function cleanOutDir(

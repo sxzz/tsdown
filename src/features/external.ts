@@ -1,6 +1,6 @@
 import { isBuiltin } from 'node:module'
-import type { PackageJson } from 'pkg-types'
 import type { ResolvedOptions } from '../options'
+import type { PackageJson } from 'pkg-types'
 import type { InputOptions, Plugin } from 'rolldown'
 
 export type External = InputOptions['external']

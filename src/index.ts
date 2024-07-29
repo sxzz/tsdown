@@ -1,16 +1,16 @@
 import process from 'node:process'
-import { type InputOptions, rolldown } from 'rolldown'
+import { rolldown, type InputOptions } from 'rolldown'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
+import { cleanOutDir } from './features/clean'
+import { ExternalPlugin } from './features/external'
+import { resolveOutputExtension } from './features/output'
 import {
+  normalizeOptions,
   type Options,
   type OptionsWithoutConfig,
-  normalizeOptions,
 } from './options'
 import { logger } from './utils/logger'
-import { cleanOutDir } from './features/clean'
 import { readPackageJson } from './utils/package'
-import { resolveOutputExtension } from './features/output'
-import { ExternalPlugin } from './features/external'
 
 export async function build(userOptions: Options = {}): Promise<void> {
   const {
