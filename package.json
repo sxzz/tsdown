@@ -62,15 +62,15 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^3.16.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.14.13",
     "bumpp": "^9.4.1",
     "eslint": "^9.8.0",
     "execa": "^9.3.0",
     "fdir": "^6.2.0",
     "prettier": "^3.3.3",
-    "tsup": "^8.2.2",
+    "tsup": "^8.2.3",
     "tsx": "^4.16.2",
-    "typescript": "~5.5.3",
+    "typescript": "~5.5.4",
     "vitest": "^2.0.4"
   },
   "engines": {
