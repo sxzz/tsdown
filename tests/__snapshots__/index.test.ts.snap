@@ -14,8 +14,12 @@ exports[`cjs import 1`] = `
 const foo = 1;
 
 //#endregion
-Object.defineProperty(exports, '__esModule', { value: true });
-exports.foo = foo;"
+Object.defineProperty(exports, 'foo', {
+  enumerable: true,
+  get: function () {
+    return foo;
+  }
+});"
 `;
 
 exports[`esm import 1`] = `
