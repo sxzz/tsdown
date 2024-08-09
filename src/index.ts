@@ -4,6 +4,7 @@ import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
+import { watchBuild } from './features/watch'
 import {
   normalizeOptions,
   type Options,
@@ -13,6 +14,7 @@ import { logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
 export async function build(userOptions: Options = {}): Promise<void> {
+  const resolved = await normalizeOptions(userOptions)
   const {
     entry,
     external,
@@ -24,12 +26,13 @@ export async function build(userOptions: Options = {}): Promise<void> {
     alias,
     treeshake,
     dts,
-  } = await normalizeOptions(userOptions)
+    watch,
+  } = resolved
 
   if (clean) await cleanOutDir(outDir, clean)
 
   const pkg = await readPackageJson(process.cwd())
-
+  let startTime = performance.now()
   const inputOptions: InputOptions = {
     input: entry,
     external,
@@ -42,23 +45,35 @@ export async function build(userOptions: Options = {}): Promise<void> {
     ].filter((plugin) => !!plugin),
   }
   const build = await rolldown(inputOptions)
+  await writeBundle(true)
 
-  await Promise.all(
-    format.map((format) => {
-      const extension = resolveOutputExtension(pkg, format)
-      return build.write({
-        format,
-        dir: outDir,
-        entryFileNames: `[name].${extension}`,
-        chunkFileNames: `[name]-[hash].${extension}`,
-      })
-    }),
-  )
-  await build.destroy()
+  if (watch) {
+    await watchBuild(resolved, writeBundle)
+  } else {
+    await build.destroy()
+    // FIXME https://github.com/rolldown/rolldown/issues/1274
+    process.exit(0)
+  }
 
-  logger.info('Build complete')
-  // FIXME https://github.com/rolldown/rolldown/issues/1274
-  process.exit(0)
+  async function writeBundle(first?: boolean) {
+    if (!first) startTime = performance.now()
+    await Promise.all(
+      format.map((format) => {
+        const extension = resolveOutputExtension(pkg, format)
+        return build.write({
+          format,
+          dir: outDir,
+          entryFileNames: `[name].${extension}`,
+          chunkFileNames: `[name]-[hash].${extension}`,
+        })
+      }),
+    )
+    logger.success(
+      `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(
+        performance.now() - startTime,
+      )}ms`,
+    )
+  }
 }
 
 export function defineConfig(

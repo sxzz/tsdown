@@ -11,3 +11,17 @@ export function toArray<T>(
     return [val]
   }
 }
+
+export function debounce<T extends (...args: any[]) => any>(
+  fn: T,
+  wait: number,
+): T {
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  return function (this: any, ...args: any[]) {
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      timeout = undefined
+      fn.apply(this, args)
+    }, wait)
+  } as T
+}

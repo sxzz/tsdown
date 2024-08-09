@@ -22,6 +22,7 @@ export async function runCLI(): Promise<void> {
     .option('--platform <platform>', 'Target platform', {
       default: 'node',
     })
+    .option('--watch', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
       logger.info(`tsdown v${version}`)
       const { build } = await import('./index')

@@ -29,6 +29,7 @@ export interface Options {
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
   dts?: boolean | IsolatedDeclOptions
+  watch?: boolean | string | string[]
 }
 
 export type OptionsWithoutConfig = Omit<Options, 'config'>
@@ -65,6 +66,7 @@ export async function normalizeOptions(
     outDir = 'dist',
     dts = false,
     alias = {},
+    watch = false,
   } = options
 
   entry = await resolveEntry(entry)
@@ -82,6 +84,7 @@ export async function normalizeOptions(
     treeshake,
     platform,
     dts,
+    watch,
   }
 }
 
