@@ -11,6 +11,7 @@ import type { InputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
+export type Sourcemap = boolean | 'inline' | 'hidden'
 
 export interface Options {
   entry?: InputOptions['input']
@@ -20,6 +21,7 @@ export interface Options {
   outDir?: string
   clean?: boolean | string[]
   config?: boolean | string
+  sourcemap?: Sourcemap
   alias?: Record<string, string>
   /** @default true */
   treeshake?: boolean
@@ -64,6 +66,7 @@ export async function normalizeOptions(
     treeshake = true,
     platform = 'node',
     outDir = 'dist',
+    sourcemap = false,
     dts = false,
     alias = {},
     watch = false,
@@ -83,6 +86,7 @@ export async function normalizeOptions(
     alias,
     treeshake,
     platform,
+    sourcemap,
     dts,
     watch,
   }
