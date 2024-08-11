@@ -13,6 +13,9 @@ import {
 import { logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
+/**
+ * Build with tsdown.
+ */
 export async function build(userOptions: Options = {}): Promise<void> {
   const resolved = await normalizeOptions(userOptions)
   const {
@@ -90,6 +93,9 @@ export async function build(userOptions: Options = {}): Promise<void> {
   }
 }
 
+/**
+ * Defines the configuration for tsdown.
+ */
 export function defineConfig(
   options: OptionsWithoutConfig,
 ): OptionsWithoutConfig {
