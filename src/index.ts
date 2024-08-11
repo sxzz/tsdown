@@ -27,6 +27,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     treeshake,
     sourcemap,
     dts,
+    minify,
     watch,
   } = resolved
 
@@ -65,6 +66,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
           format,
           sourcemap,
           dir: outDir,
+          minify,
           entryFileNames: `[name].${extension}`,
           chunkFileNames: `[name]-[hash].${extension}`,
         })

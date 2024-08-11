@@ -25,6 +25,8 @@ export interface Options {
   alias?: Record<string, string>
   /** @default true */
   treeshake?: boolean
+  /** @default false */
+  minify?: boolean
   /** @default 'node' */
   platform?: 'node' | 'neutral'
   /**
@@ -68,6 +70,7 @@ export async function normalizeOptions(
     outDir = 'dist',
     sourcemap = false,
     dts = false,
+    minify = false,
     alias = {},
     watch = false,
   } = options
@@ -88,6 +91,7 @@ export async function normalizeOptions(
     platform,
     sourcemap,
     dts,
+    minify,
     watch,
   }
 }
