@@ -25,7 +25,7 @@ export interface Options {
   alias?: Record<string, string>
   /** @default true */
   treeshake?: boolean
-  /** @default true */
+  /** @default false */
   minify?: boolean
   /** @default 'node' */
   platform?: 'node' | 'neutral'
