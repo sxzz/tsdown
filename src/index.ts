@@ -45,6 +45,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
       ...plugins,
     ].filter((plugin) => !!plugin),
+    ...resolved.inputOptions,
   }
   const build = await rolldown(inputOptions)
   await writeBundle(true)
@@ -60,15 +61,24 @@ export async function build(userOptions: Options = {}): Promise<void> {
   async function writeBundle(first?: boolean) {
     if (!first) startTime = performance.now()
     await Promise.all(
-      format.map((format) => {
+      format.map(async (format) => {
         const extension = resolveOutputExtension(pkg, format)
-        return build.write({
+        const outputOptions = {
           format,
           sourcemap,
           dir: outDir,
           minify,
           entryFileNames: `[name].${extension}`,
           chunkFileNames: `[name]-[hash].${extension}`,
+        }
+        const userOutputOptions =
+          typeof resolved.outputOptions === 'function'
+            ? await resolved.outputOptions(outputOptions, format)
+            : resolved.outputOptions
+
+        return await build.write({
+          ...outputOptions,
+          ...userOutputOptions,
         })
       }),
     )

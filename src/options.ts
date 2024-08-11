@@ -6,8 +6,9 @@ import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import type { External } from './features/external'
+import type { MarkPartial, MaybePromise, Overwrite } from './utils/types'
 import type { Stats } from 'node:fs'
-import type { InputOptions } from 'rolldown'
+import type { InputOptions, OutputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
@@ -34,19 +35,24 @@ export interface Options {
    */
   dts?: boolean | IsolatedDeclOptions
   watch?: boolean | string | string[]
+  inputOptions?: InputOptions
+  outputOptions?:
+    | OutputOptions
+    | ((
+        options: OutputOptions,
+        format: Format,
+      ) => MaybePromise<OutputOptions | void | null>)
 }
 
 export type OptionsWithoutConfig = Omit<Options, 'config'>
 
-type Overwrite<T, U> = { [P in Exclude<keyof T, keyof U>]: T[P] } & U
-
 export type ResolvedOptions = Omit<
   Overwrite<
-    Required<Options>,
-    {
-      format: Format[]
-      clean: string[] | false
-    }
+    MarkPartial<
+      Options,
+      'inputOptions' | 'outputOptions' | 'minify' | 'alias' | 'external'
+    >,
+    { format: Format[]; clean: string[] | false }
   >,
   'config'
 >
@@ -63,16 +69,18 @@ export async function normalizeOptions(
     entry,
     format = ['es'],
     plugins = [],
-    external = [],
+    external,
     clean = false,
     treeshake = true,
     platform = 'node',
     outDir = 'dist',
     sourcemap = false,
     dts = false,
-    minify = false,
-    alias = {},
+    minify,
+    alias,
     watch = false,
+    inputOptions,
+    outputOptions,
   } = options
 
   entry = await resolveEntry(entry)
@@ -93,6 +101,8 @@ export async function normalizeOptions(
     dts,
     minify,
     watch,
+    inputOptions,
+    outputOptions,
   }
 }
 
