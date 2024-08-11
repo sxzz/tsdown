@@ -70,7 +70,7 @@ export async function normalizeOptions(
     outDir = 'dist',
     sourcemap = false,
     dts = false,
-    minify = true,
+    minify = false,
     alias = {},
     watch = false,
   } = options
