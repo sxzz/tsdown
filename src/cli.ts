@@ -19,6 +19,7 @@ export async function runCLI(): Promise<void> {
     .option('--clean', 'Clean output directory')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .option('--treeshake', 'Tree-shake bundle', { default: true })
+    .option('--sourcemap', 'Generate source map', { default: false })
     .option('--platform <platform>', 'Target platform', {
       default: 'node',
     })

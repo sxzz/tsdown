@@ -25,6 +25,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     platform,
     alias,
     treeshake,
+    sourcemap,
     dts,
     watch,
   } = resolved
@@ -62,6 +63,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
         const extension = resolveOutputExtension(pkg, format)
         return build.write({
           format,
+          sourcemap,
           dir: outDir,
           entryFileNames: `[name].${extension}`,
           chunkFileNames: `[name]-[hash].${extension}`,
