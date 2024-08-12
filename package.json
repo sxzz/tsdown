@@ -58,7 +58,7 @@
     "pkg-types": "^1.1.3",
     "rolldown": "nightly",
     "unconfig": "^0.5.5",
-    "unplugin-isolated-decl": "^0.4.4"
+    "unplugin-isolated-decl": "^0.4.5"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.17.0",
