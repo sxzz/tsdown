@@ -101,3 +101,5 @@ export function defineConfig(
 ): OptionsWithoutConfig {
   return options
 }
+
+export type { Options, OptionsWithoutConfig }
