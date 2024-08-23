@@ -21,6 +21,7 @@ export interface Options {
   external?: External
   outDir?: string
   clean?: boolean | string[]
+  silent?: boolean
   config?: boolean | string
   sourcemap?: Sourcemap
   alias?: Record<string, string>
@@ -71,6 +72,7 @@ export async function normalizeOptions(
     plugins = [],
     external,
     clean = false,
+    silent = false,
     treeshake = true,
     platform = 'node',
     outDir = 'dist',
@@ -94,6 +96,7 @@ export async function normalizeOptions(
     format,
     outDir,
     clean,
+    silent,
     alias,
     treeshake,
     platform,

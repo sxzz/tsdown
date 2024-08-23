@@ -25,6 +25,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     outDir,
     format,
     clean,
+    silent,
     platform,
     alias,
     treeshake,
@@ -34,6 +35,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     watch,
   } = resolved
 
+  if (silent) logger.level = 0
   if (clean) await cleanOutDir(outDir, clean)
 
   const pkg = await readPackageJson(process.cwd())
