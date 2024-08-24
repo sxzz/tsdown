@@ -18,6 +18,7 @@ export async function runCLI(): Promise<void> {
     })
     .option('--clean', 'Clean output directory')
     .option('--minify', 'Minify output')
+    .option('--silent', 'Suppress non-error logs')
     .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
     .option('--treeshake', 'Tree-shake bundle', { default: true })
     .option('--sourcemap', 'Generate source map', { default: false })
