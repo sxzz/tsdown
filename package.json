@@ -59,7 +59,7 @@
     "rolldown": "nightly",
     "tinyglobby": "^0.2.2",
     "unconfig": "^0.5.5",
-    "unplugin-isolated-decl": "^0.4.5"
+    "unplugin-isolated-decl": "^0.4.6"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^3.17.3",
