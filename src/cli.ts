@@ -27,6 +27,9 @@ export async function runCLI(): Promise<void> {
     })
     .option('--watch', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
+      logger.level = flags.silent
+        ? 0 // Fatal and Error
+        : 3 // Informational logs, success, fail, ready, start, ...
       logger.info(`tsdown v${version}`)
       const { build } = await import('./index')
       if (input.length > 0) flags.entry = input
