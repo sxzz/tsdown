@@ -14,6 +14,9 @@ import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
+/**
+ * Options for tsdown.
+ */
 export interface Options {
   entry?: InputOptions['input']
   format?: Format | Format[]
@@ -45,6 +48,9 @@ export interface Options {
       ) => MaybePromise<OutputOptions | void | null>)
 }
 
+/**
+ * Options without specifying config file path.
+ */
 export type OptionsWithoutConfig = Omit<Options, 'config'>
 
 export type ResolvedOptions = Omit<
