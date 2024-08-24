@@ -1,6 +1,6 @@
 import { readdir, rm } from 'node:fs/promises'
 import path from 'node:path'
-import glob from 'fast-glob'
+import { glob } from 'tinyglobby'
 import { fsExists } from '../utils/fs'
 import { logger } from '../utils/logger'
 

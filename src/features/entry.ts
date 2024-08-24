@@ -1,4 +1,4 @@
-import glob from 'fast-glob'
+import { glob } from 'tinyglobby'
 import { fsExists } from '../utils/fs'
 import { logger } from '../utils/logger'
 import type { Options } from '../options'
