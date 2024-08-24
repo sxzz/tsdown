@@ -102,4 +102,5 @@ export function defineConfig(
   return options
 }
 
+export { logger }
 export type { Options, OptionsWithoutConfig }
