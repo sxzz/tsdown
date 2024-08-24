@@ -1,5 +1,7 @@
 import process from 'node:process'
 import { cac } from 'cac'
+import pc from 'picocolors'
+import { version as rolldownVersion } from '../node_modules/rolldown/package.json'
 import { version } from '../package.json'
 import { logger } from './utils/logger'
 import type { Options } from './options'
@@ -30,7 +32,9 @@ export async function runCLI(): Promise<void> {
       logger.level = flags.silent
         ? 0 // Fatal and Error
         : 3 // Informational logs, success, fail, ready, start, ...
-      logger.info(`tsdown v${version}`)
+      logger.info(
+        `tsdown ${pc.gray(`v${version}`)} powered by rolldown ${pc.gray(`v${rolldownVersion}`)}`,
+      )
       const { build } = await import('./index')
       if (input.length > 0) flags.entry = input
       await build(flags)
