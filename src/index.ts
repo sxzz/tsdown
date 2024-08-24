@@ -16,7 +16,9 @@ import { readPackageJson } from './utils/package'
 /**
  * Build with tsdown.
  */
-export async function build(userOptions: Options = {}): Promise<void> {
+export async function build(
+  userOptions: Omit<Options, 'silent'> = {},
+): Promise<void> {
   const resolved = await normalizeOptions(userOptions)
   const {
     entry,
