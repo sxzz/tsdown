@@ -33,7 +33,7 @@ export async function runCLI(): Promise<void> {
         ? 0 // Fatal and Error
         : 3 // Informational logs, success, fail, ready, start, ...
       logger.info(
-        `tsdown ${pc.gray(`v${version}`)} powered by rolldown ${pc.gray(`v${rolldownVersion}`)}`,
+        `tsdown ${pc.dim(`v${version}`)} powered by rolldown ${pc.dim(`v${rolldownVersion}`)}`,
       )
       const { build } = await import('./index')
       if (input.length > 0) flags.entry = input

@@ -1,3 +1,4 @@
+import pc from 'picocolors'
 import { glob } from 'tinyglobby'
 import { fsExists } from '../utils/fs'
 import { logger } from '../utils/logger'
@@ -20,7 +21,7 @@ export async function resolveEntry(
     // Ensure entry exists
     if (resolvedEntry.length > 0) {
       entry = resolvedEntry
-      logger.info(`entry: ${entry.join(', ')}`)
+      logger.info(`entry: ${pc.blue(entry.join(', '))}`)
     } else {
       throw new Error(`Cannot find entry: ${entry}`)
     }
@@ -31,7 +32,7 @@ export async function resolveEntry(
         throw new Error(`Cannot find entry: ${filename}`)
       }
     })
-    logger.info(`entry: ${files.join(', ')}`)
+    logger.info(`entry: ${pc.blue(files.join(', '))}`)
   }
 
   return entry
