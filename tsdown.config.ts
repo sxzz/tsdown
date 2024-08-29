@@ -9,5 +9,4 @@ export default defineConfig({
 
   // TODO
   // target: 'node18',
-  // splitting: true,
 })
