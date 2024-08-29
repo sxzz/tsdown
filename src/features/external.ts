@@ -9,12 +9,13 @@ export function ExternalPlugin(
   pkg: PackageJson | undefined,
   platform: ResolvedOptions['platform'],
 ): Plugin {
-  const deps = pkg && getProductionDeps(pkg)
+  const deps = pkg && Array.from(getProductionDeps(pkg))
 
   return {
     name: 'tsdown:external',
     resolveId(id) {
-      let shouldExternal = deps?.has(id)
+      let shouldExternal =
+        deps && deps.some((dep) => id === dep || id.startsWith(`${dep}/`))
       shouldExternal ||= platform === 'node' && isBuiltin(id)
 
       if (shouldExternal) {
