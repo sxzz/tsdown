@@ -54,15 +54,15 @@
     "cac": "^6.7.14",
     "chokidar": "^3.6.0",
     "consola": "^3.2.3",
-    "picocolors": "^1.0.1",
+    "picocolors": "^1.1.0",
     "pkg-types": "^1.2.0",
-    "rolldown": "nightly",
+    "rolldown": "https://pkg.pr.new/rolldown@main",
     "tinyglobby": "^0.2.5",
     "unconfig": "^0.5.5",
     "unplugin-isolated-decl": "^0.4.7"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^4.1.0",
+    "@sxzz/eslint-config": "^4.1.4",
     "@sxzz/prettier-config": "^2.0.2",
     "@types/node": "^22.5.2",
     "bumpp": "^9.5.2",

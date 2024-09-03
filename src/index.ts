@@ -59,8 +59,6 @@ export async function build(
     await watchBuild(resolved, writeBundle)
   } else {
     await build.destroy()
-    // FIXME https://github.com/rolldown/rolldown/issues/1274
-    process.exit(0)
   }
 
   async function writeBundle(first?: boolean) {
