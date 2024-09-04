@@ -12,7 +12,7 @@ import type { Stats } from 'node:fs'
 import type { InputOptions, OutputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
-export type Format = 'es' | 'esm' | 'module' | 'cjs' | 'commonjs'
+export type Format = 'es' | 'cjs' | 'esm' | 'module' | 'commonjs' | 'iife'
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
 /**
