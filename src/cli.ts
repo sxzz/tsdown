@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { cac } from 'cac'
 import pc from 'picocolors'
-import { version as rolldownVersion } from 'rolldown/package.json'
+import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
 import { logger } from './utils/logger'
 import type { Options } from './options'
