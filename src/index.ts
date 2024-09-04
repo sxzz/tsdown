@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { rolldown, type InputOptions } from 'rolldown'
+import { rolldown, type InputOptions, type OutputOptions } from 'rolldown'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
@@ -66,7 +66,7 @@ export async function build(
     await Promise.all(
       format.map(async (format) => {
         const extension = resolveOutputExtension(pkg, format)
-        const outputOptions = {
+        const outputOptions: OutputOptions = {
           format,
           sourcemap,
           dir: outDir,
