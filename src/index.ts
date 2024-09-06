@@ -45,6 +45,7 @@ export async function build(
     external,
     resolve: { alias },
     treeshake,
+    platform,
     plugins: [
       ExternalPlugin(pkg, platform),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
