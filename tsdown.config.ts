@@ -1,3 +1,4 @@
+import Unused from 'unplugin-unused/rolldown'
 import { defineConfig } from './src'
 
 export default defineConfig({
@@ -6,6 +7,7 @@ export default defineConfig({
   clean: true,
   platform: 'node',
   dts: true,
+  plugins: [Unused()],
 
   // TODO
   // target: 'node18',

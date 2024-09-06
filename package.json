@@ -62,17 +62,18 @@
     "unplugin-isolated-decl": "^0.4.7"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^4.1.4",
+    "@sxzz/eslint-config": "^4.1.5",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^22.5.3",
+    "@types/node": "^22.5.4",
     "bumpp": "^9.5.2",
-    "eslint": "^9.9.1",
+    "eslint": "^9.10.0",
     "execa": "^9.3.1",
     "fdir": "^6.3.0",
     "prettier": "^3.3.3",
     "tsup": "^8.2.4",
     "tsx": "^4.19.0",
     "typescript": "~5.5.4",
+    "unplugin-unused": "^0.1.7",
     "vitest": "^2.0.5"
   },
   "engines": {
