@@ -34,7 +34,7 @@ export interface Options {
   /** @default false */
   minify?: boolean
   /** @default 'node' */
-  platform?: 'node' | 'neutral'
+  platform?: 'node' | 'neutral' | 'browser'
   /**
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
