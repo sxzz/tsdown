@@ -16,7 +16,7 @@ export function resolveOutputExtension(
     }
     case 'cjs':
     case 'commonjs': {
-      return moduleType === 'module' ? 'mjs' : 'js'
+      return moduleType === 'module' ? 'cjs' : 'js'
     }
   }
 }
