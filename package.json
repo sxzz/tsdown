@@ -56,7 +56,7 @@
     "consola": "^3.2.3",
     "picocolors": "^1.1.0",
     "pkg-types": "^1.2.0",
-    "rolldown": "https://pkg.pr.new/rolldown@04deb7f",
+    "rolldown": "nightly",
     "tinyglobby": "^0.2.5",
     "unconfig": "^0.5.5",
     "unplugin-isolated-decl": "^0.4.7"
