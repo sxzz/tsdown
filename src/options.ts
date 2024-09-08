@@ -11,6 +11,7 @@ import type { MarkPartial, MaybePromise, Overwrite } from './utils/types'
 import type { Stats } from 'node:fs'
 import type { InputOptions, OutputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
+import type { Options as UnusedOptions } from 'unplugin-unused'
 
 export type Format = 'es' | 'cjs' | 'esm' | 'module' | 'commonjs' | 'iife'
 export type Sourcemap = boolean | 'inline' | 'hidden'
@@ -39,6 +40,10 @@ export interface Options {
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
   dts?: boolean | IsolatedDeclOptions
+  /**
+   * Enable unused dependencies check with `unplugin-unused` (experimental)
+   */
+  unused?: boolean | UnusedOptions
   watch?: boolean | string | string[]
   inputOptions?: InputOptions
   outputOptions?:
@@ -85,6 +90,7 @@ export async function normalizeOptions(
     outDir = 'dist',
     sourcemap = false,
     dts = false,
+    unused = false,
     minify,
     alias,
     watch = false,
@@ -109,6 +115,7 @@ export async function normalizeOptions(
     platform,
     sourcemap,
     dts,
+    unused,
     minify,
     watch,
     inputOptions,

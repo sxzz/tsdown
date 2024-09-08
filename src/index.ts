@@ -1,6 +1,7 @@
 import process from 'node:process'
 import { rolldown, type InputOptions, type OutputOptions } from 'rolldown'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
+import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
@@ -34,6 +35,7 @@ export async function build(
     dts,
     minify,
     watch,
+    unused,
   } = resolved
 
   if (clean) await cleanOutDir(outDir, clean)
@@ -49,6 +51,7 @@ export async function build(
     plugins: [
       ExternalPlugin(pkg, platform),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+      unused && Unused.rolldown(unused === true ? {} : unused),
       ...plugins,
     ].filter((plugin) => !!plugin),
     ...resolved.inputOptions,

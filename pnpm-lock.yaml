@@ -35,6 +35,9 @@ importers:
       unplugin-isolated-decl:
         specifier: ^0.4.7
         version: 0.4.7(rollup@4.21.2)(typescript@5.5.4)(webpack-sources@3.2.3)
+      unplugin-unused:
+        specifier: ^0.2.0
+        version: 0.2.0(rollup@4.21.2)(webpack-sources@3.2.3)
     devDependencies:
       '@sxzz/eslint-config':
         specifier: ^4.1.5
@@ -69,9 +72,6 @@ importers:
       typescript:
         specifier: ~5.5.4
         version: 5.5.4
-      unplugin-unused:
-        specifier: ^0.1.7
-        version: 0.1.7(rollup@4.21.2)(webpack-sources@3.2.3)
       vitest:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@22.5.4)
@@ -2456,8 +2456,8 @@ packages:
       typescript:
         optional: true
 
-  unplugin-unused@0.1.7:
-    resolution: {integrity: sha512-MZfp6/k9Z/g3FyPYCQHPHhQPrRkoGhokNTqyWLBpWJkrBFWp+FD9qlldB0ktK28GqgIF3EthbRcQ2o1FGqs/eA==}
+  unplugin-unused@0.2.0:
+    resolution: {integrity: sha512-PgV/xvcVHcLzeGID77AqX5VkezENhT/gVtQRXSlJXoKBWOefS9XHgvQVDW7QtaALn0DMJsluRVey4ZAFHvuliA==}
     engines: {node: '>=18.12.0'}
 
   unplugin@1.13.1:
@@ -5122,7 +5122,7 @@ snapshots:
       - rollup
       - webpack-sources
 
-  unplugin-unused@0.1.7(rollup@4.21.2)(webpack-sources@3.2.3):
+  unplugin-unused@0.2.0(rollup@4.21.2)(webpack-sources@3.2.3):
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.21.2)
       js-tokens: 9.0.0
