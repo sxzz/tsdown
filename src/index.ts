@@ -62,7 +62,7 @@ export async function build(
   if (watch) {
     await watchBuild(resolved, writeBundle)
   } else {
-    await build.destroy()
+    await build.close()
   }
 
   async function writeBundle(first?: boolean) {
