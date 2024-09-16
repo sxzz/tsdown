@@ -1,4 +1,3 @@
-import path from 'node:path'
 import process from 'node:process'
 import { debounce, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
@@ -14,13 +13,15 @@ export async function watchBuild(
 
   const files =
     typeof options.watch === 'boolean' ? process.cwd() : options.watch
-  const ignored = ['**/{.git,node_modules}/**', path.resolve(options.outDir)]
   logger.info(`Watching for changes in ${toArray(files).join(', ')}`)
 
   const watcher = watch(files, {
     ignoreInitial: true,
     ignorePermissionErrors: true,
-    ignored,
+    ignored: (id) => {
+      if (id.includes('/.git/') || id.includes('/node_modules/')) return true
+      return id.startsWith(options.outDir)
+    },
   })
 
   watcher.on('all', (type, file) => {
