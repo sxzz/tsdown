@@ -107,7 +107,7 @@ export async function normalizeOptions(
     plugins,
     external,
     format,
-    outDir,
+    outDir: path.resolve(outDir),
     clean,
     silent,
     alias,
