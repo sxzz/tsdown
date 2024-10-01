@@ -41,32 +41,31 @@ export async function build(
   if (clean) await cleanOutDir(outDir, clean)
 
   const pkg = await readPackageJson(process.cwd())
-  let startTime = performance.now()
-  const inputOptions: InputOptions = {
-    input: entry,
-    external,
-    resolve: { alias },
-    treeshake,
-    platform,
-    plugins: [
-      ExternalPlugin(pkg, platform),
-      dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
-      unused && Unused.rolldown(unused === true ? {} : unused),
-      ...plugins,
-    ].filter((plugin) => !!plugin),
-    ...resolved.inputOptions,
-  }
-  const build = await rolldown(inputOptions)
-  await writeBundle(true)
+  let startTime: number
+  await rebuild(true)
 
   if (watch) {
-    await watchBuild(resolved, writeBundle)
-  } else {
-    await build.close()
+    await watchBuild(resolved, rebuild)
   }
 
-  async function writeBundle(first?: boolean) {
-    if (!first) startTime = performance.now()
+  async function rebuild(first?: boolean) {
+    startTime = performance.now()
+
+    const inputOptions: InputOptions = {
+      input: entry,
+      external,
+      resolve: { alias },
+      treeshake,
+      platform,
+      plugins: [
+        ExternalPlugin(pkg, platform),
+        dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+        unused && Unused.rolldown(unused === true ? {} : unused),
+        ...plugins,
+      ].filter((plugin) => !!plugin),
+      ...resolved.inputOptions,
+    }
+    const build = await rolldown(inputOptions)
     await Promise.all(
       format.map(async (format) => {
         const extension = resolveOutputExtension(pkg, format)
@@ -89,6 +88,8 @@ export async function build(
         })
       }),
     )
+    await build.close()
+
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(
         performance.now() - startTime,
