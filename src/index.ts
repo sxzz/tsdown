@@ -5,6 +5,7 @@ import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
+import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
 import {
   normalizeOptions,
@@ -45,7 +46,8 @@ export async function build(
   await rebuild(true)
 
   if (watch) {
-    await watchBuild(resolved, rebuild)
+    const watcher = await watchBuild(resolved, rebuild)
+    shortcuts(watcher, rebuild)
   }
 
   async function rebuild(first?: boolean) {

@@ -2,12 +2,13 @@ import process from 'node:process'
 import { debounce, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
+import type { FSWatcher } from 'chokidar'
 
 // TODO watch config files
 export async function watchBuild(
   options: ResolvedOptions,
   rebuild: () => void,
-): Promise<void> {
+): Promise<FSWatcher> {
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
@@ -28,4 +29,6 @@ export async function watchBuild(
     logger.info(`Change detected: ${type} ${file}`)
     debouncedRebuild()
   })
+
+  return watcher
 }
