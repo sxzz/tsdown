@@ -27,7 +27,7 @@ export async function runCLI(): Promise<void> {
     .option('--platform <platform>', 'Target platform', {
       default: 'node',
     })
-    .option('--watch', 'Watch mode')
+    .option('-w, --watch', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
       logger.level = flags.silent
         ? 0 // Fatal and Error
