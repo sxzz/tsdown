@@ -14,6 +14,7 @@ import {
 } from './options'
 import { logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
+import { RolldownPluginRec } from 'rolldown/dist/types/plugin'
 
 /**
  * Build with tsdown.
@@ -64,7 +65,7 @@ export async function build(
         dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
         unused && Unused.rolldown(unused === true ? {} : unused),
         ...plugins,
-      ].filter((plugin) => !!plugin),
+      ].filter(Boolean) as RolldownPluginRec[],
       ...resolved.inputOptions,
     }
     const build = await rolldown(inputOptions)
