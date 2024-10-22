@@ -56,7 +56,7 @@
     "consola": "^3.2.3",
     "picocolors": "^1.1.1",
     "pkg-types": "^1.2.1",
-    "rolldown": "0.13.2",
+    "rolldown": "0.13.2-snapshot-d822812-20241022003358",
     "tinyglobby": "^0.2.9",
     "unconfig": "^0.6.0",
     "unplugin-isolated-decl": "^0.6.7",
