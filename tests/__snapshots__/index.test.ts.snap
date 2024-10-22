@@ -14,12 +14,7 @@ exports[`cjs import 1`] = `
 const foo = 1;
 
 //#endregion
-Object.defineProperty(exports, 'foo', {
-  enumerable: true,
-  get: function () {
-    return foo;
-  }
-});"
+exports.foo = foo"
 `;
 
 exports[`esm import 1`] = `
