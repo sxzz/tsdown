@@ -42,56 +42,55 @@ export async function build(
   if (clean) await cleanOutDir(outDir, clean)
 
   const pkg = await readPackageJson(process.cwd())
-  let startTime: number
-  await rebuild(true)
+  let startTime = performance.now()
+  const inputOptions: InputOptions = {
+    input: entry,
+    external,
+    resolve: { alias },
+    treeshake,
+    platform,
+    plugins: [
+      ExternalPlugin(pkg, platform),
+      dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+      unused && Unused.rolldown(unused === true ? {} : unused),
+      ...plugins,
+    ].filter((plugin) => !!plugin),
+    ...resolved.inputOptions,
+  }
+  const build = await rolldown(inputOptions)
+  const outputOptions: OutputOptions[] = await Promise.all(
+    format.map(async (format): Promise<OutputOptions> => {
+      const extension = resolveOutputExtension(pkg, format)
+      const outputOptions: OutputOptions = {
+        format,
+        sourcemap,
+        dir: outDir,
+        minify,
+        entryFileNames: `[name].${extension}`,
+        chunkFileNames: `[name]-[hash].${extension}`,
+      }
+      const userOutputOptions =
+        typeof resolved.outputOptions === 'function'
+          ? await resolved.outputOptions(outputOptions, format)
+          : resolved.outputOptions
+      return { ...outputOptions, ...userOutputOptions }
+    }),
+  )
+
+  await writeBundle(true)
 
   if (watch) {
-    const watcher = await watchBuild(resolved, rebuild)
-    shortcuts(watcher, rebuild)
+    const watcher = await watchBuild(resolved, writeBundle)
+    shortcuts(watcher, writeBundle)
+  } else {
+    await build.close()
   }
 
-  async function rebuild(first?: boolean) {
-    startTime = performance.now()
-
-    const inputOptions: InputOptions = {
-      input: entry,
-      external,
-      resolve: { alias },
-      treeshake,
-      platform,
-      plugins: [
-        ExternalPlugin(pkg, platform),
-        dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
-        unused && Unused.rolldown(unused === true ? {} : unused),
-        ...plugins,
-      ].filter((plugin) => !!plugin),
-      ...resolved.inputOptions,
-    }
-    const build = await rolldown(inputOptions)
+  async function writeBundle(first?: boolean) {
+    if (!first) startTime = performance.now()
     await Promise.all(
-      format.map(async (format) => {
-        const extension = resolveOutputExtension(pkg, format)
-        const outputOptions: OutputOptions = {
-          format,
-          sourcemap,
-          dir: outDir,
-          minify,
-          entryFileNames: `[name].${extension}`,
-          chunkFileNames: `[name]-[hash].${extension}`,
-        }
-        const userOutputOptions =
-          typeof resolved.outputOptions === 'function'
-            ? await resolved.outputOptions(outputOptions, format)
-            : resolved.outputOptions
-
-        return await build.write({
-          ...outputOptions,
-          ...userOutputOptions,
-        })
-      }),
+      outputOptions.map((outputOptions) => build.write(outputOptions)),
     )
-    await build.close()
-
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(
         performance.now() - startTime,

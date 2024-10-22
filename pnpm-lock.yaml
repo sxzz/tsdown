@@ -24,8 +24,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       rolldown:
-        specifier: https://pkg.pr.new/rolldown@ad37162
-        version: https://pkg.pr.new/rolldown@ad37162
+        specifier: 0.13.2-snapshot-d822812-20241022003358
+        version: 0.13.2-snapshot-d822812-20241022003358
       tinyglobby:
         specifier: ^0.2.9
         version: 0.2.9
@@ -546,64 +546,64 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@rolldown/binding-darwin-arm64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-arm64@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-arm64@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-xNJYwzLATSCqv/trDb6TvNWXKxNYShpqWjGIk3NSTLfkkigPKC2XBZ7uJq3kYGdTKCKd8thIV8cJqqPzMzyiXQ==}
+    cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-x64@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-x64@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-darwin-x64@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-HfsYp67/URtBahTeDNHxMOC8fhHMy2U75c7IprdR7KfSQ41v5msrNWc9k4dNjoMjolVs2Uw12FwnP3RHKFpGnQ==}
+    cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-freebsd-x64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-freebsd-x64@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-freebsd-x64@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-gNCA2GVp2swIfV8eo7Ccvjr4oYDrIhw8z+PyPmO0NZXX0oTWd1pSnTVf6pvj0SfZYPzLa5We/6Qb2sN9pFyB5w==}
+    cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-linux-arm-gnueabihf@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm-gnueabihf@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm-gnueabihf@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-S4sRZcHzzNGMXnovG+Gn2yS428HHwo/1NYJBoH6lyWKmLjpqeDfIY45vwEU/EvncNe6muFt0a8CdhciSCvHbFQ==}
+    cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-gnu@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-gnu@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-PIeaLgtONXjFsS/DTWQXVs826MYH37RXoODpaEwanFCQJvLS3itV7s201xVhesVi2w3xvAL61NO3Cn8MrC8a2Q==}
+    cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-musl@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-musl@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-musl@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-Wx8UFduy+as7LmDSUwcua4wfm2iB7o0z4rKKhL1tCNaJhxGxGyiO3u/x5ELpBt/tZBopbQwEJ5scs6dZ8OFv2A==}
+    cpu: [arm64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-gnu@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-gnu@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-gnu@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-P48SZxIoKLmSREnT3uOIfC5uWuh5McUkrXU9JsEeox7GAiwuLUWemwOOi2XNr/YlWcgG5EFBNnQC/i3L+jkdIw==}
+    cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-linux-x64-musl@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-musl@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-musl@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-WHT9K8S5bWMan7jvpk6fzazj7H+8ttha5yPOnOgsQ6r+1iWSVL8aVjjlA1gL5zXP/WoZwjpIZ/1W+es8CfMFUA==}
+    cpu: [x64]
     os: [linux]
 
-  '@rolldown/binding-wasm32-wasi@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-wasm32-wasi@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-wasm32-wasi@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-msrOIh2Bpulbhg9utkTEO/Tz9qbvLicaw08cL7JjZ3I3xVCWZtc/Hpp9dbPZ5+PKr7gGP+xYgIWVGImfwwZ8Wg==}
     engines: {node: '>=14.21.3'}
+    cpu: [wasm32]
 
-  '@rolldown/binding-win32-arm64-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-arm64-msvc@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-arm64-msvc@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-hMC4S4HvwGkLbdz7KN/sof3oqDYY3K3eaaoeusovsov9AaVMkFmElYDB56kQBlggOj86AUfFAD1DvjfYe7Mgbw==}
+    cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-ia32-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-ia32-msvc@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-ia32-msvc@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-eCIYhsNUHOUXEIFY4vlCXtZJatb6gSTl7dZBU/22ELauBx4a47zSBtH6xiz1fj4YIkczQXcN1HlT69nB8lehGA==}
+    cpu: [ia32]
     os: [win32]
 
-  '@rolldown/binding-win32-x64-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-x64-msvc@ad37162':
-    resolution: {tarball: https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-x64-msvc@ad37162}
-    version: 0.13.2
+  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-d822812-20241022003358':
+    resolution: {integrity: sha512-QOl6gU76wGBogIaFjePPo07KvDCaTPngiL//Fbc6nMcLDgSPZhZkeGi9MgRgu1tKUAEScASvkkzNqrI10hTOAA==}
+    cpu: [x64]
     os: [win32]
 
   '@rollup/pluginutils@5.1.2':
@@ -2122,9 +2122,8 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown@https://pkg.pr.new/rolldown@ad37162:
-    resolution: {tarball: https://pkg.pr.new/rolldown@ad37162}
-    version: 0.13.2
+  rolldown@0.13.2-snapshot-d822812-20241022003358:
+    resolution: {integrity: sha512-S+IeEt025tQIxzmaGwgwd1YDLbc4LkPHXlQbRawOeoSbfYPOmy7YrNMez8T4WrCcNYXphveLqz/xCc1xVIHvPg==}
     hasBin: true
 
   rollup@4.24.0:
@@ -2924,42 +2923,42 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@rolldown/binding-darwin-arm64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-arm64@ad37162':
+  '@rolldown/binding-darwin-arm64@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-darwin-x64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-x64@ad37162':
+  '@rolldown/binding-darwin-x64@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-freebsd-x64@ad37162':
+  '@rolldown/binding-freebsd-x64@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm-gnueabihf@ad37162':
+  '@rolldown/binding-linux-arm-gnueabihf@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-gnu@ad37162':
+  '@rolldown/binding-linux-arm64-gnu@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-linux-arm64-musl@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-musl@ad37162':
+  '@rolldown/binding-linux-arm64-musl@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-linux-x64-gnu@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-gnu@ad37162':
+  '@rolldown/binding-linux-x64-gnu@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-linux-x64-musl@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-musl@ad37162':
+  '@rolldown/binding-linux-x64-musl@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-wasm32-wasi@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-wasm32-wasi@ad37162':
+  '@rolldown/binding-wasm32-wasi@0.13.2-snapshot-d822812-20241022003358':
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.5
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-arm64-msvc@ad37162':
+  '@rolldown/binding-win32-arm64-msvc@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-win32-ia32-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-ia32-msvc@ad37162':
+  '@rolldown/binding-win32-ia32-msvc@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-x64-msvc@ad37162':
+  '@rolldown/binding-win32-x64-msvc@0.13.2-snapshot-d822812-20241022003358':
     optional: true
 
   '@rollup/pluginutils@5.1.2(rollup@4.24.0)':
@@ -4748,22 +4747,22 @@ snapshots:
 
   reusify@1.0.4: {}
 
-  rolldown@https://pkg.pr.new/rolldown@ad37162:
+  rolldown@0.13.2-snapshot-d822812-20241022003358:
     dependencies:
       zod: 3.23.8
     optionalDependencies:
-      '@rolldown/binding-darwin-arm64': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-arm64@ad37162
-      '@rolldown/binding-darwin-x64': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-darwin-x64@ad37162
-      '@rolldown/binding-freebsd-x64': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-freebsd-x64@ad37162
-      '@rolldown/binding-linux-arm-gnueabihf': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm-gnueabihf@ad37162
-      '@rolldown/binding-linux-arm64-gnu': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-gnu@ad37162
-      '@rolldown/binding-linux-arm64-musl': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-arm64-musl@ad37162
-      '@rolldown/binding-linux-x64-gnu': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-gnu@ad37162
-      '@rolldown/binding-linux-x64-musl': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-linux-x64-musl@ad37162
-      '@rolldown/binding-wasm32-wasi': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-wasm32-wasi@ad37162
-      '@rolldown/binding-win32-arm64-msvc': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-arm64-msvc@ad37162
-      '@rolldown/binding-win32-ia32-msvc': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-ia32-msvc@ad37162
-      '@rolldown/binding-win32-x64-msvc': https://pkg.pr.new/rolldown/rolldown/@rolldown/binding-win32-x64-msvc@ad37162
+      '@rolldown/binding-darwin-arm64': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-darwin-x64': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-freebsd-x64': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-linux-arm-gnueabihf': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-linux-arm64-gnu': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-linux-arm64-musl': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-linux-x64-gnu': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-linux-x64-musl': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-wasm32-wasi': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-win32-arm64-msvc': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-win32-ia32-msvc': 0.13.2-snapshot-d822812-20241022003358
+      '@rolldown/binding-win32-x64-msvc': 0.13.2-snapshot-d822812-20241022003358
 
   rollup@4.24.0:
     dependencies:
