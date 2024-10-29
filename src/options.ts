@@ -52,6 +52,7 @@ export interface Options {
         options: OutputOptions,
         format: Format,
       ) => MaybePromise<OutputOptions | void | null>)
+  onSuccess?: () => void | Promise<void>
 }
 
 /**
@@ -63,7 +64,12 @@ export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
       Options,
-      'inputOptions' | 'outputOptions' | 'minify' | 'alias' | 'external'
+      | 'inputOptions'
+      | 'outputOptions'
+      | 'minify'
+      | 'alias'
+      | 'external'
+      | 'onSuccess'
     >,
     { format: Format[]; clean: string[] | false }
   >,
@@ -96,6 +102,7 @@ export async function normalizeOptions(
     watch = false,
     inputOptions,
     outputOptions,
+    onSuccess,
   } = options
 
   entry = await resolveEntry(entry)
@@ -120,6 +127,7 @@ export async function normalizeOptions(
     watch,
     inputOptions,
     outputOptions,
+    onSuccess,
   }
 }
 

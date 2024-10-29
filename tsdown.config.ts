@@ -7,6 +7,9 @@ export default defineConfig({
   platform: 'node',
   dts: true,
   unused: { level: 'error' },
+  onSuccess() {
+    console.info('🙏 Build succeeded!')
+  },
 
   // TODO
   // target: 'node18',

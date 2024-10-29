@@ -37,6 +37,7 @@ export async function build(
     minify,
     watch,
     unused,
+    onSuccess,
   } = resolved
 
   if (clean) await cleanOutDir(outDir, clean)
@@ -96,6 +97,7 @@ export async function build(
         performance.now() - startTime,
       )}ms`,
     )
+    await onSuccess?.()
   }
 }
 
