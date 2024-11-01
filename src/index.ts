@@ -8,9 +8,10 @@ import { resolveOutputExtension } from './features/output'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
 import {
-  normalizeOptions,
+  resolveOptions,
+  type Config,
   type Options,
-  type OptionsWithoutConfig,
+  type ResolvedOptions,
 } from './options'
 import { logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
@@ -21,7 +22,16 @@ import { readPackageJson } from './utils/package'
 export async function build(
   userOptions: Omit<Options, 'silent'> = {},
 ): Promise<void> {
-  const resolved = await normalizeOptions(userOptions)
+  const resolved = await resolveOptions(userOptions)
+  await Promise.all(resolved.map(buildSingle))
+}
+
+/**
+ * Build a single configuration.
+ *
+ * @param resolved Resolved options
+ */
+export async function buildSingle(resolved: ResolvedOptions): Promise<void> {
   const {
     entry,
     external,
@@ -104,11 +114,9 @@ export async function build(
 /**
  * Defines the configuration for tsdown.
  */
-export function defineConfig(
-  options: OptionsWithoutConfig,
-): OptionsWithoutConfig {
+export function defineConfig(options: Config): Config {
   return options
 }
 
 export { logger }
-export type { Options, OptionsWithoutConfig }
+export type { Config, Options }

@@ -7,7 +7,12 @@ import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import type { External } from './features/external'
-import type { MarkPartial, MaybePromise, Overwrite } from './utils/types'
+import type {
+  Arrayable,
+  MarkPartial,
+  MaybePromise,
+  Overwrite,
+} from './utils/types'
 import type { Stats } from 'node:fs'
 import type { InputOptions, OutputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
@@ -58,7 +63,8 @@ export interface Options {
 /**
  * Options without specifying config file path.
  */
-export type OptionsWithoutConfig = Omit<Options, 'config'>
+export type Config = Arrayable<Omit<Options, 'config'>>
+export type ResolvedConfig = Extract<Config, any[]>
 
 export type ResolvedOptions = Omit<
   Overwrite<
@@ -76,64 +82,59 @@ export type ResolvedOptions = Omit<
   'config'
 >
 
-export async function normalizeOptions(
+export async function resolveOptions(
   options: Options,
-): Promise<ResolvedOptions> {
-  options = {
-    ...(await loadConfigFile(options)),
-    ...options,
+): Promise<ResolvedOptions[]> {
+  const config = await loadConfigFile(options)
+  if (config.length === 0) {
+    config.push({})
   }
 
-  let {
-    entry,
-    format = ['es'],
-    plugins = [],
-    external,
-    clean = false,
-    silent = false,
-    treeshake = true,
-    platform = 'node',
-    outDir = 'dist',
-    sourcemap = false,
-    dts = false,
-    unused = false,
-    minify,
-    alias,
-    watch = false,
-    inputOptions,
-    outputOptions,
-    onSuccess,
-  } = options
+  return Promise.all(
+    config.map(async (subConfig) => {
+      const subOptions = { ...subConfig, ...options }
 
-  entry = await resolveEntry(entry)
-  format = toArray(format, 'es')
-  if (clean === true) clean = []
+      let {
+        entry,
+        format = ['es'],
+        plugins = [],
+        clean = false,
+        silent = false,
+        treeshake = true,
+        platform = 'node',
+        outDir = 'dist',
+        sourcemap = false,
+        dts = false,
+        unused = false,
+        watch = false,
+      } = subOptions
 
-  return {
-    entry,
-    plugins,
-    external,
-    format,
-    outDir: path.resolve(outDir),
-    clean,
-    silent,
-    alias,
-    treeshake,
-    platform,
-    sourcemap,
-    dts,
-    unused,
-    minify,
-    watch,
-    inputOptions,
-    outputOptions,
-    onSuccess,
-  }
+      entry = await resolveEntry(entry)
+      format = toArray(format, 'es')
+      if (clean === true) clean = []
+
+      return {
+        ...subOptions,
+        entry,
+        plugins,
+        format,
+        outDir: path.resolve(outDir),
+        clean,
+        silent,
+        treeshake,
+        platform,
+        sourcemap,
+        dts,
+        unused,
+        watch,
+      }
+    }),
+  )
 }
 
-async function loadConfigFile(options: Options): Promise<Options> {
+async function loadConfigFile(options: Options): Promise<ResolvedConfig> {
   let { config: filePath } = options
-  if (filePath === false) return {}
+  if (filePath === false) return []
 
   let cwd = process.cwd()
   let overrideConfig = false
@@ -153,7 +154,7 @@ async function loadConfigFile(options: Options): Promise<Options> {
     }
   }
 
-  const { config, sources } = await loadConfig<Options>({
+  const { config, sources } = await loadConfig<Config>({
     sources: overrideConfig
       ? [{ files: filePath as string, extensions: [] }]
       : [
@@ -175,5 +176,6 @@ async function loadConfigFile(options: Options): Promise<Options> {
     logger.info(`Using tsdown config: ${pc.underline(sources.join(', '))}`)
   }
 
+  if (!Array.isArray(config)) return [config]
   return config
 }
