@@ -65,7 +65,7 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^4.4.0",
     "@sxzz/prettier-config": "^2.0.2",
-    "@types/node": "^22.8.2",
+    "@types/node": "^22.8.6",
     "bumpp": "^9.8.0",
     "eslint": "^9.13.0",
     "execa": "^9.5.1",
