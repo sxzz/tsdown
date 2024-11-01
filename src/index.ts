@@ -61,7 +61,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<void> {
     treeshake,
     platform,
     plugins: [
-      ExternalPlugin(pkg, platform),
+      pkg && ExternalPlugin(pkg),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
       unused && Unused.rolldown(unused === true ? {} : unused),
       ...plugins,

@@ -1,24 +1,14 @@
-import { isBuiltin } from 'node:module'
-import type { ResolvedOptions } from '../options'
 import type { PackageJson } from 'pkg-types'
 import type { InputOptions, Plugin } from 'rolldown'
 
 export type External = InputOptions['external']
 
-export function ExternalPlugin(
-  pkg: PackageJson | undefined,
-  platform: ResolvedOptions['platform'],
-): Plugin {
-  const deps = pkg && Array.from(getProductionDeps(pkg))
-
+export function ExternalPlugin(pkg: PackageJson): Plugin {
+  const deps = Array.from(getProductionDeps(pkg))
   return {
     name: 'tsdown:external',
     resolveId(id) {
-      let shouldExternal =
-        deps && deps.some((dep) => id === dep || id.startsWith(`${dep}/`))
-      shouldExternal ||= platform === 'node' && isBuiltin(id)
-
-      if (shouldExternal) {
+      if (deps.some((dep) => id === dep || id.startsWith(`${dep}/`))) {
         return { id, external: true }
       }
     },
