@@ -14,11 +14,10 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Stats } from 'node:fs'
-import type { InputOptions, OutputOptions } from 'rolldown'
+import type { InputOptions, ModuleFormat, OutputOptions } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 
-export type Format = 'es' | 'cjs' | 'esm' | 'module' | 'commonjs' | 'iife'
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
 /**
@@ -26,7 +25,8 @@ export type Sourcemap = boolean | 'inline' | 'hidden'
  */
 export interface Options {
   entry?: InputOptions['input']
-  format?: Format | Format[]
+  format?: ModuleFormat | ModuleFormat[]
+  globalName?: string
   plugins?: InputOptions['plugins']
   external?: External
   outDir?: string
@@ -55,7 +55,7 @@ export interface Options {
     | OutputOptions
     | ((
         options: OutputOptions,
-        format: Format,
+        format: ModuleFormat,
       ) => MaybePromise<OutputOptions | void | null>)
   onSuccess?: () => void | Promise<void>
 }
@@ -70,6 +70,7 @@ export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
       Options,
+      | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
       | 'minify'
@@ -77,7 +78,7 @@ export type ResolvedOptions = Omit<
       | 'external'
       | 'onSuccess'
     >,
-    { format: Format[]; clean: string[] | false }
+    { format: ModuleFormat[]; clean: string[] | false }
   >,
   'config'
 >

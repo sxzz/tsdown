@@ -1,13 +1,14 @@
 import { getPackageType } from '../utils/package'
-import type { Format } from '../options'
+import type { ModuleFormat } from 'rolldown'
 
 export function resolveOutputExtension(
   pkg: any,
-  format: Format,
+  format: ModuleFormat,
 ): 'mjs' | 'cjs' | 'js' {
   const moduleType = getPackageType(pkg)
   switch (format) {
     case 'iife':
+    case 'umd':
       return 'js'
     case 'es':
     case 'esm':

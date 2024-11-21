@@ -76,6 +76,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<void> {
       const extension = resolveOutputExtension(pkg, format)
       const outputOptions: OutputOptions = {
         format,
+        name: resolved.globalName,
         sourcemap,
         dir: outDir,
         minify,
