@@ -1,6 +1,6 @@
 # tsdown [![npm](https://img.shields.io/npm/v/tsdown.svg)](https://npmjs.com/package/tsdown) [![Unit Test](https://github.com/sxzz/tsdown/actions/workflows/unit-test.yml/badge.svg)](https://github.com/sxzz/tsdown/actions/workflows/unit-test.yml) [![JSR](https://jsr.io/badges/@sxzz/tsdown)](https://jsr.io/@sxzz/tsdown)
 
-An even faster bundler powered by Rolldown.
+An even faster bundler powered by [Rolldown](https://github.com/rolldown/rolldown).
 
 > [!NOTE]
 > 🚧 **Work in Progress**
