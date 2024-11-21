@@ -29,9 +29,11 @@ export async function runCLI(): Promise<void> {
     })
     .option('-w, --watch', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
-      logger.level = flags.silent
-        ? 0 // Fatal and Error
-        : 3 // Informational logs, success, fail, ready, start, ...
+      if (!('CONSOLA_LEVEL' in process.env)) {
+        logger.level = flags.silent
+          ? 0 // Fatal and Error
+          : 3 // Informational logs, success, fail, ready, start, ...
+      }
       logger.info(
         `tsdown ${pc.dim(`v${version}`)} powered by rolldown ${pc.dim(`v${rolldownVersion}`)}`,
       )

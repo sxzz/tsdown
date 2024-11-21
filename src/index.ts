@@ -22,7 +22,9 @@ import { readPackageJson } from './utils/package'
 export async function build(
   userOptions: Omit<Options, 'silent'> = {},
 ): Promise<void> {
+  const time = performance.now()
   const resolved = await resolveOptions(userOptions)
+  logger.debug(`Load config in ${Math.round(performance.now() - time)}ms`)
   await Promise.all(resolved.map(buildSingle))
 }
 
