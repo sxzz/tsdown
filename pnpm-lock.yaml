@@ -17,6 +17,9 @@ importers:
       consola:
         specifier: ^3.2.3
         version: 3.2.3
+      debug:
+        specifier: ^4.3.7
+        version: 4.3.7
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
@@ -45,6 +48,9 @@ importers:
       '@sxzz/prettier-config':
         specifier: ^2.0.2
         version: 2.0.2
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/node':
         specifier: ^22.9.0
         version: 22.9.0

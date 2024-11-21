@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { debug } from '../utils/logger'
 import type { PackageJson } from 'pkg-types'
 import type { InputOptions, Plugin } from 'rolldown'
 
@@ -14,13 +15,16 @@ export function ExternalPlugin(
     resolveId(id, importer, { isEntry }) {
       if (isEntry) return
 
-      const EXTERNAL = { id, external: true }
+      let shouldExternal =
+        skipNodeModulesBundle && !path.isAbsolute(id) && id[0] !== '.'
 
-      if (skipNodeModulesBundle && !path.isAbsolute(id) && id[0] !== '.') {
-        return EXTERNAL
-      }
-      if (deps.some((dep) => id === dep || id.startsWith(`${dep}/`))) {
-        return EXTERNAL
+      shouldExternal ||= deps.some(
+        (dep) => id === dep || id.startsWith(`${dep}/`),
+      )
+
+      if (shouldExternal) {
+        debug('[external]', 'External dependency:', id)
+        return { id, external: true }
       }
     },
   }

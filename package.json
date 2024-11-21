@@ -54,6 +54,7 @@
     "cac": "^6.7.14",
     "chokidar": "^4.0.1",
     "consola": "^3.2.3",
+    "debug": "^4.3.7",
     "picocolors": "^1.1.1",
     "pkg-types": "^1.2.1",
     "rolldown": "nightly",
@@ -65,6 +66,7 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^4.4.1",
     "@sxzz/prettier-config": "^2.0.2",
+    "@types/debug": "^4.1.12",
     "@types/node": "^22.9.0",
     "bumpp": "^9.8.1",
     "eslint": "^9.15.0",

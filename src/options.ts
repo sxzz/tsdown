@@ -90,59 +90,64 @@ export type ResolvedOptions = Omit<
 
 export async function resolveOptions(
   options: Options,
-): Promise<ResolvedOptions[]> {
-  const config = await loadConfigFile(options)
+): Promise<[configs: ResolvedOptions[], configFile?: string]> {
+  const [config, configFile] = await loadConfigFile(options)
   if (config.length === 0) {
     config.push({})
   }
 
-  return Promise.all(
-    config.map(async (subConfig) => {
-      const subOptions = { ...subConfig, ...options }
+  return [
+    await Promise.all(
+      config.map(async (subConfig) => {
+        const subOptions = { ...subConfig, ...options }
 
-      let {
-        entry,
-        format = ['es'],
-        plugins = [],
-        clean = false,
-        silent = false,
-        treeshake = true,
-        platform = 'node',
-        outDir = 'dist',
-        sourcemap = false,
-        dts = false,
-        unused = false,
-        watch = false,
-        skipNodeModulesBundle = false,
-      } = subOptions
+        let {
+          entry,
+          format = ['es'],
+          plugins = [],
+          clean = false,
+          silent = false,
+          treeshake = true,
+          platform = 'node',
+          outDir = 'dist',
+          sourcemap = false,
+          dts = false,
+          unused = false,
+          watch = false,
+          skipNodeModulesBundle = false,
+        } = subOptions
 
-      entry = await resolveEntry(entry)
-      format = toArray(format, 'es')
-      if (clean === true) clean = []
+        entry = await resolveEntry(entry)
+        format = toArray(format, 'es')
+        if (clean === true) clean = []
 
-      return {
-        ...subOptions,
-        entry,
-        plugins,
-        format,
-        outDir: path.resolve(outDir),
-        clean,
-        silent,
-        treeshake,
-        platform,
-        sourcemap,
-        dts,
-        unused,
-        watch,
-        skipNodeModulesBundle,
-      }
-    }),
-  )
+        return {
+          ...subOptions,
+          entry,
+          plugins,
+          format,
+          outDir: path.resolve(outDir),
+          clean,
+          silent,
+          treeshake,
+          platform,
+          sourcemap,
+          dts,
+          unused,
+          watch,
+          skipNodeModulesBundle,
+        }
+      }),
+    ),
+    configFile,
+  ]
 }
 
-async function loadConfigFile(options: Options): Promise<ResolvedConfig> {
+async function loadConfigFile(
+  options: Options,
+): Promise<[config: ResolvedConfig, file?: string]> {
   let { config: filePath } = options
-  if (filePath === false) return []
+  if (filePath === false) return [[]]
 
   let cwd = process.cwd()
   let overrideConfig = false
@@ -184,6 +189,6 @@ async function loadConfigFile(options: Options): Promise<ResolvedConfig> {
     logger.info(`Using tsdown config: ${pc.underline(sources.join(', '))}`)
   }
 
-  if (!Array.isArray(config)) return [config]
-  return config
+  const file = sources[0]
+  return [toArray(config), file]
 }

@@ -13,7 +13,7 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
-import { logger } from './utils/logger'
+import { debug, logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
 /**
@@ -22,9 +22,11 @@ import { readPackageJson } from './utils/package'
 export async function build(
   userOptions: Omit<Options, 'silent'> = {},
 ): Promise<void> {
-  const time = performance.now()
-  const resolved = await resolveOptions(userOptions)
-  logger.debug(`Load config in ${Math.round(performance.now() - time)}ms`)
+  debug('Loading config')
+  const [resolved, configFile] = await resolveOptions(userOptions)
+  if (configFile) {
+    debug('Loaded config:', configFile)
+  }
   await Promise.all(resolved.map(buildSingle))
 }
 

@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { readPackageJSON, type PackageJson } from 'pkg-types'
+import { debug } from '../utils/logger'
 import { fsExists } from './fs'
 
 export async function readPackageJson(
@@ -8,6 +9,7 @@ export async function readPackageJson(
   const packageJsonPath = path.join(dir, 'package.json')
   const exists = await fsExists(packageJsonPath)
   if (!exists) return
+  debug('Reading package.json:', packageJsonPath)
   return readPackageJSON(packageJsonPath)
 }
 
