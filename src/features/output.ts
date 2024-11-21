@@ -7,9 +7,6 @@ export function resolveOutputExtension(
 ): 'mjs' | 'cjs' | 'js' {
   const moduleType = getPackageType(pkg)
   switch (format) {
-    case 'iife':
-    case 'umd':
-      return 'js'
     case 'es':
     case 'esm':
     case 'module': {
@@ -19,5 +16,7 @@ export function resolveOutputExtension(
     case 'commonjs': {
       return moduleType === 'module' ? 'cjs' : 'js'
     }
+    default:
+      return 'js'
   }
 }
