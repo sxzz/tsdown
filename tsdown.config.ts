@@ -5,6 +5,7 @@ export default defineConfig({
   format: 'esm',
   clean: true,
   platform: 'node',
+  skipNodeModulesBundle: true,
   dts: true,
   unused: { level: 'error' },
   onSuccess() {

@@ -58,6 +58,11 @@ export interface Options {
         format: ModuleFormat,
       ) => MaybePromise<OutputOptions | void | null>)
   onSuccess?: () => void | Promise<void>
+
+  /**
+   * Skip bundling node_modules.
+   */
+  skipNodeModulesBundle?: boolean
 }
 
 /**
@@ -108,6 +113,7 @@ export async function resolveOptions(
         dts = false,
         unused = false,
         watch = false,
+        skipNodeModulesBundle = false,
       } = subOptions
 
       entry = await resolveEntry(entry)
@@ -128,6 +134,7 @@ export async function resolveOptions(
         dts,
         unused,
         watch,
+        skipNodeModulesBundle,
       }
     }),
   )
