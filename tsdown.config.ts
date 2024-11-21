@@ -6,7 +6,10 @@ export default defineConfig({
   clean: true,
   platform: 'node',
   skipNodeModulesBundle: true,
-  dts: true,
+  dts: {
+    transformer: 'oxc',
+    autoAddExts: true,
+  },
   unused: { level: 'error' },
   onSuccess() {
     console.info('🙏 Build succeeded!')
