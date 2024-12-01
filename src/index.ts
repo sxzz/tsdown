@@ -23,19 +23,46 @@ export async function build(
   userOptions: Omit<Options, 'silent'> = {},
 ): Promise<void> {
   debug('Loading config')
-  const [resolved, configFile] = await resolveOptions(userOptions)
-  if (configFile) {
-    debug('Loaded config:', configFile)
+  const [resolveds, configFile] = await resolveOptions(userOptions)
+  if (configFile) debug('Loaded config:', configFile)
+  else debug('No config file found')
+
+  const contexts = await Promise.all(resolveds.map(buildSingle))
+  const cleanCbs: (() => Promise<void>)[] = []
+
+  for (const [i, resolved] of resolveds.entries()) {
+    const context = contexts[i]
+    if (!context) continue
+
+    const watcher = await watchBuild(resolved, context.rebuild)
+    cleanCbs.push(async () => {
+      await watcher.close()
+      await contexts[i]!.close()
+    })
   }
-  await Promise.all(resolved.map(buildSingle))
+
+  if (cleanCbs.length) {
+    shortcuts(async () => {
+      for (const clean of cleanCbs) {
+        await clean()
+      }
+      build(userOptions)
+    })
+  }
 }
 
 /**
- * Build a single configuration.
+ * Build a single configuration, without watch and shortcuts features.
  *
  * @param resolved Resolved options
  */
-export async function buildSingle(resolved: ResolvedOptions): Promise<void> {
+export async function buildSingle(resolved: ResolvedOptions): Promise<
+  | {
+      rebuild: () => Promise<void>
+      close: () => Promise<void>
+    }
+  | undefined
+> {
   const {
     entry,
     external,
@@ -96,8 +123,10 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<void> {
   await writeBundle(true)
 
   if (watch) {
-    const watcher = await watchBuild(resolved, writeBundle)
-    shortcuts(watcher, writeBundle)
+    return {
+      rebuild: writeBundle,
+      close: () => build.close(),
+    }
   } else {
     await build.close()
   }

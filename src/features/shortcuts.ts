@@ -2,7 +2,6 @@ import process from 'node:process'
 import readline from 'node:readline'
 import pc from 'picocolors'
 import { logger } from '../utils/logger'
-import type { FSWatcher } from 'chokidar'
 
 export interface Shortcut {
   key: string
@@ -10,23 +9,23 @@ export interface Shortcut {
   action: () => void | Promise<void>
 }
 
-export function shortcuts(watcher: FSWatcher, rebuild: () => void): void {
+export function shortcuts(restart: () => void): void {
   let actionRunning = false
   async function onInput(input: string) {
     if (actionRunning) return
     const SHORTCUTS: Shortcut[] = [
       {
         key: 'r',
-        description: 'rebuild',
+        description: 'reload config and rebuild',
         action() {
-          rebuild()
+          rl.close()
+          restart()
         },
       },
       {
         key: 'c',
         description: 'clear console',
         action() {
-          // eslint-disable-next-line no-console
           console.clear()
         },
       },
@@ -34,8 +33,7 @@ export function shortcuts(watcher: FSWatcher, rebuild: () => void): void {
         key: 'q',
         description: 'quit',
         action() {
-          rl.close()
-          return watcher.close()
+          process.exit(0)
         },
       },
     ]
