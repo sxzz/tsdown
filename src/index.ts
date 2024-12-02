@@ -95,7 +95,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
-      ...plugins,
+      plugins,
     ].filter((plugin) => !!plugin),
     ...resolved.inputOptions,
   }
