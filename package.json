@@ -60,7 +60,7 @@
     "rolldown": "nightly",
     "tinyglobby": "^0.2.10",
     "unconfig": "^0.6.0",
-    "unplugin-isolated-decl": "^0.9.1",
+    "unplugin-isolated-decl": "^0.9.3",
     "unplugin-unused": "^0.2.3"
   },
   "devDependencies": {
@@ -73,11 +73,11 @@
     "execa": "^9.5.1",
     "fdir": "^6.4.2",
     "oxc-transform": "^0.38.0",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
     "typescript": "~5.7.2",
-    "vitest": "^2.1.6"
+    "vitest": "^2.2.0-beta.2"
   },
   "engines": {
     "node": ">=18.0.0"
