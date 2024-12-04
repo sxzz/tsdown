@@ -44,7 +44,8 @@ export async function testBuild(
 
   await execa({
     cwd: testDir,
-    env: { CONSOLA_LEVEL: '3' },
+    env: { CONSOLA_LEVEL: '0' },
+    stdout: 'inherit',
   })`${tsx} ${run} ${entry} ${config ? '' : '--no-config'} -d ${outDir} ${args}`.catch()
 
   const outputDir = path.resolve(testDir, outDir)

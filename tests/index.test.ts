@@ -34,3 +34,12 @@ test('basic', async () => {
     expect(out).matchSnapshot()
   })
 }
+
+test('syntax lowering', async () => {
+  const { outputContent } = await testBuild(
+    { 'index.ts': 'export const foo: number = a?.b?.()' },
+    { args: ['--target', 'es2015'] },
+  )
+  const out = await outputContent()
+  expect(out).matchSnapshot()
+})

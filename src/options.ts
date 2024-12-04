@@ -39,6 +39,7 @@ export interface Options {
   treeshake?: boolean
   /** @default false */
   minify?: boolean
+  target?: string | string[]
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
   /**
@@ -79,6 +80,7 @@ export type ResolvedOptions = Omit<
       | 'inputOptions'
       | 'outputOptions'
       | 'minify'
+      | 'target'
       | 'alias'
       | 'external'
       | 'onSuccess'

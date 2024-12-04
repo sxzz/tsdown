@@ -13,6 +13,7 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
+import { SyntaxLoweringPlugin } from './plugins'
 import { debug, logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
@@ -78,6 +79,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
     minify,
     watch,
     unused,
+    target,
     onSuccess,
   } = resolved
 
@@ -95,6 +97,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+      target && SyntaxLoweringPlugin(target),
       plugins,
     ].filter((plugin) => !!plugin),
     ...resolved.inputOptions,
