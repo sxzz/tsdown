@@ -1,5 +1,9 @@
 import process from 'node:process'
-import { rolldown, type InputOptions, type OutputOptions } from 'rolldown'
+import {
+  build as rolldownBuild,
+  type InputOptions,
+  type OutputOptions,
+} from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { Unused } from 'unplugin-unused'
@@ -28,18 +32,15 @@ export async function build(
   if (configFile) debug('Loaded config:', configFile)
   else debug('No config file found')
 
-  const contexts = await Promise.all(resolveds.map(buildSingle))
+  const rebuilds = await Promise.all(resolveds.map(buildSingle))
   const cleanCbs: (() => Promise<void>)[] = []
 
   for (const [i, resolved] of resolveds.entries()) {
-    const context = contexts[i]
-    if (!context) continue
+    const rebuild = rebuilds[i]
+    if (!rebuild) continue
 
-    const watcher = await watchBuild(resolved, context.rebuild)
-    cleanCbs.push(async () => {
-      await watcher.close()
-      await contexts[i]!.close()
-    })
+    const watcher = await watchBuild(resolved, rebuild)
+    cleanCbs.push(() => watcher.close())
   }
 
   if (cleanCbs.length) {
@@ -57,17 +58,13 @@ export async function build(
  *
  * @param resolved Resolved options
  */
-export async function buildSingle(resolved: ResolvedOptions): Promise<
-  | {
-      rebuild: () => Promise<void>
-      close: () => Promise<void>
-    }
-  | undefined
-> {
+export async function buildSingle(
+  resolved: ResolvedOptions,
+): Promise<(() => Promise<void>) | undefined> {
   const {
     entry,
     external,
-    plugins,
+    plugins: userPlugins,
     outDir,
     format,
     clean,
@@ -87,15 +84,15 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
   if (clean) await cleanOutDir(outDir, clean)
 
   const pkg = await readPackageJson(process.cwd())
-  let startTime = performance.now()
-  const inputOptions: InputOptions = {
-    input: entry,
-    external,
-    resolve: { alias },
-    treeshake,
-    platform,
-    define,
-    plugins: [
+
+  await rebuild(true)
+  if (watch) {
+    return () => rebuild()
+  }
+
+  async function rebuild(first?: boolean) {
+    const startTime = performance.now()
+    const plugins = [
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
@@ -104,47 +101,45 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
           target:
             target && (typeof target === 'string' ? target : target.join(',')),
         }),
-      plugins,
-    ].filter((plugin) => !!plugin),
-    ...resolved.inputOptions,
-  }
-  const build = await rolldown(inputOptions)
-  const outputOptions: OutputOptions[] = await Promise.all(
-    format.map(async (format): Promise<OutputOptions> => {
-      const extension = resolveOutputExtension(pkg, format)
-      const outputOptions: OutputOptions = {
-        format,
-        name: resolved.globalName,
-        sourcemap,
-        dir: outDir,
-        minify,
-        entryFileNames: `[name].${extension}`,
-        chunkFileNames: `[name]-[hash].${extension}`,
-      }
-      const userOutputOptions =
-        typeof resolved.outputOptions === 'function'
-          ? await resolved.outputOptions(outputOptions, format)
-          : resolved.outputOptions
-      return { ...outputOptions, ...userOutputOptions }
-    }),
-  )
+      userPlugins,
+    ].filter((plugin) => !!plugin)
 
-  await writeBundle(true)
-
-  if (watch) {
-    return {
-      rebuild: writeBundle,
-      close: () => build.close(),
-    }
-  } else {
-    await build.close()
-  }
-
-  async function writeBundle(first?: boolean) {
-    if (!first) startTime = performance.now()
     await Promise.all(
-      outputOptions.map((outputOptions) => build.write(outputOptions)),
+      format.map(async (format) => {
+        const inputOptions: InputOptions = {
+          input: entry,
+          external,
+          resolve: { alias },
+          treeshake,
+          platform,
+          define,
+          plugins,
+          ...resolved.inputOptions,
+        }
+
+        const extension = resolveOutputExtension(pkg, format)
+        let outputOptions: OutputOptions = {
+          format,
+          name: resolved.globalName,
+          sourcemap,
+          dir: outDir,
+          minify,
+          entryFileNames: `[name].${extension}`,
+          chunkFileNames: `[name]-[hash].${extension}`,
+        }
+        const userOutputOptions =
+          typeof resolved.outputOptions === 'function'
+            ? await resolved.outputOptions(outputOptions, format)
+            : resolved.outputOptions
+        outputOptions = { ...outputOptions, ...userOutputOptions }
+
+        await rolldownBuild({
+          ...inputOptions,
+          output: outputOptions,
+        })
+      }),
     )
+
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(
         performance.now() - startTime,
