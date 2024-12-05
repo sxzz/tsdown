@@ -1,14 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`basic 1`] = `
-"//#region index.ts
+"## index.mjs
+
+//#region index.ts
 console.log("Hello, world!");
 
 //#endregion"
 `;
 
 exports[`cjs import 1`] = `
-""use strict";
+"## index.js
+"use strict";
 
 //#region foo.ts
 const foo = 1;
@@ -18,7 +21,8 @@ exports.foo = foo"
 `;
 
 exports[`cjs shims 1`] = `
-""use strict";
+"## index.js
+"use strict";
 
 //#region index.ts
 var cjs_shims_default = [
@@ -31,8 +35,17 @@ var cjs_shims_default = [
 module.exports = cjs_shims_default;"
 `;
 
+exports[`entry structure 1`] = `
+"## index.mjs
+
+## utils/index.mjs
+"
+`;
+
 exports[`esm import 1`] = `
-"//#region foo.ts
+"## index.mjs
+
+//#region foo.ts
 const foo = 1;
 
 //#endregion
@@ -40,7 +53,8 @@ export { foo };"
 `;
 
 exports[`esm shims 1`] = `
-"import path from "node:path";
+"## index.mjs
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 //#region ../../../assets/esm-shims.js
@@ -58,7 +72,9 @@ export { esm_shims_default as default };"
 `;
 
 exports[`syntax lowering 1`] = `
-"//#region index.ts
+"## index.mjs
+
+//#region index.ts
 var _a, _a$b;
 const foo = (_a = a) === null || _a === void 0 || (_a$b = _a.b) === null || _a$b === void 0 ? void 0 : _a$b.call(_a);
 

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { fdir } from 'fdir'
 import { x } from 'tinyexec'
 import { expect } from 'vitest'
+import { toArray } from '../src/utils/general'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
@@ -25,28 +26,34 @@ export async function testBuild(
     outDir = 'dist',
   }: {
     args?: string[]
-    entry?: string
+    entry?: string | string[]
     config?: boolean
     outDir?: string
   } = {},
 ): Promise<{
   outputFiles: string[]
   outputDir: string
-  getContent: (filename: string) => Promise<string>
-  outputContent: () => Promise<string>
+  snapshot: string
 }> {
   const testDir = getTestDir()
   await mkdir(testDir, { recursive: true })
 
   for (const [filename, content] of Object.entries(files)) {
-    await writeFile(path.resolve(testDir, filename), content, 'utf8')
+    const filepath = path.resolve(testDir, filename)
+    await mkdir(path.dirname(filepath), { recursive: true })
+    await writeFile(filepath, content, 'utf8')
   }
 
   await x(
     tsx,
-    [run, entry, config ? '' : '--no-config', '-d', outDir, ...args].filter(
-      Boolean,
-    ),
+    [
+      run,
+      ...toArray(entry),
+      config ? '' : '--no-config',
+      '-d',
+      outDir,
+      ...args,
+    ].filter(Boolean),
     {
       nodeOptions: {
         cwd: testDir,
@@ -62,14 +69,20 @@ export async function testBuild(
     .crawl(outputDir)
     .withPromise()
 
-  const getContent = async (filename: string) =>
-    (await readFile(path.resolve(outputDir, filename), 'utf8')).trim()
+  const snapshot = (
+    await Promise.all(
+      outputFiles.map(
+        async (filename) =>
+          `## ${filename}\n${await readFile(path.resolve(outputDir, filename), 'utf8')}`,
+      ),
+    )
+  ).join('\n')
+  expect(snapshot).toMatchSnapshot()
 
   return {
     outputFiles,
     outputDir,
-    getContent,
-    outputContent: () => getContent('index.mjs'),
+    snapshot,
   }
 }
 
