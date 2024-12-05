@@ -26,7 +26,7 @@ test('basic', async () => {
 
   test('cjs import', async () => {
     await testBuild(files, {
-      args: ['--format', 'cjs'],
+      format: 'cjs',
     })
   })
 }
@@ -34,14 +34,14 @@ test('basic', async () => {
 test('syntax lowering', async () => {
   await testBuild(
     { 'index.ts': 'export const foo: number = a?.b?.()' },
-    { args: ['--target', 'es2015'] },
+    { target: 'es2015' },
   )
 })
 
 test('esm shims', async () => {
   await testBuild(
     { 'index.ts': 'export default [__dirname, __filename]' },
-    { args: ['--shims'] },
+    { shims: true },
   )
 })
 
@@ -51,7 +51,10 @@ test('cjs shims', async () => {
       'index.ts':
         'export default [import.meta.url, import.meta.filename, import.meta.dirname]',
     },
-    { args: ['--shims', '--format', 'cjs'] },
+    {
+      shims: true,
+      format: 'cjs',
+    },
   )
 })
 

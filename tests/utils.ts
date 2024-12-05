@@ -1,16 +1,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { fdir } from 'fdir'
-import { x } from 'tinyexec'
 import { expect } from 'vitest'
-import { toArray } from '../src/utils/general'
+import { build, type Options } from '../src/index'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
-
-const tsx = require.resolve('tsx/cli')
-const run = path.resolve(dirname, '../src/run.ts')
 
 export function getTestDir(): string {
   const testName = getTestName()
@@ -19,17 +16,7 @@ export function getTestDir(): string {
 
 export async function testBuild(
   files: Record<string, string>,
-  {
-    args = [],
-    entry = 'index.ts',
-    config = false,
-    outDir = 'dist',
-  }: {
-    args?: string[]
-    entry?: string | string[]
-    config?: boolean
-    outDir?: string
-  } = {},
+  options?: Options,
 ): Promise<{
   outputFiles: string[]
   outputDir: string
@@ -44,26 +31,18 @@ export async function testBuild(
     await writeFile(filepath, content, 'utf8')
   }
 
-  await x(
-    tsx,
-    [
-      run,
-      ...toArray(entry),
-      config ? '' : '--no-config',
-      '-d',
-      outDir,
-      ...args,
-    ].filter(Boolean),
-    {
-      nodeOptions: {
-        cwd: testDir,
-        env: { CONSOLA_LEVEL: '0' },
-        stdio: 'inherit',
-      },
-    },
-  )
+  const cwd = process.cwd()
+  process.chdir(testDir)
+  const resolvedOptions: Options = {
+    entry: 'index.ts',
+    config: false,
+    outDir: 'dist',
+    ...options,
+  }
+  await build(resolvedOptions)
+  process.chdir(cwd)
 
-  const outputDir = path.resolve(testDir, outDir)
+  const outputDir = path.resolve(testDir, resolvedOptions.outDir!)
   const outputFiles = await new fdir()
     .withRelativePaths()
     .crawl(outputDir)
