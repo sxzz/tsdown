@@ -1,21 +1,16 @@
 import { getPackageType } from '../utils/package'
-import type { ModuleFormat } from 'rolldown'
+import type { NormalizedFormat } from '../options'
 
 export function resolveOutputExtension(
   pkg: any,
-  format: ModuleFormat,
+  format: NormalizedFormat,
 ): 'mjs' | 'cjs' | 'js' {
   const moduleType = getPackageType(pkg)
   switch (format) {
     case 'es':
-    case 'esm':
-    case 'module': {
       return moduleType === 'module' ? 'js' : 'mjs'
-    }
     case 'cjs':
-    case 'commonjs': {
       return moduleType === 'module' ? 'cjs' : 'js'
-    }
     default:
       return 'js'
   }

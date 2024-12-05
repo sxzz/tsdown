@@ -14,7 +14,12 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Stats } from 'node:fs'
-import type { InputOptions, ModuleFormat, OutputOptions } from 'rolldown'
+import type {
+  InputOptions,
+  InternalModuleFormat,
+  ModuleFormat,
+  OutputOptions,
+} from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 
@@ -43,6 +48,7 @@ export interface Options {
   define?: Record<string, string>
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
+  shims?: boolean
   /**
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
@@ -73,6 +79,10 @@ export interface Options {
 export type Config = Arrayable<Omit<Options, 'config'>>
 export type ResolvedConfig = Extract<Config, any[]>
 
+export type NormalizedFormat =
+  | Exclude<InternalModuleFormat, 'app'>
+  | 'experimental-app'
+
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
@@ -87,7 +97,7 @@ export type ResolvedOptions = Omit<
       | 'external'
       | 'onSuccess'
     >,
-    { format: ModuleFormat[]; clean: string[] | false }
+    { format: NormalizedFormat[]; clean: string[] | false }
   >,
   'config'
 >
@@ -118,18 +128,18 @@ export async function resolveOptions(
           dts = false,
           unused = false,
           watch = false,
+          shims = false,
           skipNodeModulesBundle = false,
         } = subOptions
 
         entry = await resolveEntry(entry)
-        format = toArray(format, 'es')
         if (clean === true) clean = []
 
         return {
           ...subOptions,
           entry,
           plugins,
-          format,
+          format: normalizeFormat(format),
           outDir: path.resolve(outDir),
           clean,
           silent,
@@ -139,12 +149,31 @@ export async function resolveOptions(
           dts,
           unused,
           watch,
+          shims,
           skipNodeModulesBundle,
         }
       }),
     ),
     configFile,
   ]
+}
+
+export function normalizeFormat(
+  format: ModuleFormat | ModuleFormat[],
+): NormalizedFormat[] {
+  return toArray<ModuleFormat>(format, 'es').map((format): NormalizedFormat => {
+    switch (format) {
+      case 'es':
+      case 'esm':
+      case 'module':
+        return 'es'
+      case 'cjs':
+      case 'commonjs':
+        return 'cjs'
+      default:
+        return format
+    }
+  })
 }
 
 async function loadConfigFile(

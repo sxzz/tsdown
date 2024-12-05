@@ -17,12 +17,44 @@ const foo = 1;
 exports.foo = foo"
 `;
 
+exports[`cjs shims 1`] = `
+""use strict";
+
+//#region index.ts
+var cjs_shims_default = [
+	require("url").pathToFileURL(__filename).href,
+	__filename,
+	__dirname
+];
+
+//#endregion
+module.exports = cjs_shims_default;"
+`;
+
 exports[`esm import 1`] = `
 "//#region foo.ts
 const foo = 1;
 
 //#endregion
 export { foo };"
+`;
+
+exports[`esm shims 1`] = `
+"import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+//#region ../../../assets/esm-shims.js
+const getFilename = () => fileURLToPath(import.meta.url);
+const getDirname = () => path.dirname(getFilename());
+const __dirname = /* @__PURE__ */ getDirname();
+const __filename = /* @__PURE__ */ getFilename();
+
+//#endregion
+//#region index.ts
+var esm_shims_default = [__dirname, __filename];
+
+//#endregion
+export { esm_shims_default as default };"
 `;
 
 exports[`syntax lowering 1`] = `

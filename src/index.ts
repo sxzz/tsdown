@@ -1,4 +1,6 @@
+import path from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import {
   build as rolldownBuild,
   type InputOptions,
@@ -20,6 +22,7 @@ import {
 } from './options'
 import { debug, logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
+import { getShimsDefine, getShimsInject } from './utils/shims'
 
 /**
  * Build with tsdown.
@@ -53,6 +56,9 @@ export async function build(
   }
 }
 
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+export const assetsDir: string = path.resolve(dirname, '../assets')
+
 /**
  * Build a single configuration, without watch and shortcuts features.
  *
@@ -78,6 +84,7 @@ export async function buildSingle(
     unused,
     target,
     define,
+    shims,
     onSuccess,
   } = resolved
 
@@ -112,9 +119,16 @@ export async function buildSingle(
           resolve: { alias },
           treeshake,
           platform,
-          define,
+          define: {
+            ...getShimsDefine(format),
+            ...define,
+          },
           plugins,
           ...resolved.inputOptions,
+          inject: {
+            ...(shims && getShimsInject(format, platform)),
+            ...resolved.inputOptions?.inject,
+          },
         }
 
         const extension = resolveOutputExtension(pkg, format)
