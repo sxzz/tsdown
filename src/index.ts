@@ -80,6 +80,7 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
     watch,
     unused,
     target,
+    define,
     onSuccess,
   } = resolved
 
@@ -93,13 +94,15 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
     resolve: { alias },
     treeshake,
     platform,
+    define,
     plugins: [
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
       target &&
         transformPlugin({
-          target: typeof target === 'string' ? target : target.join(','),
+          target:
+            target && (typeof target === 'string' ? target : target.join(',')),
         }),
       plugins,
     ].filter((plugin) => !!plugin),

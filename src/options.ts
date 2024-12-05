@@ -40,6 +40,7 @@ export interface Options {
   /** @default false */
   minify?: boolean
   target?: string | string[]
+  define?: Record<string, string>
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
   /**
@@ -81,6 +82,7 @@ export type ResolvedOptions = Omit<
       | 'outputOptions'
       | 'minify'
       | 'target'
+      | 'define'
       | 'alias'
       | 'external'
       | 'onSuccess'
