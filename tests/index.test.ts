@@ -32,10 +32,11 @@ test('basic', async () => {
 }
 
 test('syntax lowering', async () => {
-  await testBuild(
+  const { snapshot } = await testBuild(
     { 'index.ts': 'export const foo: number = a?.b?.()' },
     { target: 'es2015' },
   )
+  expect(snapshot).not.contain('?.')
 })
 
 test('esm shims', async () => {
@@ -48,8 +49,10 @@ test('esm shims', async () => {
 test('cjs shims', async () => {
   await testBuild(
     {
-      'index.ts':
-        'export default [import.meta.url, import.meta.filename, import.meta.dirname]',
+      'index.ts': `
+      import.meta.url === require("url").pathToFileURL(__filename).href
+      import.meta.filename === __filename
+      import.meta.dirname === __dirname`,
     },
     {
       shims: true,
@@ -60,8 +63,8 @@ test('cjs shims', async () => {
 
 test('entry structure', async () => {
   const files = {
-    'src/index.ts': '\n',
-    'src/utils/index.ts': '\n',
+    'src/index.ts': '',
+    'src/utils/index.ts': '',
   }
   await testBuild(files, {
     entry: Object.keys(files),

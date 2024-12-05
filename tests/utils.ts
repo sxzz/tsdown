@@ -8,10 +8,15 @@ import { build, type Options } from '../src/index'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
+const snapshotsDir = path.resolve(dirname, '__snapshots__')
 
-export function getTestDir(): string {
+function getTestFilename() {
   const testName = getTestName()
-  return path.resolve(tmpDir, filenamify(testName))
+  return filenamify(testName)
+}
+
+export function getTestDir(testName: string = getTestFilename()): string {
+  return path.resolve(tmpDir, testName)
 }
 
 export async function testBuild(
@@ -22,7 +27,8 @@ export async function testBuild(
   outputDir: string
   snapshot: string
 }> {
-  const testDir = getTestDir()
+  const testName = getTestFilename()
+  const testDir = getTestDir(testName)
   await mkdir(testDir, { recursive: true })
 
   for (const [filename, content] of Object.entries(files)) {
@@ -52,11 +58,13 @@ export async function testBuild(
     await Promise.all(
       outputFiles.map(
         async (filename) =>
-          `## ${filename}\n${await readFile(path.resolve(outputDir, filename), 'utf8')}`,
+          `## ${filename}\n\n\`\`\`js\n${await readFile(path.resolve(outputDir, filename), 'utf8')}\n\`\`\``,
       ),
     )
   ).join('\n')
-  expect(snapshot).toMatchSnapshot()
+  await expect(snapshot).toMatchFileSnapshot(
+    path.resolve(snapshotsDir, `${testName}-snap.md`),
+  )
 
   return {
     outputFiles,
