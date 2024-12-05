@@ -1,5 +1,6 @@
 import process from 'node:process'
 import { rolldown, type InputOptions, type OutputOptions } from 'rolldown'
+import { transformPlugin } from 'rolldown/experimental'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
@@ -13,7 +14,6 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
-import { SyntaxLoweringPlugin } from './plugins'
 import { debug, logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
@@ -97,7 +97,10 @@ export async function buildSingle(resolved: ResolvedOptions): Promise<
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
       dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
-      target && SyntaxLoweringPlugin(target),
+      target &&
+        transformPlugin({
+          target: typeof target === 'string' ? target : target.join(','),
+        }),
       plugins,
     ].filter((plugin) => !!plugin),
     ...resolved.inputOptions,

@@ -3,6 +3,7 @@ import { defineConfig } from './src'
 export default defineConfig({
   entry: ['./src/{index,run,plugins}.ts'],
   format: 'esm',
+  target: 'node18',
   clean: true,
   platform: 'node',
   skipNodeModulesBundle: true,
@@ -14,7 +15,4 @@ export default defineConfig({
   onSuccess() {
     console.info('🙏 Build succeeded!')
   },
-
-  // TODO
-  // target: 'node18',
 })
