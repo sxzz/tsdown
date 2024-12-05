@@ -1,8 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { execa } from 'execa'
 import { fdir } from 'fdir'
+import { x } from 'tinyexec'
 import { expect } from 'vitest'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -42,11 +42,19 @@ export async function testBuild(
     await writeFile(path.resolve(testDir, filename), content, 'utf8')
   }
 
-  await execa({
-    cwd: testDir,
-    env: { CONSOLA_LEVEL: '0' },
-    stdout: 'inherit',
-  })`${tsx} ${run} ${entry} ${config ? '' : '--no-config'} -d ${outDir} ${args}`.catch()
+  await x(
+    tsx,
+    [run, entry, config ? '' : '--no-config', '-d', outDir, ...args].filter(
+      Boolean,
+    ),
+    {
+      nodeOptions: {
+        cwd: testDir,
+        env: { CONSOLA_LEVEL: '0' },
+        stdio: 'inherit',
+      },
+    },
+  )
 
   const outputDir = path.resolve(testDir, outDir)
   const outputFiles = await new fdir()
