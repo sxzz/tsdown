@@ -28,7 +28,7 @@ export async function runCLI(): Promise<void> {
     .option('--platform <platform>', 'Target platform', {
       default: 'node',
     })
-    .option('-w, --watch', 'Watch mode')
+    .option('-w, --watch [path]', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
       if (!('CONSOLA_LEVEL' in process.env)) {
         logger.level = flags.silent
