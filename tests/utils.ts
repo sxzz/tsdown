@@ -58,7 +58,7 @@ export async function testBuild(
     await Promise.all(
       outputFiles.map(
         async (filename) =>
-          `## ${filename}\n\n\`\`\`js\n${await readFile(path.resolve(outputDir, filename), 'utf8')}\n\`\`\``,
+          `## ${filename.replaceAll('\\', '/')}\n\n\`\`\`js\n${await readFile(path.resolve(outputDir, filename), 'utf8')}\n\`\`\``,
       ),
     )
   ).join('\n')

@@ -4,7 +4,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-//#region ../../../assets/esm-shims.js
+//#region ../../../esm-shims.js
 const getFilename = () => fileURLToPath(import.meta.url);
 const getDirname = () => path.dirname(getFilename());
 const __dirname = /* @__PURE__ */ getDirname();
