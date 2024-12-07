@@ -15,7 +15,8 @@
   },
   "author": "三咲智子 Kevin Deng <sxzz@sxzz.moe>",
   "files": [
-    "dist"
+    "dist",
+    "esm-shims.js"
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",

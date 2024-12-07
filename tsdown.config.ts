@@ -7,6 +7,7 @@ export default defineConfig({
   clean: true,
   platform: 'node',
   skipNodeModulesBundle: true,
+  shims: true,
   dts: {
     transformer: 'oxc',
     autoAddExts: true,

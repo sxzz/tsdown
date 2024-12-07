@@ -57,7 +57,7 @@ export async function build(
 }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-export const assetsDir: string = path.resolve(dirname, '../assets')
+export const pkgRoot: string = path.resolve(dirname, '..')
 
 /**
  * Build a single configuration, without watch and shortcuts features.
