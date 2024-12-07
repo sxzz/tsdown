@@ -57,7 +57,7 @@
     "debug": "^4.3.7",
     "picocolors": "^1.1.1",
     "pkg-types": "^1.2.1",
-    "rolldown": "0.15.0-snapshot-993c4a1-20241205003858",
+    "rolldown": "0.15.0-snapshot-64a831c-20241207003504",
     "tinyglobby": "^0.2.10",
     "unconfig": "^0.6.0",
     "unplugin-isolated-decl": "^0.9.3",

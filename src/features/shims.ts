@@ -14,14 +14,3 @@ export function getShimsInject(
     }
   }
 }
-
-export function getShimsDefine(
-  format: NormalizedFormat,
-): Record<string, string> | undefined {
-  if (format === 'cjs') {
-    return {
-      'import.meta.filename': '__filename',
-      'import.meta.dirname': '__dirname',
-    }
-  }
-}

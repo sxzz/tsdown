@@ -12,6 +12,7 @@ import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
+import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
 import {
@@ -22,7 +23,6 @@ import {
 } from './options'
 import { debug, logger } from './utils/logger'
 import { readPackageJson } from './utils/package'
-import { getShimsDefine, getShimsInject } from './utils/shims'
 
 /**
  * Build with tsdown.
@@ -119,10 +119,7 @@ export async function buildSingle(
           resolve: { alias },
           treeshake,
           platform,
-          define: {
-            ...getShimsDefine(format),
-            ...define,
-          },
+          define,
           plugins,
           ...resolved.inputOptions,
           inject: {
