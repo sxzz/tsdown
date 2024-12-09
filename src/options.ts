@@ -216,6 +216,7 @@ async function loadConfigFile(
         ],
     cwd,
     defaults: {},
+    importx: { loader: 'bundle-require' },
   })
 
   if (sources.length > 0) {
