@@ -1,9 +1,10 @@
 import { getPackageType } from '../utils/package'
 import type { NormalizedFormat } from '../options'
+import type { PackageJson } from 'pkg-types'
 
 export type OutputExtension = 'mjs' | 'cjs' | 'js'
 export function resolveOutputExtension(
-  pkg: any,
+  pkg: PackageJson | undefined,
   format: NormalizedFormat,
 ): OutputExtension {
   const moduleType = getPackageType(pkg)
