@@ -53,6 +53,8 @@ export interface Options {
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
   dts?: boolean | IsolatedDeclOptions
+  /** @default true */
+  bundleDts?: boolean
   /**
    * Enable unused dependencies check with `unplugin-unused` (experimental)
    */
@@ -96,8 +98,13 @@ export type ResolvedOptions = Omit<
       | 'alias'
       | 'external'
       | 'onSuccess'
+      | 'dts'
     >,
-    { format: NormalizedFormat[]; clean: string[] | false }
+    {
+      format: NormalizedFormat[]
+      clean: string[] | false
+      dts: false | IsolatedDeclOptions
+    }
   >,
   'config'
 >
@@ -126,6 +133,7 @@ export async function resolveOptions(
           outDir = 'dist',
           sourcemap = false,
           dts = false,
+          bundleDts = true,
           unused = false,
           watch = false,
           shims = false,
@@ -146,7 +154,8 @@ export async function resolveOptions(
           treeshake,
           platform,
           sourcemap,
-          dts,
+          dts: dts === true ? {} : dts,
+          bundleDts,
           unused,
           watch,
           shims,

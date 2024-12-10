@@ -8,10 +8,8 @@ export default defineConfig({
   platform: 'node',
   skipNodeModulesBundle: true,
   shims: true,
-  dts: {
-    transformer: 'oxc',
-    autoAddExts: true,
-  },
+  dts: { transformer: 'oxc' },
+  bundleDts: true,
   unused: { level: 'error' },
   onSuccess() {
     console.info('🙏 Build succeeded!')

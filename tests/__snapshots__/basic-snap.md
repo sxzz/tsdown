@@ -1,6 +1,6 @@
 ## index.mjs
 
-```js
+```mjs
 
 //#region index.ts
 console.log("Hello, world!");

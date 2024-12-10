@@ -10,6 +10,7 @@ import { transformPlugin } from 'rolldown/experimental'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
+import { bundleDts, TEMP_DTS_DIR } from './features/dts'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
 import { getShimsInject } from './features/shims'
@@ -102,7 +103,11 @@ export async function buildSingle(
     const plugins = [
       pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
       unused && Unused.rolldown(unused === true ? {} : unused),
-      dts && IsolatedDecl.rolldown(dts === true ? {} : dts),
+      dts &&
+        IsolatedDecl.rolldown({
+          ...dts,
+          extraOutdir: resolved.bundleDts ? TEMP_DTS_DIR : dts.extraOutdir,
+        }),
       target &&
         transformPlugin({
           target:
@@ -148,6 +153,10 @@ export async function buildSingle(
           ...inputOptions,
           output: outputOptions,
         })
+
+        if (resolved.dts && resolved.bundleDts) {
+          await bundleDts(resolved, extension)
+        }
       }),
     )
 

@@ -1,10 +1,11 @@
 import { getPackageType } from '../utils/package'
 import type { NormalizedFormat } from '../options'
 
+export type OutputExtension = 'mjs' | 'cjs' | 'js'
 export function resolveOutputExtension(
   pkg: any,
   format: NormalizedFormat,
-): 'mjs' | 'cjs' | 'js' {
+): OutputExtension {
   const moduleType = getPackageType(pkg)
   switch (format) {
     case 'es':

@@ -70,3 +70,19 @@ test('entry structure', async () => {
     entry: Object.keys(files),
   })
 })
+
+test('bundle dts', async () => {
+  const files = {
+    'src/index.ts': `
+    export { str } from './utils/types';
+    export { shared } from './utils/shared';
+    `,
+    'src/utils/types.ts': 'export let str = "hello"',
+    'src/utils/shared.ts': 'export let shared = 10',
+  }
+  await testBuild(files, {
+    entry: ['src/index.ts'],
+    dts: { extraOutdir: 'types' },
+    bundleDts: true,
+  })
+})

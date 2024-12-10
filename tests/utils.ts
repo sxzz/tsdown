@@ -1,8 +1,8 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { fdir } from 'fdir'
+import { expectFilesSnapshot } from '@sxzz/test-utils'
 import { expect } from 'vitest'
 import { build, type Options } from '../src/index'
 
@@ -49,20 +49,8 @@ export async function testBuild(
   process.chdir(cwd)
 
   const outputDir = path.resolve(testDir, resolvedOptions.outDir!)
-  const outputFiles = await new fdir()
-    .withRelativePaths()
-    .crawl(outputDir)
-    .withPromise()
-
-  const snapshot = (
-    await Promise.all(
-      outputFiles.map(
-        async (filename) =>
-          `## ${filename.replaceAll('\\', '/')}\n\n\`\`\`js\n${await readFile(path.resolve(outputDir, filename), 'utf8')}\n\`\`\``,
-      ),
-    )
-  ).join('\n')
-  await expect(snapshot).toMatchFileSnapshot(
+  const { files: outputFiles, snapshot } = await expectFilesSnapshot(
+    outputDir,
     path.resolve(snapshotsDir, `${testName}-snap.md`),
   )
 
