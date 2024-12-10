@@ -1,11 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import {
-  build as rolldownBuild,
-  type InputOptions,
-  type OutputOptions,
-} from 'rolldown'
+import { build as rolldownBuild, type OutputOptions } from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { Unused } from 'unplugin-unused'
@@ -17,6 +13,7 @@ import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
 import {
+  mergeUserOptions,
   resolveOptions,
   type Config,
   type Options,
@@ -118,36 +115,37 @@ export async function buildSingle(
 
     await Promise.all(
       format.map(async (format) => {
-        const inputOptions: InputOptions = {
-          input: entry,
-          external,
-          resolve: { alias },
-          treeshake,
-          platform,
-          define,
-          plugins,
-          ...resolved.inputOptions,
-          inject: {
-            ...(shims && getShimsInject(format, platform)),
-            ...resolved.inputOptions?.inject,
+        const inputOptions = await mergeUserOptions(
+          {
+            input: entry,
+            external,
+            resolve: { alias },
+            treeshake,
+            platform,
+            define,
+            plugins,
+            inject: {
+              ...(shims && getShimsInject(format, platform)),
+            },
           },
-        }
+          resolved.inputOptions,
+          [format],
+        )
 
         const extension = resolveOutputExtension(pkg, format)
-        let outputOptions: OutputOptions = {
-          format,
-          name: resolved.globalName,
-          sourcemap,
-          dir: outDir,
-          minify,
-          entryFileNames: `[name].${extension}`,
-          chunkFileNames: `[name]-[hash].${extension}`,
-        }
-        const userOutputOptions =
-          typeof resolved.outputOptions === 'function'
-            ? await resolved.outputOptions(outputOptions, format)
-            : resolved.outputOptions
-        outputOptions = { ...outputOptions, ...userOutputOptions }
+        const outputOptions: OutputOptions = await mergeUserOptions(
+          {
+            format,
+            name: resolved.globalName,
+            sourcemap,
+            dir: outDir,
+            minify,
+            entryFileNames: `[name].${extension}`,
+            chunkFileNames: `[name]-[hash].${extension}`,
+          },
+          resolved.outputOptions,
+          [format],
+        )
 
         await rolldownBuild({
           ...inputOptions,

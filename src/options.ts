@@ -60,7 +60,12 @@ export interface Options {
    */
   unused?: boolean | UnusedOptions
   watch?: boolean | string | string[]
-  inputOptions?: InputOptions
+  inputOptions?:
+    | InputOptions
+    | ((
+        options: InputOptions,
+        format: ModuleFormat,
+      ) => MaybePromise<InputOptions | void | null>)
   outputOptions?:
     | OutputOptions
     | ((
@@ -234,4 +239,18 @@ async function loadConfigFile(
 
   const file = sources[0]
   return [toArray(config), file]
+}
+
+export async function mergeUserOptions<T extends object, A extends unknown[]>(
+  defaults: T,
+  user:
+    | T
+    | undefined
+    | null
+    | ((options: T, ...args: A) => MaybePromise<T | void | null>),
+  args: A,
+): Promise<T> {
+  const userOutputOptions =
+    typeof user === 'function' ? await user(defaults, ...args) : user
+  return { ...defaults, ...userOutputOptions }
 }
