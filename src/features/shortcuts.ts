@@ -3,6 +3,8 @@ import readline from 'node:readline'
 import pc from 'picocolors'
 import { logger } from '../utils/logger'
 
+// Copied from https://github.com/vitejs/vite/blob/main/packages/vite/src/node/shortcuts.ts - MIT License
+
 export interface Shortcut {
   key: string
   description: string
