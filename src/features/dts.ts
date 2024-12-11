@@ -41,5 +41,5 @@ export async function bundleDts(
     format: 'es',
     entryFileNames: `[name].d.${ext}`,
   })
-  await rm(dtsOutDir, { recursive: true })
+  await rm(dtsOutDir, { recursive: true, force: true })
 }
