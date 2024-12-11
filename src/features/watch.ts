@@ -4,17 +4,22 @@ import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
 import type { FSWatcher } from 'chokidar'
 
-// TODO watch config files
+const endsWithPackageJson = /[\\/]package\.json$/
+
 export async function watchBuild(
   options: ResolvedOptions,
+  configFile: string | undefined,
   rebuild: () => void,
+  restart: () => void,
 ): Promise<FSWatcher> {
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
-  const files =
-    typeof options.watch === 'boolean' ? process.cwd() : options.watch
-  logger.info(`Watching for changes in ${toArray(files).join(', ')}`)
+  const files = toArray(
+    typeof options.watch === 'boolean' ? process.cwd() : options.watch,
+  )
+  logger.info(`Watching for changes in ${files.join(', ')}`)
+  if (configFile) files.push(configFile)
 
   const watcher = watch(files, {
     ignoreInitial: true,
@@ -25,7 +30,13 @@ export async function watchBuild(
     },
   })
 
-  watcher.on('all', (type, file) => {
+  watcher.on('all', (type: string, file: string) => {
+    if (endsWithPackageJson.test(file) || configFile === file) {
+      logger.info(`Reload config: ${file}`)
+      restart()
+      return
+    }
+
     logger.info(`Change detected: ${type} ${file}`)
     debouncedRebuild()
   })

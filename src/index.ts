@@ -40,17 +40,19 @@ export async function build(
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
-    const watcher = await watchBuild(resolved, rebuild)
+    const watcher = await watchBuild(resolved, configFile, rebuild, restart)
     cleanCbs.push(() => watcher.close())
   }
 
   if (cleanCbs.length) {
-    shortcuts(async () => {
-      for (const clean of cleanCbs) {
-        await clean()
-      }
-      build(userOptions)
-    })
+    shortcuts(restart)
+  }
+
+  async function restart() {
+    for (const clean of cleanCbs) {
+      await clean()
+    }
+    build(userOptions)
   }
 }
 
