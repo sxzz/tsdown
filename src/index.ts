@@ -6,7 +6,7 @@ import { transformPlugin } from 'rolldown/experimental'
 import { IsolatedDecl } from 'unplugin-isolated-decl'
 import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
-import { bundleDts, TEMP_DTS_DIR } from './features/dts'
+import { bundleDts, getTempDtsDir } from './features/dts'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
 import { getShimsInject } from './features/shims'
@@ -99,22 +99,6 @@ export async function buildSingle(
 
   async function rebuild(first?: boolean) {
     const startTime = performance.now()
-    const plugins = [
-      pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
-      unused && Unused.rolldown(unused === true ? {} : unused),
-      dts &&
-        IsolatedDecl.rolldown({
-          ...dts,
-          extraOutdir: resolved.bundleDts ? TEMP_DTS_DIR : dts.extraOutdir,
-        }),
-      target &&
-        transformPlugin({
-          target:
-            target && (typeof target === 'string' ? target : target.join(',')),
-        }),
-      userPlugins,
-    ].filter((plugin) => !!plugin)
-
     await Promise.all(
       format.map(async (format) => {
         const inputOptions = await mergeUserOptions(
@@ -125,7 +109,25 @@ export async function buildSingle(
             treeshake,
             platform,
             define,
-            plugins,
+            plugins: [
+              pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
+              unused && Unused.rolldown(unused === true ? {} : unused),
+              dts &&
+                IsolatedDecl.rolldown({
+                  ...dts,
+                  extraOutdir: resolved.bundleDts
+                    ? getTempDtsDir(format)
+                    : dts.extraOutdir,
+                }),
+              target &&
+                transformPlugin({
+                  target:
+                    target &&
+                    (typeof target === 'string' ? target : target.join(',')),
+                }),
+
+              userPlugins,
+            ].filter((plugin) => !!plugin),
             inject: {
               ...(shims && getShimsInject(format, platform)),
             },
@@ -155,7 +157,7 @@ export async function buildSingle(
         })
 
         if (resolved.dts && resolved.bundleDts) {
-          await bundleDts(resolved, extension)
+          await bundleDts(resolved, extension, format)
         }
       }),
     )

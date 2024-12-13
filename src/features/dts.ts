@@ -3,20 +3,25 @@ import path from 'node:path'
 import { rollup } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
 import { typeAsserts } from '../utils/general'
-import type { ResolvedOptions } from '../options'
+import type { NormalizedFormat, ResolvedOptions } from '../options'
 import type { OutputExtension } from './output'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
-export const TEMP_DTS_DIR = '.tsdown-types'
+const TEMP_DTS_DIR = '.tsdown-types'
+
+export function getTempDtsDir(format: NormalizedFormat) {
+  return `${TEMP_DTS_DIR}-${format}`
+}
 
 export async function bundleDts(
   options: ResolvedOptions,
   jsExtension: OutputExtension,
+  format: NormalizedFormat,
 ): Promise<void> {
   typeAsserts<IsolatedDeclOptions>(options.dts)
 
   const ext = jsExtension.replace('j', 't')
-  const dtsOutDir = path.resolve(options.outDir, TEMP_DTS_DIR)
+  const dtsOutDir = path.resolve(options.outDir, getTempDtsDir(format))
   const dtsEntry = Object.fromEntries(
     Object.keys(options.entry).map((key) => [
       key,
@@ -44,5 +49,5 @@ export async function bundleDts(
     format: 'es',
     entryFileNames: `[name].d.${ext}`,
   })
-  await rm(dtsOutDir, { recursive: true, force: true })
+  await rm(dtsOutDir, { recursive: true, force: true }).catch(() => {})
 }
