@@ -2,6 +2,7 @@ import { rm } from 'node:fs/promises'
 import path from 'node:path'
 import { rollup } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
+import { typeAsserts } from '../utils/general'
 import type { ResolvedOptions } from '../options'
 import type { OutputExtension } from './output'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
@@ -12,6 +13,8 @@ export async function bundleDts(
   options: ResolvedOptions,
   jsExtension: OutputExtension,
 ): Promise<void> {
+  typeAsserts<IsolatedDeclOptions>(options.dts)
+
   const ext = jsExtension.replace('j', 't')
   const dtsOutDir = path.resolve(options.outDir, TEMP_DTS_DIR)
   const dtsEntry = Object.fromEntries(
@@ -31,7 +34,7 @@ export async function bundleDts(
   })
 
   let outDir = options.outDir
-  const extraOutdir = (options.dts as IsolatedDeclOptions).extraOutdir
+  const extraOutdir = options.dts.extraOutdir
   if (extraOutdir) {
     outDir = path.resolve(outDir, extraOutdir)
   }
