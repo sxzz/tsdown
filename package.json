@@ -63,7 +63,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.10",
     "unconfig": "^0.6.0",
-    "unplugin-isolated-decl": "^0.10.0",
+    "unplugin-isolated-decl": "^0.10.2",
     "unplugin-unused": "^0.2.3"
   },
   "devDependencies": {
@@ -71,10 +71,10 @@
     "@sxzz/prettier-config": "^2.0.2",
     "@sxzz/test-utils": "^0.3.11",
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.10.1",
-    "bumpp": "^9.9.0",
-    "eslint": "^9.16.0",
-    "oxc-transform": "^0.39.0",
+    "@types/node": "^22.10.2",
+    "bumpp": "^9.9.1",
+    "eslint": "^9.17.0",
+    "oxc-transform": "^0.41.0",
     "prettier": "^3.4.2",
     "tinyexec": "^0.3.1",
     "tsup": "^8.3.5",
