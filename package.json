@@ -54,7 +54,7 @@
   "dependencies": {
     "cac": "^6.7.14",
     "chokidar": "^4.0.3",
-    "consola": "^3.3.0",
+    "consola": "^3.3.3",
     "debug": "^4.4.0",
     "picocolors": "^1.1.1",
     "pkg-types": "^1.2.1",
@@ -81,7 +81,7 @@
     "tsx": "^4.19.2",
     "typescript": "~5.7.2",
     "unplugin-ast": "^0.13.1",
-    "vitest": "^2.2.0-beta.2"
+    "vitest": "^3.0.0-beta.3"
   },
   "engines": {
     "node": ">=18.0.0"
