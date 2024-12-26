@@ -1,4 +1,4 @@
-import { access } from 'node:fs/promises'
+import { access, rm } from 'node:fs/promises'
 import { dirname, normalize, sep } from 'node:path'
 
 export function fsExists(path: string): Promise<boolean> {
@@ -6,6 +6,10 @@ export function fsExists(path: string): Promise<boolean> {
     () => true,
     () => false,
   )
+}
+
+export function fsRemove(path: string): Promise<void> {
+  return rm(path, { force: true, recursive: true }).catch(() => {})
 }
 
 export function lowestCommonAncestor(...filepaths: string[]): string {

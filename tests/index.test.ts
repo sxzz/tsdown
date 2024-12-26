@@ -1,10 +1,10 @@
-import { rm } from 'node:fs/promises'
 import { beforeEach, expect, test } from 'vitest'
+import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild } from './utils'
 
 beforeEach(async () => {
   const dir = getTestDir()
-  await rm(dir, { recursive: true }).catch(() => {})
+  await fsRemove(dir)
 })
 
 test('basic', async () => {

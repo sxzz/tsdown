@@ -1,7 +1,7 @@
-import { rm } from 'node:fs/promises'
 import path from 'node:path'
 import { rollup } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
+import { fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
 import type { OutputExtension } from './output'
@@ -49,5 +49,5 @@ export async function bundleDts(
     format: 'es',
     entryFileNames: `[name].d.${ext}`,
   })
-  await rm(dtsOutDir, { recursive: true, force: true }).catch(() => {})
+  await fsRemove(dtsOutDir)
 }
