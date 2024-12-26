@@ -51,7 +51,7 @@ export async function testBuild(
   const outputDir = path.resolve(testDir, resolvedOptions.outDir!)
   const { files: outputFiles, snapshot } = await expectFilesSnapshot(
     outputDir,
-    path.resolve(snapshotsDir, `${testName}-snap.md`),
+    path.resolve(snapshotsDir, `${testName}.snap.md`),
   )
 
   return {
