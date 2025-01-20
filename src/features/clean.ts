@@ -1,8 +1,11 @@
 import { readdir } from 'node:fs/promises'
 import path from 'node:path'
+import Debug from 'debug'
 import { glob } from 'tinyglobby'
 import { fsExists, fsRemove } from '../utils/fs'
-import { debug, logger } from '../utils/logger'
+import { logger } from '../utils/logger'
+
+const debug = Debug('tsdown:clean')
 
 // clean cwd dir + patterns
 export async function cleanOutDir(
@@ -20,7 +23,7 @@ export async function cleanOutDir(
 
   logger.info('Cleaning output folder')
   for (const file of files) {
-    debug('[clean]', 'Removing', file)
+    debug('Removing', file)
     await fsRemove(file)
   }
 }

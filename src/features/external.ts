@@ -1,7 +1,9 @@
 import path from 'node:path'
-import { debug } from '../utils/logger'
+import Debug from 'debug'
 import type { PackageJson } from 'pkg-types'
 import type { InputOptions, Plugin } from 'rolldown'
+
+const debug = Debug('tsdown:external')
 
 export type External = InputOptions['external']
 
@@ -23,7 +25,7 @@ export function ExternalPlugin(
       )
 
       if (shouldExternal) {
-        debug('[external]', 'External dependency:', id)
+        debug('External dependency:', id)
         return { id, external: true }
       }
     },
