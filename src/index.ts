@@ -171,12 +171,6 @@ export async function buildSingle(
   }
 }
 
-/**
- * Defines the configuration for tsdown.
- */
-export function defineConfig(options: Config): Config {
-  return options
-}
-
+export { defineConfig } from './config'
 export { logger }
 export type { Config, Options }

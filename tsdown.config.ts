@@ -1,10 +1,10 @@
 import { isCallOf } from 'unplugin-ast/ast-kit'
 import AST from 'unplugin-ast/rolldown'
 import { RemoveNode } from 'unplugin-ast/transformers'
-import { defineConfig } from './src'
+import { defineConfig } from './src/config.ts'
 
 export default defineConfig({
-  entry: ['./src/{index,run,plugins}.ts'],
+  entry: ['./src/{index,run,plugins,config}.ts'],
   format: 'esm',
   target: 'node18',
   clean: true,
