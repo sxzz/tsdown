@@ -2,14 +2,14 @@ import { beforeEach, expect, test } from 'vitest'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild } from './utils'
 
-beforeEach(async () => {
-  const dir = getTestDir()
+beforeEach(async (context) => {
+  const dir = getTestDir(context.task)
   await fsRemove(dir)
 })
 
-test('basic', async () => {
+test('basic', async (context) => {
   const content = `console.log("Hello, world!")`
-  const { snapshot } = await testBuild({
+  const { snapshot } = await testBuild(context, {
     'index.ts': content,
   })
   expect(snapshot).contain(content)
@@ -20,39 +20,42 @@ test('basic', async () => {
     'index.ts': "export { foo } from './foo'",
     'foo.ts': 'export const foo = 1',
   }
-  test('esm import', async () => {
-    await testBuild(files)
+  test('esm import', async (context) => {
+    await testBuild(context, files)
   })
 
-  test('cjs import', async () => {
-    await testBuild(files, {
+  test('cjs import', async (context) => {
+    await testBuild(context, files, {
       format: 'cjs',
     })
   })
 }
 
-test('syntax lowering', async () => {
+test('syntax lowering', async (context) => {
   const { snapshot } = await testBuild(
+    context,
     { 'index.ts': 'export const foo: number = a?.b?.()' },
     { target: 'es2015' },
   )
   expect(snapshot).not.contain('?.')
 })
 
-test('esm shims', async () => {
+test('esm shims', async (context) => {
   await testBuild(
+    context,
     { 'index.ts': 'export default [__dirname, __filename]' },
     { shims: true },
   )
 })
 
-test('cjs shims', async () => {
+test('cjs shims', async (context) => {
   await testBuild(
+    context,
     {
       'index.ts': `
-      import.meta.url === require("url").pathToFileURL(__filename).href
-      import.meta.filename === __filename
-      import.meta.dirname === __dirname`,
+        import.meta.url === require("url").pathToFileURL(__filename).href
+        import.meta.filename === __filename
+        import.meta.dirname === __dirname`,
     },
     {
       shims: true,
@@ -61,26 +64,26 @@ test('cjs shims', async () => {
   )
 })
 
-test('entry structure', async () => {
+test('entry structure', async (context) => {
   const files = {
     'src/index.ts': '',
     'src/utils/index.ts': '',
   }
-  await testBuild(files, {
+  await testBuild(context, files, {
     entry: Object.keys(files),
   })
 })
 
-test('bundle dts', async () => {
+test('bundle dts', async (context) => {
   const files = {
     'src/index.ts': `
-    export { str } from './utils/types';
-    export { shared } from './utils/shared';
-    `,
+      export { str } from './utils/types';
+      export { shared } from './utils/shared';
+      `,
     'src/utils/types.ts': 'export let str = "hello"',
     'src/utils/shared.ts': 'export let shared = 10',
   }
-  await testBuild(files, {
+  await testBuild(context, files, {
     entry: ['src/index.ts'],
     dts: { extraOutdir: 'types' },
     bundleDts: true,

@@ -70,7 +70,7 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^4.6.0",
     "@sxzz/prettier-config": "^2.1.0",
-    "@sxzz/test-utils": "^0.3.12",
+    "@sxzz/test-utils": "^0.4.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.10.7",
     "bumpp": "^9.10.1",

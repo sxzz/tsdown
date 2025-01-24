@@ -3,23 +3,26 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { expectFilesSnapshot } from '@sxzz/test-utils'
-import { expect } from 'vitest'
 import { build, type Options } from '../src/index'
+import type { RunnerTask, TestContext } from 'vitest'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
 const snapshotsDir = path.resolve(dirname, '__snapshots__')
 
-function getTestFilename() {
-  const testName = getTestName()
-  return filenamify(testName)
+function getTestFilename(task: RunnerTask) {
+  return filenamify(task.name)
 }
 
-export function getTestDir(testName: string = getTestFilename()): string {
-  return path.resolve(tmpDir, testName)
+export function getTestDir(testName: RunnerTask | string): string {
+  return path.resolve(
+    tmpDir,
+    typeof testName === 'string' ? testName : getTestFilename(testName),
+  )
 }
 
 export async function testBuild(
+  { expect, task }: TestContext,
   files: Record<string, string>,
   options?: Options,
 ): Promise<{
@@ -27,7 +30,7 @@ export async function testBuild(
   outputDir: string
   snapshot: string
 }> {
-  const testName = getTestFilename()
+  const testName = getTestFilename(task)
   const testDir = getTestDir(testName)
   await mkdir(testDir, { recursive: true })
 
@@ -52,6 +55,7 @@ export async function testBuild(
   const { files: outputFiles, snapshot } = await expectFilesSnapshot(
     outputDir,
     path.resolve(snapshotsDir, `${testName}.snap.md`),
+    { expect },
   )
 
   return {
@@ -59,14 +63,6 @@ export async function testBuild(
     outputDir,
     snapshot,
   }
-}
-
-function getTestName(): string {
-  const name = expect.getState().currentTestName
-  if (!name) {
-    throw new Error('No test name')
-  }
-  return name
 }
 
 function filenamify(input: string) {
