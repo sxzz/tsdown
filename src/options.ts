@@ -215,6 +215,8 @@ async function loadConfigFile(
     }
   }
 
+  const nativeLoader = !loaded && process.features.typescript
+
   const { config, sources } = await loadConfig<Config>({
     sources: overrideConfig
       ? [{ files: filePath as string, extensions: [] }]
@@ -232,9 +234,11 @@ async function loadConfigFile(
     cwd,
     defaults: {},
     importx: {
-      loader:
-        !loaded && process.features.typescript ? 'native' : 'bundle-require',
-      fallbackLoaders: ['bundle-require'],
+      loader: nativeLoader ? 'native' : 'bundle-require',
+      fallbackLoaders: [
+        ...(nativeLoader ? ['bundle-require' as const] : []),
+        'jiti',
+      ],
       cache: loaded ? false : null,
     },
   }).finally(() => (loaded = true))
