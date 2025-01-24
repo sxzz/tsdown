@@ -110,7 +110,8 @@ export async function buildSingle(
             platform,
             define,
             plugins: [
-              pkg && ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
+              (pkg || resolved.skipNodeModulesBundle) &&
+                ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
               unused && Unused.rolldown(unused === true ? {} : unused),
               dts &&
                 IsolatedDecl.rolldown({

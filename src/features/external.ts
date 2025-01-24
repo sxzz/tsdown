@@ -1,4 +1,3 @@
-import path from 'node:path'
 import Debug from 'debug'
 import type { PackageJson } from 'pkg-types'
 import type { InputOptions, Plugin } from 'rolldown'
@@ -8,21 +7,27 @@ const debug = Debug('tsdown:external')
 export type External = InputOptions['external']
 
 export function ExternalPlugin(
-  pkg: PackageJson,
+  pkg?: PackageJson,
   skipNodeModulesBundle?: boolean,
 ): Plugin {
-  const deps = Array.from(getProductionDeps(pkg))
+  const deps = pkg && Array.from(getProductionDeps(pkg))
   return {
     name: 'tsdown:external',
-    resolveId(id, importer, { isEntry }) {
+    async resolveId(id, importer, { isEntry }) {
       if (isEntry) return
 
-      let shouldExternal =
-        skipNodeModulesBundle && !path.isAbsolute(id) && id[0] !== '.'
-
-      shouldExternal ||= deps.some(
-        (dep) => id === dep || id.startsWith(`${dep}/`),
-      )
+      let shouldExternal = false
+      if (skipNodeModulesBundle) {
+        const resolved = await this.resolve(id)
+        if (!resolved) return
+        shouldExternal =
+          resolved.external || /[\\/]node_modules[\\/]/.test(resolved.id)
+      }
+      if (deps) {
+        shouldExternal ||= deps.some(
+          (dep) => id === dep || id.startsWith(`${dep}/`),
+        )
+      }
 
       if (shouldExternal) {
         debug('External dependency:', id)
