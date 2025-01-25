@@ -89,3 +89,15 @@ test('bundle dts', async (context) => {
     bundleDts: true,
   })
 })
+
+test('cjs interop', async (context) => {
+  const files = {
+    'index.ts': `
+    export default {}
+    export type Foo = string
+    `,
+  }
+  await testBuild(context, files, {
+    format: ['esm', 'cjs'],
+  })
+})
