@@ -3,7 +3,7 @@ import { cac } from 'cac'
 import pc from 'picocolors'
 import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
-import { logger } from './utils/logger'
+import { logger, setSilent } from './utils/logger'
 import type { Options } from './options'
 
 export async function runCLI(): Promise<void> {
@@ -31,11 +31,7 @@ export async function runCLI(): Promise<void> {
     })
     .option('-w, --watch [path]', 'Watch mode')
     .action(async (input: string[], flags: Options) => {
-      if (!('CONSOLA_LEVEL' in process.env)) {
-        logger.level = flags.silent
-          ? 0 // Fatal and Error
-          : 3 // Informational logs, success, fail, ready, start, ...
-      }
+      setSilent(!!flags.silent)
       logger.info(
         `tsdown ${pc.dim(`v${version}`)} powered by rolldown ${pc.dim(`v${rolldownVersion}`)}`,
       )

@@ -19,15 +19,15 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
-import { debug, logger } from './utils/logger'
+import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
 
 /**
  * Build with tsdown.
  */
-export async function build(
-  userOptions: Omit<Options, 'silent'> = {},
-): Promise<void> {
+export async function build(userOptions: Options = {}): Promise<void> {
+  typeof userOptions.silent === 'boolean' && setSilent(userOptions.silent)
+
   debug('Loading config')
   const [resolveds, configFile] = await resolveOptions(userOptions)
   if (configFile) debug('Loaded config:', configFile)
