@@ -64,11 +64,11 @@
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.10",
     "unconfig": "^0.6.1",
-    "unplugin-isolated-decl": "^0.10.5",
+    "unplugin-isolated-decl": "^0.10.6",
     "unplugin-unused": "^0.3.0"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^4.6.0",
+    "@sxzz/eslint-config": "^5.0.0-beta.2",
     "@sxzz/prettier-config": "^2.1.0",
     "@sxzz/test-utils": "^0.4.0",
     "@types/debug": "^4.1.12",
