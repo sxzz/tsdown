@@ -14,6 +14,7 @@ export default defineConfig({
   dts: { transformer: 'oxc' },
   bundleDts: true,
   unused: { level: 'error' },
+  publint: true,
   onSuccess() {
     console.info('🙏 Build succeeded!')
   },

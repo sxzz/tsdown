@@ -9,6 +9,7 @@ import { cleanOutDir } from './features/clean'
 import { bundleDts, getTempDtsDir } from './features/dts'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
+import { publint } from './features/publint'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
@@ -163,6 +164,14 @@ export async function buildSingle(
         }
       }),
     )
+
+    if (resolved.publint) {
+      if (pkg) {
+        await publint(pkg)
+      } else {
+        logger.warn('publint is enabled but package.json is not found')
+      }
+    }
 
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(

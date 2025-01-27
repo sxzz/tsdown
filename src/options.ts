@@ -14,6 +14,7 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Stats } from 'node:fs'
+import type { Options as PublintOptions } from 'publint'
 import type {
   InputOptions,
   InternalModuleFormat,
@@ -85,6 +86,7 @@ export interface Options {
    * @default false
    */
   fixedExtension?: boolean
+  publint?: boolean | PublintOptions
 }
 
 /**
@@ -151,10 +153,12 @@ export async function resolveOptions(
           watch = false,
           shims = false,
           skipNodeModulesBundle = false,
+          publint = false,
         } = subOptions
 
         entry = await resolveEntry(entry)
         if (clean === true) clean = []
+        if (publint === true) publint = {}
 
         return {
           ...subOptions,
@@ -173,6 +177,7 @@ export async function resolveOptions(
           watch,
           shims,
           skipNodeModulesBundle,
+          publint,
         }
       }),
     ),
