@@ -73,7 +73,7 @@
     "@sxzz/test-utils": "^0.4.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.10.10",
-    "bumpp": "^9.11.1",
+    "bumpp": "^10.0.1",
     "eslint": "^9.19.0",
     "oxc-transform": "^0.48.1",
     "prettier": "^3.4.2",
