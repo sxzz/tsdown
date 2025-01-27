@@ -78,6 +78,13 @@ export interface Options {
    * Skip bundling node_modules.
    */
   skipNodeModulesBundle?: boolean
+  /**
+   * Use a fixed extension for output files.
+   * The extension will always be `.cjs` or `.mjs`.
+   * Otherwise, it will depend on the package type.
+   * @default false
+   */
+  fixedExtension?: boolean
 }
 
 /**
@@ -104,6 +111,7 @@ export type ResolvedOptions = Omit<
       | 'external'
       | 'onSuccess'
       | 'dts'
+      | 'fixedExtension'
     >,
     {
       format: NormalizedFormat[]

@@ -101,3 +101,14 @@ test('cjs interop', async (context) => {
     format: ['esm', 'cjs'],
   })
 })
+
+test('fixed extension', async (context) => {
+  const files = {
+    'index.ts': `export default 10`,
+  }
+  await testBuild(context, files, {
+    format: ['esm', 'cjs'],
+    fixedExtension: true,
+    dts: true,
+  })
+})

@@ -85,6 +85,7 @@ export async function buildSingle(
     target,
     define,
     shims,
+    fixedExtension,
     onSuccess,
   } = resolved
 
@@ -137,7 +138,7 @@ export async function buildSingle(
           [format],
         )
 
-        const extension = resolveOutputExtension(pkg, format)
+        const extension = resolveOutputExtension(pkg, format, fixedExtension)
         const outputOptions: OutputOptions = await mergeUserOptions(
           {
             format,

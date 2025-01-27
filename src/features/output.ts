@@ -6,13 +6,14 @@ export type OutputExtension = 'mjs' | 'cjs' | 'js'
 export function resolveOutputExtension(
   pkg: PackageJson | undefined,
   format: NormalizedFormat,
+  fixedExtension?: boolean,
 ): OutputExtension {
   const moduleType = getPackageType(pkg)
   switch (format) {
     case 'es':
-      return moduleType === 'module' ? 'js' : 'mjs'
+      return !fixedExtension && moduleType === 'module' ? 'js' : 'mjs'
     case 'cjs':
-      return moduleType === 'module' ? 'cjs' : 'js'
+      return fixedExtension || moduleType === 'module' ? 'cjs' : 'js'
     default:
       return 'js'
   }
