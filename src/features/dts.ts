@@ -31,7 +31,7 @@ export async function bundleDts(
   const build = await rollup({
     input: dtsEntry,
     onLog(level, log, defaultHandler) {
-      if (log.code !== 'EMPTY_BUNDLE') {
+      if (log.code !== 'EMPTY_BUNDLE' && log.code !== 'UNRESOLVED_IMPORT') {
         defaultHandler(level, log)
       }
     },
