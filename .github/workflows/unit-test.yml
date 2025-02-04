@@ -13,8 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        run: corepack enable
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4.0.0
 
       - name: Set node
         uses: actions/setup-node@v4
@@ -45,8 +45,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Setup pnpm
-        run: corepack enable
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4.0.0
 
       - name: Set node
         uses: actions/setup-node@v4
