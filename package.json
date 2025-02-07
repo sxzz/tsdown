@@ -1,7 +1,7 @@
 {
   "name": "tsdown",
   "version": "0.5.8",
-  "packageManager": "pnpm@10.2.0",
+  "packageManager": "pnpm@10.2.1",
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
   "license": "MIT",
@@ -65,14 +65,14 @@
     "rollup": "^4.34.4",
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.10",
-    "unconfig": "^0.6.1",
-    "unplugin-isolated-decl": "^0.10.7",
-    "unplugin-unused": "^0.4.0"
+    "unconfig": "^7.0.0",
+    "unplugin-isolated-decl": "^0.11.0",
+    "unplugin-unused": "^0.4.1"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^5.0.1",
-    "@sxzz/prettier-config": "^2.1.1",
-    "@sxzz/test-utils": "^0.5.0",
+    "@sxzz/prettier-config": "^2.1.2",
+    "@sxzz/test-utils": "^0.5.1",
     "@types/debug": "^4.1.12",
     "@types/diff": "^7.0.1",
     "@types/node": "^22.13.1",

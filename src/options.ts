@@ -203,7 +203,6 @@ export function normalizeFormat(
   })
 }
 
-let loaded = false
 async function loadConfigFile(
   options: Options,
 ): Promise<[config: ResolvedConfig, file?: string]> {
@@ -228,8 +227,6 @@ async function loadConfigFile(
     }
   }
 
-  const nativeLoader = !loaded && process.features.typescript
-
   const { config, sources } = await loadConfig<Config>({
     sources: overrideConfig
       ? [{ files: filePath as string, extensions: [] }]
@@ -246,15 +243,7 @@ async function loadConfigFile(
         ],
     cwd,
     defaults: {},
-    importx: {
-      loader: nativeLoader ? 'native' : 'bundle-require',
-      fallbackLoaders: [
-        ...(nativeLoader ? ['bundle-require' as const] : []),
-        'jiti',
-      ],
-      cache: loaded ? false : null,
-    },
-  }).finally(() => (loaded = true))
+  })
 
   if (sources.length > 0) {
     logger.info(`Using tsdown config: ${pc.underline(sources.join(', '))}`)
