@@ -22,17 +22,14 @@ jobs:
           node-version: lts/*
           cache: pnpm
 
-      - name: Setup
-        run: npm i -g @antfu/ni
-
       - name: Install
-        run: nci
+        run: pnpm i
 
       - name: Lint
-        run: nr lint
+        run: pnpm run lint
 
       - name: Typecheck
-        run: nr typecheck
+        run: pnpm run typecheck
 
   test:
     runs-on: ${{ matrix.os }}
@@ -55,14 +52,11 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
 
-      - name: Setup
-        run: npm i -g @antfu/ni
-
       - name: Install
-        run: nci
+        run: pnpm i
 
       - name: Build
-        run: nr build
+        run: pnpm run build
 
       - name: Test
-        run: nr test
+        run: pnpm run test
