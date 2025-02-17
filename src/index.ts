@@ -3,8 +3,6 @@ import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { build as rolldownBuild, type OutputOptions } from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
-import { IsolatedDecl } from 'unplugin-isolated-decl'
-import { Unused } from 'unplugin-unused'
 import { cleanOutDir } from './features/clean'
 import { bundleDts, getTempDtsDir } from './features/dts'
 import { ExternalPlugin } from './features/external'
@@ -114,9 +112,12 @@ export async function buildSingle(
             plugins: [
               (pkg || resolved.skipNodeModulesBundle) &&
                 ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
-              unused && Unused.rolldown(unused === true ? {} : unused),
+              unused &&
+                (await import('unplugin-unused')).Unused.rolldown(
+                  unused === true ? {} : unused,
+                ),
               dts &&
-                IsolatedDecl.rolldown({
+                (await import('unplugin-isolated-decl')).IsolatedDecl.rolldown({
                   ...dts,
                   extraOutdir: resolved.bundleDts
                     ? getTempDtsDir(format)
