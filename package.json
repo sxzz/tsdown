@@ -64,9 +64,9 @@
     "rolldown": "^1.0.0-beta.3",
     "rollup": "^4.34.8",
     "rollup-plugin-dts": "^6.1.1",
-    "tinyglobby": "^0.2.10",
+    "tinyglobby": "^0.2.11",
     "unconfig": "^7.0.0",
-    "unplugin-isolated-decl": "^0.11.0",
+    "unplugin-isolated-decl": "^0.11.2",
     "unplugin-unused": "^0.4.1"
   },
   "devDependencies": {
@@ -82,10 +82,10 @@
     "prettier": "^3.5.1",
     "tinyexec": "^0.3.2",
     "tsup": "^8.3.6",
-    "tsx": "^4.19.2",
+    "tsx": "^4.19.3",
     "typescript": "~5.7.3",
     "unplugin-ast": "^0.14.0",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.6"
   },
   "engines": {
     "node": ">=18.0.0"
