@@ -1,5 +1,5 @@
 import path from 'node:path'
-import pc from 'picocolors'
+import { blue } from 'ansis'
 import { glob } from 'tinyglobby'
 import { lowestCommonAncestor } from '../utils/fs'
 import { logger } from '../utils/logger'
@@ -18,7 +18,7 @@ export async function resolveEntry(
   if (entries.length === 0) {
     throw new Error(`Cannot find entry: ${JSON.stringify(entry)}`)
   }
-  logger.info(`entry: ${pc.blue(entries.join(', '))}`)
+  logger.info(`entry: ${blue(entries.join(', '))}`)
   return objectEntry
 }
 

@@ -1,6 +1,6 @@
 import process from 'node:process'
+import { dim } from 'ansis'
 import { cac } from 'cac'
-import pc from 'picocolors'
 import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
 import { logger, setSilent } from './utils/logger'
@@ -33,7 +33,7 @@ cli
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
-      `tsdown ${pc.dim(`v${version}`)} powered by rolldown ${pc.dim(`v${rolldownVersion}`)}`,
+      `tsdown ${dim(`v${version}`)} powered by rolldown ${dim(`v${rolldownVersion}`)}`,
     )
     const { build } = await import('./index')
     if (input.length > 0) flags.entry = input

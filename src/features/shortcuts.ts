@@ -1,6 +1,6 @@
 import process from 'node:process'
 import readline from 'node:readline'
-import pc from 'picocolors'
+import { dim, bold } from 'ansis'
 import { logger } from '../utils/logger'
 
 // Copied from https://github.com/vitejs/vite/blob/main/packages/vite/src/node/shortcuts.ts - MIT License
@@ -51,9 +51,9 @@ export function shortcuts(restart: () => void): void {
         if (shortcut.action == null) continue
 
         logger.info(
-          pc.dim('  press ') +
-            pc.bold(`${shortcut.key} + enter`) +
-            pc.dim(` to ${shortcut.description}`),
+          dim('  press ') +
+            bold(`${shortcut.key} + enter`) +
+            dim(` to ${shortcut.description}`),
         )
       }
 

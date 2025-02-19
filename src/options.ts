@@ -1,7 +1,7 @@
 import { stat } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
-import pc from 'picocolors'
+import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
@@ -258,7 +258,7 @@ async function loadConfigFile(
   })
 
   if (sources.length > 0) {
-    logger.info(`Using tsdown config: ${pc.underline(sources.join(', '))}`)
+    logger.info(`Using tsdown config: ${underline(sources.join(', '))}`)
   }
 
   const file = sources[0]

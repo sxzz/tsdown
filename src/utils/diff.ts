@@ -1,5 +1,5 @@
+import { gray, green, red } from 'ansis'
 import { diffLines } from 'diff'
-import pc from 'picocolors'
 
 export function diff(original: string, updated: string): string {
   let text = ''
@@ -10,10 +10,10 @@ export function diff(original: string, updated: string): string {
   for (const line of diff) {
     const { value } = line
     text += line.added
-      ? pc.green(value)
+      ? green(value)
       : line.removed
-        ? pc.red(value)
-        : pc.gray(line.value)
+        ? red(value)
+        : gray(line.value)
   }
   return text
 }
