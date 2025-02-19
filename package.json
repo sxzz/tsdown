@@ -52,6 +52,18 @@
     "release": "bumpp && pnpm publish",
     "prepublishOnly": "pnpm run build"
   },
+  "peerDependencies": {
+    "publint": "^0.3.0",
+    "unplugin-unused": "^0.4.0"
+  },
+  "peerDependenciesMeta": {
+    "publint": {
+      "optional": true
+    },
+    "unplugin-unused": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "cac": "^6.7.14",
     "chokidar": "^4.0.3",
@@ -60,14 +72,12 @@
     "diff": "^7.0.0",
     "picocolors": "^1.1.1",
     "pkg-types": "^1.3.1",
-    "publint": "^0.3.5",
     "rolldown": "^1.0.0-beta.3",
     "rollup": "^4.34.8",
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.11",
     "unconfig": "^7.0.0",
-    "unplugin-isolated-decl": "^0.11.2",
-    "unplugin-unused": "^0.4.1"
+    "unplugin-isolated-decl": "^0.11.2"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^5.1.1",
@@ -80,11 +90,13 @@
     "eslint": "^9.20.1",
     "oxc-transform": "^0.51.0",
     "prettier": "^3.5.1",
+    "publint": "^0.3.5",
     "tinyexec": "^0.3.2",
     "tsup": "^8.3.6",
     "tsx": "^4.19.3",
     "typescript": "~5.7.3",
     "unplugin-ast": "^0.14.0",
+    "unplugin-unused": "^0.4.1",
     "vitest": "^3.0.6"
   },
   "engines": {

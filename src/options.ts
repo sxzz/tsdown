@@ -63,7 +63,8 @@ export interface Options {
   /** @default true */
   bundleDts?: boolean
   /**
-   * Enable unused dependencies check with `unplugin-unused` (experimental)
+   * Enable unused dependencies check with `unplugin-unused`
+   * Requires `unplugin-unused` to be installed.
    */
   unused?: boolean | UnusedOptions
   watch?: boolean | string | string[]
@@ -92,6 +93,10 @@ export interface Options {
    * @default false
    */
   fixedExtension?: boolean
+  /**
+   * Run publint after bundling.
+   * Requires `publint` to be installed.
+   */
   publint?: boolean | PublintOptions
 }
 
