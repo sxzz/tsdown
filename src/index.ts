@@ -111,7 +111,7 @@ export async function buildSingle(
             define,
             plugins: [
               (pkg || resolved.skipNodeModulesBundle) &&
-                ExternalPlugin(pkg, resolved.skipNodeModulesBundle),
+                ExternalPlugin(resolved, pkg),
               unused &&
                 (await import('unplugin-unused')).Unused.rolldown(
                   unused === true ? {} : unused,

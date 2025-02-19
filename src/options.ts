@@ -6,7 +6,6 @@ import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
-import type { External } from './features/external'
 import type {
   Arrayable,
   MarkPartial,
@@ -16,6 +15,7 @@ import type {
 import type { Stats } from 'node:fs'
 import type { Options as PublintOptions } from 'publint'
 import type {
+  ExternalOption,
   InputOptions,
   InternalModuleFormat,
   ModuleFormat,
@@ -34,7 +34,13 @@ export interface Options {
   format?: ModuleFormat | ModuleFormat[]
   globalName?: string
   plugins?: InputOptions['plugins']
-  external?: External
+  external?: ExternalOption
+  noExternal?:
+    | Arrayable<string | RegExp>
+    | ((
+        id: string,
+        importer: string | undefined,
+      ) => boolean | null | undefined | void)
   outDir?: string
   clean?: boolean | string[]
   silent?: boolean
@@ -111,6 +117,7 @@ export type ResolvedOptions = Omit<
       | 'define'
       | 'alias'
       | 'external'
+      | 'noExternal'
       | 'onSuccess'
       | 'dts'
       | 'fixedExtension'

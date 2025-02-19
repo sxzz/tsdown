@@ -1,14 +1,14 @@
 import Debug from 'debug'
+import { toArray } from '../utils/general'
+import type { ResolvedOptions } from '../options'
 import type { PackageJson } from 'pkg-types'
-import type { InputOptions, Plugin } from 'rolldown'
+import type { Plugin } from 'rolldown'
 
 const debug = Debug('tsdown:external')
 
-export type External = InputOptions['external']
-
 export function ExternalPlugin(
+  options: ResolvedOptions,
   pkg?: PackageJson,
-  skipNodeModulesBundle?: boolean,
 ): Plugin {
   const deps = pkg && Array.from(getProductionDeps(pkg))
   return {
@@ -16,8 +16,22 @@ export function ExternalPlugin(
     async resolveId(id, importer, { isEntry }) {
       if (isEntry) return
 
+      const { noExternal } = options
+      if (typeof noExternal === 'function' && noExternal(id, importer)) {
+        return
+      }
+      if (noExternal) {
+        const noExternalPatterns = toArray(noExternal)
+        if (
+          noExternalPatterns.some((pattern) => {
+            return pattern instanceof RegExp ? pattern.test(id) : id === pattern
+          })
+        )
+          return
+      }
+
       let shouldExternal = false
-      if (skipNodeModulesBundle) {
+      if (options.skipNodeModulesBundle) {
         const resolved = await this.resolve(id)
         if (!resolved) return
         shouldExternal =

@@ -112,3 +112,22 @@ test('fixed extension', async (context) => {
     dts: true,
   })
 })
+
+test('noExternal', async (context) => {
+  const files = {
+    'index.ts': `export * from 'cac'`,
+  }
+  await testBuild(context, files, {
+    noExternal: ['cac'],
+    plugins: [
+      {
+        name: 'remove-code',
+        load(id) {
+          if (id.replaceAll('\\', '/').includes('/node_modules/cac')) {
+            return 'export const cac = "[CAC CODE]"'
+          }
+        },
+      },
+    ],
+  })
+})
