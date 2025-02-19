@@ -33,7 +33,7 @@ cli
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
-      `tsdown ${dim(`v${version}`)} powered by rolldown ${dim(`v${rolldownVersion}`)}`,
+      `tsdown ${dim`v${version}`} powered by rolldown ${dim`v${rolldownVersion}`}`,
     )
     const { build } = await import('./index')
     if (input.length > 0) flags.entry = input
