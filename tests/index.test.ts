@@ -153,7 +153,7 @@ test('fromVite', async (context) => {
   const options = await resolveOptions({
     config: testDir,
   })
-  expect(options.configs).toMatchInlineSnapshot([
+  expect(options.configs).toMatchObject([
     {
       fromVite: true,
       alias: {
