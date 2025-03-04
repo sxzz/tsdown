@@ -12,7 +12,6 @@ import type {
   MaybePromise,
   Overwrite,
 } from './utils/types'
-import type { Stats } from 'node:fs'
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
@@ -30,10 +29,8 @@ export type Sourcemap = boolean | 'inline' | 'hidden'
  * Options for tsdown.
  */
 export interface Options {
+  /// build options
   entry?: InputOptions['input']
-  format?: ModuleFormat | ModuleFormat[]
-  globalName?: string
-  plugins?: InputOptions['plugins']
   external?: ExternalOption
   noExternal?:
     | Arrayable<string | RegExp>
@@ -41,45 +38,41 @@ export interface Options {
         id: string,
         importer: string | undefined,
       ) => boolean | null | undefined | void)
-  outDir?: string
-  clean?: boolean | string[]
-  silent?: boolean
-  config?: boolean | string
-  sourcemap?: Sourcemap
   alias?: Record<string, string>
-  /** @default true */
-  treeshake?: boolean
-  /** @default false */
-  minify?: boolean
-  target?: string | string[]
-  define?: Record<string, string>
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
-  shims?: boolean
-  /**
-   * Enable dts generation with `isolatedDeclarations` (experimental)
-   */
-  dts?: boolean | IsolatedDeclOptions
-  /** @default true */
-  bundleDts?: boolean
-  /**
-   * Enable unused dependencies check with `unplugin-unused`
-   * Requires `unplugin-unused` to be installed.
-   */
-  unused?: boolean | UnusedOptions
-  watch?: boolean | string | string[]
   inputOptions?:
     | InputOptions
     | ((
         options: InputOptions,
         format: ModuleFormat,
       ) => MaybePromise<InputOptions | void | null>)
+
+  /// output options
+  format?: ModuleFormat | ModuleFormat[]
+  globalName?: string
+  outDir?: string
+  sourcemap?: Sourcemap
+  clean?: boolean | string[]
+  /** @default false */
+  minify?: boolean
+  target?: string | string[]
+  define?: Record<string, string>
+  shims?: boolean
   outputOptions?:
     | OutputOptions
     | ((
         options: OutputOptions,
         format: ModuleFormat,
       ) => MaybePromise<OutputOptions | void | null>)
+
+  /** @default true */
+  treeshake?: boolean
+  plugins?: InputOptions['plugins']
+
+  silent?: boolean
+  config?: boolean | string
+  watch?: boolean | string | string[]
   onSuccess?: () => void | Promise<void>
 
   /**
@@ -93,6 +86,21 @@ export interface Options {
    * @default false
    */
   fixedExtension?: boolean
+
+  /// addons
+  /**
+   * Enable dts generation with `isolatedDeclarations` (experimental)
+   */
+  dts?: boolean | IsolatedDeclOptions
+  /** @default true */
+  bundleDts?: boolean
+
+  /**
+   * Enable unused dependencies check with `unplugin-unused`
+   * Requires `unplugin-unused` to be installed.
+   */
+  unused?: boolean | UnusedOptions
+
   /**
    * Run publint after bundling.
    * Requires `publint` to be installed.
@@ -223,19 +231,18 @@ async function loadConfigFile(
 
   let cwd = process.cwd()
   let overrideConfig = false
-  let stats: Stats | null
 
-  if (
-    typeof filePath === 'string' &&
-    (stats = await stat(filePath).catch(() => null))
-  ) {
-    const resolved = path.resolve(filePath)
-    if (stats.isFile()) {
-      overrideConfig = true
-      filePath = resolved
-      cwd = path.dirname(filePath)
-    } else {
-      cwd = resolved
+  if (typeof filePath === 'string') {
+    const stats = await stat(filePath).catch(() => null)
+    if (stats) {
+      const resolved = path.resolve(filePath)
+      if (stats.isFile()) {
+        overrideConfig = true
+        filePath = resolved
+        cwd = path.dirname(filePath)
+      } else if (stats.isDirectory()) {
+        cwd = resolved
+      }
     }
   }
 

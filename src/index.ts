@@ -25,7 +25,9 @@ import { readPackageJson } from './utils/package'
  * Build with tsdown.
  */
 export async function build(userOptions: Options = {}): Promise<void> {
-  typeof userOptions.silent === 'boolean' && setSilent(userOptions.silent)
+  if (typeof userOptions.silent === 'boolean') {
+    setSilent(userOptions.silent)
+  }
 
   debug('Loading config')
   const [resolveds, configFile] = await resolveOptions(userOptions)
