@@ -21,15 +21,10 @@ export function getTestDir(testName: RunnerTask | string): string {
   )
 }
 
-export async function testBuild(
-  { expect, task }: TestContext,
+export async function writeFixtures(
+  { task }: TestContext,
   files: Record<string, string>,
-  options?: Options,
-): Promise<{
-  outputFiles: string[]
-  outputDir: string
-  snapshot: string
-}> {
+): Promise<{ testName: string; testDir: string }> {
   const testName = getTestFilename(task)
   const testDir = getTestDir(testName)
   await mkdir(testDir, { recursive: true })
@@ -39,6 +34,21 @@ export async function testBuild(
     await mkdir(path.dirname(filepath), { recursive: true })
     await writeFile(filepath, content, 'utf8')
   }
+
+  return { testName, testDir }
+}
+
+export async function testBuild(
+  context: TestContext,
+  files: Record<string, string>,
+  options?: Options,
+): Promise<{
+  outputFiles: string[]
+  outputDir: string
+  snapshot: string
+}> {
+  const { expect } = context
+  const { testName, testDir } = await writeFixtures(context, files)
 
   const cwd = process.cwd()
   process.chdir(testDir)

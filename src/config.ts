@@ -1,8 +1,8 @@
-import type { Config } from './options'
+import type { UserConfig } from './options'
 
 /**
  * Defines the configuration for tsdown.
  */
-export function defineConfig(options: Config): Config {
+export function defineConfig(options: UserConfig): UserConfig {
   return options
 }

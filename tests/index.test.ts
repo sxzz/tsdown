@@ -1,6 +1,7 @@
 import { beforeEach, expect, test } from 'vitest'
+import { resolveOptions } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
-import { getTestDir, testBuild } from './utils'
+import { getTestDir, testBuild, writeFixtures } from './utils'
 
 beforeEach(async (context) => {
   const dir = getTestDir(context.task)
@@ -130,4 +131,42 @@ test('noExternal', async (context) => {
       },
     ],
   })
+})
+
+test('fromVite', async (context) => {
+  const files = {
+    'index.ts': `export default 10`,
+    'tsdown.config.ts': `
+    import { resolve } from 'node:path'
+    export default {
+      entry: resolve(import.meta.dirname, 'index.ts'),
+      fromVite: true,
+    }`,
+    'vite.config.ts': `
+    export default {
+      resolve: { alias: { '~': '/' } },
+      plugins: [{ name: 'expected' }],
+    }
+    `,
+  }
+  const { testDir } = await writeFixtures(context, files)
+  const options = await resolveOptions({
+    config: testDir,
+  })
+  expect(options.configs).toMatchInlineSnapshot([
+    {
+      fromVite: true,
+      alias: {
+        '~': '/',
+      },
+      plugins: [
+        [
+          {
+            name: 'expected',
+          },
+        ],
+        [],
+      ],
+    },
+  ])
 })

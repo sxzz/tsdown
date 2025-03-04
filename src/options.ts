@@ -6,6 +6,7 @@ import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
+import { normalizeFormat } from './utils/package'
 import type {
   Arrayable,
   MarkPartial,
@@ -22,6 +23,7 @@ import type {
 } from 'rolldown'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 import type { Options as UnusedOptions } from 'unplugin-unused'
+import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
@@ -86,6 +88,11 @@ export interface Options {
    * @default false
    */
   fixedExtension?: boolean
+  /**
+   * Reuse config from Vite or Vitest (experimental)
+   * @default false
+   */
+  fromVite?: boolean
 
   /// addons
   /**
@@ -111,8 +118,8 @@ export interface Options {
 /**
  * Options without specifying config file path.
  */
-export type Config = Arrayable<Omit<Options, 'config'>>
-export type ResolvedConfig = Extract<Config, any[]>
+export type UserConfig = Arrayable<Omit<Options, 'config'>>
+export type ResolvedConfigs = Extract<UserConfig, any[]>
 
 export type NormalizedFormat =
   | Exclude<InternalModuleFormat, 'app'>
@@ -141,96 +148,109 @@ export type ResolvedOptions = Omit<
       dts: false | IsolatedDeclOptions
     }
   >,
-  'config'
+  'config' | 'fromVite'
 >
 
-export async function resolveOptions(
-  options: Options,
-): Promise<[configs: ResolvedOptions[], configFile?: string]> {
-  const [config, configFile] = await loadConfigFile(options)
-  if (config.length === 0) {
-    config.push({})
+export async function resolveOptions(options: Options): Promise<{
+  configs: ResolvedOptions[]
+  file?: string
+}> {
+  const { configs: userConfigs, file, cwd } = await loadConfigFile(options)
+  if (userConfigs.length === 0) {
+    userConfigs.push({})
   }
 
-  return [
-    await Promise.all(
-      config.map(async (subConfig) => {
-        const subOptions = { ...subConfig, ...options }
+  const configs = await Promise.all(
+    userConfigs.map(async (subConfig) => {
+      const subOptions = { ...subConfig, ...options }
 
-        let {
-          entry,
-          format = ['es'],
-          plugins = [],
-          clean = false,
-          silent = false,
-          treeshake = true,
-          platform = 'node',
-          outDir = 'dist',
-          sourcemap = false,
-          dts = false,
-          bundleDts = true,
-          unused = false,
-          watch = false,
-          shims = false,
-          skipNodeModulesBundle = false,
-          publint = false,
-        } = subOptions
+      let {
+        entry,
+        format = ['es'],
+        plugins = [],
+        clean = false,
+        silent = false,
+        treeshake = true,
+        platform = 'node',
+        outDir = 'dist',
+        sourcemap = false,
+        dts = false,
+        bundleDts = true,
+        unused = false,
+        watch = false,
+        shims = false,
+        skipNodeModulesBundle = false,
+        publint = false,
+        fromVite,
+        alias,
+      } = subOptions
 
-        entry = await resolveEntry(entry)
-        if (clean === true) clean = []
-        if (publint === true) publint = {}
+      entry = await resolveEntry(entry)
+      if (clean === true) clean = []
+      if (publint === true) publint = {}
 
-        return {
-          ...subOptions,
-          entry,
-          plugins,
-          format: normalizeFormat(format),
-          outDir: path.resolve(outDir),
-          clean,
-          silent,
-          treeshake,
-          platform,
-          sourcemap,
-          dts: dts === true ? {} : dts,
-          bundleDts,
-          unused,
-          watch,
-          shims,
-          skipNodeModulesBundle,
-          publint,
+      if (fromVite) {
+        const viteUserConfig = await loadViteConfig(cwd)
+        if (viteUserConfig) {
+          // const alias = viteUserConfig.resolve?.alias
+          if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
+            throw new TypeError(
+              'Unsupported resolve.alias in Vite config. Use object instead of array',
+            )
+          }
+
+          if (viteUserConfig.plugins) {
+            plugins = [viteUserConfig.plugins as any, plugins]
+          }
+
+          const viteAlias = viteUserConfig.resolve?.alias
+          if (
+            viteAlias &&
+            !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
+          ) {
+            alias = viteAlias
+          }
         }
-      }),
-    ),
-    configFile,
-  ]
+      }
+
+      const config = {
+        ...subOptions,
+        entry,
+        plugins,
+        format: normalizeFormat(format),
+        outDir: path.resolve(outDir),
+        clean,
+        silent,
+        treeshake,
+        platform,
+        sourcemap,
+        dts: dts === true ? {} : dts,
+        bundleDts,
+        unused,
+        watch,
+        shims,
+        skipNodeModulesBundle,
+        publint,
+        alias,
+      }
+
+      return config
+    }),
+  )
+
+  return { configs, file }
 }
 
-export function normalizeFormat(
-  format: ModuleFormat | ModuleFormat[],
-): NormalizedFormat[] {
-  return toArray<ModuleFormat>(format, 'es').map((format): NormalizedFormat => {
-    switch (format) {
-      case 'es':
-      case 'esm':
-      case 'module':
-        return 'es'
-      case 'cjs':
-      case 'commonjs':
-        return 'cjs'
-      default:
-        return format
-    }
-  })
-}
-
-async function loadConfigFile(
-  options: Options,
-): Promise<[config: ResolvedConfig, file?: string]> {
-  let { config: filePath } = options
-  if (filePath === false) return [[]]
-
+async function loadConfigFile(options: Options): Promise<{
+  configs: ResolvedConfigs
+  file?: string
+  cwd: string
+}> {
   let cwd = process.cwd()
   let overrideConfig = false
+
+  let { config: filePath } = options
+  if (filePath === false) return { configs: [], cwd }
 
   if (typeof filePath === 'string') {
     const stats = await stat(filePath).catch(() => null)
@@ -246,7 +266,7 @@ async function loadConfigFile(
     }
   }
 
-  const { config, sources } = await loadConfig<Config>({
+  const { config, sources } = await loadConfig<UserConfig>({
     sources: overrideConfig
       ? [{ files: filePath as string, extensions: [] }]
       : [
@@ -269,7 +289,38 @@ async function loadConfigFile(
   }
 
   const file = sources[0]
-  return [toArray(config), file]
+  return {
+    configs: toArray(config),
+    file,
+    cwd,
+  }
+}
+
+async function loadViteConfig(cwd: string) {
+  const {
+    config,
+    sources: [source],
+  } = await loadConfig<ViteUserConfigExport>({
+    sources: [
+      {
+        files: 'vite.config',
+        extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+      },
+    ],
+    cwd,
+    defaults: {},
+  })
+  if (!source) return
+  logger.info(`Using Vite config: ${underline(source)}`)
+
+  const resolved = await config
+  if (typeof resolved === 'function') {
+    return resolved({
+      command: 'build',
+      mode: 'production',
+    } satisfies ConfigEnv)
+  }
+  return resolved
 }
 
 export async function mergeUserOptions<T extends object, A extends unknown[]>(

@@ -1,7 +1,10 @@
 import path from 'node:path'
 import { readPackageJSON, type PackageJson } from 'pkg-types'
 import { debug } from '../utils/logger'
+import type { NormalizedFormat } from '../options'
 import { fsExists } from './fs'
+import { toArray } from './general'
+import type { ModuleFormat } from 'rolldown'
 
 export async function readPackageJson(
   dir: string,
@@ -23,4 +26,22 @@ export function getPackageType(
     return pkg.type
   }
   return 'commonjs'
+}
+
+export function normalizeFormat(
+  format: ModuleFormat | ModuleFormat[],
+): NormalizedFormat[] {
+  return toArray<ModuleFormat>(format, 'es').map((format): NormalizedFormat => {
+    switch (format) {
+      case 'es':
+      case 'esm':
+      case 'module':
+        return 'es'
+      case 'cjs':
+      case 'commonjs':
+        return 'cjs'
+      default:
+        return format
+    }
+  })
 }

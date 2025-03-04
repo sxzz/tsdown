@@ -99,6 +99,9 @@ importers:
       unplugin-unused:
         specifier: ^0.4.2
         version: 0.4.2
+      vite:
+        specifier: ^6.2.0
+        version: 6.2.0(@types/node@22.13.8)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
       vitest:
         specifier: ^3.0.7
         version: 3.0.7(@types/debug@4.1.12)(@types/node@22.13.8)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)

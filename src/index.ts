@@ -14,9 +14,9 @@ import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
   resolveOptions,
-  type Config,
   type Options,
   type ResolvedOptions,
+  type UserConfig,
 } from './options'
 import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
@@ -30,18 +30,18 @@ export async function build(userOptions: Options = {}): Promise<void> {
   }
 
   debug('Loading config')
-  const [resolveds, configFile] = await resolveOptions(userOptions)
+  const { configs, file: configFile } = await resolveOptions(userOptions)
   if (configFile) debug('Loaded config:', configFile)
   else debug('No config file found')
 
-  const rebuilds = await Promise.all(resolveds.map(buildSingle))
+  const rebuilds = await Promise.all(configs.map(buildSingle))
   const cleanCbs: (() => Promise<void>)[] = []
 
-  for (const [i, resolved] of resolveds.entries()) {
+  for (const [i, config] of configs.entries()) {
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
-    const watcher = await watchBuild(resolved, configFile, rebuild, restart)
+    const watcher = await watchBuild(config, configFile, rebuild, restart)
     cleanCbs.push(() => watcher.close())
   }
 
@@ -63,10 +63,10 @@ export const pkgRoot: string = path.resolve(dirname, '..')
 /**
  * Build a single configuration, without watch and shortcuts features.
  *
- * @param resolved Resolved options
+ * @param config Resolved options
  */
 export async function buildSingle(
-  resolved: ResolvedOptions,
+  config: ResolvedOptions,
 ): Promise<(() => Promise<void>) | undefined> {
   const {
     entry,
@@ -88,7 +88,7 @@ export async function buildSingle(
     shims,
     fixedExtension,
     onSuccess,
-  } = resolved
+  } = config
 
   if (clean) await cleanOutDir(outDir, clean)
 
@@ -112,8 +112,8 @@ export async function buildSingle(
             platform,
             define,
             plugins: [
-              (pkg || resolved.skipNodeModulesBundle) &&
-                ExternalPlugin(resolved, pkg),
+              (pkg || config.skipNodeModulesBundle) &&
+                ExternalPlugin(config, pkg),
               unused &&
                 (await import('unplugin-unused')).Unused.rolldown(
                   unused === true ? {} : unused,
@@ -121,7 +121,7 @@ export async function buildSingle(
               dts &&
                 (await import('unplugin-isolated-decl')).IsolatedDecl.rolldown({
                   ...dts,
-                  extraOutdir: resolved.bundleDts
+                  extraOutdir: config.bundleDts
                     ? getTempDtsDir(format)
                     : dts.extraOutdir,
                 }),
@@ -138,7 +138,7 @@ export async function buildSingle(
               ...(shims && getShimsInject(format, platform)),
             },
           },
-          resolved.inputOptions,
+          config.inputOptions,
           [format],
         )
 
@@ -146,14 +146,14 @@ export async function buildSingle(
         const outputOptions: OutputOptions = await mergeUserOptions(
           {
             format,
-            name: resolved.globalName,
+            name: config.globalName,
             sourcemap,
             dir: outDir,
             minify,
             entryFileNames: `[name].${extension}`,
             chunkFileNames: `[name]-[hash].${extension}`,
           },
-          resolved.outputOptions,
+          config.outputOptions,
           [format],
         )
 
@@ -162,13 +162,13 @@ export async function buildSingle(
           output: outputOptions,
         })
 
-        if (resolved.dts && resolved.bundleDts) {
-          await bundleDts(resolved, extension, format)
+        if (config.dts && config.bundleDts) {
+          await bundleDts(config, extension, format)
         }
       }),
     )
 
-    if (resolved.publint) {
+    if (config.publint) {
       if (pkg) {
         await publint(pkg)
       } else {
@@ -187,4 +187,4 @@ export async function buildSingle(
 
 export { defineConfig } from './config'
 export { logger }
-export type { Config, Options }
+export type { Options, UserConfig }
