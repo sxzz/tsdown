@@ -139,7 +139,7 @@ test('fromVite', async (context) => {
     'tsdown.config.ts': `
     import { resolve } from 'node:path'
     export default {
-      entry: resolve(import.meta.dirname, 'index.ts'),
+      entry: resolve(import.meta.dirname, 'index.ts').replaceAll('\\\\', '/'),
       fromVite: true,
     }`,
     'vite.config.ts': `
