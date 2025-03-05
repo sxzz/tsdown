@@ -30,6 +30,7 @@ cli
     default: 'node',
   })
   .option('-w, --watch [path]', 'Watch mode')
+  .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(

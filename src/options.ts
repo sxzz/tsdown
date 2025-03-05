@@ -92,7 +92,7 @@ export interface Options {
    * Reuse config from Vite or Vitest (experimental)
    * @default false
    */
-  fromVite?: boolean
+  fromVite?: boolean | 'vitest'
 
   /// addons
   /**
@@ -190,7 +190,10 @@ export async function resolveOptions(options: Options): Promise<{
       if (publint === true) publint = {}
 
       if (fromVite) {
-        const viteUserConfig = await loadViteConfig(cwd)
+        const viteUserConfig = await loadViteConfig(
+          fromVite === true ? 'vite' : fromVite,
+          cwd,
+        )
         if (viteUserConfig) {
           // const alias = viteUserConfig.resolve?.alias
           if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
@@ -296,14 +299,14 @@ async function loadConfigFile(options: Options): Promise<{
   }
 }
 
-async function loadViteConfig(cwd: string) {
+async function loadViteConfig(prefix: string, cwd: string) {
   const {
     config,
     sources: [source],
   } = await loadConfig<ViteUserConfigExport>({
     sources: [
       {
-        files: 'vite.config',
+        files: `${prefix}.config`,
         extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
       },
     ],
