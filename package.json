@@ -1,6 +1,6 @@
 {
   "name": "tsdown",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "packageManager": "pnpm@10.5.2",
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
