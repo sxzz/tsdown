@@ -12,7 +12,7 @@ module.exports = fixed_extension_default;
 ## index.d.cts
 
 ```cts
-declare const _default: 10;
+declare const _default: number;
 
 export { _default as default };
 
@@ -20,7 +20,7 @@ export { _default as default };
 ## index.d.mts
 
 ```mts
-declare const _default: 10;
+declare const _default: number;
 
 export { _default as default };
 
