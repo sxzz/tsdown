@@ -14,6 +14,7 @@
     "url": "git+https://github.com/sxzz/tsdown.git"
   },
   "author": "三咲智子 Kevin Deng <sxzz@sxzz.moe>",
+  "funding": "https://github.com/sponsors/sxzz",
   "files": [
     "dist",
     "esm-shims.js"
