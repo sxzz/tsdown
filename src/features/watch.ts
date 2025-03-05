@@ -24,10 +24,7 @@ export async function watchBuild(
   const watcher = watch(files, {
     ignoreInitial: true,
     ignorePermissionErrors: true,
-    ignored: (id) => {
-      if (id.includes('/.git/') || id.includes('/node_modules/')) return true
-      return id.startsWith(options.outDir)
-    },
+    ignored: [/[\\/]\.git[\\/]/, /[\\/]node_modules[\\/]/, options.outDir],
   })
 
   watcher.on('all', (type: string, file: string) => {
