@@ -10,6 +10,7 @@ import type { NormalizedFormat, ResolvedOptions } from '../options'
 import { ExternalPlugin } from './external'
 import type { OutputExtension } from './output'
 import type { PackageJson } from 'pkg-types'
+import type { ScriptTarget } from 'typescript'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 const debug = Debug('tsdown:dts')
@@ -46,7 +47,19 @@ export async function bundleDts(
     plugins: [
       ExternalPlugin(options, pkg) as any,
       ResolveDtsPlugin(),
-      DtsPlugin(),
+      DtsPlugin({
+        compilerOptions: {
+          declaration: true,
+          noEmit: false,
+          emitDeclarationOnly: true,
+          noEmitOnError: true,
+          checkJs: false,
+          declarationMap: false,
+          skipLibCheck: true,
+          preserveSymlinks: false,
+          target: 99 satisfies ScriptTarget.ESNext,
+        },
+      }),
     ],
   })
 
