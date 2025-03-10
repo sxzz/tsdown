@@ -125,7 +125,7 @@ export async function buildSingle(
                     ? getTempDtsDir(format)
                     : dts.extraOutdir,
                 }),
-              target &&
+              !!target &&
                 transformPlugin({
                   target:
                     target &&
@@ -133,7 +133,7 @@ export async function buildSingle(
                 }),
 
               userPlugins,
-            ].filter((plugin) => !!plugin),
+            ],
             inject: {
               ...(shims && getShimsInject(format, platform)),
             },

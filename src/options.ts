@@ -21,11 +21,17 @@ import type {
   ModuleFormat,
   OutputOptions,
 } from 'rolldown'
+import type { CompilerOptions } from 'typescript'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
+
+export interface BundleDtsOptions {
+  resolve?: boolean
+  compilerOptions?: CompilerOptions
+}
 
 /**
  * Options for tsdown.
@@ -100,7 +106,7 @@ export interface Options {
    */
   dts?: boolean | IsolatedDeclOptions
   /** @default true */
-  bundleDts?: boolean
+  bundleDts?: boolean | BundleDtsOptions
 
   /**
    * Enable unused dependencies check with `unplugin-unused`
@@ -146,6 +152,7 @@ export type ResolvedOptions = Omit<
       format: NormalizedFormat[]
       clean: string[] | false
       dts: false | IsolatedDeclOptions
+      bundleDts: false | BundleDtsOptions
     }
   >,
   'config' | 'fromVite'
@@ -188,6 +195,7 @@ export async function resolveOptions(options: Options): Promise<{
       entry = await resolveEntry(entry)
       if (clean === true) clean = []
       if (publint === true) publint = {}
+      if (bundleDts === true) bundleDts = {}
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(

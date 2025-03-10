@@ -171,9 +171,9 @@ test('fromVite', async (context) => {
   ])
 })
 
-test('inline dependency for dts', async (context) => {
+test('resolve dependency for dts', async (context) => {
   const files = {
     'index.ts': `export type { GlobOptions } from 'tinyglobby'`,
   }
-  await testBuild(context, files, { dts: true })
+  await testBuild(context, files, { dts: true, bundleDts: { resolve: true } })
 })

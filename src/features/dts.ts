@@ -6,7 +6,11 @@ import { rollup, type Plugin } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
 import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
-import type { NormalizedFormat, ResolvedOptions } from '../options'
+import type {
+  BundleDtsOptions,
+  NormalizedFormat,
+  ResolvedOptions,
+} from '../options'
 import { ExternalPlugin } from './external'
 import type { OutputExtension } from './output'
 import type { PackageJson } from 'pkg-types'
@@ -27,6 +31,7 @@ export async function bundleDts(
   pkg?: PackageJson,
 ): Promise<void> {
   typeAsserts<IsolatedDeclOptions>(options.dts)
+  typeAsserts<BundleDtsOptions>(options.bundleDts)
 
   const ext = jsExtension.replace('j', 't')
   const dtsOutDir = path.resolve(options.outDir, getTempDtsDir(format))
@@ -46,9 +51,10 @@ export async function bundleDts(
     },
     plugins: [
       ExternalPlugin(options, pkg) as any,
-      ResolveDtsPlugin(),
+      options.bundleDts.resolve && ResolveDtsPlugin(),
       DtsPlugin({
         compilerOptions: {
+          ...options.bundleDts.compilerOptions,
           declaration: true,
           noEmit: false,
           emitDeclarationOnly: true,
