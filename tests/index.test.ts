@@ -50,19 +50,22 @@ test('esm shims', async (context) => {
 })
 
 test('cjs shims', async (context) => {
-  await testBuild(
+  const { snapshot } = await testBuild(
     context,
     {
       'index.ts': `
-        import.meta.url === require("url").pathToFileURL(__filename).href
-        import.meta.filename === __filename
-        import.meta.dirname === __dirname`,
+        export const url = import.meta.url
+        export const filename = import.meta.filename
+        export const dirname = import.meta.dirname`,
     },
     {
       shims: true,
       format: 'cjs',
     },
   )
+  expect(snapshot).contain('require("url").pathToFileURL(__filename).href')
+  expect(snapshot).contain('__filename')
+  expect(snapshot).contain('__dirname')
 })
 
 test('entry structure', async (context) => {

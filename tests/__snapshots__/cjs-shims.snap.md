@@ -4,9 +4,12 @@
 "use strict";
 
 //#region index.ts
-require("url").pathToFileURL(__filename).href === require("url").pathToFileURL(__filename).href;
-__filename === __filename;
-__dirname === __dirname;
+const url = require("url").pathToFileURL(__filename).href;
+const filename = __filename;
+const dirname = __dirname;
 
 //#endregion
+exports.dirname = dirname
+exports.filename = filename
+exports.url = url
 ```
