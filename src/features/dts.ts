@@ -1,7 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { ResolverFactory } from 'oxc-resolver'
-import { rollup } from 'rollup'
+import { rollup, type Plugin } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
 import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
@@ -16,8 +16,6 @@ const TEMP_DTS_DIR = '.tsdown-types'
 export function getTempDtsDir(format: NormalizedFormat) {
   return `${TEMP_DTS_DIR}-${format}`
 }
-
-let resolver: ResolverFactory | undefined
 
 export async function bundleDts(
   options: ResolvedOptions,
@@ -35,12 +33,6 @@ export async function bundleDts(
       path.resolve(dtsOutDir, `${key}.d.${ext}`),
     ]),
   )
-  resolver ||= new ResolverFactory({
-    mainFields: ['types'],
-    conditionNames: ['types', 'typings', 'import', 'require'],
-    extensions: ['.d.ts', '.ts'],
-    modules: ['node_modules', 'node_modules/@types'],
-  })
   const build = await rollup({
     input: dtsEntry,
     external: options.external,
@@ -51,25 +43,7 @@ export async function bundleDts(
     },
     plugins: [
       ExternalPlugin(options, pkg) as any,
-      {
-        name: 'resolve-dts',
-        async resolveId(id, importer) {
-          if (id[0] === '.' || path.isAbsolute(id)) return
-          if (/\0/.test(id)) return
-
-          const directory = importer ? path.dirname(importer) : process.cwd()
-          const { path: resolved } = await resolver!.async(directory, id)
-          if (!resolved) return
-
-          // try to resolve same-name d.ts
-          if (/[cm]?jsx?$/.test(resolved)) {
-            const dts = resolved.replace(/\.([cm]?)jsx?$/, '.d.$1ts')
-            return (await fsExists(dts)) ? dts : undefined
-          }
-
-          return resolved
-        },
-      },
+      ResolveDtsPlugin(),
       DtsPlugin(),
     ],
   })
@@ -86,4 +60,35 @@ export async function bundleDts(
     entryFileNames: `[name].d.${ext}`,
   })
   await fsRemove(dtsOutDir)
+}
+
+let resolver: ResolverFactory | undefined
+export function ResolveDtsPlugin(): Plugin {
+  return {
+    name: 'resolve-dts',
+    buildStart() {
+      resolver ||= new ResolverFactory({
+        mainFields: ['types'],
+        conditionNames: ['types', 'typings', 'import', 'require'],
+        extensions: ['.d.ts', '.ts'],
+        modules: ['node_modules', 'node_modules/@types'],
+      })
+    },
+    async resolveId(id, importer) {
+      if (id[0] === '.' || path.isAbsolute(id)) return
+      if (/\0/.test(id)) return
+
+      const directory = importer ? path.dirname(importer) : process.cwd()
+      const { path: resolved } = await resolver!.async(directory, id)
+      if (!resolved) return
+
+      // try to resolve same-name d.ts
+      if (/[cm]?jsx?$/.test(resolved)) {
+        const dts = resolved.replace(/\.([cm]?)jsx?$/, '.d.$1ts')
+        return (await fsExists(dts)) ? dts : undefined
+      }
+
+      return resolved
+    },
+  }
 }
