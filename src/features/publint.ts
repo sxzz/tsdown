@@ -6,12 +6,12 @@ import type { PackageJson } from 'pkg-types'
 const debug = Debug('tsdown:publint')
 
 export async function publint(pkg: PackageJson): Promise<void> {
+  debug('Running publint')
   const { publint } = await import('publint')
   const { formatMessage } = await import('publint/utils')
-
-  debug('Running publint')
   const { messages } = await publint()
   debug('Found %d issues', messages.length)
+
   if (!messages.length) {
     logger.success('No publint issues found')
   }
