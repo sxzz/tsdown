@@ -181,7 +181,7 @@ export async function buildSingle(
         performance.now() - startTime,
       )}ms`,
     )
-    await onSuccess?.()
+    await onSuccess?.(config)
   }
 }
 

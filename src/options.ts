@@ -81,7 +81,7 @@ export interface Options {
   silent?: boolean
   config?: boolean | string
   watch?: boolean | string | string[]
-  onSuccess?: () => void | Promise<void>
+  onSuccess?: (config: ResolvedOptions) => void | Promise<void>
 
   /**
    * Skip bundling node_modules.
