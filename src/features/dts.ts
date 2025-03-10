@@ -1,7 +1,9 @@
 import path from 'node:path'
+import process from 'node:process'
+import { ResolverFactory } from 'oxc-resolver'
 import { rollup } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
-import { fsRemove } from '../utils/fs'
+import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
 import type { OutputExtension } from './output'
@@ -12,6 +14,8 @@ const TEMP_DTS_DIR = '.tsdown-types'
 export function getTempDtsDir(format: NormalizedFormat) {
   return `${TEMP_DTS_DIR}-${format}`
 }
+
+let resolver: ResolverFactory | undefined
 
 export async function bundleDts(
   options: ResolvedOptions,
@@ -28,6 +32,12 @@ export async function bundleDts(
       path.resolve(dtsOutDir, `${key}.d.${ext}`),
     ]),
   )
+  resolver ||= new ResolverFactory({
+    mainFields: ['types'],
+    conditionNames: ['types', 'typings', 'import', 'require'],
+    extensions: ['.d.ts', '.ts'],
+    modules: ['node_modules', 'node_modules/@types'],
+  })
   const build = await rollup({
     input: dtsEntry,
     onLog(level, log, defaultHandler) {
@@ -35,7 +45,28 @@ export async function bundleDts(
         defaultHandler(level, log)
       }
     },
-    plugins: [DtsPlugin()],
+    plugins: [
+      {
+        name: 'resolve-dts',
+        async resolveId(id, importer) {
+          if (id[0] === '.' || path.isAbsolute(id)) return
+          if (/\0/.test(id)) return
+
+          const directory = importer ? path.dirname(importer) : process.cwd()
+          const { path: resolved } = await resolver!.async(directory, id)
+          if (!resolved) return
+
+          // try to resolve same-name d.ts
+          if (/[cm]?jsx?$/.test(resolved)) {
+            const dts = resolved.replace(/\.([cm]?)jsx?$/, '.d.$1ts')
+            return (await fsExists(dts)) ? dts : undefined
+          }
+
+          return resolved
+        },
+      },
+      DtsPlugin(),
+    ],
   })
 
   let outDir = options.outDir
