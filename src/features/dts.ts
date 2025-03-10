@@ -6,7 +6,9 @@ import DtsPlugin from 'rollup-plugin-dts'
 import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
+import { ExternalPlugin } from './external'
 import type { OutputExtension } from './output'
+import type { PackageJson } from 'pkg-types'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 const TEMP_DTS_DIR = '.tsdown-types'
@@ -21,6 +23,7 @@ export async function bundleDts(
   options: ResolvedOptions,
   jsExtension: OutputExtension,
   format: NormalizedFormat,
+  pkg?: PackageJson,
 ): Promise<void> {
   typeAsserts<IsolatedDeclOptions>(options.dts)
 
@@ -40,12 +43,14 @@ export async function bundleDts(
   })
   const build = await rollup({
     input: dtsEntry,
+    external: options.external,
     onLog(level, log, defaultHandler) {
       if (log.code !== 'EMPTY_BUNDLE' && log.code !== 'UNRESOLVED_IMPORT') {
         defaultHandler(level, log)
       }
     },
     plugins: [
+      ExternalPlugin(options, pkg) as any,
       {
         name: 'resolve-dts',
         async resolveId(id, importer) {

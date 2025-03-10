@@ -163,7 +163,7 @@ export async function buildSingle(
         })
 
         if (config.dts && config.bundleDts) {
-          await bundleDts(config, extension, format)
+          await bundleDts(config, extension, format, pkg)
         }
       }),
     )
