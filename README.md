@@ -27,6 +27,14 @@ export default defineConfig({
 })
 ```
 
+## Migrate from tsup
+
+```bash
+npx tsdown migrate
+```
+
+Please make sure to commit your changes before migrating.
+
 ## Credits
 
 This project also partially contains code derived or copied from [tsup](https://github.com/egoist/tsup).
