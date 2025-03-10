@@ -1,7 +1,7 @@
 {
   "name": "tsdown",
   "version": "0.6.4",
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.2",
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
   "license": "MIT",
@@ -74,32 +74,32 @@
     "diff": "^7.0.0",
     "pkg-types": "^2.1.0",
     "rolldown": "^1.0.0-beta.3",
-    "rollup": "^4.34.9",
+    "rollup": "^4.35.0",
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.12",
-    "unconfig": "^7.3.0",
-    "unplugin-isolated-decl": "^0.13.0"
+    "unconfig": "^7.3.1",
+    "unplugin-isolated-decl": "^0.13.2"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "^6.0.1",
-    "@sxzz/prettier-config": "^2.2.0",
+    "@sxzz/prettier-config": "^2.2.1",
     "@sxzz/test-utils": "^0.5.1",
     "@types/debug": "^4.1.12",
     "@types/diff": "^7.0.1",
-    "@types/node": "^22.13.9",
+    "@types/node": "^22.13.10",
     "bumpp": "^10.0.3",
-    "eslint": "^9.21.0",
-    "oxc-transform": "^0.55.0",
+    "eslint": "^9.22.0",
+    "oxc-transform": "^0.56.5",
     "prettier": "^3.5.3",
-    "publint": "^0.3.8",
+    "publint": "^0.3.9",
     "tinyexec": "^0.3.2",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
     "typescript": "~5.8.2",
-    "unplugin-ast": "^0.14.1",
+    "unplugin-ast": "^0.14.2",
     "unplugin-unused": "^0.4.3",
-    "vite": "^6.2.0",
-    "vitest": "^3.0.7"
+    "vite": "^6.2.1",
+    "vitest": "^3.0.8"
   },
   "engines": {
     "node": ">=18.0.0"
