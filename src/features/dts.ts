@@ -1,5 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
+import Debug from 'debug'
 import { ResolverFactory } from 'oxc-resolver'
 import { rollup, type Plugin } from 'rollup'
 import DtsPlugin from 'rollup-plugin-dts'
@@ -11,6 +12,7 @@ import type { OutputExtension } from './output'
 import type { PackageJson } from 'pkg-types'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
+const debug = Debug('tsdown:dts')
 const TEMP_DTS_DIR = '.tsdown-types'
 
 export function getTempDtsDir(format: NormalizedFormat) {
@@ -79,8 +81,10 @@ export function ResolveDtsPlugin(): Plugin {
       if (/\0/.test(id)) return
 
       const directory = importer ? path.dirname(importer) : process.cwd()
+      debug('Resolving:', id, 'from:', directory)
       const { path: resolved } = await resolver!.async(directory, id)
       if (!resolved) return
+      debug('Resolved:', resolved)
 
       // try to resolve same-name d.ts
       if (/[cm]?jsx?$/.test(resolved)) {
