@@ -1,6 +1,8 @@
 ## index.d.mts
 
 ```mts
+export * from 'consola';
+
 interface GlobOptions {
     absolute?: boolean;
     cwd?: string;

@@ -176,7 +176,12 @@ test('fromVite', async (context) => {
 
 test('resolve dependency for dts', async (context) => {
   const files = {
-    'index.ts': `export type { GlobOptions } from 'tinyglobby'`,
+    'index.ts': `export type { GlobOptions } from 'tinyglobby'
+    export type * from 'consola'`,
   }
-  await testBuild(context, files, { dts: true, bundleDts: { resolve: true } })
+  const { snapshot } = await testBuild(context, files, {
+    dts: true,
+    bundleDts: { resolve: ['tinyglobby'] },
+  })
+  expect(snapshot).contain(`export * from 'consola'`)
 })

@@ -30,8 +30,9 @@ export async function bundleDts(
   format: NormalizedFormat,
   pkg?: PackageJson,
 ): Promise<void> {
-  typeAsserts<IsolatedDeclOptions>(options.dts)
-  typeAsserts<BundleDtsOptions>(options.bundleDts)
+  const { dts, bundleDts } = options
+  typeAsserts<IsolatedDeclOptions>(dts)
+  typeAsserts<BundleDtsOptions>(bundleDts)
 
   const ext = jsExtension.replace('j', 't')
   const dtsOutDir = path.resolve(options.outDir, getTempDtsDir(format))
@@ -41,6 +42,7 @@ export async function bundleDts(
       path.resolve(dtsOutDir, `${key}.d.${ext}`),
     ]),
   )
+
   const build = await rollup({
     input: dtsEntry,
     external: options.external,
@@ -51,10 +53,13 @@ export async function bundleDts(
     },
     plugins: [
       ExternalPlugin(options, pkg) as any,
-      options.bundleDts.resolve && ResolveDtsPlugin(),
+      bundleDts.resolve &&
+        ResolveDtsPlugin(
+          bundleDts.resolve !== true ? bundleDts.resolve : undefined,
+        ),
       DtsPlugin({
         compilerOptions: {
-          ...options.bundleDts.compilerOptions,
+          ...bundleDts.compilerOptions,
           declaration: true,
           noEmit: false,
           emitDeclarationOnly: true,
@@ -70,7 +75,7 @@ export async function bundleDts(
   })
 
   let outDir = options.outDir
-  const extraOutdir = options.dts.extraOutdir
+  const extraOutdir = dts.extraOutdir
   if (extraOutdir) {
     outDir = path.resolve(outDir, extraOutdir)
   }
@@ -84,7 +89,7 @@ export async function bundleDts(
 }
 
 let resolver: ResolverFactory | undefined
-export function ResolveDtsPlugin(): Plugin {
+export function ResolveDtsPlugin(resolveOnly?: Array<string | RegExp>): Plugin {
   return {
     name: 'resolve-dts',
     buildStart() {
@@ -98,6 +103,17 @@ export function ResolveDtsPlugin(): Plugin {
     async resolveId(id, importer) {
       if (id[0] === '.' || path.isAbsolute(id)) return
       if (/\0/.test(id)) return
+
+      if (resolveOnly) {
+        const shouldResolve = resolveOnly.some((value) => {
+          if (typeof value === 'string') return value === id
+          return value.test(id)
+        })
+        if (!shouldResolve) {
+          debug('skipped by matching resolveOnly: %s', id)
+          return
+        }
+      }
 
       const directory = importer ? path.dirname(importer) : process.cwd()
       debug('Resolving:', id, 'from:', directory)

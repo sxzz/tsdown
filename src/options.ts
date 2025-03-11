@@ -29,7 +29,8 @@ import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
 export interface BundleDtsOptions {
-  resolve?: boolean
+  /** Resolve external types used in dts files from node_modules */
+  resolve?: boolean | (string | RegExp)[]
   compilerOptions?: CompilerOptions
 }
 
