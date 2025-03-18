@@ -30,7 +30,7 @@ export function ExternalPlugin(
           return
       }
 
-      let shouldExternal = false
+      let shouldExternal: boolean | 'absolute' = false
       if (options.skipNodeModulesBundle) {
         const resolved = await this.resolve(id)
         if (!resolved) return
@@ -45,7 +45,7 @@ export function ExternalPlugin(
 
       if (shouldExternal) {
         debug('External dependency:', id)
-        return { id, external: true }
+        return { id, external: shouldExternal }
       }
     },
   }
