@@ -90,8 +90,6 @@ export async function buildSingle(
     onSuccess,
   } = config
 
-  if (clean) await cleanOutDir(outDir, clean)
-
   const pkg = await readPackageJson(process.cwd())
 
   await rebuild(true)
@@ -101,6 +99,8 @@ export async function buildSingle(
 
   async function rebuild(first?: boolean) {
     const startTime = performance.now()
+    if (clean) await cleanOutDir(outDir, clean)
+
     await Promise.all(
       format.map(async (format) => {
         const inputOptions = await mergeUserOptions(
