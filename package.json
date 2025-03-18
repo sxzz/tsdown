@@ -1,7 +1,7 @@
 {
   "name": "tsdown",
   "version": "0.6.8",
-  "packageManager": "pnpm@10.6.3",
+  "packageManager": "pnpm@10.6.4",
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
   "license": "MIT",
@@ -69,13 +69,13 @@
     "ansis": "^3.17.0",
     "cac": "^6.7.14",
     "chokidar": "^4.0.3",
-    "consola": "^3.4.0",
+    "consola": "^3.4.1",
     "debug": "^4.4.0",
     "diff": "^7.0.0",
     "oxc-resolver": "^5.0.0",
     "pkg-types": "^2.1.0",
-    "rolldown": "1.0.0-beta.4",
-    "rollup": "^4.35.0",
+    "rolldown": "1.0.0-beta.6",
+    "rollup": "^4.36.0",
     "rollup-plugin-dts": "^6.1.1",
     "tinyglobby": "^0.2.12",
     "unconfig": "^7.3.1",
@@ -90,7 +90,7 @@
     "@types/node": "^22.13.10",
     "bumpp": "^10.1.0",
     "eslint": "^9.22.0",
-    "oxc-transform": "^0.58.1",
+    "oxc-transform": "^0.60.0",
     "prettier": "^3.5.3",
     "publint": "^0.3.9",
     "tinyexec": "^0.3.2",
@@ -100,7 +100,7 @@
     "unplugin-ast": "^0.14.3",
     "unplugin-unused": "^0.4.3",
     "vite": "^6.2.2",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.9"
   },
   "engines": {
     "node": ">=18.0.0"
