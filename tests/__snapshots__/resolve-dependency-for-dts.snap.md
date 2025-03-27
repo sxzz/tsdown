@@ -18,10 +18,6 @@ interface GlobOptions {
     debug?: boolean;
 }
 
-
-
-
-
 export type { GlobOptions };
 
 ```
