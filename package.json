@@ -75,16 +75,16 @@
     "oxc-resolver": "^5.0.1",
     "pkg-types": "^2.1.0",
     "rolldown": "^1.0.0-beta.7",
-    "rollup": "^4.37.0",
+    "rollup": "^4.38.0",
     "rollup-plugin-dts": "^6.2.1",
     "tinyglobby": "^0.2.12",
     "unconfig": "^7.3.1",
     "unplugin-isolated-decl": "^0.13.5"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^6.1.0",
+    "@sxzz/eslint-config": "^6.1.1",
     "@sxzz/prettier-config": "^2.2.1",
-    "@sxzz/test-utils": "^0.5.2",
+    "@sxzz/test-utils": "^0.5.4",
     "@types/debug": "^4.1.12",
     "@types/diff": "^7.0.2",
     "@types/node": "^22.13.14",
@@ -99,8 +99,8 @@
     "typescript": "~5.8.2",
     "unplugin-ast": "^0.14.4",
     "unplugin-unused": "^0.4.3",
-    "vite": "^6.2.3",
-    "vitest": "^3.0.9"
+    "vite": "^6.2.4",
+    "vitest": "^3.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
