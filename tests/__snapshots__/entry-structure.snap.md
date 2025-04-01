@@ -1,10 +1,10 @@
-## index.mjs
+## index.js
 
-```mjs
+```js
 
 ```
-## utils/index.mjs
+## utils/index.js
 
-```mjs
+```js
 
 ```

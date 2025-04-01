@@ -1,6 +1,6 @@
-## index.mjs
+## index.js
 
-```mjs
+```js
 
 //#region foo.ts
 const foo = 1;

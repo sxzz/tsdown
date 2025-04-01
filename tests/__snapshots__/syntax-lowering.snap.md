@@ -1,6 +1,6 @@
-## index.mjs
+## index.js
 
-```mjs
+```js
 
 //#region index.ts
 var _a, _a$b;

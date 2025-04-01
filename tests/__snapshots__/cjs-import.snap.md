@@ -1,6 +1,6 @@
-## index.js
+## index.cjs
 
-```js
+```cjs
 "use strict";
 
 //#region foo.ts

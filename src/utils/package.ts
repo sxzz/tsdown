@@ -1,19 +1,19 @@
-import path from 'node:path'
-import { readPackageJSON, type PackageJson } from 'pkg-types'
+import { readFile } from 'node:fs/promises'
+import { findUp } from 'find-up-simple'
 import { debug } from '../utils/logger'
 import type { NormalizedFormat } from '../options'
-import { fsExists } from './fs'
 import { toArray } from './general'
+import type { PackageJson } from 'pkg-types'
 import type { ModuleFormat } from 'rolldown'
 
 export async function readPackageJson(
   dir: string,
 ): Promise<PackageJson | undefined> {
-  const packageJsonPath = path.join(dir, 'package.json')
-  const exists = await fsExists(packageJsonPath)
-  if (!exists) return
+  const packageJsonPath = await findUp('package.json', { cwd: dir })
+  if (!packageJsonPath) return
   debug('Reading package.json:', packageJsonPath)
-  return readPackageJSON(packageJsonPath)
+  const contents = await readFile(packageJsonPath, 'utf8')
+  return JSON.parse(contents) as PackageJson
 }
 
 export function getPackageType(

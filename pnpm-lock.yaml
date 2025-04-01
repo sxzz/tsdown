@@ -26,12 +26,12 @@ importers:
       diff:
         specifier: ^7.0.0
         version: 7.0.0
+      find-up-simple:
+        specifier: ^1.0.1
+        version: 1.0.1
       oxc-resolver:
         specifier: ^5.0.1
         version: 5.0.1
-      pkg-types:
-        specifier: ^2.1.0
-        version: 2.1.0
       rolldown:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.2)
@@ -78,6 +78,9 @@ importers:
       oxc-transform:
         specifier: ^0.61.2
         version: 0.61.2
+      pkg-types:
+        specifier: ^2.1.0
+        version: 2.1.0
       prettier:
         specifier: ^3.5.3
         version: 3.5.3

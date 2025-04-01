@@ -1,6 +1,6 @@
-## index.mjs
+## index.js
 
-```mjs
+```js
 
 //#region src/utils/types.ts
 let str = "hello";
@@ -12,9 +12,9 @@ let shared = 10;
 //#endregion
 export { shared, str };
 ```
-## types/index.d.mts
+## types/index.d.ts
 
-```mts
+```ts
 declare let str: string;
 
 declare let shared: number;
