@@ -3,7 +3,6 @@ import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import consola from 'consola'
 import { version } from '../package.json'
-import { diff } from './utils/diff'
 
 export async function migrate({
   cwd,
@@ -99,8 +98,9 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
 
   const pkgStr = `${JSON.stringify(pkg, null, 2)}\n`
   if (dryRun) {
+    const { createPatch } = await import('diff')
     consola.info('[dry-run] package.json:')
-    console.info(diff(pkgRaw, pkgStr))
+    console.info(createPatch('package.json', pkgRaw, pkgStr))
   } else {
     await writeFile('package.json', pkgStr)
     consola.success('Migrated `package.json`')
@@ -128,12 +128,15 @@ async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
     const tsupConfigRaw = await readFile(file, 'utf-8')
     const tsupConfig = tsupConfigRaw
       .replaceAll(/\btsup\b/g, 'tsdown')
-      .replace(/\bTSUP\b/, 'TSDOWN')
+      .replaceAll(/\bTSUP\b/g, 'TSDOWN')
 
     const renamed = file.replaceAll('tsup', 'tsdown')
     if (dryRun) {
+      const { createTwoFilesPatch } = await import('diff')
       consola.info(`[dry-run] ${file} -> ${renamed}:`)
-      console.info(diff(tsupConfigRaw, tsupConfig))
+      console.info(
+        createTwoFilesPatch(file, renamed, tsupConfigRaw, tsupConfig),
+      )
     } else {
       await writeFile(renamed, tsupConfig, 'utf8')
       await unlink(file)
