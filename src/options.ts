@@ -1,6 +1,7 @@
 import { stat } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
+import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
@@ -253,6 +254,8 @@ export async function resolveOptions(options: Options): Promise<{
   return { configs, file }
 }
 
+let loaded = false
+
 async function loadConfigFile(options: Options): Promise<{
   configs: ResolvedConfigs
   file?: string
@@ -278,23 +281,36 @@ async function loadConfigFile(options: Options): Promise<{
     }
   }
 
-  const { config, sources } = await loadConfig<UserConfig>({
-    sources: overrideConfig
-      ? [{ files: filePath as string, extensions: [] }]
-      : [
-          {
-            files: 'tsdown.config',
-            extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
-          },
-          {
-            files: 'package.json',
-            extensions: [],
-            rewrite: (config: any) => config?.tsdown,
-          },
-        ],
-    cwd,
-    defaults: {},
-  })
+  const nativeTS =
+    process.features.typescript || process.versions.bun || process.versions.deno
+
+  const { config, sources } = await loadConfig
+    .async<UserConfig>({
+      sources: overrideConfig
+        ? [{ files: filePath as string, extensions: [] }]
+        : [
+            {
+              files: 'tsdown.config',
+              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+              parser:
+                loaded || !nativeTS
+                  ? 'auto'
+                  : async (filepath) => {
+                      const mod = await import(pathToFileURL(filepath).href)
+                      const config = mod.default || mod
+                      return config
+                    },
+            },
+            {
+              files: 'package.json',
+              extensions: [],
+              rewrite: (config: any) => config?.tsdown,
+            },
+          ],
+      cwd,
+      defaults: {},
+    })
+    .finally(() => (loaded = true))
 
   if (sources.length > 0) {
     logger.info(`Using tsdown config: ${underline(sources.join(', '))}`)
