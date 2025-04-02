@@ -11,9 +11,7 @@ import type {
   NormalizedFormat,
   ResolvedOptions,
 } from '../options'
-import { ExternalPlugin } from './external'
 import type { OutputExtension } from './output'
-import type { PackageJson } from 'pkg-types'
 import type { ScriptTarget } from 'typescript'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
@@ -28,7 +26,6 @@ export async function bundleDts(
   options: ResolvedOptions,
   jsExtension: OutputExtension,
   format: NormalizedFormat,
-  pkg?: PackageJson,
 ): Promise<void> {
   const { dts, bundleDts } = options
   typeAsserts<IsolatedDeclOptions>(dts)
@@ -52,7 +49,6 @@ export async function bundleDts(
       }
     },
     plugins: [
-      ExternalPlugin(options, pkg) as any,
       bundleDts.resolve &&
         ResolveDtsPlugin(
           bundleDts.resolve !== true ? bundleDts.resolve : undefined,
