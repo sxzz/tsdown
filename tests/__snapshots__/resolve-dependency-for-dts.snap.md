@@ -1,8 +1,10 @@
 ## index.d.ts
 
 ```ts
-export * from 'consola';
 
+export * from "consola"
+
+//#region ../../../node_modules/.pnpm/tinyglobby@0.2.12/node_modules/tinyglobby/dist/index.d.mts
 interface GlobOptions {
     absolute?: boolean;
     cwd?: string;
@@ -18,8 +20,8 @@ interface GlobOptions {
     debug?: boolean;
 }
 
-export type { GlobOptions };
-
+//#endregion
+export { GlobOptions };
 ```
 ## index.js
 

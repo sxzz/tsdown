@@ -2,8 +2,8 @@ import path from 'node:path'
 import process from 'node:process'
 import Debug from 'debug'
 import { ResolverFactory } from 'oxc-resolver'
-import { rollup, type Plugin } from 'rollup'
-import DtsPlugin from 'rollup-plugin-dts'
+import { build, type Plugin } from 'rolldown'
+import { dts as DtsPlugin } from 'rolldown-plugin-dts'
 import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
 import type {
@@ -12,7 +12,6 @@ import type {
   ResolvedOptions,
 } from '../options'
 import type { OutputExtension } from './output'
-import type { ScriptTarget } from 'typescript'
 import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
 
 const debug = Debug('tsdown:dts')
@@ -40,9 +39,14 @@ export async function bundleDts(
     ]),
   )
 
-  const build = await rollup({
+  let outDir = options.outDir
+  const extraOutdir = dts.extraOutdir
+  if (extraOutdir) {
+    outDir = path.resolve(outDir, extraOutdir)
+  }
+
+  await build({
     input: dtsEntry,
-    external: options.external,
     onLog(level, log, defaultHandler) {
       if (log.code !== 'EMPTY_BUNDLE' && log.code !== 'UNRESOLVED_IMPORT') {
         defaultHandler(level, log)
@@ -53,34 +57,14 @@ export async function bundleDts(
         ResolveDtsPlugin(
           bundleDts.resolve !== true ? bundleDts.resolve : undefined,
         ),
-      DtsPlugin({
-        compilerOptions: {
-          ...bundleDts.compilerOptions,
-          declaration: true,
-          noEmit: false,
-          emitDeclarationOnly: true,
-          noEmitOnError: true,
-          checkJs: false,
-          declarationMap: false,
-          skipLibCheck: true,
-          preserveSymlinks: false,
-          target: 99 satisfies ScriptTarget.ESNext,
-        },
-      }),
+      DtsPlugin(),
     ],
+    output: {
+      dir: outDir,
+      entryFileNames: `[name].d.${ext}`,
+    },
   })
 
-  let outDir = options.outDir
-  const extraOutdir = dts.extraOutdir
-  if (extraOutdir) {
-    outDir = path.resolve(outDir, extraOutdir)
-  }
-
-  await build.write({
-    dir: outDir,
-    format: 'es',
-    entryFileNames: `[name].d.${ext}`,
-  })
   await fsRemove(dtsOutDir)
 }
 

@@ -183,5 +183,5 @@ test('resolve dependency for dts', async (context) => {
     dts: true,
     bundleDts: { resolve: ['tinyglobby'] },
   })
-  expect(snapshot).contain(`export * from 'consola'`)
+  expect(snapshot).contain(`export * from "consola"`)
 })

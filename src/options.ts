@@ -107,7 +107,11 @@ export interface Options {
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
   dts?: boolean | IsolatedDeclOptions
-  /** @default true */
+
+  /**
+   * Bundle dts files (experimental)
+   * @default true
+   */
   bundleDts?: boolean | BundleDtsOptions
 
   /**

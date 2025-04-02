@@ -12,18 +12,22 @@ module.exports = fixed_extension_default;
 ## index.d.cts
 
 ```cts
+
+//#region dist/.tsdown-types-cjs/index.d.cts
 declare const _default: number;
 
+//#endregion
 export { _default as default };
-
 ```
 ## index.d.mts
 
 ```mts
+
+//#region dist/.tsdown-types-es/index.d.mts
 declare const _default: number;
 
+//#endregion
 export { _default as default };
-
 ```
 ## index.mjs
 

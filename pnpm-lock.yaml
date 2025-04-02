@@ -35,12 +35,9 @@ importers:
       rolldown:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.2)
-      rollup:
-        specifier: ^4.38.0
-        version: 4.38.0
-      rollup-plugin-dts:
-        specifier: ^6.2.1
-        version: 6.2.1(rollup@4.38.0)(typescript@5.8.2)
+      rolldown-plugin-dts:
+        specifier: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0
+        version: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.12
@@ -1739,6 +1736,10 @@ packages:
     resolution: {integrity: sha512-e9eH6YOYl2OuDd3fNt2ciFhj/l2vxJmGeWLLcY+0NcW6k0Xitq7XIxN2++QVVhswXeJLy95SjF8oVKRyJC95GQ==}
     engines: {node: '>=20.18.0'}
 
+  magic-string-ast@0.9.0:
+    resolution: {integrity: sha512-kHVEB7DfucGmRRTW4EFdIQMrfpRqhaUhm+osaAqt22CuHEMVAfxA8Eroj8yWvTiHGcntRgWQR1yRe/BKK54+/A==}
+    engines: {node: '>=20.18.0'}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -2141,6 +2142,11 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
+  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0:
+    resolution: {tarball: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0}
+    version: 0.0.0
+    engines: {node: '>=20.18.0'}
+
   rolldown@1.0.0-beta.7:
     resolution: {integrity: sha512-IUa/9lZVqgFilYggiY7jxUbmvU4Q8wVvVqsru+AeMldBccBEhTYZ6/XP6cWsznb8Fv49zfYGaeEpJ5WeVdo6Mg==}
     hasBin: true
@@ -2149,13 +2155,6 @@ packages:
     peerDependenciesMeta:
       '@oxc-project/runtime':
         optional: true
-
-  rollup-plugin-dts@6.2.1:
-    resolution: {integrity: sha512-sR3CxYUl7i2CHa0O7bA45mCrgADyAQ0tVtGSqi3yvH28M+eg1+g5d7kQ9hLvEz5dorK3XVsH5L2jwHLQf72DzA==}
-    engines: {node: '>=16'}
-    peerDependencies:
-      rollup: ^3.29.4 || ^4
-      typescript: ^4.5 || ^5.0
 
   rollup@4.38.0:
     resolution: {integrity: sha512-5SsIRtJy9bf1ErAOiFMFzl64Ex9X5V7bnJ+WlFMb+zmP459OSWCEG7b0ERZ+PEU7xPt4OG3RHbrp1LJlXxYTrw==}
@@ -4084,6 +4083,10 @@ snapshots:
     dependencies:
       magic-string: 0.30.17
 
+  magic-string-ast@0.9.0:
+    dependencies:
+      magic-string: 0.30.17
+
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -4671,6 +4674,11 @@ snapshots:
 
   reusify@1.1.0: {}
 
+  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0:
+    dependencies:
+      magic-string-ast: 0.9.0
+      oxc-parser: 0.61.2
+
   rolldown@1.0.0-beta.7(typescript@5.8.2):
     dependencies:
       '@oxc-project/types': 0.61.2
@@ -4691,14 +4699,6 @@ snapshots:
       '@rolldown/binding-win32-x64-msvc': 1.0.0-beta.7
     transitivePeerDependencies:
       - typescript
-
-  rollup-plugin-dts@6.2.1(rollup@4.38.0)(typescript@5.8.2):
-    dependencies:
-      magic-string: 0.30.17
-      rollup: 4.38.0
-      typescript: 5.8.2
-    optionalDependencies:
-      '@babel/code-frame': 7.26.2
 
   rollup@4.38.0:
     dependencies:
