@@ -62,6 +62,7 @@ export async function bundleDts(
     output: {
       dir: outDir,
       entryFileNames: `[name].d.${ext}`,
+      chunkFileNames: `[name]-[hash].d.${ext}`,
     },
   })
 
@@ -76,7 +77,7 @@ export function ResolveDtsPlugin(resolveOnly?: Array<string | RegExp>): Plugin {
       resolver ||= new ResolverFactory({
         mainFields: ['types'],
         conditionNames: ['types', 'typings', 'import', 'require'],
-        extensions: ['.d.ts', '.ts'],
+        extensions: ['.d.ts', '.d.mts', '.d.cts', '.ts', '.mts', '.cts'],
         modules: ['node_modules', 'node_modules/@types'],
       })
     },

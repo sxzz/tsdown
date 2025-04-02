@@ -36,8 +36,8 @@ importers:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.2)
       rolldown-plugin-dts:
-        specifier: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0
-        version: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0
+        specifier: https://pkg.pr.new/sxzz/rolldown-plugin-dts@7b446ed
+        version: https://pkg.pr.new/sxzz/rolldown-plugin-dts@7b446ed
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.12
@@ -2142,8 +2142,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0:
-    resolution: {tarball: https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0}
+  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@7b446ed:
+    resolution: {tarball: https://pkg.pr.new/sxzz/rolldown-plugin-dts@7b446ed}
     version: 0.0.0
     engines: {node: '>=20.18.0'}
 
@@ -4674,7 +4674,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@eeb45e0:
+  rolldown-plugin-dts@https://pkg.pr.new/sxzz/rolldown-plugin-dts@7b446ed:
     dependencies:
       magic-string-ast: 0.9.0
       oxc-parser: 0.61.2
