@@ -101,6 +101,7 @@ export async function buildSingle(
     const startTime = performance.now()
     if (clean) await cleanOutDir(outDir, clean)
 
+    let hasErrors = false
     await Promise.all(
       format.map(async (format) => {
         const inputOptions = await mergeUserOptions(
@@ -157,16 +158,29 @@ export async function buildSingle(
           [format],
         )
 
-        await rolldownBuild({
-          ...inputOptions,
-          output: outputOptions,
-        })
+        try {
+          await rolldownBuild({
+            ...inputOptions,
+            output: outputOptions,
+          })
 
-        if (config.dts && config.bundleDts) {
-          await bundleDts(config, extension, format)
+          if (config.dts && config.bundleDts) {
+            await bundleDts(config, extension, format)
+          }
+        } catch (error) {
+          if (watch) {
+            logger.error(error)
+            hasErrors = true
+            return
+          }
+          throw error
         }
       }),
     )
+
+    if (hasErrors) {
+      return
+    }
 
     if (config.publint) {
       if (pkg) {
