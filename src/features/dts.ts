@@ -26,6 +26,7 @@ export async function bundleDts(
   jsExtension: OutputExtension,
   format: NormalizedFormat,
 ): Promise<void> {
+  debug('Bundle dts for %s', format)
   const { dts, bundleDts } = options
   typeAsserts<IsolatedDeclOptions>(dts)
   typeAsserts<BundleDtsOptions>(bundleDts)
@@ -40,9 +41,8 @@ export async function bundleDts(
   )
 
   let outDir = options.outDir
-  const extraOutdir = dts.extraOutdir
-  if (extraOutdir) {
-    outDir = path.resolve(outDir, extraOutdir)
+  if (dts.extraOutdir) {
+    outDir = path.resolve(outDir, dts.extraOutdir)
   }
 
   await build({
@@ -67,6 +67,8 @@ export async function bundleDts(
   })
 
   await fsRemove(dtsOutDir)
+
+  debug('Bundle dts done for %s', format)
 }
 
 let resolver: ResolverFactory | undefined
