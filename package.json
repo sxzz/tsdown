@@ -73,9 +73,9 @@
     "debug": "^4.4.0",
     "diff": "^7.0.0",
     "find-up-simple": "^1.0.1",
-    "oxc-resolver": "^5.1.0",
+    "oxc-resolver": "^5.1.1",
     "rolldown": "^1.0.0-beta.7",
-    "rolldown-plugin-dts": "https://pkg.pr.new/sxzz/rolldown-plugin-dts@ad37673",
+    "rolldown-plugin-types": "^0.0.0",
     "tinyglobby": "^0.2.12",
     "unconfig": "^7.3.1",
     "unplugin-isolated-decl": "^0.13.6"
