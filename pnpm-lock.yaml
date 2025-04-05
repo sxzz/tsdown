@@ -35,9 +35,9 @@ importers:
       rolldown:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.2)
-      rolldown-plugin-types:
-        specifier: ^0.0.0
-        version: 0.0.0
+      rolldown-plugin-dts:
+        specifier: ^0.1.0
+        version: 0.1.0
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.12
@@ -2146,8 +2146,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-types@0.0.0:
-    resolution: {integrity: sha512-Jk7TXLiTQiSktmOi2UNvU0IcPMwFYTSS7LiJBWcMQteD1cmxdKBJikL8p/zrqxuJ9tUKI5GX77i9V8Cpd9zDfg==}
+  rolldown-plugin-dts@0.1.0:
+    resolution: {integrity: sha512-kmXQzvRJVQ+bWtZXX345S4H6tNtrqIdBsZX7mmL+M4tLj2YsgCNXuS/XKAzUKD8BCqSwK/dEkzIxZ+BjiaHLeQ==}
     engines: {node: '>=20.18.0'}
 
   rolldown@1.0.0-beta.7:
@@ -4684,7 +4684,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-types@0.0.0:
+  rolldown-plugin-dts@0.1.0:
     dependencies:
       magic-string-ast: 0.9.1
       oxc-parser: 0.62.0

@@ -3,7 +3,7 @@ import process from 'node:process'
 import Debug from 'debug'
 import { ResolverFactory } from 'oxc-resolver'
 import { build, type Plugin } from 'rolldown'
-import { dts as DtsPlugin } from 'rolldown-plugin-types'
+import { dts as DtsPlugin } from 'rolldown-plugin-dts'
 import { fsExists, fsRemove } from '../utils/fs'
 import { typeAsserts } from '../utils/general'
 import type {
