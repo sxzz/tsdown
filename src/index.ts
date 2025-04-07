@@ -131,6 +131,7 @@ export async function buildSingle(
                   target:
                     target &&
                     (typeof target === 'string' ? target : target.join(',')),
+                  exclude: /\.d\.[cm]?ts$/,
                 }),
 
               userPlugins,
