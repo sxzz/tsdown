@@ -13,7 +13,7 @@ module.exports = fixed_extension_default;
 
 ```cts
 
-//#region dist/.tsdown-types-cjs/index.d.cts
+//#region index.d.ts
 declare const _default: number;
 
 //#endregion
@@ -23,7 +23,7 @@ export { _default as default };
 
 ```mts
 
-//#region dist/.tsdown-types-es/index.d.mts
+//#region index.d.ts
 declare const _default: number;
 
 //#endregion

@@ -1,10 +1,14 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { build as rolldownBuild, type OutputOptions } from 'rolldown'
+import {
+  build as rolldownBuild,
+  type BuildOptions,
+  type OutputOptions,
+  type RolldownPluginOption,
+} from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
 import { cleanOutDir } from './features/clean'
-import { bundleDts, getTempDtsDir } from './features/dts'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
 import { publint } from './features/publint'
@@ -14,6 +18,7 @@ import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
   resolveOptions,
+  type NormalizedFormat,
   type Options,
   type ResolvedOptions,
   type UserConfig,
@@ -73,7 +78,7 @@ export async function buildSingle(
     external,
     plugins: userPlugins,
     outDir,
-    format,
+    format: formats,
     clean,
     platform,
     alias,
@@ -103,70 +108,11 @@ export async function buildSingle(
 
     let hasErrors = false
     await Promise.all(
-      format.map(async (format) => {
-        const inputOptions = await mergeUserOptions(
-          {
-            input: entry,
-            external,
-            resolve: { alias },
-            treeshake,
-            platform,
-            define,
-            plugins: [
-              (pkg || config.skipNodeModulesBundle) &&
-                ExternalPlugin(config, pkg),
-              unused &&
-                (await import('unplugin-unused')).Unused.rolldown(
-                  unused === true ? {} : unused,
-                ),
-              dts &&
-                (await import('unplugin-isolated-decl')).IsolatedDecl.rolldown({
-                  ...dts,
-                  extraOutdir: config.bundleDts
-                    ? getTempDtsDir(format)
-                    : dts.extraOutdir,
-                }),
-              !!target &&
-                transformPlugin({
-                  target:
-                    target &&
-                    (typeof target === 'string' ? target : target.join(',')),
-                  exclude: /\.d\.[cm]?ts$/,
-                }),
-
-              userPlugins,
-            ],
-            inject: {
-              ...(shims && getShimsInject(format, platform)),
-            },
-          },
-          config.inputOptions,
-          [format],
-        )
-
-        const extension = resolveOutputExtension(pkg, format, fixedExtension)
-        const outputOptions: OutputOptions = await mergeUserOptions(
-          {
-            format,
-            name: config.globalName,
-            sourcemap,
-            dir: outDir,
-            minify,
-            entryFileNames: `[name].${extension}`,
-            chunkFileNames: `[name]-[hash].${extension}`,
-          },
-          config.outputOptions,
-          [format],
-        )
-
+      formats.map(async (format) => {
         try {
-          await rolldownBuild({
-            ...inputOptions,
-            output: outputOptions,
-          })
-
-          if (config.dts && config.bundleDts) {
-            await bundleDts(config, extension, format)
+          await rolldownBuild(await getBuildOptions(format))
+          if (format === 'cjs' && dts) {
+            await rolldownBuild(await getBuildOptions(format, true))
           }
         } catch (error) {
           if (watch) {
@@ -197,6 +143,76 @@ export async function buildSingle(
       )}ms`,
     )
     await onSuccess?.(config)
+  }
+
+  async function getBuildOptions(
+    format: NormalizedFormat,
+    cjsDts?: boolean,
+  ): Promise<BuildOptions> {
+    const extension = resolveOutputExtension(pkg, format, fixedExtension)
+
+    const plugins: RolldownPluginOption = []
+    if (pkg || config.skipNodeModulesBundle) {
+      plugins.push(ExternalPlugin(config, pkg))
+    }
+    if (unused && !cjsDts) {
+      const { Unused } = await import('unplugin-unused')
+      plugins.push(Unused.rolldown(unused === true ? {} : unused))
+    }
+    if (dts) {
+      const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
+      if (format === 'es') {
+        plugins.push(dtsPlugin(dts))
+      } else if (cjsDts) {
+        plugins.push(dtsPlugin({ ...dts, emitDtsOnly: true }))
+      }
+    }
+    if (target && !cjsDts) {
+      plugins.push(
+        transformPlugin({
+          target:
+            target && (typeof target === 'string' ? target : target.join(',')),
+          exclude: /\.d\.[cm]?ts$/,
+        }),
+      )
+    }
+    plugins.push(userPlugins)
+
+    const inputOptions = await mergeUserOptions(
+      {
+        input: entry,
+        external,
+        resolve: { alias },
+        treeshake,
+        platform,
+        define,
+        plugins,
+        inject: {
+          ...(shims && !cjsDts && getShimsInject(format, platform)),
+        },
+      },
+      config.inputOptions,
+      [format],
+    )
+
+    const outputOptions: OutputOptions = await mergeUserOptions(
+      {
+        format: cjsDts ? 'es' : format,
+        name: config.globalName,
+        sourcemap,
+        dir: outDir,
+        minify,
+        entryFileNames: `[name].${extension}`,
+        chunkFileNames: `[name]-[hash].${extension}`,
+      },
+      config.outputOptions,
+      [format],
+    )
+
+    return {
+      ...inputOptions,
+      output: outputOptions,
+    }
   }
 }
 

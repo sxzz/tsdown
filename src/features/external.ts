@@ -5,6 +5,7 @@ import type { PackageJson } from 'pkg-types'
 import type { Plugin } from 'rolldown'
 
 const debug = Debug('tsdown:external')
+const RE_DTS = /\.d\.[cm]?ts$/
 
 export function ExternalPlugin(
   options: ResolvedOptions,
@@ -15,6 +16,9 @@ export function ExternalPlugin(
     name: 'tsdown:external',
     async resolveId(id, importer, { isEntry }) {
       if (isEntry) return
+
+      // skip dts external
+      if (importer && RE_DTS.test(importer)) return
 
       const { noExternal } = options
       if (typeof noExternal === 'function' && noExternal(id, importer)) {

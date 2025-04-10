@@ -22,18 +22,11 @@ import type {
   ModuleFormat,
   OutputOptions,
 } from 'rolldown'
-import type { CompilerOptions } from 'typescript'
-import type { Options as IsolatedDeclOptions } from 'unplugin-isolated-decl'
+import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
-
-export interface BundleDtsOptions {
-  /** Resolve external types used in dts files from node_modules */
-  resolve?: boolean | (string | RegExp)[]
-  compilerOptions?: CompilerOptions
-}
 
 /**
  * Options for tsdown.
@@ -106,13 +99,7 @@ export interface Options {
   /**
    * Enable dts generation with `isolatedDeclarations` (experimental)
    */
-  dts?: boolean | IsolatedDeclOptions
-
-  /**
-   * Bundle dts files (experimental)
-   * @default true
-   */
-  bundleDts?: boolean | BundleDtsOptions
+  dts?: boolean | DtsOptions
 
   /**
    * Enable unused dependencies check with `unplugin-unused`
@@ -157,8 +144,7 @@ export type ResolvedOptions = Omit<
     {
       format: NormalizedFormat[]
       clean: string[] | false
-      dts: false | IsolatedDeclOptions
-      bundleDts: false | BundleDtsOptions
+      dts: false | DtsOptions
     }
   >,
   'config' | 'fromVite'
@@ -188,7 +174,6 @@ export async function resolveOptions(options: Options): Promise<{
         outDir = 'dist',
         sourcemap = false,
         dts = false,
-        bundleDts = true,
         unused = false,
         watch = false,
         shims = false,
@@ -201,7 +186,6 @@ export async function resolveOptions(options: Options): Promise<{
       entry = await resolveEntry(entry)
       if (clean === true) clean = []
       if (publint === true) publint = {}
-      if (bundleDts === true) bundleDts = {}
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -242,7 +226,6 @@ export async function resolveOptions(options: Options): Promise<{
         platform,
         sourcemap,
         dts: dts === true ? {} : dts,
-        bundleDts,
         unused,
         watch,
         shims,

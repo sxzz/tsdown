@@ -5,14 +5,12 @@ import { defineConfig } from './src/config.ts'
 
 export default defineConfig({
   entry: ['./src/{index,run,plugins,config}.ts'],
-  format: 'esm',
   target: 'node18',
   clean: true,
   platform: 'node',
   skipNodeModulesBundle: true,
   shims: true,
-  dts: { transformer: 'oxc' },
-  bundleDts: true,
+  dts: true,
   unused: { level: 'error' },
   publint: true,
   onSuccess() {
@@ -20,6 +18,7 @@ export default defineConfig({
   },
   plugins: [
     AST({
+      exclude: ['**/*.d.ts'],
       transformer: [RemoveNode((node) => isCallOf(node, 'typeAsserts'))],
     }),
   ],

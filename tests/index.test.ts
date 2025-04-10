@@ -89,8 +89,7 @@ test('bundle dts', async (context) => {
   }
   await testBuild(context, files, {
     entry: ['src/index.ts'],
-    dts: { extraOutdir: 'types' },
-    bundleDts: true,
+    dts: true,
   })
 })
 
@@ -180,8 +179,7 @@ test('resolve dependency for dts', async (context) => {
     export type * from 'consola'`,
   }
   const { snapshot } = await testBuild(context, files, {
-    dts: true,
-    bundleDts: { resolve: ['tinyglobby'] },
+    dts: { resolve: ['tinyglobby'] },
   })
   expect(snapshot).contain(`export * from "consola"`)
 })
