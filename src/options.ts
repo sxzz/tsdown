@@ -48,7 +48,7 @@ export interface Options {
     | InputOptions
     | ((
         options: InputOptions,
-        format: ModuleFormat,
+        format: NormalizedFormat,
       ) => MaybePromise<InputOptions | void | null>)
 
   /// output options
@@ -66,7 +66,7 @@ export interface Options {
     | OutputOptions
     | ((
         options: OutputOptions,
-        format: ModuleFormat,
+        format: NormalizedFormat,
       ) => MaybePromise<OutputOptions | void | null>)
 
   /** @default true */
