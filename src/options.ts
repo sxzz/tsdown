@@ -10,8 +10,8 @@ import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
 import type {
   Arrayable,
+  Awaitable,
   MarkPartial,
-  MaybePromise,
   Overwrite,
 } from './utils/types'
 import type { Options as PublintOptions } from 'publint'
@@ -49,7 +49,7 @@ export interface Options {
     | ((
         options: InputOptions,
         format: NormalizedFormat,
-      ) => MaybePromise<InputOptions | void | null>)
+      ) => Awaitable<InputOptions | void | null>)
 
   /// output options
   format?: ModuleFormat | ModuleFormat[]
@@ -67,7 +67,7 @@ export interface Options {
     | ((
         options: OutputOptions,
         format: NormalizedFormat,
-      ) => MaybePromise<OutputOptions | void | null>)
+      ) => Awaitable<OutputOptions | void | null>)
 
   /** @default true */
   treeshake?: boolean
@@ -344,7 +344,7 @@ export async function mergeUserOptions<T extends object, A extends unknown[]>(
     | T
     | undefined
     | null
-    | ((options: T, ...args: A) => MaybePromise<T | void | null>),
+    | ((options: T, ...args: A) => Awaitable<T | void | null>),
   args: A,
 ): Promise<T> {
   const userOutputOptions =
