@@ -29,6 +29,9 @@ cli
   .option('--platform <platform>', 'Target platform', {
     default: 'node',
   })
+  .option('--dts', 'Generate dts files', { default: false })
+  .option('--publint', 'Enable publint', { default: false })
+  .option('--unused', 'Enable unused dependencies check', { default: false })
   .option('-w, --watch [path]', 'Watch mode')
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .action(async (input: string[], flags: Options) => {
