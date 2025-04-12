@@ -35,6 +35,9 @@ importers:
       rolldown-plugin-dts:
         specifier: ^0.4.0
         version: 0.4.0(rolldown@1.0.0-beta.7(typescript@5.8.3))
+      tinyexec:
+        specifier: ^1.0.1
+        version: 1.0.1
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.12
@@ -78,9 +81,6 @@ importers:
       publint:
         specifier: ^0.3.10
         version: 0.3.10
-      tinyexec:
-        specifier: ^1.0.1
-        version: 1.0.1
       tsup:
         specifier: ^8.4.0
         version: 8.4.0(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)

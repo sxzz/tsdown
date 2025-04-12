@@ -8,6 +8,7 @@ import {
   type RolldownPluginOption,
 } from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
+import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveOutputExtension } from './features/output'
@@ -94,6 +95,7 @@ export async function buildSingle(
     fixedExtension,
     onSuccess,
   } = config
+  let onSuccessCleanup: (() => any) | undefined
 
   const pkg = await readPackageJson(process.cwd())
 
@@ -104,6 +106,8 @@ export async function buildSingle(
 
   async function rebuild(first?: boolean) {
     const startTime = performance.now()
+
+    onSuccessCleanup?.()
     if (clean) await cleanOutDir(outDir, clean)
 
     let hasErrors = false
@@ -142,7 +146,20 @@ export async function buildSingle(
         performance.now() - startTime,
       )}ms`,
     )
-    await onSuccess?.(config)
+
+    if (typeof onSuccess === 'string') {
+      const p = exec(onSuccess, [], {
+        nodeOptions: { shell: true, stdio: 'inherit' },
+      })
+      p.then(({ exitCode }) => {
+        if (exitCode) {
+          process.exitCode = exitCode
+        }
+      })
+      onSuccessCleanup = () => p.kill('SIGTERM')
+    } else {
+      await onSuccess?.(config)
+    }
   }
 
   async function getBuildOptions(
