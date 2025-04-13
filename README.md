@@ -5,7 +5,7 @@
 ## Features
 
 - 🚀 **Blazing fast**: Build and generate `.d.ts` powered by Oxc and Rolldown, incredibly fast!
-- ♻️ **Powerful ecosystem**: Support Rollup / Rolldown / Vite / unplugin plugins.
+- ♻️ **Powerful ecosystem**: Support Rollup / Rolldown / unplugin plugins, and some Vite plugins.
 - 📦 **Out-of-box**: Support reusing configurations from Vite or Vitest.
 - 🔄 **Seamless migration**: Compatible with tsup's main options and features, ensuring a smooth transition.
 
