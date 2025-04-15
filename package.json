@@ -5,13 +5,13 @@
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/tsdown#readme",
+  "homepage": "https://github.com/rolldown/tsdown#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/tsdown/issues"
+    "url": "https://github.com/rolldown/tsdown/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/tsdown.git"
+    "url": "git+https://github.com/rolldown/tsdown.git"
   },
   "author": "三咲智子 Kevin Deng <sxzz@sxzz.moe>",
   "funding": "https://github.com/sponsors/sxzz",
