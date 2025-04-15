@@ -50,6 +50,6 @@ This project also partially contains code derived or copied from [tsup](https://
   </a>
 </p>
 
-## License
+## Licenses
 
-[MIT](./LICENSE) License © 2024-PRESENT [三咲智子 Kevin Deng](https://github.com/sxzz)
+This project is licensed under the [MIT License](LICENSE).
