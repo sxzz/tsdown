@@ -27,6 +27,12 @@ export default defineConfig({
 })
 ```
 
+## Usage
+
+```ts
+npx tsdown
+```
+
 ## Migrate from tsup
 
 ```bash
