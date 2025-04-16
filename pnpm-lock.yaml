@@ -33,8 +33,8 @@ importers:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.3)
       rolldown-plugin-dts:
-        specifier: ^0.4.0
-        version: 0.4.0(rolldown@1.0.0-beta.7(typescript@5.8.3))
+        specifier: ^0.5.2
+        version: 0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
       tinyexec:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1302,8 +1302,8 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
-  dts-resolver@0.1.0:
-    resolution: {integrity: sha512-kltQMFygJ7StE+I2U3zDIwgYbmWGzv4ihIBY2MhGluJ6CBgAzF3p7QbH+Bkz8DdytdFc2RuVRliIveX3/V9aiQ==}
+  dts-resolver@0.1.1:
+    resolution: {integrity: sha512-Pj0AEP6US2fH1kwYAUHPh5f8XBawGKr25PGzCRnCQne/MW9CvFczL4u++FC8+jO0ZtquRy4J512FJca4zH39rg==}
     engines: {node: '>=20.18.0'}
 
   eastasianwidth@0.2.0:
@@ -2213,11 +2213,15 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@0.4.0:
-    resolution: {integrity: sha512-+l8WEj5QY4Ds9FdRrY+bK0OGkqHclC4tFrevtLuiUidvYHvvpoTwb2oVXR7wEVqCg1vKkc0m7wr1D1hw+yPfUg==}
+  rolldown-plugin-dts@0.5.2:
+    resolution: {integrity: sha512-BPHZ2iIRD2XdlxZwJ4W9QCf4iS0/QpTGgCZrvE1Ru7+a2+H/RsCdStBsUVfrFb7kfNY0rnGTSlBoC4FnLF9AIA==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       rolldown: ^1.0.0-beta.7
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   rolldown@1.0.0-beta.7:
     resolution: {integrity: sha512-IUa/9lZVqgFilYggiY7jxUbmvU4Q8wVvVqsru+AeMldBccBEhTYZ6/XP6cWsznb8Fv49zfYGaeEpJ5WeVdo6Mg==}
@@ -3625,7 +3629,7 @@ snapshots:
 
   dotenv@16.4.7: {}
 
-  dts-resolver@0.1.0:
+  dts-resolver@0.1.1:
     dependencies:
       oxc-resolver: 5.2.0
       pathe: 2.0.3
@@ -4795,13 +4799,16 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.4.0(rolldown@1.0.0-beta.7(typescript@5.8.3)):
+  rolldown-plugin-dts@0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
-      dts-resolver: 0.1.0
+      dts-resolver: 0.1.1
+      get-tsconfig: 4.10.0
       magic-string-ast: 0.9.1
       oxc-parser: 0.62.0
       oxc-transform: 0.62.0
       rolldown: 1.0.0-beta.7(typescript@5.8.3)
+    optionalDependencies:
+      typescript: 5.8.3
 
   rolldown@1.0.0-beta.7(typescript@5.8.3):
     dependencies:
