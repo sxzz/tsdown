@@ -29,7 +29,7 @@ export default defineConfig({
 
 ## Usage
 
-```ts
+```bash
 npx tsdown
 ```
 
