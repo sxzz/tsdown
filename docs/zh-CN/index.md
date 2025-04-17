@@ -7,7 +7,7 @@ hero:
   text: '由 RollDown 赋能的更快打包工具。'
   tagline: '基于 Rolldown'
   image:
-    src: /logo.svg
+    src: /tsdown.svg
     alt: Rolldown
   actions:
     - theme: brand

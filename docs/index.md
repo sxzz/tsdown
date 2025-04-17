@@ -7,8 +7,8 @@ hero:
   text: 'An even faster TypeScript bundler.'
   tagline: based on Rolldown
   image:
-    src: /rolldown-round.svg
-    alt: Rolldown
+    src: /tsdown.svg
+    alt: tsdown
   actions:
     - theme: brand
       text: Get Started
@@ -33,7 +33,7 @@ features:
 <style>
 :root {
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(90deg, #FF5D13, #F0DB4F);
+  --vp-home-hero-name-background: -webkit-linear-gradient(90deg, #ff7e17, rgb(84, 218, 233));
 }
 
 h2.voidzero-lead {
@@ -54,5 +54,10 @@ h2.voidzero-lead {
 
 .dark .voidzero {
   background-image: url(https://voidzero.dev/logo-white.svg);
+}
+
+.VPImage {
+  height: 80%;
+  width: 80%;
 }
 </style>
