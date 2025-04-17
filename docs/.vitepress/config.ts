@@ -35,8 +35,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:image',
-        // TODO : Create custom og-image
-        content: 'https://rolldown.rs/og-image.png',
+        content: 'https://tsdown.dev/og-image.png',
       },
     ],
     ['meta', { property: 'og:site_name', content: 'Rolldown' }],
