@@ -33,8 +33,8 @@ importers:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.3)
       rolldown-plugin-dts:
-        specifier: ^0.5.2
-        version: 0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^0.6.0
+        version: 0.6.0(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
       tinyexec:
         specifier: ^1.0.1
         version: 1.0.1
@@ -2213,8 +2213,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@0.5.2:
-    resolution: {integrity: sha512-BPHZ2iIRD2XdlxZwJ4W9QCf4iS0/QpTGgCZrvE1Ru7+a2+H/RsCdStBsUVfrFb7kfNY0rnGTSlBoC4FnLF9AIA==}
+  rolldown-plugin-dts@0.6.0:
+    resolution: {integrity: sha512-c9DsZicZ3tdFHJl3gJUrNF9BZT2CtSuVMhYkPIhvBfaYDTZQdBd8KLvD9jU5WWzsrL3cfy0BgqQ0QwE8uojOCw==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       rolldown: ^1.0.0-beta.7
@@ -4799,8 +4799,9 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
+  rolldown-plugin-dts@0.6.0(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
+      debug: 4.4.0
       dts-resolver: 0.1.1
       get-tsconfig: 4.10.0
       magic-string-ast: 0.9.1
@@ -4809,6 +4810,8 @@ snapshots:
       rolldown: 1.0.0-beta.7(typescript@5.8.3)
     optionalDependencies:
       typescript: 5.8.3
+    transitivePeerDependencies:
+      - supports-color
 
   rolldown@1.0.0-beta.7(typescript@5.8.3):
     dependencies:
