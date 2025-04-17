@@ -40,8 +40,7 @@
     "tsdown": "./bin/tsdown.js"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "scripts": {
     "lint": "eslint --cache .",
