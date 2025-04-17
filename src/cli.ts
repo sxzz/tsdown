@@ -34,6 +34,7 @@ cli
   .option('--unused', 'Enable unused dependencies check', { default: false })
   .option('-w, --watch [path]', 'Watch mode')
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
+  .option('--tsconfig <path>', 'Path to custom tsconfig.json')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(

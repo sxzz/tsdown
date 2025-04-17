@@ -183,3 +183,32 @@ test('resolve dependency for dts', async (context) => {
   })
   expect(snapshot).contain(`export * from "consola"`)
 })
+
+test('custom tsconfig', async (context) => {
+  const files = {
+    'index.ts': `
+      export const test: string = 'test'
+    `,
+    'tsconfig.custom.json': `{
+      "compilerOptions": {
+        "target": "es5",
+        "strict": true
+      }
+    }`
+  }
+  const { snapshot } = await testBuild(context, files, {
+    tsconfig: 'tsconfig.custom.json'
+  })
+  // Should be compiled to ES5
+  expect(snapshot).contain('var test')
+})
+
+test('nonexistent tsconfig', async (context) => {
+  const files = {
+    'index.ts': `export const test = 'test'`
+  }
+  
+  await expect(testBuild(context, files, {
+    tsconfig: 'tsconfig.nonexistent.json'
+  })).rejects.toThrow()
+})

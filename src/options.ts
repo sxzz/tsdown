@@ -44,6 +44,11 @@ export interface Options {
   alias?: Record<string, string>
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
+  /**
+   * Custom tsconfig.json path
+   * @example 'tsconfig.build.json'
+   */
+  tsconfig?: string
   inputOptions?:
     | InputOptions
     | ((
@@ -144,6 +149,7 @@ export type ResolvedOptions = Omit<
       | 'onSuccess'
       | 'dts'
       | 'fixedExtension'
+      | 'tsconfig'
     >,
     {
       format: NormalizedFormat[]
@@ -185,6 +191,7 @@ export async function resolveOptions(options: Options): Promise<{
         publint = false,
         fromVite,
         alias,
+        tsconfig,
       } = subOptions
 
       entry = await resolveEntry(entry)
@@ -236,6 +243,7 @@ export async function resolveOptions(options: Options): Promise<{
         skipNodeModulesBundle,
         publint,
         alias,
+        tsconfig,
       }
 
       return config

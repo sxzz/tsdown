@@ -204,6 +204,7 @@ export async function buildSingle(
         platform,
         define,
         plugins,
+        compilerOptions: config.tsconfig ? { tsconfigFile: config.tsconfig } : undefined,
         inject: {
           ...(shims && !cjsDts && getShimsInject(format, platform)),
         },
