@@ -18,7 +18,7 @@ export default defineConfig({
       {
         rel: 'icon',
         type: 'image/svg+xml',
-        href: '/lightning-down.svg',
+        href: '/tsdown.svg',
       },
     ],
     ['meta', { name: 'theme-color', content: '#ff7e17' }],
@@ -61,7 +61,7 @@ export default defineConfig({
       provider: 'local',
     },
 
-    logo: { src: '/lightning-down.svg', width: 24, height: 24 },
+    logo: { src: '/tsdown.svg', width: 24, height: 24 },
 
     // https://vitepress.dev/reference/default-theme-config
     nav: [
