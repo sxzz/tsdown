@@ -18,7 +18,7 @@ export default defineConfig({
       {
         rel: 'icon',
         type: 'image/svg+xml',
-        href: '/lightning-down.svg',
+        href: '/tsdown.svg',
       },
     ],
     ['meta', { name: 'theme-color', content: '#ff7e17' }],
@@ -35,8 +35,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:image',
-        // TODO : Create custom og-image
-        content: 'https://rolldown.rs/og-image.png',
+        content: 'https://tsdown.dev/og-image.png',
       },
     ],
     ['meta', { property: 'og:site_name', content: 'Rolldown' }],
@@ -61,7 +60,7 @@ export default defineConfig({
       provider: 'local',
     },
 
-    logo: { src: '/lightning-down.svg', width: 24, height: 24 },
+    logo: { src: '/tsdown.svg', width: 24, height: 24 },
 
     // https://vitepress.dev/reference/default-theme-config
     nav: [
