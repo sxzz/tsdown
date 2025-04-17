@@ -1,4 +1,4 @@
-name: Unit Test
+name: 🧪 Tests
 
 on:
   push:
@@ -6,57 +6,69 @@ on:
   pull_request:
     branches: [main]
 
+permissions: {}
+
 jobs:
   lint:
+    name: 🔍 Lint
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Install pnpm
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 📦 Install pnpm
         uses: pnpm/action-setup@v4.1.0
 
-      - name: Set node
+      - name: 🛠️ Setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: pnpm
 
-      - name: Install
+      - name: 📦 Install dependencies
         run: pnpm i
 
-      - name: Lint
+      - name: 🔍 Lint
         run: pnpm run lint
 
-      - name: Typecheck
+      - name: ✅ Typecheck
         run: pnpm run typecheck
 
   test:
-    runs-on: ${{ matrix.os }}
-
+    name: 🧪 Unit Tests
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
         node: [18, 20, 22, 23]
       fail-fast: false
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-      - name: Install pnpm
+      - name: 📦 Install pnpm
         uses: pnpm/action-setup@v4.1.0
 
-      - name: Set node
+      - name: 🛠️ Setup node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           cache: pnpm
 
-      - name: Install
+      - name: 📦 Install dependencies
         run: pnpm i
 
-      - name: Build
+      - name: 🏗️ Build
         run: pnpm run build
 
-      - name: Test
+      - name: 🧪 Test
         run: pnpm run test
+
+      - name: ⚡ Publish prerelease
+        run: pnpx pkg-pr-new publish --pnpm --compact
