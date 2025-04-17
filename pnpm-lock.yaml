@@ -33,8 +33,8 @@ importers:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.3)
       rolldown-plugin-dts:
-        specifier: ^0.5.2
-        version: 0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^0.6.0
+        version: 0.6.0(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
       tinyexec:
         specifier: ^1.0.1
         version: 1.0.1
@@ -6152,6 +6152,7 @@ snapshots:
 
   rolldown-plugin-dts@0.5.2(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
+      debug: 4.4.0
       dts-resolver: 0.1.1
       get-tsconfig: 4.10.0
       magic-string-ast: 0.9.1
@@ -6160,6 +6161,8 @@ snapshots:
       rolldown: 1.0.0-beta.7(typescript@5.8.3)
     optionalDependencies:
       typescript: 5.8.3
+    transitivePeerDependencies:
+      - supports-color
 
   rolldown@1.0.0-beta.7(typescript@5.8.3):
     dependencies:
