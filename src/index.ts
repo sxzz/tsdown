@@ -27,6 +27,7 @@ import {
 import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
+import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 /**
  * Build with tsdown.
@@ -168,6 +169,7 @@ async function getBuildOptions(
     define,
     shims,
     fixedExtension,
+    tsconfig,
   } = config
 
   const extension = resolveOutputExtension(pkg, format, fixedExtension)
@@ -182,10 +184,12 @@ async function getBuildOptions(
   }
   if (dts) {
     const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
+    const options: DtsOptions = { tsconfig, ...dts }
+
     if (format === 'es') {
-      plugins.push(dtsPlugin(dts))
+      plugins.push(dtsPlugin(options))
     } else if (cjsDts) {
-      plugins.push(dtsPlugin({ ...dts, emitDtsOnly: true }))
+      plugins.push(dtsPlugin({ ...options, emitDtsOnly: true }))
     }
   }
   if (target && !cjsDts) {
@@ -203,7 +207,10 @@ async function getBuildOptions(
     {
       input: entry,
       external,
-      resolve: { alias },
+      resolve: {
+        alias,
+        tsconfigFilename: tsconfig || undefined,
+      },
       treeshake,
       platform,
       define,

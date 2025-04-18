@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
+import { fsExists } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
@@ -42,6 +43,7 @@ export interface Options {
         importer: string | undefined,
       ) => boolean | null | undefined | void)
   alias?: Record<string, string>
+  tsconfig?: string | boolean
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
   inputOptions?:
@@ -149,6 +151,7 @@ export type ResolvedOptions = Omit<
       format: NormalizedFormat[]
       clean: string[] | false
       dts: false | DtsOptions
+      tsconfig: string | false
     }
   >,
   'config' | 'fromVite'
@@ -185,11 +188,26 @@ export async function resolveOptions(options: Options): Promise<{
         publint = false,
         fromVite,
         alias,
+        tsconfig,
       } = subOptions
 
       entry = await resolveEntry(entry)
       if (clean === true) clean = []
       if (publint === true) publint = {}
+
+      if (tsconfig !== false) {
+        const tsconfigPath = path.resolve(
+          cwd,
+          typeof tsconfig === 'string' ? tsconfig : 'tsconfig.json',
+        )
+        if (await fsExists(tsconfigPath)) {
+          tsconfig = tsconfigPath
+        } else {
+          if (tsconfig)
+            logger.warn(`tsconfig \`${tsconfigPath}\` not found, skipping`)
+          tsconfig = false
+        }
+      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -236,6 +254,7 @@ export async function resolveOptions(options: Options): Promise<{
         skipNodeModulesBundle,
         publint,
         alias,
+        tsconfig,
       }
 
       return config

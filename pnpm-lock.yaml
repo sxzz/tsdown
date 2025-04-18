@@ -33,8 +33,8 @@ importers:
         specifier: ^1.0.0-beta.7
         version: 1.0.0-beta.7(typescript@5.8.3)
       rolldown-plugin-dts:
-        specifier: ^0.7.4
-        version: 0.7.4(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
+        specifier: ^0.7.8
+        version: 0.7.8(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3)
       tinyexec:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1245,8 +1245,8 @@ packages:
     resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
 
-  dts-resolver@0.1.1:
-    resolution: {integrity: sha512-Pj0AEP6US2fH1kwYAUHPh5f8XBawGKr25PGzCRnCQne/MW9CvFczL4u++FC8+jO0ZtquRy4J512FJca4zH39rg==}
+  dts-resolver@1.0.0:
+    resolution: {integrity: sha512-BTW78HXK66TvRHBRkU91a7CGoD5/PWi8ovMXbKVHjhR5xCqt1dgwl6CVk3wxWLzhNVIGXDbGWPBlRKrgSHMzfw==}
     engines: {node: '>=20.18.0'}
 
   eastasianwidth@0.2.0:
@@ -2165,8 +2165,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-plugin-dts@0.7.4:
-    resolution: {integrity: sha512-KQIPVbNTT2ziAmmFbrKHl97yV2nxmwK9lkZoe7Tx5H4sCxWwcgA0gwoqSIl03DQFogvqdVaQ9nueHbYgZ3ccmA==}
+  rolldown-plugin-dts@0.7.8:
+    resolution: {integrity: sha512-GVh9lUxfxpZ+rFCb10qq6S2yVeWjGW71EO501DNjfa86uSaMwD9M6B59y2aUSluO/UsSMboGqfpwSJbnMoxhnA==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       rolldown: ^1.0.0-beta.7
@@ -3554,7 +3554,7 @@ snapshots:
 
   dotenv@16.5.0: {}
 
-  dts-resolver@0.1.1:
+  dts-resolver@1.0.0:
     dependencies:
       oxc-resolver: 5.2.0
       pathe: 2.0.3
@@ -4735,10 +4735,10 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.7.4(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
+  rolldown-plugin-dts@0.7.8(rolldown@1.0.0-beta.7(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
       debug: 4.4.0
-      dts-resolver: 0.1.1
+      dts-resolver: 1.0.0
       get-tsconfig: 4.10.0
       magic-string-ast: 0.9.1
       oxc-parser: 0.64.0
