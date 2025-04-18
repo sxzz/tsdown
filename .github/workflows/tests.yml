@@ -29,7 +29,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm i
+        run: pnpm install
 
       - name: 🔍 Lint
         run: pnpm run lint
@@ -62,13 +62,34 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm i
+        run: pnpm install
 
       - name: 🏗️ Build
         run: pnpm run build
 
       - name: 🧪 Test
         run: pnpm run test
+
+  publish:
+    name: 📦 Publish Prerelease
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: 🛠️ Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+
+      - name: 📦 Install dependencies
+        run: pnpm install
 
       - name: ⚡ Publish prerelease
         run: pnpx pkg-pr-new publish --pnpm --compact
