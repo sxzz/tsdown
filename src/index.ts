@@ -26,6 +26,7 @@ import {
 } from './options'
 import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
+import type { PackageJson } from 'pkg-types'
 
 /**
  * Build with tsdown.
@@ -74,27 +75,7 @@ export const pkgRoot: string = path.resolve(dirname, '..')
 export async function buildSingle(
   config: ResolvedOptions,
 ): Promise<(() => Promise<void>) | undefined> {
-  const {
-    entry,
-    external,
-    plugins: userPlugins,
-    outDir,
-    format: formats,
-    clean,
-    platform,
-    alias,
-    treeshake,
-    sourcemap,
-    dts,
-    minify,
-    watch,
-    unused,
-    target,
-    define,
-    shims,
-    fixedExtension,
-    onSuccess,
-  } = config
+  const { outDir, format: formats, clean, dts, watch, onSuccess } = config
   let onSuccessCleanup: (() => any) | undefined
 
   const pkg = await readPackageJson(process.cwd())
@@ -114,9 +95,11 @@ export async function buildSingle(
     await Promise.all(
       formats.map(async (format) => {
         try {
-          await rolldownBuild(await getBuildOptions(format))
+          await rolldownBuild(await getBuildOptions(config, pkg, format))
           if (format === 'cjs' && dts) {
-            await rolldownBuild(await getBuildOptions(format, true))
+            await rolldownBuild(
+              await getBuildOptions(config, pkg, format, true),
+            )
           }
         } catch (error) {
           if (watch) {
@@ -161,75 +144,95 @@ export async function buildSingle(
       await onSuccess?.(config)
     }
   }
+}
 
-  async function getBuildOptions(
-    format: NormalizedFormat,
-    cjsDts?: boolean,
-  ): Promise<BuildOptions> {
-    const extension = resolveOutputExtension(pkg, format, fixedExtension)
+async function getBuildOptions(
+  config: ResolvedOptions,
+  pkg: PackageJson | undefined,
+  format: NormalizedFormat,
+  cjsDts?: boolean,
+): Promise<BuildOptions> {
+  const {
+    entry,
+    external,
+    plugins: userPlugins,
+    outDir,
+    platform,
+    alias,
+    treeshake,
+    sourcemap,
+    dts,
+    minify,
+    unused,
+    target,
+    define,
+    shims,
+    fixedExtension,
+  } = config
 
-    const plugins: RolldownPluginOption = []
-    if (pkg || config.skipNodeModulesBundle) {
-      plugins.push(ExternalPlugin(config, pkg))
-    }
-    if (unused && !cjsDts) {
-      const { Unused } = await import('unplugin-unused')
-      plugins.push(Unused.rolldown(unused === true ? {} : unused))
-    }
-    if (dts) {
-      const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
-      if (format === 'es') {
-        plugins.push(dtsPlugin(dts))
-      } else if (cjsDts) {
-        plugins.push(dtsPlugin({ ...dts, emitDtsOnly: true }))
-      }
-    }
-    if (target && !cjsDts) {
-      plugins.push(
-        transformPlugin({
-          target:
-            target && (typeof target === 'string' ? target : target.join(',')),
-          exclude: /\.d\.[cm]?ts$/,
-        }),
-      )
-    }
-    plugins.push(userPlugins)
+  const extension = resolveOutputExtension(pkg, format, fixedExtension)
 
-    const inputOptions = await mergeUserOptions(
-      {
-        input: entry,
-        external,
-        resolve: { alias },
-        treeshake,
-        platform,
-        define,
-        plugins,
-        inject: {
-          ...(shims && !cjsDts && getShimsInject(format, platform)),
-        },
-      },
-      config.inputOptions,
-      [format],
+  const plugins: RolldownPluginOption = []
+  if (pkg || config.skipNodeModulesBundle) {
+    plugins.push(ExternalPlugin(config, pkg))
+  }
+  if (unused && !cjsDts) {
+    const { Unused } = await import('unplugin-unused')
+    plugins.push(Unused.rolldown(unused === true ? {} : unused))
+  }
+  if (dts) {
+    const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
+    if (format === 'es') {
+      plugins.push(dtsPlugin(dts))
+    } else if (cjsDts) {
+      plugins.push(dtsPlugin({ ...dts, emitDtsOnly: true }))
+    }
+  }
+  if (target && !cjsDts) {
+    plugins.push(
+      transformPlugin({
+        target:
+          target && (typeof target === 'string' ? target : target.join(',')),
+        exclude: /\.d\.[cm]?ts$/,
+      }),
     )
+  }
+  plugins.push(userPlugins)
 
-    const outputOptions: OutputOptions = await mergeUserOptions(
-      {
-        format: cjsDts ? 'es' : format,
-        name: config.globalName,
-        sourcemap,
-        dir: outDir,
-        minify,
-        entryFileNames: `[name].${extension}`,
-        chunkFileNames: `[name]-[hash].${extension}`,
+  const inputOptions = await mergeUserOptions(
+    {
+      input: entry,
+      external,
+      resolve: { alias },
+      treeshake,
+      platform,
+      define,
+      plugins,
+      inject: {
+        ...(shims && !cjsDts && getShimsInject(format, platform)),
       },
-      config.outputOptions,
-      [format],
-    )
+    },
+    config.inputOptions,
+    [format],
+  )
 
-    return {
-      ...inputOptions,
-      output: outputOptions,
-    }
+  const outputOptions: OutputOptions = await mergeUserOptions(
+    {
+      format: cjsDts ? 'es' : format,
+      name: config.globalName,
+      sourcemap,
+      dir: outDir,
+      minify,
+      entryFileNames: `[name].${extension}`,
+      chunkFileNames: `[name]-[hash].${extension}`,
+    },
+    config.outputOptions,
+    [format],
+  )
+
+  return {
+    ...inputOptions,
+    output: outputOptions,
   }
 }
 
