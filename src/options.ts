@@ -9,6 +9,7 @@ import { fsExists } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
+import { findTsconfig } from './utils/tsconfig'
 import type {
   Arrayable,
   Awaitable,
@@ -196,16 +197,29 @@ export async function resolveOptions(options: Options): Promise<{
       if (publint === true) publint = {}
 
       if (tsconfig !== false) {
-        const tsconfigPath = path.resolve(
-          cwd,
-          typeof tsconfig === 'string' ? tsconfig : 'tsconfig.json',
-        )
-        if (await fsExists(tsconfigPath)) {
-          tsconfig = tsconfigPath
+        if (tsconfig === true || tsconfig == null) {
+          const isSet = tsconfig
+          tsconfig = await findTsconfig(cwd)
+          if (isSet && !tsconfig) {
+            logger.warn(`No tsconfig found in \`${cwd}\``)
+          }
         } else {
-          if (tsconfig)
-            logger.warn(`tsconfig \`${tsconfigPath}\` not found, skipping`)
-          tsconfig = false
+          const tsconfigPath = path.resolve(cwd, tsconfig)
+          if (await fsExists(tsconfigPath)) {
+            tsconfig = tsconfigPath
+          } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
+            logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
+            tsconfig = false
+          } else {
+            tsconfig = await findTsconfig(cwd, tsconfig)
+            if (!tsconfig) {
+              logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
+            }
+          }
+        }
+
+        if (tsconfig) {
+          logger.info(`Using tsconfig: ${underline(tsconfig)}`)
         }
       }
 

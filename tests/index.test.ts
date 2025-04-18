@@ -188,12 +188,14 @@ test('resolve paths in tsconfig', async (context) => {
   const files = {
     'index.ts': `export * from '@/mod'`,
     'mod.ts': `export const mod = 42`,
-    'tsconfig.build.json': JSON.stringify({
-      compilerOptions: { paths: { '@/*': ['./*'] } },
+    '../tsconfig.build.json': JSON.stringify({
+      compilerOptions: {
+        paths: { '@/*': ['./resolve-paths-in-tsconfig/*'] },
+      },
     }),
   }
   await testBuild(context, files, {
-    dts: true,
+    dts: { isolatedDeclaration: true },
     tsconfig: 'tsconfig.build.json',
   })
 })
