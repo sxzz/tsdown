@@ -81,7 +81,11 @@ export default defineConfig({
         {
           text: 'Recipes',
           items: [
+            { text: 'Cleaning', link: '/guide/cleaning.md' },
+            { text: 'Config file', link: '/guide/config-file.md' },
+            { text: 'Minification', link: '/guide/minification.md' },
             { text: 'Multiple builds', link: '/guide/multiple-builds.md' },
+            { text: 'Output format', link: '/guide/output-format.md' },
           ],
         },
       ],

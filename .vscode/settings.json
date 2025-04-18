@@ -1,5 +1,8 @@
 {
   "editor.formatOnSave": true,
   "eslint.experimental.useFlatConfig": true,
-  "cSpell.words": ["tsdown"]
+  "cSpell.words": ["tsdown"],
+  "[markdown]": {
+    "editor.formatOnSave": false
+  }
 }
