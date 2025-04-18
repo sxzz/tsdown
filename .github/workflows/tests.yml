@@ -91,5 +91,8 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
+      - name: 🏗️ Build
+        run: pnpm run build
+
       - name: ⚡ Publish prerelease
         run: pnpx pkg-pr-new publish --pnpm --compact
