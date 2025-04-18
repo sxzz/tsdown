@@ -27,7 +27,7 @@ Here are the 2 possible output, with and without minification enabled:
 
 ::: code-group
 
-```ts [dist/index.mjs (without --minify)]
+```js [dist/index.mjs (without --minify)]
 
 //#region src/index.ts
 const x = 1
@@ -40,7 +40,7 @@ hello(x)
 //#endregion
 ```
 
-```ts [dist/index.mjs (with --minify)]
+```js [dist/index.mjs (with --minify)]
 const e=1;function t(e){console.log(`Hello World`),console.log(e)}t(e);
 ```
 
