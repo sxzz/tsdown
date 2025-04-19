@@ -18,7 +18,8 @@ export default defineConfig({
   },
 
   title: 'tsdown',
-  description: 'An even faster bundler powered by Rolldown.',
+  titleTemplate: ':title - The Zero-config Bundler for Libraries',
+  description: 'The Zero-config Bundler for Libraries.',
   lastUpdated: true,
   cleanUrls: true,
   head: [

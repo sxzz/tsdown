@@ -5,7 +5,7 @@ layout: home
 hero:
   name: 'tsdown'
   text: 'Zero-config<br>Library bundler'
-  tagline: based on Rolldown
+  tagline: powered on Rolldown
   image:
     src: /tsdown.svg
     alt: tsdown
@@ -20,7 +20,7 @@ hero:
 features:
   - title: Speed of Rust
     details: |
-      tsdown is based on Rolldown, which handles tens of thousands of modules without breaking a sweat
+      tsdown is powered on Rolldown, which handles tens of thousands of modules without breaking a sweat
   - title: Easy to use
     details: |
       tsdown preconfigures everything you need to get started, so you can focus on writing code
