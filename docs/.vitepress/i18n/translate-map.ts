@@ -9,7 +9,7 @@ export const zhCN = {
   'Getting Started': '快速上手',
   'Migrate from tsup': ' 从 tsup 迁移',
 
-  Recipes: 'Recipes', // TODO
+  Recipes: '实践指南',
   Cleaning: '清理',
   'Config File': '配置文件',
   Minification: '压缩',
@@ -20,7 +20,7 @@ export const zhCN = {
   'Source Map': '源映射（Source Map）',
   Target: '构建目标（Target）',
   'Tree-shaking': '除屑优化（Tree-shaking）',
-  'Watch Mode': '监听模式（Watch Mode）',
+  'Watch Mode': '监听模式',
 
   'Config Options': '配置选项',
   'Command Line Interface': '命令行接口',

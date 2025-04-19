@@ -1,6 +1,6 @@
-# Config File
+# 配置文件
 
-By default, `tsdown` will search for a configuration file by looking in the current working directory and traversing upward through parent directories until it finds one. It supports the following file names:
+默认情况下，`tsdown` 会在当前工作目录中查找配置文件，并向上遍历父目录直到找到一个配置文件。它支持以下文件名：
 
 - `tsdown.config.ts`
 - `tsdown.config.mts`
@@ -11,39 +11,39 @@ By default, `tsdown` will search for a configuration file by looking in the curr
 - `tsdown.config.json`
 - `tsdown.config`
 
-Additionally, you can define your configuration directly in the `tsdown` field of your `package.json` file.
+此外，您还可以直接在 `package.json` 文件的 `tsdown` 字段中定义配置。
 
-### Specifying a Custom Config File
+### 指定自定义配置文件
 
-If your configuration file is located elsewhere or has a different name, you can specify its path using the `--config` (or `-c`) option:
+如果您的配置文件位于其他位置或具有不同的名称，可以使用 `--config`（或 `-c`）选项指定其路径：
 
 ```bash
 tsdown --config ./path/to/config
 ```
 
-### Disabling the Config File
+### 禁用配置文件
 
-To disable loading a configuration file entirely, use the `--no-config` option:
+如果您希望完全禁用加载配置文件，可以使用 `--no-config` 选项：
 
 ```bash
 tsdown --no-config
 ```
 
-This is useful if you want to rely solely on command-line options or default settings.
+这在您希望仅依赖命令行选项或默认设置时非常有用。
 
-### Extending Vite or Vitest Config (Experimental)
+### 扩展 Vite 或 Vitest 配置（实验性功能）
 
-`tsdown` provides an **experimental** feature to extend your existing Vite or Vitest configuration files. This allows you to reuse specific configuration options, such as `resolve` and `plugins`, while ignoring others that are not relevant to `tsdown`.
+`tsdown` 提供了一个**实验性**功能，允许您扩展现有的 Vite 或 Vitest 配置文件。通过此功能，您可以重用特定的配置选项（如 `resolve` 和 `plugins`），同时忽略与 `tsdown` 无关的其他选项。
 
-To enable this feature, use the `--from-vite` option:
+要启用此功能，请使用 `--from-vite` 选项：
 
 ```bash
-tsdown --from-vite        # Load vite.config.*
-tsdown --from-vite vitest # Load vitest.config.*
+tsdown --from-vite        # 加载 vite.config.*
+tsdown --from-vite vitest # 加载 vitest.config.*
 ```
 
 > [!WARNING]
-> This feature is **experimental** and may not support all Vite or Vitest configuration options. Only specific options, such as `resolve` and `plugins`, are reused. Use with caution and test thoroughly in your project.
+> 此功能为 **实验性功能**，可能并不支持所有 Vite 或 Vitest 的配置选项。仅特定选项（如 `resolve` 和 `plugins`）会被重用。请谨慎使用，并在您的项目中充分测试。
 
 > [!TIP]
-> Extending Vite or Vitest configurations can save time and effort if your project already uses these tools, allowing you to build upon your existing setup without duplicating configuration.
+> 如果您的项目已经使用了 Vite 或 Vitest，扩展其配置可以节省时间和精力，让您在现有设置的基础上构建，而无需重复配置。

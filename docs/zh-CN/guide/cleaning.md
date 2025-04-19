@@ -1,14 +1,14 @@
-# Cleaning
+# 清理
 
 <!-- TODO enable clean by default -->
 
-By default, `tsdown` does not clean the output folder for you. This means that if your bundling process generates files with different names compared to a previous build, the older files will remain in the output directory.
+默认情况下，`tsdown` 不会自动清理输出文件夹。这意味着，如果您的打包过程生成的文件名与之前的构建不同，旧的文件将会保留在输出目录中。
 
-To ensure the output directory is cleaned before building, you can use the `--clean` option:
+为了在构建之前清理输出目录，您可以使用 `--clean` 选项：
 
 ```bash
 tsdown --clean
 ```
 
 > [!NOTE]
-> Using the `--clean` option will remove all files in the output directory before the build process begins. Make sure this behavior aligns with your project requirements to avoid accidentally deleting important files.
+> 使用 `--clean` 选项会在构建过程开始之前删除输出目录中的所有文件。请确保此行为符合您的项目需求，以避免意外删除重要文件。

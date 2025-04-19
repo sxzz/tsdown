@@ -1,16 +1,16 @@
-# Minification
+# 压缩
 
-Minification is the process of compressing your code to reduce its size and improve performance by removing unnecessary characters, such as whitespace, comments, and unused code.
+压缩是通过移除不必要的字符（如空格、注释和未使用的代码）来减少代码体积并提升性能的过程。
 
-You can enable minification in `tsdown` using the `--minify` option:
+您可以通过在 `tsdown` 中使用 `--minify` 选项来启用代码压缩：
 
 ```bash
 tsdown --minify
 ```
 
-### Example
+### 示例
 
-Given the following input code:
+以下是输入代码：
 
 ```ts [src/index.ts]
 const x = 1
@@ -23,11 +23,11 @@ function hello(x: number) {
 hello(x)
 ```
 
-Here are the two possible outputs, depending on whether minification is enabled:
+根据是否启用了压缩，输出代码可能如下：
 
 ::: code-group
 
-```js [dist/index.mjs (without --minify)]
+```js [dist/index.mjs (未使用 --minify)]
 //#region src/index.ts
 const x = 1
 function hello(x$1) {
@@ -40,7 +40,7 @@ hello(x)
 ```
 
 <!-- prettier-ignore -->
-```js [dist/index.mjs (with --minify)]
+```js [dist/index.mjs (使用 --minify)]
 const e=1;function t(e){console.log(`Hello World`),console.log(e)}t(e);
 ```
 

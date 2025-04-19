@@ -1,12 +1,12 @@
-# Getting Started
+# 快速上手
 
-:::warning 🚧 Beta Software  
-[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still a work in progress.  
+:::warning 🚧 Beta 软件  
+[Rolldown](https://rolldown.rs) 当前处于测试版状态。虽然它已经可以处理大多数生产环境的使用场景，但可能仍然存在一些漏洞和不完善之处。特别是，内置的压缩功能仍在开发中。  
 :::
 
-## Installation
+## 安装
 
-Install `tsdown` as a development dependency using your preferred package manager:
+使用您喜欢的包管理器将 `tsdown` 安装为开发依赖：
 
 ::: code-group
 
@@ -28,23 +28,23 @@ bun add -D tsdown
 
 :::
 
-## Using the CLI
+## 使用 CLI
 
-To verify that `tsdown` is installed correctly, run the following command in your project directory:
+要验证 `tsdown` 是否正确安装，请在项目目录中运行以下命令：
 
 ```sh
 ./node_modules/.bin/tsdown --version
 ```
 
-You can also explore the available CLI options and examples with:
+您还可以通过以下命令查看可用的 CLI 选项和示例：
 
 ```sh
 ./node_modules/.bin/tsdown --help
 ```
 
-### Your First Bundle
+### 创建您的第一个打包
 
-Let's create two source TypeScript files:
+首先，创建两个源 TypeScript 文件：
 
 ```ts [src/index.ts]
 import { hello } from './hello.ts'
@@ -58,7 +58,7 @@ export function hello() {
 }
 ```
 
-Next, initialize the `tsdown` configuration file:
+接下来，初始化 `tsdown` 配置文件：
 
 ```ts [tsdown.config.ts]
 import { defineConfig } from 'tsdown'
@@ -68,23 +68,23 @@ export default defineConfig({
 })
 ```
 
-Now, run the following command to bundle your code:
+现在，运行以下命令来打包您的代码：
 
 ```sh
 ./node_modules/.bin/tsdown
 ```
 
-You should see the bundled output written to `dist/index.mjs`. To verify it works, run the output file:
+您应该会看到打包后的输出文件写入到 `dist/index.mjs`。为了验证它是否正常工作，运行输出文件：
 
 ```sh
 node dist/index.mjs
 ```
 
-You should see the message `Hello tsdown!` printed to the console.
+您应该会在控制台中看到消息 `Hello tsdown!`。
 
-### Using the CLI in npm Scripts
+### 在 npm 脚本中使用 CLI
 
-To simplify the command, you can add it to your `package.json` scripts:
+为了简化命令，您可以将其添加到 `package.json` 的脚本中：
 
 ```json{5} [package.json]
 {
@@ -99,28 +99,28 @@ To simplify the command, you can add it to your `package.json` scripts:
 }
 ```
 
-Now, you can build your project with:
+现在，您可以通过以下命令构建项目：
 
 ```sh
 npm run build
 ```
 
-## Using the Config File
+## 使用配置文件
 
-While you can use the CLI directly, it's recommended to use a configuration file for more complex projects. This allows you to define and manage your build settings in a centralized and reusable way.
+虽然可以直接使用 CLI，但对于更复杂的项目，推荐使用配置文件。这可以让您以集中且可复用的方式定义和管理构建设置。
 
-For more details, refer to the [Config File](./config-file.md) documentation.
+有关更多详细信息，请参阅 [配置文件](./config-file.md) 文档。
 
-## Using Plugins (TODO)
+## 使用插件（TODO）
 
-TODO link to another page
+TODO 链接到其他页面
 
-## Using Watch Mode
+## 使用监听模式
 
-You can enable watch mode to automatically rebuild your project whenever files change. This is particularly useful during development to streamline your workflow. Use the `--watch` (or `-w`) option:
+您可以启用监听模式，在文件更改时自动重新构建项目。这在开发过程中非常有用，可以简化您的工作流程。使用 `--watch`（或 `-w`）选项：
 
 ```bash
 tsdown --watch
 ```
 
-For more details, refer to the [Watch Mode](./watch-mode.md) documentation.
+有关更多详细信息，请参阅 [监听模式](./watch-mode.md) 文档。

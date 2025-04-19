@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: 'tsdown'
-  text: 'The Elegant<br>Library bundler'
+  text: 'The Elegant<br>Library Bundler'
   tagline: Powered by Rolldown
   image:
     src: /tsdown.svg

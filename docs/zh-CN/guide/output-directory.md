@@ -1,22 +1,22 @@
-# Output Directory
+# 输出目录
 
-By default, `tsdown` bundles your code into the `dist` directory located in the current working folder.
+默认情况下，`tsdown` 会将打包后的代码输出到当前工作目录下的 `dist` 文件夹中。
 
-If you want to customize the output directory, you can use the `--out-dir` (or `-d`) option:
+如果您想自定义输出目录，可以使用 `--out-dir`（或 `-d`）选项：
 
 ```bash
 tsdown -d ./custom-output
 ```
 
-### Example
+### 示例
 
 ```bash
-# Default behavior: outputs to ./dist
+# 默认行为：输出到 ./dist
 tsdown
 
-# Custom output directory: outputs to ./build
+# 自定义输出目录：输出到 ./build
 tsdown -d ./build
 ```
 
 > [!NOTE]
-> The specified output directory will be created if it does not already exist. Ensure the directory path aligns with your project structure to avoid overwriting unintended files.
+> 如果指定的输出目录不存在，将会自动创建。请确保目录路径与您的项目结构一致，以避免意外覆盖其他文件。

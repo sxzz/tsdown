@@ -1,35 +1,35 @@
-# Watch Mode
+# 监听模式
 
-Watch mode allows `tsdown` to automatically re-bundle your code whenever changes are detected in the specified files or directories. This is particularly useful during development to streamline the build process.
+监听模式允许 `tsdown` 在检测到指定文件或目录的更改时自动重新打包代码。这在开发过程中非常有用，可以简化构建流程。
 
-### Enabling Watch Mode
+### 启用监听模式
 
-You can enable watch mode using the `--watch` (or `-w`) option:
+您可以使用 `--watch`（或 `-w`）选项启用监听模式：
 
 ```bash
 tsdown --watch
 ```
 
-### Watching Specific Paths
+### 监听特定路径
 
-By default, `tsdown` watches the files in your project that are part of the build process. However, you can specify a custom path to watch for changes:
+默认情况下，`tsdown` 会监听项目中参与构建过程的文件。但您也可以指定自定义路径来监听更改：
 
 ```bash
 tsdown --watch <path>
 ```
 
-### Example
+### 示例
 
 ```bash
-# Watch all files in the project (default behavior)
+# 监听项目中的所有文件（默认行为）
 tsdown --watch
 
-# Watch a specific directory
+# 监听特定目录
 tsdown --watch ./src
 
-# Watch a specific file
+# 监听特定文件
 tsdown --watch ./src/index.ts
 ```
 
 > [!TIP]
-> Watch mode is ideal for development workflows, as it eliminates the need to manually rebuild your project after every change.
+> 监听模式非常适合开发工作流，因为它无需在每次更改后手动重新构建项目。

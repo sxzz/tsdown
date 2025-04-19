@@ -1,35 +1,35 @@
-# Target
+# 构建目标（Target）
 
-The `target` setting determines which JavaScript features are downleveled (transformed to older syntax) and which are left intact in the output. This allows you to control the compatibility of your bundled code with specific environments or JavaScript versions.
+`target` 设置决定了哪些 JavaScript 特性会被降级（转换为旧语法），哪些会在输出中保持原样。这使您可以控制打包代码与特定环境或 JavaScript 版本的兼容性。
 
-For example, an arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
+例如，如果目标是 `es5` 或更低版本，箭头函数 `() => this` 将被转换为等效的 `function` 表达式。
 
-> [!WARNING] Syntax Downgrade Only
-> The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.
+> [!WARNING] 仅限语法降级  
+> `target` 选项仅影响语法转换。它不包括针对目标环境中可能不存在的 API 的运行时 polyfill 或 shim。例如，如果您的代码使用了 `Promise`，但目标环境不支持原生 `Promise`，则不会自动添加 polyfill。
 
-### Customizing the Target
+### 自定义目标
 
-You can specify the target using the `--target` option:
+您可以使用 `--target` 选项指定目标：
 
 ```bash
 tsdown --target <target>
 ```
 
-### Supported Targets
+### 支持的目标
 
-`tsdown` supports a wide range of targets, including:
+`tsdown` 支持多种目标，包括：
 
-- **ECMAScript versions:** `es5`, `es2015`, `es2020`, `esnext`, etc.
-- **Browser versions:** `chrome100`, `safari18`, `firefox110`, etc.
-- **Node.js versions:** `node20.18`, `node16`, etc.
+- **ECMAScript 版本：** `es5`、`es2015`、`es2020`、`esnext` 等。
+- **浏览器版本：** `chrome100`、`safari18`、`firefox110` 等。
+- **Node.js 版本：** `node20.18`、`node16` 等。
 
-### Example
+### 示例
 
 ```bash
 tsdown --target es2020
 ```
 
-You can also pass an **array of targets** to ensure compatibility across multiple environments. For example:
+您还可以传递**多个目标**以确保兼容多个环境。例如：
 
 ```bash
 tsdown --target chrome100 --target node20.18

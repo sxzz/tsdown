@@ -1,33 +1,33 @@
-# Platform
+# 运行平台（Platform）
 
-The platform specifies the target runtime environment for the bundled JavaScript code.
+运行平台指定了打包后 JavaScript 代码的目标运行环境。
 
-By default, `tsdown` bundles for the `node` runtime, but you can customize it using the `--platform` option:
+默认情况下，`tsdown` 针对 `node` 运行时进行打包，但您可以通过 `--platform` 选项自定义目标平台：
 
 ```bash
-tsdown --platform node    # default
+tsdown --platform node    # 默认
 tsdown --platform browser
 tsdown --platform neutral
 ```
 
-### Available Platforms
+### 可用平台
 
-- **`node`:** Targets the [Node.js](https://nodejs.org/) runtime. This is the default platform, and Node.js built-in modules (e.g., `fs`, `path`) will be resolved automatically. Ideal for toolchains or server-side projects.
-- **`browser`:** Targets web browsers (e.g., Chrome, Firefox). This is suitable for front-end projects. If your code uses Node.js built-in modules, a warning will be displayed, and you may need to use polyfills or shims to ensure compatibility.
-- **`neutral`:** A platform-agnostic target with no specific runtime assumptions. Use this if your code is intended to run in multiple environments or you want full control over runtime behavior. This is particularly useful for libraries or shared code that may be used in both Node.js and browser environments.
+- **`node`:** 针对 [Node.js](https://nodejs.org/) 运行时。这是默认平台，Node.js 内置模块（如 `fs`、`path`）会被自动解析。适合工具链或服务端项目。
+- **`browser`:** 针对 Web 浏览器（如 Chrome、Firefox）。适用于前端项目。如果您的代码使用了 Node.js 内置模块，将会显示警告，您可能需要使用 polyfill 或 shim 来确保兼容性。
+- **`neutral`:** 一个与平台无关的目标，不对特定运行时环境做假设。如果您的代码需要在多个环境中运行，或者您希望完全控制运行时行为，可以选择此选项。特别适合用于 Node.js 和浏览器环境的库或共享代码。
 
-### Example
+### 示例
 
 ```bash
-# Bundle for Node.js (default)
+# 针对 Node.js 打包（默认）
 tsdown --platform node
 
-# Bundle for browsers
+# 针对浏览器打包
 tsdown --platform browser
 
-# Bundle for a neutral platform
+# 针对中立平台打包
 tsdown --platform neutral
 ```
 
 > [!TIP]
-> Choosing the right platform ensures your code is optimized for its intended runtime. For example, use `browser` for front-end projects, `node` for server-side applications, and `neutral` for universal libraries.
+> 选择正确的平台可以确保您的代码针对目标运行时进行了优化。例如，前端项目使用 `browser`，服务端应用使用 `node`，而通用库使用 `neutral`。

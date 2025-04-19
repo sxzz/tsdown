@@ -1,9 +1,9 @@
-# Silent Mode
+# 静默模式
 
-If you want to suppress non-error logs during the bundling process, you can enable **silent mode** by using the `--silent` option:
+如果您希望在打包过程中屏蔽非错误日志，可以通过使用 `--silent` 选项启用**静默模式**：
 
 ```bash
 tsdown --silent
 ```
 
-In silent mode, only error messages will be displayed, making it easier to focus on critical issues during the build process.
+在静默模式下，只有错误消息会被显示，这使您能够更专注于构建过程中的关键问题。
