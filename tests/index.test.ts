@@ -116,6 +116,22 @@ test('fixed extension', async (context) => {
   })
 })
 
+test('custom extension', async (context) => {
+  const files = {
+    'index.ts': `export default 10`,
+  }
+  const { outputFiles } = await testBuild(context, files, {
+    dts: true,
+    outExtensions: () => ({ js: '.some.mjs', dts: '.some.d.mts' }),
+  })
+  expect(outputFiles).toMatchInlineSnapshot(`
+    [
+      "index.d.some.d.mts",
+      "index.some.mjs",
+    ]
+  `)
+})
+
 test('noExternal', async (context) => {
   const files = {
     'index.ts': `export * from 'cac'`,
