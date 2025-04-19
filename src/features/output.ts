@@ -3,12 +3,25 @@ import type { NormalizedFormat, ResolvedOptions } from '../options'
 import type { PackageJson } from 'pkg-types'
 import type { InputOptions, PreRenderedChunk } from 'rolldown'
 
-export type OutputExtension = 'mjs' | 'cjs' | 'js'
-function resolveOutputExtension(
+export interface OutExtensionContext {
+  options: InputOptions
+  format: NormalizedFormat
+  /** "type" field in project's package.json */
+  pkgType: PackageType
+}
+export interface OutExtensionObject {
+  js?: string
+  dts?: string
+}
+export type OutExtensionFactory = (
+  ctx: OutExtensionContext,
+) => OutExtensionObject
+
+function resolveJsOutputExtension(
   packageType: PackageType,
   format: NormalizedFormat,
   fixedExtension?: boolean,
-): OutputExtension {
+): 'cjs' | 'js' | 'mjs' {
   switch (format) {
     case 'es':
       return !fixedExtension && packageType === 'module' ? 'js' : 'mjs'
@@ -40,7 +53,7 @@ export function resolveChunkFilename(
     dtsExtension = dts
   }
 
-  jsExtension ||= `.${resolveOutputExtension(packageType, format, fixedExtension)}`
+  jsExtension ||= `.${resolveJsOutputExtension(packageType, format, fixedExtension)}`
 
   return [
     createChunkFilename('[name]', jsExtension, dtsExtension),
