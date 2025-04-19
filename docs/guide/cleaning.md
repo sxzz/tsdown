@@ -5,5 +5,5 @@ By default, tsdown won't clean the output folder for you, which mean if your bun
 To tell tsdown to clean the output directory before building, use the `--clean` option:
 
 ```bash
-npx tsdown --clean
+tsdown --clean
 ```

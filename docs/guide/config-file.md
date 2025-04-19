@@ -5,13 +5,13 @@ By default, tsdown will load the config from a file named `tsdown.config.ts` in 
 You can specify a different config file using the `--config` (or `-c`) option:
 
 ```bash
-npx tsdown --config <path>
+tsdown --config ./path/to/config
 ```
 
 To disable loading the config file, use the `--no-config` option:
 
 ```bash
-npx tsdown --no-config
+tsdown --no-config
 ```
 
 ### Extending Vite or Vitest config
@@ -19,5 +19,6 @@ npx tsdown --no-config
 You can extend your Vite or Vitest config using the `--from-vite` option:
 
 ```bash
-npx tsdown --from-vite
+tsdown --from-vite        # load   vite.config.*
+tsdown --from-vite vitest # load vitest.config.*
 ```

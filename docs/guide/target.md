@@ -54,3 +54,5 @@ hello(x)
 ```
 
 :::
+
+<!-- TODO: warn only syntax downgrade, not for runtime -->

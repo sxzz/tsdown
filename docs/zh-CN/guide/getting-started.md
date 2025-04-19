@@ -115,7 +115,7 @@ Rolldown supports most of the [Rollup config options](https://rollupjs.org/confi
 
 Rolldown's plugin API is identical to that of Rollup's, so you can reuse most of the existing Rollup plugins when using Rolldown. That said, Rolldown provides many built-in features that make it unnecessary to use plugins.
 
-## Using the Watcher
+## Using Watch Mode
 
 You can use the `--watch` (or `-w`) option to enable the watcher, which will automatically rebuild your project when files change.
 

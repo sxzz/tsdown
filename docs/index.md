@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: 'tsdown'
-  text: 'An even faster TypeScript bundler.'
+  text: 'Zero-config<br>Library bundler'
   tagline: based on Rolldown
   image:
     src: /tsdown.svg

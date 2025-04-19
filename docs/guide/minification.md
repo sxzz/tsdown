@@ -5,7 +5,7 @@ Minification is a process that compresses your code to make it as small and opti
 It can be enabled using the `--minify` option:
 
 ```bash
-npx tsdown --minify
+tsdown --minify
 ```
 
 ### Example

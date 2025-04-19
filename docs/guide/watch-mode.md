@@ -1,15 +1,15 @@
-# Watching
+# Watch Mode
 
-File watching lets you rebundle your code on given files changes.
+Watch mode lets you re-bundle your code on given file changes.
 
 Watching can be enabled using the `--watch` (or `-w`) option:
 
 ```bash
-npx tsdown --watch
+tsdown --watch
 ```
 
 Note that you can specify a custom path to watch changes for:
 
 ```bash
-npx tsdown --watch <path>
+tsdown --watch <path>
 ```

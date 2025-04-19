@@ -90,7 +90,7 @@ export default defineConfig({
             { text: 'Sourcemap', link: '/guide/sourcemap.md' },
             { text: 'Target', link: '/guide/target.md' },
             { text: 'Tree shaking', link: '/guide/tree-shaking.md' },
-            { text: 'Watching', link: '/guide/watching.md' },
+            { text: 'Watch Mode', link: '/guide/watch-mode.md' },
           ],
         },
       ],
