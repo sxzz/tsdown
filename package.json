@@ -99,10 +99,10 @@
     "typescript": "~5.8.3",
     "unplugin-ast": "^0.14.6",
     "unplugin-unused": "^0.4.4",
+    "vite": "^6.3.2",
     "vitepress": "^1.6.3",
     "vitepress-plugin-group-icons": "^1.5.2",
     "vitepress-plugin-llms": "^1.1.0",
-    "vite": "^6.3.2",
     "vitest": "^3.1.1"
   },
   "engines": {
