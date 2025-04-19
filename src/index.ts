@@ -24,6 +24,7 @@ import {
   type ResolvedOptions,
   type UserConfig,
 } from './options'
+import { ShebangPlugin } from './plugins'
 import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
@@ -175,10 +176,7 @@ async function getBuildOptions(
   if (pkg || config.skipNodeModulesBundle) {
     plugins.push(ExternalPlugin(config, pkg))
   }
-  if (unused && !cjsDts) {
-    const { Unused } = await import('unplugin-unused')
-    plugins.push(Unused.rolldown(unused === true ? {} : unused))
-  }
+
   if (dts) {
     const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
     const options: DtsOptions = { tsconfig, ...dts }
@@ -189,14 +187,21 @@ async function getBuildOptions(
       plugins.push(dtsPlugin({ ...options, emitDtsOnly: true }))
     }
   }
-  if (target && !cjsDts) {
-    plugins.push(
-      transformPlugin({
-        target:
-          target && (typeof target === 'string' ? target : target.join(',')),
-        exclude: /\.d\.[cm]?ts$/,
-      }),
-    )
+  if (!cjsDts) {
+    if (unused) {
+      const { Unused } = await import('unplugin-unused')
+      plugins.push(Unused.rolldown(unused === true ? {} : unused))
+    }
+    if (target) {
+      plugins.push(
+        transformPlugin({
+          target:
+            target && (typeof target === 'string' ? target : target.join(',')),
+          exclude: /\.d\.[cm]?ts$/,
+        }),
+      )
+    }
+    plugins.push(ShebangPlugin())
   }
   plugins.push(userPlugins)
 
