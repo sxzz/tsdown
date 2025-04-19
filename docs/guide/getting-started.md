@@ -109,11 +109,11 @@ Although you can use the CLI directly, it's recommended to use a config file for
 
 See [Rolldown's config options](https://rolldown.rs/reference/config-options) for a full list of available options.
 
-Rolldown supports most of the [Rollup config options](https://rollupjs.org/configuration-options), with some [notable additional features](./features.md).
+Rolldown supports most of the [Rollup config options](https://rollupjs.org/configuration-options), with some notable additional features.
 
 ## TODO : Using Plugins
 
-Rolldown's plugin API is identical to that of Rollup's, so you can reuse most of the existing Rollup plugins when using Rolldown. That said, Rolldown provides many [built-in features](./features.md) that make it unnecessary to use plugins.
+Rolldown's plugin API is identical to that of Rollup's, so you can reuse most of the existing Rollup plugins when using Rolldown. That said, Rolldown provides many built-in features that make it unnecessary to use plugins.
 
 ## Using the Watcher
 

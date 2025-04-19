@@ -5,9 +5,11 @@ import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
+import { fsExists } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
+import { findTsconfig } from './utils/tsconfig'
 import type {
   Arrayable,
   Awaitable,
@@ -42,6 +44,7 @@ export interface Options {
         importer: string | undefined,
       ) => boolean | null | undefined | void)
   alias?: Record<string, string>
+  tsconfig?: string | boolean
   /** @default 'node' */
   platform?: 'node' | 'neutral' | 'browser'
   inputOptions?:
@@ -149,6 +152,7 @@ export type ResolvedOptions = Omit<
       format: NormalizedFormat[]
       clean: string[] | false
       dts: false | DtsOptions
+      tsconfig: string | false
     }
   >,
   'config' | 'fromVite'
@@ -185,11 +189,39 @@ export async function resolveOptions(options: Options): Promise<{
         publint = false,
         fromVite,
         alias,
+        tsconfig,
       } = subOptions
 
       entry = await resolveEntry(entry)
       if (clean === true) clean = []
       if (publint === true) publint = {}
+
+      if (tsconfig !== false) {
+        if (tsconfig === true || tsconfig == null) {
+          const isSet = tsconfig
+          tsconfig = await findTsconfig(cwd)
+          if (isSet && !tsconfig) {
+            logger.warn(`No tsconfig found in \`${cwd}\``)
+          }
+        } else {
+          const tsconfigPath = path.resolve(cwd, tsconfig)
+          if (await fsExists(tsconfigPath)) {
+            tsconfig = tsconfigPath
+          } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
+            logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
+            tsconfig = false
+          } else {
+            tsconfig = await findTsconfig(cwd, tsconfig)
+            if (!tsconfig) {
+              logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
+            }
+          }
+        }
+
+        if (tsconfig) {
+          logger.info(`Using tsconfig: ${underline(tsconfig)}`)
+        }
+      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -236,6 +268,7 @@ export async function resolveOptions(options: Options): Promise<{
         skipNodeModulesBundle,
         publint,
         alias,
+        tsconfig,
       }
 
       return config
