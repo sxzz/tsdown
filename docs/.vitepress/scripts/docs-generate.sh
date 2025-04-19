@@ -12,10 +12,24 @@ echo "📚 Beautifying reference structure..."
 # Move Options.md to ./docs/reference
 mv ./docs/reference/api/interfaces/Options.md ./docs/reference/config-options.md
 
+# Remove the type-aliases folder if it exists
+if [ -d "./docs/reference/type-aliases" ]; then
+  rm -rf ./docs/reference/type-aliases
+fi
+# Move the type-aliases folder to ./docs/reference
+mv ./docs/reference/api/type-aliases ./docs/reference
+
 # Remove the api folder
 rm -rf ./docs/reference/api
 
-# in config-options.md, remove 6 first lines
+# In config-options.md, remove 6 first lines
 sed -i '' '1,6d' ./docs/reference/config-options.md
+# In config-options.md, replace "../type-aliases" with "./type-aliases"
+sed -i '' 's/..\/type-aliases/.\/type-aliases/g' ./docs/reference/config-options.md
+
+# In type-aliases files, remove 6 first lines
+sed -i '' '1,6d' ./docs/reference/type-aliases/*.md
+# In type-aliases files, replace "../interfaces/Options" with "../config-options"
+sed -i '' 's/..\/interfaces\/Options/..\/config-options/g' ./docs/reference/type-aliases/*.md
 
 echo "✅ Reference structure beautified successfully!"
