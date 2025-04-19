@@ -4,18 +4,18 @@ layout: home
 
 hero:
   name: 'tsdown'
-  text: 'The Elegant<br>Library bundler'
-  tagline: powered on Rolldown
+  text: 优雅的<br>库打包工具
+  tagline: 由 Rolldown 驱动
   image:
     src: /tsdown.svg
     alt: tsdown
   actions:
     - theme: brand
-      text: Get Started
-      link: /guide/
+      text: 开始使用
+      link: /zh-CN/guide/
     - theme: alt
-      text: Reference
-      link: /reference/config-options.md
+      text: API 参考
+      link: /zh-CN/reference/config-options.md
 
 features:
   - title: Speed of Rust
@@ -42,10 +42,5 @@ features:
   line-height: 32px;
   font-size: 24px;
   font-weight: 600;
-}
-
-.VPImage {
-  height: 80%;
-  width: 80%;
 }
 </style>

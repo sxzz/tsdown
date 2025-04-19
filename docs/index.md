@@ -5,7 +5,7 @@ layout: home
 hero:
   name: 'tsdown'
   text: 'The Elegant<br>Library bundler'
-  tagline: powered on Rolldown
+  tagline: Powered by Rolldown
   image:
     src: /tsdown.svg
     alt: tsdown
@@ -14,7 +14,7 @@ hero:
       text: Get Started
       link: /guide/
     - theme: alt
-      text: Reference
+      text: API Reference
       link: /reference/config-options.md
 
 features:
@@ -35,10 +35,5 @@ features:
   text-align: center;
   padding-top: 60px;
   border: none;
-}
-
-.VPImage {
-  height: 80%;
-  width: 80%;
 }
 </style>
