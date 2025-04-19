@@ -15,7 +15,7 @@ Given this input code :
 ::: code-group
 
 ```ts [src/index.ts]
-import { hello } from "./util"
+import { hello } from './util'
 
 const x = 1
 
@@ -28,7 +28,7 @@ export function unused() {
 }
 
 export function hello(x: number) {
-  console.log("Hello World")
+  console.log('Hello World')
   console.log(x)
 }
 ```
@@ -40,36 +40,34 @@ Here are the 2 possible output, with and without tree shaking:
 ::: code-group
 
 ```js [dist/index.mjs (with tree shaking)]
-
 //#region src/util.ts
 function hello(x$1) {
-	console.log("Hello World");
-	console.log(x$1);
+  console.log('Hello World')
+  console.log(x$1)
 }
 
 //#endregion
 //#region src/index.ts
-const x = 1;
-hello(x);
+const x = 1
+hello(x)
 
 //#endregion
 ```
 
 ```js [dist/index.mjs (without tree shaking)]
-
 //#region src/util.ts
 function unused() {
-	console.log("I'm unused.");
+  console.log("I'm unused.")
 }
 function hello(x$1) {
-	console.log("Hello World");
-	console.log(x$1);
+  console.log('Hello World')
+  console.log(x$1)
 }
 
 //#endregion
 //#region src/index.ts
-const x = 1;
-hello(x);
+const x = 1
+hello(x)
 
 //#endregion
 ```

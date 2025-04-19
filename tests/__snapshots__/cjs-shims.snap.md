@@ -1,12 +1,12 @@
 ## index.cjs
 
 ```cjs
-"use strict";
+'use strict'
 
 //#region index.ts
-const url = require("url").pathToFileURL(__filename).href;
-const filename = __filename;
-const dirname = __dirname;
+const url = require('url').pathToFileURL(__filename).href
+const filename = __filename
+const dirname = __dirname
 
 //#endregion
 exports.dirname = dirname

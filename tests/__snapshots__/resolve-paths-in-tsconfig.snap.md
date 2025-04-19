@@ -1,20 +1,19 @@
 ## index.d.ts
 
 ```ts
-
 //#region mod.d.ts
-declare const mod = 42;
+declare const mod = 42
 
 //#endregion
-export { mod };
+export { mod }
 ```
+
 ## index.js
 
 ```js
-
 //#region mod.ts
-const mod = 42;
+const mod = 42
 
 //#endregion
-export { mod };
+export { mod }
 ```

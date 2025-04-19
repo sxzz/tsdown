@@ -9,6 +9,7 @@ You can use the `--target` option to customize the output target :
 ```bash
 npx tsdown --target <target>
 ```
+
 ### Example
 
 Given this input code :
@@ -17,7 +18,7 @@ Given this input code :
 const x = 1
 
 const hello = (x: number) => {
-  console.log("Hello World")
+  console.log('Hello World')
   console.log(x)
 }
 
@@ -29,27 +30,25 @@ Here are the 2 possible output, with target ES5 and ES6:
 ::: code-group
 
 ```js [dist/index.mjs (ES5)]
-
 //#region src/index.ts
-const x = 1;
-const hello = function(x$1) {
-	console.log("Hello World");
-	console.log(x$1);
-};
-hello(x);
+const x = 1
+const hello = function (x$1) {
+  console.log('Hello World')
+  console.log(x$1)
+}
+hello(x)
 
 //#endregion
 ```
 
 ```js [dist/index.mjs (ES6)]
-
 //#region src/index.ts
-const x = 1;
+const x = 1
 const hello = (x$1) => {
-	console.log("Hello World");
-	console.log(x$1);
-};
-hello(x);
+  console.log('Hello World')
+  console.log(x$1)
+}
+hello(x)
 
 //#endregion
 ```

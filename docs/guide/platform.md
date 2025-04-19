@@ -9,6 +9,7 @@ npx tsdown --platform <platform>
 ```
 
 Available platforms :
+
 - `browser` : Your typical browser (Chrome, Firefox, ...)
 - `neutral` : No specific platform
 - `node` : The [Node](https://nodejs.org/) runtime

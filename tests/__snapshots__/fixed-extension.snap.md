@@ -1,41 +1,41 @@
 ## index.cjs
 
 ```cjs
-"use strict";
+'use strict'
 
 //#region index.ts
-var fixed_extension_default = 10;
+var fixed_extension_default = 10
 
 //#endregion
-module.exports = fixed_extension_default;
+module.exports = fixed_extension_default
 ```
+
 ## index.d.cts
 
 ```cts
-
 //#region index.d.ts
-declare const _default: number;
+declare const _default: number
 
 //#endregion
-export { _default as default };
+export { _default as default }
 ```
+
 ## index.d.mts
 
 ```mts
-
 //#region index.d.ts
-declare const _default: number;
+declare const _default: number
 
 //#endregion
-export { _default as default };
+export { _default as default }
 ```
+
 ## index.mjs
 
 ```mjs
-
 //#region index.ts
-var fixed_extension_default = 10;
+var fixed_extension_default = 10
 
 //#endregion
-export { fixed_extension_default as default };
+export { fixed_extension_default as default }
 ```

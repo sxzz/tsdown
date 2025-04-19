@@ -9,5 +9,6 @@ npx tsdown migrate
 ```
 
 A few options can be passed:
+
 - `--cwd <dir>` (or `-c`) to customize the working directory
 - `--dry-run` (or `-d`) to do a dry run
