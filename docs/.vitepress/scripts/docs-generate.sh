@@ -3,7 +3,7 @@
 echo "📚 Generating reference..."
 
 # Generate API documentation
-./node_modules/.bin/typedoc --tsconfig tsconfig.json > /dev/null 2>&1
+./node_modules/.bin/typedoc --tsconfig tsconfig.json >/dev/null 2>&1
 
 echo "✅ Reference generated successfully!"
 
