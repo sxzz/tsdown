@@ -45,17 +45,6 @@ export default defineConfig({
   ],
 
   themeConfig: {
-    // If Algolia environment variables are available, enable Algolia search
-    /*
-    search: {
-      provider: 'algolia',
-      options: {
-        appId: process.env.ALGOLIA_APP_ID || '',
-        apiKey: process.env.ALGOLIA_API_KEY || '',
-        indexName: 'rolldown',
-      },
-    */
-    // Else, use the default VitePress search
     search: {
       provider: 'local',
     },
