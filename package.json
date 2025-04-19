@@ -54,7 +54,8 @@
     "prepublishOnly": "pnpm run build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:generate": "./docs/.vitepress/scripts/docs:generate.sh"
   },
   "peerDependencies": {
     "publint": "^0.3.0",
@@ -96,6 +97,8 @@
     "publint": "^0.3.12",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
+    "typedoc": "^0.28.2",
+    "typedoc-plugin-markdown": "^4.6.2",
     "typescript": "~5.8.3",
     "unplugin-ast": "^0.14.6",
     "unplugin-unused": "^0.4.4",
