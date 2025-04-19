@@ -8,8 +8,9 @@ import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
-import { normalizeFormat, type PackageType } from './utils/package'
+import { normalizeFormat } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
+import type { OutExtensionFactory } from './features/output'
 import type {
   Arrayable,
   Awaitable,
@@ -19,6 +20,7 @@ import type {
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
+  InputOption,
   InputOptions,
   InternalModuleFormat,
   ModuleFormat,
@@ -30,26 +32,12 @@ import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
 
-export interface OutExtensionContext {
-  options: InputOptions
-  format: NormalizedFormat
-  /** "type" field in project's package.json */
-  pkgType: PackageType
-}
-export interface OutExtensionObject {
-  js?: string
-  dts?: string
-}
-export type OutExtensionFactory = (
-  ctx: OutExtensionContext,
-) => OutExtensionObject
-
 /**
  * Options for tsdown.
  */
 export interface Options {
   /// build options
-  entry?: InputOptions['input']
+  entry?: InputOption
   external?: ExternalOption
   noExternal?:
     | Arrayable<string | RegExp>
@@ -69,8 +57,10 @@ export interface Options {
       ) => Awaitable<InputOptions | void | null>)
 
   /// output options
+  /** @default 'es' */
   format?: ModuleFormat | ModuleFormat[]
   globalName?: string
+  /** @default 'dist' */
   outDir?: string
   sourcemap?: Sourcemap
   clean?: boolean | string[]
@@ -78,8 +68,22 @@ export interface Options {
   minify?: boolean
   target?: string | string[]
   define?: Record<string, string>
+  /** @default false */
   shims?: boolean
+
+  /**
+   * Use a fixed extension for output files.
+   * The extension will always be `.cjs` or `.mjs`.
+   * Otherwise, it will depend on the package type.
+   * @default false
+   */
+  fixedExtension?: boolean
+  /**
+   * Custom extensions for output files.
+   * `fixedExtension` will be overridden by this option.
+   */
   outExtensions?: OutExtensionFactory
+
   outputOptions?:
     | OutputOptions
     | ((
@@ -92,6 +96,9 @@ export interface Options {
   plugins?: InputOptions['plugins']
 
   silent?: boolean
+  /**
+   * Config file path
+   */
   config?: boolean | string
   watch?: boolean | string | string[]
 
@@ -104,13 +111,7 @@ export interface Options {
    * Skip bundling node_modules.
    */
   skipNodeModulesBundle?: boolean
-  /**
-   * Use a fixed extension for output files.
-   * The extension will always be `.cjs` or `.mjs`.
-   * Otherwise, it will depend on the package type.
-   * @default false
-   */
-  fixedExtension?: boolean
+
   /**
    * Reuse config from Vite or Vitest (experimental)
    * @default false
@@ -119,7 +120,7 @@ export interface Options {
 
   /// addons
   /**
-   * Enable dts generation with `isolatedDeclarations` (experimental)
+   * Emit declaration files
    */
   dts?: boolean | DtsOptions
 
