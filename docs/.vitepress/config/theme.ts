@@ -10,7 +10,7 @@ export function getLocaleConfig(lang: string) {
 
   const nav: DefaultTheme.NavItem[] = [
     { text: t('Home'), link: `${urlPrefix}/` },
-    { text: t('User Guide'), link: `${urlPrefix}/guide/` },
+    { text: t('Guide'), link: `${urlPrefix}/guide/` },
     { text: t('Reference'), link: `${urlPrefix}/reference/config-options.md` },
   ]
 
@@ -54,7 +54,7 @@ export function getLocaleConfig(lang: string) {
   }
 
   const themeConfig: DefaultTheme.Config = {
-    logo: '/logo.svg',
+    logo: { src: '/tsdown.svg', width: 24, height: 24 },
     nav,
     sidebar,
     outline: 'deep',

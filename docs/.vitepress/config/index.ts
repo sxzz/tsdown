@@ -10,10 +10,7 @@ import { getLocaleConfig } from './theme'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   locales: {
-    root: {
-      label: 'English',
-      lang: 'en',
-    },
+    root: getLocaleConfig('en'),
     'zh-CN': getLocaleConfig('zh-CN'),
   },
 
@@ -57,64 +54,27 @@ export default defineConfig({
   themeConfig: {
     search: {
       provider: 'local',
-    },
-
-    logo: { src: '/tsdown.svg', width: 24, height: 24 },
-
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'User Guide', link: '/guide/' },
-      { text: 'Reference', link: '/reference/config-options.md' },
-    ],
-
-    sidebar: {
-      '/guide/': [
-        {
-          text: 'User Guide',
-          items: [
-            { text: 'Introduction', link: '/guide/index.md' },
-            { text: 'Getting Started', link: '/guide/getting-started.md' },
-            { text: 'Migrate from tsup', link: '/guide/migrate-from-tsup.md' },
-          ],
+      options: {
+        locales: {
+          'zh-CN': {
+            translations: {
+              button: {
+                buttonText: '搜索文档',
+                buttonAriaLabel: '搜索文档',
+              },
+              modal: {
+                noResultsText: '无法找到相关结果',
+                resetButtonTitle: '清除查询条件',
+                footer: {
+                  selectText: '选择',
+                  navigateText: '切换',
+                  closeText: '关闭',
+                },
+              },
+            },
+          },
         },
-        {
-          text: 'Recipes',
-          items: [
-            { text: 'Cleaning', link: '/guide/cleaning.md' },
-            { text: 'Config file', link: '/guide/config-file.md' },
-            { text: 'Minification', link: '/guide/minification.md' },
-            { text: 'Output directory', link: '/guide/output-directory.md' },
-            { text: 'Output format', link: '/guide/output-format.md' },
-            { text: 'Platform', link: '/guide/platform.md' },
-            { text: 'Silent mode', link: '/guide/silent-mode.md' },
-            { text: 'Sourcemap', link: '/guide/sourcemap.md' },
-            { text: 'Target', link: '/guide/target.md' },
-            { text: 'Tree shaking', link: '/guide/tree-shaking.md' },
-            { text: 'Watch Mode', link: '/guide/watch-mode.md' },
-          ],
-        },
-      ],
-      '/reference/': [
-        {
-          text: 'Reference',
-          items: [
-            { text: 'Config Options', link: '/reference/config-options.md' },
-            { text: 'Command Line Interface', link: '/reference/cli.md' },
-          ],
-        },
-      ],
-    },
-
-    outline: 'deep',
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/rolldown/tsdown' },
-      { icon: 'npm', link: 'https://npmjs.com/package/tsdown' },
-      { icon: 'jsr', link: 'https://jsr.io/@sxzz/tsdown' },
-    ],
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025-present VoidZero Inc.',
+      },
     },
   },
 
@@ -135,6 +95,7 @@ export default defineConfig({
       }),
     ],
   },
+
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
