@@ -6,8 +6,8 @@ export function getLocaleConfig(lang: string) {
 
   const urlPrefix = lang && lang !== 'en' ? (`/${lang}` as const) : ''
   const title = t('tsdown')
-  const titleTemplate = ':title - The Elegant Bundler for Libraries'
-  const description = t('The Elegant Bundler for Libraries.')
+  const description = t('The Elegant Bundler for Libraries')
+  const titleTemplate = `:title - ${description}`
 
   const head: HeadConfig[] = [
     [
@@ -66,15 +66,15 @@ export function getLocaleConfig(lang: string) {
           text: t('Recipes'),
           items: [
             { text: t('Cleaning'), link: '/cleaning.md' },
-            { text: t('Config file'), link: '/config-file.md' },
+            { text: t('Config File'), link: '/config-file.md' },
             { text: t('Minification'), link: '/minification.md' },
-            { text: t('Output directory'), link: '/output-directory.md' },
-            { text: t('Output format'), link: '/output-format.md' },
+            { text: t('Output Directory'), link: '/output-directory.md' },
+            { text: t('Output Format'), link: '/output-format.md' },
             { text: t('Platform'), link: '/platform.md' },
-            { text: t('Silent mode'), link: '/silent-mode.md' },
-            { text: t('Sourcemap'), link: '/sourcemap.md' },
+            { text: t('Silent Mode'), link: '/silent-mode.md' },
+            { text: t('Source Map'), link: '/sourcemap.md' },
             { text: t('Target'), link: '/target.md' },
-            { text: t('Tree shaking'), link: '/tree-shaking.md' },
+            { text: t('Tree-shaking'), link: '/tree-shaking.md' },
             { text: t('Watch Mode'), link: '/watch-mode.md' },
           ],
         },

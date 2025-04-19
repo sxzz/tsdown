@@ -1,22 +1,31 @@
 export const zhCN = {
+  // nav
   Home: '首页',
   Guide: '指南',
   'API Reference': 'API 参考',
+
+  // sidebar
   Introduction: '介绍',
   'Getting Started': '快速上手',
-  'Multiple builds': '多构建',
+  'Migrate from tsup': ' 从 tsup 迁移',
+
+  Recipes: 'Recipes', // TODO
+  Cleaning: '清理',
+  'Config File': '配置文件',
+  Minification: '压缩',
+  'Output Directory': '输出目录',
+  'Output Format': '输出格式',
+  Platform: '运行平台（Platform）',
+  'Silent Mode': '静默模式',
+  'Source Map': '源映射（Source Map）',
+  Target: '构建目标（Target）',
+  'Tree-shaking': '除屑优化（Tree-shaking）',
+  'Watch Mode': '监听模式（Watch Mode）',
+
   'Config Options': '配置选项',
   'Command Line Interface': '命令行接口',
 
-  Author: '作者',
-  'Kevin Deng': '三咲智子 Kevin Deng',
-  'Team member': '团队成员',
-  'Logo Designer': 'Logo 设计者',
-  'Sponsored by': '赞助者',
-  'Thanks to all the contributors!': '感谢所有的贡献者！',
-
-  'An even faster bundler powered by Rolldown.':
-    '由 RollDown 赋能的更快打包工具。',
+  'The Elegant Bundler for Libraries': '优雅的库打包器',
 
   English: '简体中文',
   en: 'zh-CN',

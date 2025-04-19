@@ -12,8 +12,30 @@
     rgba(48, 115, 122, 0.2) 50%
   );
   --vp-home-hero-image-filter: blur(44px);
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    90deg,
+    #ff7e17,
+    rgb(84, 218, 233)
+  );
 }
 
 .dark {
   --vp-code-color: #fff;
+}
+
+.voidzero-img {
+  display: block;
+  width: 300px;
+  height: 74px;
+  margin: 30px auto -20px;
+  background-image: url(https://voidzero.dev/logo.svg);
+  background-repeat: no-repeat;
+  background-size: auto 74px;
+  background-position: center;
+}
+
+.dark .voidzero-img {
+  background-image: url(https://voidzero.dev/logo-white.svg);
 }

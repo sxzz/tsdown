@@ -28,32 +28,13 @@ features:
 
 <h2 class="voidzero-lead">Brought to you by</h2>
 
-<a class="voidzero" href="https://voidzero.dev/" target="_blank" title="voidzero.dev"></a>
+<a class="voidzero-img" href="https://voidzero.dev/" target="_blank" title="voidzero.dev"></a>
 
-<style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(90deg, #ff7e17, rgb(84, 218, 233));
-}
-
-h2.voidzero-lead {
+<style scoped>
+.voidzero-lead {
   text-align: center;
   padding-top: 60px;
-}
-
-.voidzero {
-  display: block;
-  width: 300px;
-  height: 74px;
-  margin: 30px auto -20px;
-  background-image: url(https://voidzero.dev/logo.svg);
-  background-repeat: no-repeat;
-  background-size: auto 74px;
-  background-position: center;
-}
-
-.dark .voidzero {
-  background-image: url(https://voidzero.dev/logo-white.svg);
+  border: none;
 }
 
 .VPImage {
