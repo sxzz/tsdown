@@ -82,7 +82,7 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
         consola.info(`Migrating \`${key}\` script to tsdown`)
         found = true
         pkg.scripts[key] = pkg.scripts[key].replaceAll(
-          /tsup(?:-node)?/,
+          /tsup(?:-node)?/g,
           'tsdown',
         )
       }

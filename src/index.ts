@@ -11,7 +11,7 @@ import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
-import { resolveOutputExtension } from './features/output'
+import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
@@ -168,11 +168,8 @@ async function getBuildOptions(
     target,
     define,
     shims,
-    fixedExtension,
     tsconfig,
   } = config
-
-  const extension = resolveOutputExtension(pkg, format, fixedExtension)
 
   const plugins: RolldownPluginOption = []
   if (pkg || config.skipNodeModulesBundle) {
@@ -223,6 +220,12 @@ async function getBuildOptions(
     [format],
   )
 
+  const [entryFileNames, chunkFileNames] = resolveChunkFilename(
+    pkg,
+    inputOptions,
+    format,
+    config,
+  )
   const outputOptions: OutputOptions = await mergeUserOptions(
     {
       format: cjsDts ? 'es' : format,
@@ -230,8 +233,8 @@ async function getBuildOptions(
       sourcemap,
       dir: outDir,
       minify,
-      entryFileNames: `[name].${extension}`,
-      chunkFileNames: `[name]-[hash].${extension}`,
+      entryFileNames,
+      chunkFileNames,
     },
     config.outputOptions,
     [format],

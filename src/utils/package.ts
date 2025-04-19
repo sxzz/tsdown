@@ -16,9 +16,8 @@ export async function readPackageJson(
   return JSON.parse(contents) as PackageJson
 }
 
-export function getPackageType(
-  pkg: PackageJson | undefined,
-): 'module' | 'commonjs' {
+export type PackageType = 'module' | 'commonjs'
+export function getPackageType(pkg: PackageJson | undefined): PackageType {
   if (pkg?.type) {
     if (!['module', 'commonjs'].includes(pkg.type)) {
       throw new Error(`Invalid package.json type: ${pkg.type}`)

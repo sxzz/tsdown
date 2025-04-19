@@ -8,7 +8,7 @@ import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
-import { normalizeFormat } from './utils/package'
+import { normalizeFormat, type PackageType } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
 import type {
   Arrayable,
@@ -29,6 +29,20 @@ import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
+
+export interface OutExtensionContext {
+  options: InputOptions
+  format: NormalizedFormat
+  /** "type" field in project's package.json */
+  pkgType: PackageType
+}
+export interface OutExtensionObject {
+  js?: string
+  dts?: string
+}
+export type OutExtensionFactory = (
+  ctx: OutExtensionContext,
+) => OutExtensionObject
 
 /**
  * Options for tsdown.
@@ -65,6 +79,7 @@ export interface Options {
   target?: string | string[]
   define?: Record<string, string>
   shims?: boolean
+  outExtensions?: OutExtensionFactory
   outputOptions?:
     | OutputOptions
     | ((
@@ -147,6 +162,7 @@ export type ResolvedOptions = Omit<
       | 'onSuccess'
       | 'dts'
       | 'fixedExtension'
+      | 'outExtensions'
     >,
     {
       format: NormalizedFormat[]
