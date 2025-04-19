@@ -1,7 +1,7 @@
-# docs:generate
+#!/bin/bash
 
-function safe_sed() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
+safe_sed() {
+  if [ "$(uname)" = "Darwin" ]; then
     sed -i '' "$@"
   else
     sed -i "$@"
@@ -39,5 +39,19 @@ safe_sed 's/..\/type-aliases/.\/type-aliases/g' ./docs/reference/config-options.
 
 # In type-aliases files, remove 6 first lines
 safe_sed '1,6d' ./docs/reference/type-aliases/*.md
+
+# Initialize an array of all locales
+locales=("zh-CN")
+# Copy the config-options.md file and the type-aliases folder to each locale
+for locale in "${locales[@]}"; do
+  # Copy config-options.md to the locale directory
+  cp ./docs/reference/config-options.md "./docs/$locale/reference/config-options.md"
+  # Remove the type-aliases folder if it exists in the locale directory
+  if [ -d "./docs/$locale/reference/type-aliases" ]; then
+    rm -rf "./docs/$locale/reference/type-aliases"
+  fi
+  # Copy the type-aliases folder to the locale directory
+  cp -r ./docs/reference/type-aliases "./docs/$locale/reference"
+done
 
 echo "✅ Reference structure beautified successfully!"
