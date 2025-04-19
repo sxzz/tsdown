@@ -76,6 +76,7 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/index.md' },
             { text: 'Getting Started', link: '/guide/getting-started.md' },
+            { text: 'Migrate from tsup', link: '/guide/migrate-from-tsup.md' },
           ],
         },
         {
