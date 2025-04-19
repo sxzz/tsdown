@@ -2,7 +2,7 @@
 
 # tsdown [![npm](https://img.shields.io/npm/v/tsdown.svg)](https://npmjs.com/package/tsdown) [![Unit Test](https://github.com/rolldown/tsdown/actions/workflows/tests.yml/badge.svg)](https://github.com/rolldown/tsdown/actions/workflows/tests.yml) [![JSR](https://jsr.io/badges/@sxzz/tsdown)](https://jsr.io/@sxzz/tsdown)
 
-⚡️ Smooth and fast library bundler powered by Rolldown [Rolldown](https://github.com/rolldown/rolldown).
+⚡️ Smooth and fast library bundler powered by [Rolldown](https://github.com/rolldown/rolldown).
 
 ## Features
 
