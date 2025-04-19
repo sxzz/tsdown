@@ -5,9 +5,18 @@ import {
   localIconLoader,
 } from 'vitepress-plugin-group-icons'
 import llmstxt from 'vitepress-plugin-llms'
+import { getLocaleConfig } from './theme'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  locales: {
+    root: {
+      label: 'English',
+      lang: 'en',
+    },
+    'zh-CN': getLocaleConfig('zh-CN'),
+  },
+
   title: 'tsdown',
   description: 'An even faster bundler powered by Rolldown.',
   lastUpdated: true,
@@ -114,7 +123,7 @@ export default defineConfig({
         customIcon: {
           rolldown: localIconLoader(
             import.meta.url,
-            '../public/lightning-down.svg',
+            '../../public/lightning-down.svg',
           ),
         },
       }) as any,
