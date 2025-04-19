@@ -5,14 +5,13 @@ import {
   build as rolldownBuild,
   type BuildOptions,
   type OutputOptions,
-  type PreRenderedChunk,
   type RolldownPluginOption,
 } from 'rolldown'
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
-import { resolveOutputExtension } from './features/output'
+import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
@@ -26,7 +25,7 @@ import {
   type UserConfig,
 } from './options'
 import { debug, logger, setSilent } from './utils/logger'
-import { getPackageType, readPackageJson } from './utils/package'
+import { readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -169,9 +168,7 @@ async function getBuildOptions(
     target,
     define,
     shims,
-    fixedExtension,
     tsconfig,
-    outExtensions,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -223,20 +220,12 @@ async function getBuildOptions(
     [format],
   )
 
-  const packageType = getPackageType(pkg)
-  let jsExtension: string | undefined
-  let dtsExtension: string | undefined
-  if (outExtensions) {
-    const { js, dts } = outExtensions({
-      options: inputOptions,
-      format,
-      pkgType: packageType,
-    })
-    jsExtension = js
-    dtsExtension = dts
-  }
-  jsExtension ||= `.${resolveOutputExtension(packageType, format, fixedExtension)}`
-
+  const [entryFileNames, chunkFileNames] = resolveChunkFilename(
+    pkg,
+    inputOptions,
+    format,
+    config,
+  )
   const outputOptions: OutputOptions = await mergeUserOptions(
     {
       format: cjsDts ? 'es' : format,
@@ -244,12 +233,8 @@ async function getBuildOptions(
       sourcemap,
       dir: outDir,
       minify,
-      entryFileNames: createChunkFilename('[name]', jsExtension, dtsExtension),
-      chunkFileNames: createChunkFilename(
-        `[name]-[hash]`,
-        jsExtension,
-        dtsExtension,
-      ),
+      entryFileNames,
+      chunkFileNames,
     },
     config.outputOptions,
     [format],
@@ -258,17 +243,6 @@ async function getBuildOptions(
   return {
     ...inputOptions,
     output: outputOptions,
-  }
-}
-
-function createChunkFilename(
-  basename: string,
-  jsExtension: string,
-  dtsExtension?: string,
-): string | ((chunk: PreRenderedChunk) => string) {
-  if (!dtsExtension) return `${basename}${jsExtension}`
-  return (chunk: PreRenderedChunk) => {
-    return `${basename}${chunk.name.endsWith('.d') ? dtsExtension : jsExtension}`
   }
 }
 
