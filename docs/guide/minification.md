@@ -39,6 +39,7 @@ hello(x)
 //#endregion
 ```
 
+<!-- prettier-ignore -->
 ```js [dist/index.mjs (with --minify)]
 const e=1;function t(e){console.log(`Hello World`),console.log(e)}t(e);
 ```
