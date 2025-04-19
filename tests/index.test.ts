@@ -211,7 +211,7 @@ test('resolve paths in tsconfig', async (context) => {
     }),
   }
   await testBuild(context, files, {
-    dts: { isolatedDeclaration: true },
+    dts: { isolatedDeclarations: true },
     tsconfig: 'tsconfig.build.json',
   })
 })
