@@ -45,17 +45,6 @@ export default defineConfig({
   ],
 
   themeConfig: {
-    // If Algolia environment variables are available, enable Algolia search
-    /*
-    search: {
-      provider: 'algolia',
-      options: {
-        appId: process.env.ALGOLIA_APP_ID || '',
-        apiKey: process.env.ALGOLIA_API_KEY || '',
-        indexName: 'rolldown',
-      },
-    */
-    // Else, use the default VitePress search
     search: {
       provider: 'local',
     },
@@ -76,12 +65,23 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/index.md' },
             { text: 'Getting Started', link: '/guide/getting-started.md' },
+            { text: 'Migrate from tsup', link: '/guide/migrate-from-tsup.md' },
           ],
         },
         {
           text: 'Recipes',
           items: [
-            { text: 'Multiple builds', link: '/guide/multiple-builds.md' },
+            { text: 'Cleaning', link: '/guide/cleaning.md' },
+            { text: 'Config file', link: '/guide/config-file.md' },
+            { text: 'Minification', link: '/guide/minification.md' },
+            { text: 'Output directory', link: '/guide/output-directory.md' },
+            { text: 'Output format', link: '/guide/output-format.md' },
+            { text: 'Platform', link: '/guide/platform.md' },
+            { text: 'Silent mode', link: '/guide/silent-mode.md' },
+            { text: 'Sourcemap', link: '/guide/sourcemap.md' },
+            { text: 'Target', link: '/guide/target.md' },
+            { text: 'Tree shaking', link: '/guide/tree-shaking.md' },
+            { text: 'Watching', link: '/guide/watching.md' },
           ],
         },
       ],
