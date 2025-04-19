@@ -1,5 +1,13 @@
 # docs:generate
 
+function safe_sed() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "$@"
+  else
+    sed -i "$@"
+  fi
+}
+
 echo "📚 Generating reference..."
 
 # Generate API documentation
@@ -25,11 +33,11 @@ mv ./docs/reference/api/type-aliases/Sourcemap.md ./docs/reference/type-aliases/
 rm -rf ./docs/reference/api
 
 # In config-options.md, remove 6 first lines
-sed -i '' '1,6d' ./docs/reference/config-options.md
+safe_sed '1,6d' ./docs/reference/config-options.md
 # In config-options.md, replace "../type-aliases" with "./type-aliases"
-sed -i '' 's/..\/type-aliases/.\/type-aliases/g' ./docs/reference/config-options.md
+safe_sed 's/..\/type-aliases/.\/type-aliases/g' ./docs/reference/config-options.md
 
 # In type-aliases files, remove 6 first lines
-sed -i '' '1,6d' ./docs/reference/type-aliases/*.md
+safe_sed '1,6d' ./docs/reference/type-aliases/*.md
 
 echo "✅ Reference structure beautified successfully!"
