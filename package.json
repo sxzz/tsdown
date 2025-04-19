@@ -2,7 +2,7 @@
   "name": "tsdown",
   "version": "0.8.1",
   "packageManager": "pnpm@10.8.1",
-  "description": "An even faster bundler powered by Rolldown.",
+  "description": "Smooth and fast library bundler powered by Rolldown.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/rolldown/tsdown#readme",
