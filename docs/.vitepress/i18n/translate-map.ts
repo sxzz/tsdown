@@ -1,7 +1,7 @@
 export const zhCN = {
   Home: '首页',
-  'User Guide': '指南',
-  Reference: '参考',
+  Guide: '指南',
+  'API Reference': 'API 参考',
   Introduction: '介绍',
   'Getting Started': '快速上手',
   'Multiple builds': '多构建',

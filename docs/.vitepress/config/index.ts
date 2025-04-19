@@ -14,43 +14,8 @@ export default defineConfig({
     'zh-CN': getLocaleConfig('zh-CN'),
   },
 
-  title: 'tsdown',
-  titleTemplate: ':title - The Elegant Bundler for Libraries',
-  description: 'The Elegant Bundler for Libraries.',
   lastUpdated: true,
   cleanUrls: true,
-  head: [
-    [
-      'link',
-      {
-        rel: 'icon',
-        type: 'image/svg+xml',
-        href: '/tsdown.svg',
-      },
-    ],
-    ['meta', { name: 'theme-color', content: '#ff7e17' }],
-    ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:locale', content: 'en' }],
-    [
-      'meta',
-      {
-        property: 'og:title',
-        content: 'tsdown | Bundler powered by Rolldown',
-      },
-    ],
-    [
-      'meta',
-      {
-        property: 'og:image',
-        content: 'https://tsdown.dev/og-image.png',
-      },
-    ],
-    ['meta', { property: 'og:site_name', content: 'Rolldown' }],
-    ['meta', { property: 'og:url', content: 'https://rolldown.rs/' }],
-    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:site', content: '@rolldown_rs' }],
-  ],
-
   themeConfig: {
     search: {
       provider: 'local',
