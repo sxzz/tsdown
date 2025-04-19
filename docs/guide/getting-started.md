@@ -1,48 +1,50 @@
 # Getting Started
 
-:::warning 🚧 Beta Software
-[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still in early work-in-progress status.
+:::warning 🚧 Beta Software  
+[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still a work in progress.  
 :::
 
 ## Installation
 
+Install `tsdown` as a development dependency using your preferred package manager:
+
 ::: code-group
 
 ```sh [npm]
-$ npm install -D tsdown
+npm install -D tsdown
 ```
 
 ```sh [pnpm]
-$ pnpm add -D tsdown
+pnpm add -D tsdown
 ```
 
 ```sh [yarn]
-$ yarn add -D tsdown
+yarn add -D tsdown
 ```
 
 ```sh [bun]
-$ bun add -D tsdown
+bun add -D tsdown
 ```
 
 :::
 
 ## Using the CLI
 
-To verify Rolldown is installed correctly, run the following in the directory where you installed it:
+To verify that `tsdown` is installed correctly, run the following command in your project directory:
 
 ```sh
-$ ./node_modules/.bin/tsdown --version
+./node_modules/.bin/tsdown --version
 ```
 
-You can also check out the CLI options and examples with:
+You can also explore the available CLI options and examples with:
 
 ```sh
-$ ./node_modules/.bin/tsdown --help
+./node_modules/.bin/tsdown --help
 ```
 
-### Your first bundle
+### Your First Bundle
 
-Let's create two source Typescript files:
+Let's create two source TypeScript files:
 
 ```ts [src/index.ts]
 import { hello } from './hello.ts'
@@ -56,7 +58,7 @@ export function hello() {
 }
 ```
 
-Initialize the tsdown configuration:
+Next, initialize the `tsdown` configuration file:
 
 ```ts [tsdown.config.ts]
 import { defineConfig } from 'tsdown'
@@ -66,23 +68,23 @@ export default defineConfig({
 })
 ```
 
-Then run the following in the command line:
+Now, run the following command to bundle your code:
 
 ```sh
-$ ./node_modules/.bin/tsdown
+./node_modules/.bin/tsdown
 ```
 
-You should see the content written to `dist/index.mjs`. Let's run it to verify it's working:
+You should see the bundled output written to `dist/index.mjs`. To verify it works, run the output file:
 
 ```sh
-$ node dist/index.mjs
+node dist/index.mjs
 ```
 
-You should see `Hello tsdown!` printed.
+You should see the message `Hello tsdown!` printed to the console.
 
-### Using the CLI in npm scripts
+### Using the CLI in npm Scripts
 
-To avoid typing the long command, we can move it inside an npm script:
+To simplify the command, you can add it to your `package.json` scripts:
 
 ```json{5} [package.json]
 {
@@ -97,28 +99,28 @@ To avoid typing the long command, we can move it inside an npm script:
 }
 ```
 
-Now we can run the build with just:
+Now, you can build your project with:
 
 ```sh
-$ npm run build
+npm run build
 ```
 
 ## Using the Config File
 
-Although you can use the CLI directly, it's recommended to use a config file for more complex projects. The config file is a TypeScript file that exports a configuration object.
+While you can use the CLI directly, it's recommended to use a configuration file for more complex projects. This allows you to define and manage your build settings in a centralized and reusable way.
 
-See [Rolldown's config options](https://rolldown.rs/reference/config-options) for a full list of available options.
+For more details, refer to the [Config File](./config-file.md) documentation.
 
-Rolldown supports most of the [Rollup config options](https://rollupjs.org/configuration-options), with some notable additional features.
+## Using Plugins (TODO)
 
-## TODO : Using Plugins
-
-Rolldown's plugin API is identical to that of Rollup's, so you can reuse most of the existing Rollup plugins when using Rolldown. That said, Rolldown provides many built-in features that make it unnecessary to use plugins.
+TODO link to another page
 
 ## Using Watch Mode
 
-You can use the `--watch` (or `-w`) option to enable the watcher, which will automatically rebuild your project when files change.
+You can enable watch mode to automatically rebuild your project whenever files change. This is particularly useful during development to streamline your workflow. Use the `--watch` (or `-w`) option:
 
 ```bash
-$ ./node_modules/.bin/tsdown --watch
+tsdown --watch
 ```
+
+For more details, refer to the [Watch Mode](./watch-mode.md) documentation.
