@@ -18,8 +18,8 @@ export default defineConfig({
   },
 
   title: 'tsdown',
-  titleTemplate: ':title - The Zero-config Bundler for Libraries',
-  description: 'The Zero-config Bundler for Libraries.',
+  titleTemplate: ':title - The Elegant Bundler for Libraries',
+  description: 'The Elegant Bundler for Libraries.',
   lastUpdated: true,
   cleanUrls: true,
   head: [

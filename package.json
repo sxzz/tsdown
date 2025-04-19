@@ -2,7 +2,7 @@
   "name": "tsdown",
   "version": "0.9.0",
   "packageManager": "pnpm@10.8.1",
-  "description": "The Zero-config Bundler for Libraries",
+  "description": "The Elegant Bundler for Libraries",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/rolldown/tsdown#readme",

@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: 'tsdown'
-  text: 'Zero-config<br>Library bundler'
+  text: 'The Elegant<br>Library bundler'
   tagline: powered on Rolldown
   image:
     src: /tsdown.svg
