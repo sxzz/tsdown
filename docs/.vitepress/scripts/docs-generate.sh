@@ -16,8 +16,10 @@ mv ./docs/reference/api/interfaces/Options.md ./docs/reference/config-options.md
 if [ -d "./docs/reference/type-aliases" ]; then
   rm -rf ./docs/reference/type-aliases
 fi
-# Move the type-aliases folder to ./docs/reference
-mv ./docs/reference/api/type-aliases ./docs/reference
+# Create the type-aliases folder
+mkdir -p ./docs/reference/type-aliases
+# Move types-aliases/Sourcemap.md to ./docs/reference/type-aliases
+mv ./docs/reference/api/type-aliases/Sourcemap.md ./docs/reference/type-aliases/Sourcemap.md
 
 # Remove the api folder
 rm -rf ./docs/reference/api
@@ -29,7 +31,5 @@ sed -i '' 's/..\/type-aliases/.\/type-aliases/g' ./docs/reference/config-options
 
 # In type-aliases files, remove 6 first lines
 sed -i '' '1,6d' ./docs/reference/type-aliases/*.md
-# In type-aliases files, replace "../interfaces/Options" with "../config-options"
-sed -i '' 's/..\/interfaces\/Options/..\/config-options/g' ./docs/reference/type-aliases/*.md
 
 echo "✅ Reference structure beautified successfully!"
