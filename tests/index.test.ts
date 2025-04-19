@@ -183,3 +183,19 @@ test('resolve dependency for dts', async (context) => {
   })
   expect(snapshot).contain(`export * from "consola"`)
 })
+
+test('resolve paths in tsconfig', async (context) => {
+  const files = {
+    'index.ts': `export * from '@/mod'`,
+    'mod.ts': `export const mod = 42`,
+    '../tsconfig.build.json': JSON.stringify({
+      compilerOptions: {
+        paths: { '@/*': ['./resolve-paths-in-tsconfig/*'] },
+      },
+    }),
+  }
+  await testBuild(context, files, {
+    dts: { isolatedDeclaration: true },
+    tsconfig: 'tsconfig.build.json',
+  })
+})

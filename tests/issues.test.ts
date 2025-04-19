@@ -25,7 +25,6 @@ test('#61', async (context) => {
     },
     {
       external: ['hono/compress', 'hono', 'hono/pretty-json'],
-      inputOptions: { resolve: { tsconfigFilename: 'tsconfig.json' } },
       skipNodeModulesBundle: true,
       target: 'es2022',
       platform: 'node',

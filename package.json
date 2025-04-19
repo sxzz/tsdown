@@ -1,6 +1,6 @@
 {
   "name": "tsdown",
-  "version": "0.8.0-beta.4",
+  "version": "0.8.1",
   "packageManager": "pnpm@10.8.1",
   "description": "An even faster bundler powered by Rolldown.",
   "type": "module",
@@ -40,8 +40,7 @@
     "tsdown": "./bin/tsdown.js"
   },
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "scripts": {
     "lint": "eslint --cache .",
@@ -78,7 +77,7 @@
     "diff": "^7.0.0",
     "find-up-simple": "^1.0.1",
     "rolldown": "^1.0.0-beta.7",
-    "rolldown-plugin-dts": "^0.5.2",
+    "rolldown-plugin-dts": "^0.7.8",
     "tinyexec": "^1.0.1",
     "tinyglobby": "^0.2.12",
     "unconfig": "^7.3.1"
@@ -86,13 +85,12 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^6.1.1",
     "@sxzz/prettier-config": "^2.2.1",
-    "@sxzz/test-utils": "^0.5.4",
+    "@sxzz/test-utils": "^0.5.5",
     "@types/debug": "^4.1.12",
     "@types/diff": "^7.0.2",
     "@types/node": "^22.14.1",
     "bumpp": "^10.1.0",
     "eslint": "^9.24.0",
-    "oxc-transform": "^0.63.0",
     "pkg-types": "^2.1.0",
     "prettier": "^3.5.3",
     "publint": "^0.3.12",
@@ -101,10 +99,10 @@
     "typescript": "~5.8.3",
     "unplugin-ast": "^0.14.6",
     "unplugin-unused": "^0.4.4",
-    "vite": "^6.2.6",
     "vitepress": "^1.6.3",
     "vitepress-plugin-group-icons": "^1.5.2",
     "vitepress-plugin-llms": "^1.1.0",
+    "vite": "^6.3.2",
     "vitest": "^3.1.1"
   },
   "engines": {
