@@ -24,18 +24,3 @@
 .dark {
   --vp-code-color: #fff;
 }
-
-.voidzero-img {
-  display: block;
-  width: 300px;
-  height: 74px;
-  margin: 30px auto -20px;
-  background-image: url(https://voidzero.dev/logo.svg);
-  background-repeat: no-repeat;
-  background-size: auto 74px;
-  background-position: center;
-}
-
-.dark .voidzero-img {
-  background-image: url(https://voidzero.dev/logo-white.svg);
-}

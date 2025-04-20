@@ -18,29 +18,19 @@ hero:
       link: /zh-CN/reference/config-options.md
 
 features:
-  - title: Speed of Rust
-    details: |
-      tsdown is powered on Rolldown, which handles tens of thousands of modules without breaking a sweat
-  - title: Easy to use
-    details: |
-      tsdown preconfigures everything you need to get started, so you can focus on writing code
+  - icon: 🚀
+    title: 极速构建
+    details: 基于 Oxc 和 Rolldown 构建和生成 .d.ts，速度极快！
+
+  - icon: ♻️
+    title: 强大的生态系统
+    details: 支持 Rollup、Rolldown、unplugin 插件以及部分 Vite 插件。
+
+  - icon: ️🛠️
+    title: 简单易用
+    details: tsdown 预配置了您开始所需的一切，让您专注于编写代码。
+
+  - icon: 🔄
+    title: 无缝迁移
+    details: 兼容 tsup 的主要选项和功能，确保平滑过渡。
 ---
-
-<div class="voidzero">
-  <a class="voidzero-img" href="https://voidzero.dev/" target="_blank" title="voidzero.dev"></a>
-  <div class="voidzero-follow">由 VoidZero 隆重推出</div>
-</div>
-
-<style scoped>
-.voidzero {
-  padding-top: 100px;
-}
-
-.voidzero-follow {
-  text-align: center;
-  margin: 48px 0 16px;
-  line-height: 32px;
-  font-size: 24px;
-  font-weight: 600;
-}
-</style>
