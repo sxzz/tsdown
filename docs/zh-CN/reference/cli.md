@@ -4,11 +4,13 @@
 
 ## `[...files]`
 
-通过命令参数指定入口文件。这等同于在配置文件中设置 `entry` 选项。
+通过命令参数指定入口文件。这等同于在配置文件中设置 `entry` 选项。例如：
 
 ```bash
 tsdown src/index.ts src/util.ts
 ```
+
+这将把 `src/index.ts` 和 `src/util.ts` 作为独立的入口点进行打包。有关更多详细信息，请参阅 [入口文件](../guide/entry.md) 文档。
 
 ## `-c, --config <filename>`
 

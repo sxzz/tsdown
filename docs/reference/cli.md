@@ -4,11 +4,13 @@ All CLI flags can also be set in the configuration file for better reusability a
 
 ## `[...files]`
 
-Specify entry files as command arguments. This is equivalent to setting the `entry` option in the configuration file.
+Specify entry files as command arguments. This is equivalent to setting the `entry` option in the configuration file. For example:
 
 ```bash
 tsdown src/index.ts src/util.ts
 ```
+
+This will bundle `src/index.ts` and `src/util.ts` as separate entry points. See the [Entry](../guide/entry.md) documentation for more details.
 
 ## `-c, --config <filename>`
 
