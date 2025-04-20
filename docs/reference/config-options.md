@@ -152,7 +152,7 @@ Custom extensions for output files.
 
 ### plugins
 
-- **Type:** `InputOptions['plugins']`
+- **Type:** `RolldownPluginOption`
 - **Default:** `[]`
 
 ***
