@@ -118,6 +118,7 @@ export function getLocaleConfig(lang: string) {
     Object.assign(themeConfig, {
       outline: {
         label: '页面导航',
+        level: 'deep'
       },
       lastUpdatedText: '最后更新于',
       darkModeSwitchLabel: '外观',
