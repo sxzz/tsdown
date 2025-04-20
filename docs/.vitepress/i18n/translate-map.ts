@@ -23,8 +23,9 @@ export const zhCN = {
   'Tree-shaking': '除屑优化（Tree-shaking）',
   'Watch Mode': '监听模式',
 
-  Advanced: '高级选项',
+  Advanced: '高级功能',
   'Rolldown Options': 'Rolldown 选项',
+  Plugins: '插件',
 
   'Config Options': '配置选项',
   'Command Line Interface': '命令行接口',
