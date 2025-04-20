@@ -28,6 +28,20 @@ bun add -D tsdown
 
 :::
 
+## 起步模板
+
+为了更快速地开始，您可以使用 [ts-starter](https://github.com/sxzz/ts-starter) 模板。这个起步项目已经为使用 `tsdown` 进行 TypeScript 库开发预先配置好，让您可以快速上手。
+
+克隆仓库：
+
+```bash
+git clone https://github.com/sxzz/ts-starter my-library
+cd my-library
+pnpm install
+```
+
+该模板包含一个可直接使用的配置以及构建 TypeScript 库的最佳实践。
+
 ## 使用 CLI
 
 要验证 `tsdown` 是否正确安装，请在项目目录中运行以下命令：

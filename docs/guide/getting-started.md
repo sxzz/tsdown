@@ -28,6 +28,20 @@ bun add -D tsdown
 
 :::
 
+## Starter Template
+
+To get started even faster, you can use the [ts-starter](https://github.com/sxzz/ts-starter) template. This starter project is pre-configured for TypeScript library development with `tsdown`, allowing you to hit the ground running.
+
+Clone the repository:
+
+```bash
+git clone https://github.com/sxzz/ts-starter my-library
+cd my-library
+pnpm install
+```
+
+This template includes a ready-to-use configuration and best practices for building TypeScript libraries.
+
 ## Using the CLI
 
 To verify that `tsdown` is installed correctly, run the following command in your project directory:
