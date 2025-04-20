@@ -1,4 +1,4 @@
-# Tree Shaking
+# Tree-shaking
 
 Tree shaking is a process that eliminates unused (dead) code from your final bundle, reducing its size and improving performance. It ensures that only the code you actually use is included in the output.
 

@@ -72,7 +72,7 @@ export function getLocaleConfig(lang: string) {
             { text: t('Output Format'), link: '/output-format.md' },
             { text: t('Platform'), link: '/platform.md' },
             { text: t('Silent Mode'), link: '/silent-mode.md' },
-            { text: t('Source Map'), link: '/sourcemap.md' },
+            { text: t('Source Maps'), link: '/sourcemap.md' },
             { text: t('Target'), link: '/target.md' },
             { text: t('Tree-shaking'), link: '/tree-shaking.md' },
             { text: t('Watch Mode'), link: '/watch-mode.md' },

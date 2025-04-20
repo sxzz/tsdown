@@ -1,4 +1,4 @@
-# Source Map
+# Source Maps
 
 Source maps bridge the gap between your original development code and the optimized code that runs in the browser or other environments, making debugging significantly easier. They allow you to trace errors and logs back to the original source files, even if the code has been minified or bundled.
 
