@@ -18,7 +18,7 @@ For full documentation, visit [tsdown.dev](https://tsdown.dev).
 ## Install
 
 ```bash
-npm i tsdown
+npm i -D tsdown
 ```
 
 ## Usage
