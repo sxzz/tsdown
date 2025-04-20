@@ -6,27 +6,19 @@
 
 ## Features
 
-- 🚀 **Blazing fast**: Build and generate `.d.ts` powered by Oxc and Rolldown, incredibly fast!
+- 🚀 **Blazing fast**: Build and generate declaration files powered by Oxc and Rolldown, incredibly fast!
 - ♻️ **Powerful ecosystem**: Support Rollup / Rolldown / unplugin plugins, and some Vite plugins.
 - 📦 **Out-of-box**: Support reusing configurations from Vite or Vitest.
 - 🔄 **Seamless migration**: Compatible with tsup's main options and features, ensuring a smooth transition.
+
+## Documentation
+
+For full documentation, visit [tsdown.dev](https://tsdown.dev).
 
 ## Install
 
 ```bash
 npm i tsdown
-```
-
-## Configuration
-
-```ts
-// tsdown.config.ts
-import { defineConfig } from 'tsdown'
-
-export default defineConfig({
-  entry: ['./src'],
-  // ...
-})
 ```
 
 ## Usage
@@ -41,7 +33,7 @@ npx tsdown
 npx tsdown migrate
 ```
 
-Please make sure to commit your changes before migrating.
+Please make sure to commit your changes before migrating. For more details, see the [Migration Guide](https://tsdown.dev/guide/migrate-from-tsup).
 
 ## Credits
 

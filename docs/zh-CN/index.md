@@ -20,7 +20,7 @@ hero:
 features:
   - icon: 🚀
     title: 极速构建
-    details: 基于 Oxc 和 Rolldown 构建和生成 .d.ts，速度极快！
+    details: 基于 Oxc 和 Rolldown 构建和生成声明文件（dts），速度极快！
 
   - icon: ♻️
     title: 强大的生态系统

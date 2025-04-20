@@ -21,7 +21,7 @@ features:
   - icon: 🚀
     title: Blazing fast
     details: |
-      Build and generate .d.ts powered by Oxc and Rolldown, incredibly fast!
+      Build and generate declaration files powered by Oxc and Rolldown, incredibly fast!
 
   - icon: ♻️
     title: Powerful ecosystem
