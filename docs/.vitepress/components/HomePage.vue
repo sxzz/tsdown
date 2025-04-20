@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { useTranslate } from '../i18n/composable'
+import { computed } from 'vue'
 
 const { lang, isDark } = useData()
-const t = useTranslate()
 
 const voidZeroLogo = computed(() =>
   isDark
@@ -18,7 +16,7 @@ const voidZeroLogo = computed(() =>
     <div mt20 flex="~ col" items-center gap8>
       <h2 v-if="lang === 'en'" class="voidzero-title">Brought to you by</h2>
       <a href="https://voidzero.dev/" target="_blank" title="voidzero.dev">
-        <img :src="voidZeroLogo" alt="VoidZero" w-300px h-75px />
+        <img :src="voidZeroLogo" alt="VoidZero" h-75px w-300px />
       </a>
       <h2 v-if="lang === 'zh-CN'" class="voidzero-title">
         由 VoidZero 隆重推出

@@ -5,7 +5,7 @@ layout: home
 hero:
   name: 'tsdown'
   text: 优雅的<br>库打包工具
-  tagline: 由 Rolldown 驱动
+  tagline: 由 Rolldown 强力驱动
   image:
     src: /tsdown.svg
     alt: tsdown
