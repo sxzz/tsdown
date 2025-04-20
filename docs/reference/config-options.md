@@ -153,7 +153,7 @@ Custom extensions for output files.
 ### plugins
 
 - **Type:** `InputOptions['plugins']`
-- **Default:** 
+- **Default:** `[]`
 
 ***
 
@@ -177,14 +177,14 @@ Requires `publint` to be installed.
 ### silent
 
 - **Type:** `boolean`
-- **Default:** 
+- **Default:** `false`
 
 ***
 
 ### skipNodeModulesBundle
 
 - **Type:** `boolean`
-- **Default:** 
+- **Default:** `false`
 
 Skip bundling `node_modules`.
 
@@ -231,4 +231,4 @@ Requires `unplugin-unused` to be installed.
 ### watch
 
 - **Type:** `boolean | string | string[]`
-- **Default:**
+- **Default:** `false`
