@@ -94,7 +94,7 @@ To simplify the command, you can add it to your `package.json` scripts:
     "build": "tsdown"
   },
   "devDependencies": {
-    "tsdown": "^0.6.10"
+    "tsdown": "^0.9.0"
   }
 }
 ```
@@ -111,9 +111,20 @@ While you can use the CLI directly, it's recommended to use a configuration file
 
 For more details, refer to the [Config File](./config-file.md) documentation.
 
-## Using Plugins (TODO)
+## Using Plugins
 
-TODO link to another page
+`tsdown` supports plugins to extend its functionality. You can use Rolldown plugins, Unplugin plugins, and most Rollup plugins seamlessly. To use plugins, add them to the `plugins` array in your configuration file. For example:
+
+```ts [tsdown.config.ts]
+import { defineConfig } from 'tsdown'
+import SomePlugin from 'some-plugin'
+
+export default defineConfig({
+  plugins: [SomePlugin()],
+})
+```
+
+For more details, refer to the [Plugins](./plugins.md) documentation.
 
 ## Using Watch Mode
 

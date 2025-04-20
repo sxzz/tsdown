@@ -94,7 +94,7 @@ node dist/index.mjs
     "build": "tsdown"
   },
   "devDependencies": {
-    "tsdown": "^0.6.10"
+    "tsdown": "^0.9.0"
   }
 }
 ```
@@ -111,9 +111,20 @@ npm run build
 
 有关更多详细信息，请参阅 [配置文件](./config-file.md) 文档。
 
-## 使用插件（TODO）
+## 使用插件
 
-TODO 链接到其他页面
+`tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。要使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
+
+```ts [tsdown.config.ts]
+import { defineConfig } from 'tsdown'
+import SomePlugin from 'some-plugin'
+
+export default defineConfig({
+  plugins: [SomePlugin()],
+})
+```
+
+有关更多详细信息，请参阅 [插件](./plugins.md) 文档。
 
 ## 使用监听模式
 
