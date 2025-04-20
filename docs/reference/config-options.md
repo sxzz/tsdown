@@ -1,316 +1,234 @@
-# Interface: Options
+# Configuring tsdown
 
-Defined in: [options.ts:38](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L38)
+References for the available options in the [configuration file of `tsdown`](/guide/config-file).
 
-Options for tsdown.
+### alias
 
-## Properties
-
-### alias?
-
-> `optional` **alias**: `Record`\<`string`, `string`\>
-
-Defined in: [options.ts:48](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L48)
+- **Type:** `Record<string, string>`
+- **Default:** 
 
 ***
 
-### clean?
+### clean
 
-> `optional` **clean**: `boolean` \| `string`[]
-
-Defined in: [options.ts:66](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L66)
+- **Type:** `boolean | string[]`
+- **Default:** 
 
 ***
 
-### config?
+### config
 
-> `optional` **config**: `string` \| `boolean`
-
-Defined in: [options.ts:102](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L102)
+- **Type:** `boolean | string`
+- **Default:** 
 
 Config file path
 
 ***
 
-### define?
+### define
 
-> `optional` **define**: `Record`\<`string`, `string`\>
-
-Defined in: [options.ts:70](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L70)
+- **Type:** `Record<string, string>`
+- **Default:** 
 
 ***
 
-### dts?
+### dts
 
-> `optional` **dts**: `boolean` \| `Options`
-
-Defined in: [options.ts:125](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L125)
+- **Type:** `boolean | DtsOptions`
+- **Default:** `false`
 
 Emit declaration files
 
 ***
 
-### entry?
+### entry
 
-> `optional` **entry**: `InputOption`
-
-Defined in: [options.ts:40](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L40)
-
-***
-
-### external?
-
-> `optional` **external**: `ExternalOption`
-
-Defined in: [options.ts:41](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L41)
+- **Type:** `InputOption`
+- **Default:** 
 
 ***
 
-### fixedExtension?
+### external
 
-> `optional` **fixedExtension**: `boolean`
+- **Type:** `ExternalOption`
+- **Default:** 
 
-Defined in: [options.ts:80](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L80)
+***
+
+### fixedExtension
+
+- **Type:** `boolean`
+- **Default:** `false`
 
 Use a fixed extension for output files.
 The extension will always be `.cjs` or `.mjs`.
 Otherwise, it will depend on the package type.
 
-#### Default
+***
 
-```ts
-false
-```
+### format
+
+- **Type:** `ModuleFormat | ModuleFormat[]`
+- **Default:** `'esm'`
 
 ***
 
-### format?
+### fromVite
 
-> `optional` **format**: `ModuleFormat` \| `ModuleFormat`[]
-
-Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L61)
-
-#### Default
-
-```ts
-'es'
-```
-
-***
-
-### fromVite?
-
-> `optional` **fromVite**: `boolean` \| `"vitest"`
-
-Defined in: [options.ts:119](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L119)
+- **Type:** `boolean | 'vitest'`
+- **Default:** `false`
 
 Reuse config from Vite or Vitest (experimental)
 
-#### Default
+***
 
-```ts
-false
-```
+### globalName
+
+- **Type:** `string`
+- **Default:** 
 
 ***
 
-### globalName?
+### inputOptions
 
-> `optional` **globalName**: `string`
-
-Defined in: [options.ts:62](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L62)
-
-***
-
-### inputOptions?
-
-> `optional` **inputOptions**: `InputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `InputOptions`\>
-
-Defined in: [options.ts:52](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L52)
+- **Type:** `InputOptions | ((options: InputOptions, format: NormalizedFormat) => Awaitable<InputOptions | void | null>)`
+- **Default:** 
 
 ***
 
-### minify?
+### minify
 
-> `optional` **minify**: `boolean`
-
-Defined in: [options.ts:68](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L68)
-
-#### Default
-
-```ts
-false
-```
+- **Type:** `boolean`
+- **Default:** `false`
 
 ***
 
-### noExternal?
+### noExternal
 
-> `optional` **noExternal**: `Arrayable`\<`string` \| `RegExp`\> \| (`id`, `importer`) => `undefined` \| `null` \| `boolean` \| `void`
-
-Defined in: [options.ts:42](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L42)
+- **Type:** `Arrayable<string | RegExp> | ((id: string, importer: string | undefined) => boolean | null | undefined | void)`
+- **Default:** 
 
 ***
 
-### onSuccess?
+### onSuccess
 
-> `optional` **onSuccess**: `string` \| (`config`) => `void` \| `Promise`\<`void`\>
-
-Defined in: [options.ts:108](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L108)
+- **Type:** `string | ((config: ResolvedOptions) => void | Promise<void>)`
+- **Default:** 
 
 You can specify command to be executed after a successful build, specially useful for Watch mode
 
 ***
 
-### outDir?
+### outDir
 
-> `optional` **outDir**: `string`
-
-Defined in: [options.ts:64](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L64)
-
-#### Default
-
-```ts
-'dist'
-```
+- **Type:** `string`
+- **Default:** `'dist'`
 
 ***
 
-### outExtensions?
+### outExtensions
 
-> `optional` **outExtensions**: `OutExtensionFactory`
-
-Defined in: [options.ts:85](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L85)
+- **Type:** `OutExtensionFactory`
+- **Default:** 
 
 Custom extensions for output files.
 `fixedExtension` will be overridden by this option.
 
 ***
 
-### outputOptions?
+### outputOptions
 
-> `optional` **outputOptions**: `OutputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `OutputOptions`\>
-
-Defined in: [options.ts:87](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L87)
-
-***
-
-### platform?
-
-> `optional` **platform**: `"node"` \| `"neutral"` \| `"browser"`
-
-Defined in: [options.ts:51](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L51)
-
-#### Default
-
-```ts
-'node'
-```
+- **Type:** `OutputOptions | ((options: OutputOptions, format: NormalizedFormat) => Awaitable<OutputOptions | void | null>)`
+- **Default:** 
 
 ***
 
-### plugins?
+### platform
 
-> `optional` **plugins**: `RolldownPluginOption`
-
-Defined in: [options.ts:96](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L96)
+- **Type:** `'node' | 'neutral' | 'browser'`
+- **Default:** `'node'`
 
 ***
 
-### publint?
+### plugins
 
-> `optional` **publint**: `boolean` \| `Options`
+- **Type:** `InputOptions['plugins']`
+- **Default:** 
 
-Defined in: [options.ts:137](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L137)
+***
+
+### publint
+
+- **Type:** `boolean | PublintOptions`
+- **Default:** `false`
 
 Run publint after bundling.
 Requires `publint` to be installed.
 
 ***
 
-### shims?
+### shims
 
-> `optional` **shims**: `boolean`
-
-Defined in: [options.ts:72](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L72)
-
-#### Default
-
-```ts
-false
-```
+- **Type:** `boolean`
+- **Default:** `false`
 
 ***
 
-### silent?
+### silent
 
-> `optional` **silent**: `boolean`
-
-Defined in: [options.ts:98](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L98)
-
-***
-
-### skipNodeModulesBundle?
-
-> `optional` **skipNodeModulesBundle**: `boolean`
-
-Defined in: [options.ts:113](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L113)
-
-Skip bundling node_modules.
+- **Type:** `boolean`
+- **Default:** 
 
 ***
 
-### sourcemap?
+### skipNodeModulesBundle
 
-> `optional` **sourcemap**: [`Sourcemap`](./type-aliases/Sourcemap.md)
+- **Type:** `boolean`
+- **Default:** 
 
-Defined in: [options.ts:65](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L65)
-
-***
-
-### target?
-
-> `optional` **target**: `string` \| `string`[]
-
-Defined in: [options.ts:69](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L69)
+Skip bundling `node_modules`.
 
 ***
 
-### treeshake?
+### sourcemap
 
-> `optional` **treeshake**: `boolean`
-
-Defined in: [options.ts:95](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L95)
-
-#### Default
-
-```ts
-true
-```
+- **Type:** [`Sourcemap`](./type-aliases/Sourcemap.md)
+- **Default:** `false`
 
 ***
 
-### tsconfig?
+### target
 
-> `optional` **tsconfig**: `string` \| `boolean`
-
-Defined in: [options.ts:49](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L49)
+- **Type:** `string | string[]`
+- **Default:** 
 
 ***
 
-### unused?
+### treeshake
 
-> `optional` **unused**: `boolean` \| `Options`
+- **Type:** `boolean`
+- **Default:** `true`
 
-Defined in: [options.ts:131](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L131)
+***
+
+### tsconfig
+
+- **Type:** `string | boolean`
+- **Default:** 
+
+***
+
+### unused
+
+- **Type:** `boolean | UnusedOptions`
+- **Default:** `false`
 
 Enable unused dependencies check with `unplugin-unused`
 Requires `unplugin-unused` to be installed.
 
 ***
 
-### watch?
+### watch
 
-> `optional` **watch**: `string` \| `boolean` \| `string`[]
-
-Defined in: [options.ts:103](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L103)
+- **Type:** `boolean | string | string[]`
+- **Default:**
