@@ -62,7 +62,7 @@ tsdown --no-config
 
 这在您希望仅依赖命令行选项或默认设置时非常有用。
 
-## 扩展 Vite 或 Vitest 配置（实验性功能）
+## 扩展 Vite 或 Vitest 配置（实验性功能）{#extending-vite-or-vitest-config-experimental}
 
 `tsdown` 提供了一个**实验性**功能，允许您扩展现有的 Vite 或 Vitest 配置文件。通过此功能，您可以重用特定的配置选项（如 `resolve` 和 `plugins`），同时忽略与 `tsdown` 无关的其他选项。
 
