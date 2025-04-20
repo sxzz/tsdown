@@ -4,16 +4,26 @@
 
 ## 为什么选择 tsdown？
 
-`tsdown` 构建于 [Rolldown](https://rolldown.rs) 之上，这是一款用 Rust 编写的前沿打包工具。虽然 Rolldown 是一个功能强大且通用的工具，`tsdown` 更进一步，为库开发者量身定制了使用体验。它简化了配置，针对常见的库开发场景进行了优化，并提供了开发者友好的接口。
+`tsdown` 构建于 [Rolldown](https://rolldown.rs) 之上，这是一款用 Rust 编写的前沿打包工具。虽然 Rolldown 是一个功能强大且通用的工具，`tsdown` 更进一步，为库开发者提供了一个**开箱即用的完整解决方案**。
 
-作为 **Rolldown 的官方项目**，`tsdown` 深度集成于 Rolldown 生态系统中。它不仅是一个独立的打包器，还为 **Rolldown-Vite 库模式** 提供了基础，确保未来为库开发者提供统一且强大的体验。
+### tsdown 与 Rolldown 的主要区别
+
+- **简化的配置**：`tsdown` 提供了针对库开发的合理默认配置，减少了复杂配置的需求。它提供了简洁的使用体验，让您专注于代码，而不是打包过程。
+- **面向库的特性**：与作为通用打包器的 Rolldown 不同，`tsdown` 专为构建库而优化。它包括自动生成 TypeScript 声明文件和支持多种输出格式等功能。
+- **面向未来**：作为 **Rolldown 的官方项目**，`tsdown` 深度集成于其生态系统，并将随着 Rolldown 的发展不断演进。通过利用 Rolldown 的最新技术进步，`tsdown` 致力于探索库开发的新可能性。此外，`tsdown` 被定位为 **[Rolldown Vite](https://github.com/vitejs/rolldown-vite) 库模式** 的基础，确保从长远来看为库开发者提供一致且强大的体验。
+
+## 插件生态系统
+
+`tsdown` 支持整个 Rolldown 插件生态系统，使您可以轻松扩展和自定义构建过程。此外，它还兼容大多数 Rollup 插件，为您提供了丰富的现有工具库。
+
+有关更多详细信息，请参阅 [插件](./plugins.md) 文档。
 
 ## 它能打包什么？
 
 `tsdown` 专为现代库开发设计，能够处理所有必要的任务：
 
 - **TypeScript 和 JavaScript**：无缝打包 `.ts` 和 `.js` 文件，支持现代语法和特性。
-- **TypeScript 声明文件**：自动为您的库生成 `.d.ts` 文件。
+- **TypeScript 声明文件**：自动为您的库生成声明文件（`.d.ts`）。
 - **多种输出格式**：生成 `esm`、`cjs` 和 `iife` 格式的包，确保兼容不同的运行环境。
 - **资源文件**：支持包含和处理非代码资源文件，如 `.json` 或 `.wasm`。
 
