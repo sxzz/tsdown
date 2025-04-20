@@ -2,6 +2,14 @@
 
 All CLI flags can also be set in the configuration file for better reusability and maintainability in complex projects. Refer to the [Config File](../guide/config-file.md) documentation for more details.
 
+## `[...files]`
+
+Specify entry files as command arguments. This is equivalent to setting the `entry` option in the configuration file.
+
+```bash
+tsdown src/index.ts src/util.ts
+```
+
 ## `-c, --config <filename>`
 
 Specify a custom configuration file. Use this option to define the path to the configuration file you want to use.
