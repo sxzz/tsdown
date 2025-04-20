@@ -10,6 +10,7 @@ export const zhCN = {
   'Migrate from tsup': ' 从 tsup 迁移',
 
   Recipes: '实践指南',
+  Entry: '入口文件',
   Cleaning: '清理',
   'Config File': '配置文件',
   Minification: '压缩',
@@ -21,6 +22,9 @@ export const zhCN = {
   Target: '构建目标（Target）',
   'Tree-shaking': '除屑优化（Tree-shaking）',
   'Watch Mode': '监听模式',
+
+  Advanced: '高级选项',
+  'Rolldown Options': 'Rolldown 选项',
 
   'Config Options': '配置选项',
   'Command Line Interface': '命令行接口',
