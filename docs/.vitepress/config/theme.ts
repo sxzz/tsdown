@@ -77,6 +77,7 @@ export function getLocaleConfig(lang: string) {
             { text: t('Source Maps'), link: '/sourcemap.md' },
             { text: t('Minification'), link: '/minification.md' },
             { text: t('Silent Mode'), link: '/silent-mode.md' },
+            { text: t('Shims'), link: '/shims.md' },
           ],
         },
         {
@@ -118,7 +119,7 @@ export function getLocaleConfig(lang: string) {
     Object.assign(themeConfig, {
       outline: {
         label: '页面导航',
-        level: 'deep'
+        level: 'deep',
       },
       lastUpdatedText: '最后更新于',
       darkModeSwitchLabel: '外观',

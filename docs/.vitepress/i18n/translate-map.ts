@@ -22,6 +22,7 @@ export const zhCN = {
   Target: '构建目标（Target）',
   'Tree-shaking': '除屑优化（Tree-shaking）',
   'Watch Mode': '监听模式',
+  Shims: 'Shims（兼容代码）',
 
   Advanced: '高级功能',
   'Rolldown Options': 'Rolldown 选项',
