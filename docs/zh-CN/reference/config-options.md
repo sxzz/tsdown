@@ -12,7 +12,7 @@ References for the available options in the [configuration file of `tsdown`](/gu
 ### clean
 
 - **Type:** `boolean | string[]`
-- **Default:** 
+- **Default:** `false`
 
 ***
 
