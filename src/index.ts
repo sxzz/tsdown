@@ -170,6 +170,7 @@ async function getBuildOptions(
     define,
     shims,
     tsconfig,
+    cwd,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -201,13 +202,14 @@ async function getBuildOptions(
         }),
       )
     }
-    plugins.push(ShebangPlugin())
+    plugins.push(ShebangPlugin(cwd))
   }
   plugins.push(userPlugins)
 
   const inputOptions = await mergeUserOptions(
     {
       input: entry,
+      cwd,
       external,
       resolve: {
         alias,

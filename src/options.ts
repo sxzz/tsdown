@@ -170,6 +170,7 @@ export type ResolvedOptions = Omit<
       clean: string[] | false
       dts: false | DtsOptions
       tsconfig: string | false
+      cwd: string
     }
   >,
   'config' | 'fromVite'
@@ -185,7 +186,7 @@ export async function resolveOptions(options: Options): Promise<{
   }
 
   const configs = await Promise.all(
-    userConfigs.map(async (subConfig) => {
+    userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
       const subOptions = { ...subConfig, ...options }
 
       let {
@@ -209,7 +210,7 @@ export async function resolveOptions(options: Options): Promise<{
         tsconfig,
       } = subOptions
 
-      entry = await resolveEntry(entry)
+      entry = await resolveEntry(entry, cwd)
       if (clean === true) clean = []
       if (publint === true) publint = {}
 
@@ -236,7 +237,9 @@ export async function resolveOptions(options: Options): Promise<{
         }
 
         if (tsconfig) {
-          logger.info(`Using tsconfig: ${underline(tsconfig)}`)
+          logger.info(
+            `Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`,
+          )
         }
       }
 
@@ -286,6 +289,7 @@ export async function resolveOptions(options: Options): Promise<{
         publint,
         alias,
         tsconfig,
+        cwd,
       }
 
       return config

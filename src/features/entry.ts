@@ -7,13 +7,14 @@ import type { Options } from '../options'
 
 export async function resolveEntry(
   entry: Options['entry'],
+  cwd: string,
 ): Promise<Record<string, string>> {
   if (!entry || Object.keys(entry).length === 0) {
     // TODO auto find entry
     throw new Error(`No input files, try "tsdown <your-file>" instead`)
   }
 
-  const objectEntry = await toObjectEntry(entry)
+  const objectEntry = await toObjectEntry(entry, cwd)
   const entries = Object.values(objectEntry)
   if (entries.length === 0) {
     throw new Error(`Cannot find entry: ${JSON.stringify(entry)}`)
@@ -24,6 +25,7 @@ export async function resolveEntry(
 
 export async function toObjectEntry(
   entry: string | string[] | Record<string, string>,
+  cwd: string,
 ): Promise<Record<string, string>> {
   if (typeof entry === 'string') {
     entry = [entry]
@@ -32,7 +34,7 @@ export async function toObjectEntry(
     return entry
   }
 
-  const resolvedEntry = await glob(entry)
+  const resolvedEntry = await glob(entry, { cwd })
   const base = lowestCommonAncestor(...resolvedEntry)
   return Object.fromEntries(
     resolvedEntry.map((file) => {

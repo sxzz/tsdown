@@ -7,7 +7,7 @@ import type { Plugin } from 'rolldown'
 
 const RE_SHEBANG = /^#!.*/
 
-export function ShebangPlugin(): Plugin {
+export function ShebangPlugin(cwd: string): Plugin {
   return {
     name: 'tsdown:shebang',
     async writeBundle(options, bundle) {
@@ -15,10 +15,15 @@ export function ShebangPlugin(): Plugin {
         if (chunk.type !== 'chunk' || !chunk.isEntry) continue
         if (!RE_SHEBANG.test(chunk.code)) continue
 
-        const file = options.file || path.resolve(options.dir!, chunk.fileName)
-        if (await fsExists(file)) {
-          logger.info(`Granting execute permission to ${underline(file)}`)
-          await chmod(file, 0o755)
+        const filepath = path.resolve(
+          cwd,
+          options.file || path.join(options.dir!, chunk.fileName),
+        )
+        if (await fsExists(filepath)) {
+          logger.info(
+            `Granting execute permission to ${underline(path.relative(cwd, filepath))}`,
+          )
+          await chmod(filepath, 0o755)
         }
       }
     },
