@@ -7,8 +7,8 @@
 ## Features
 
 - 🚀 **Blazing fast**: Build and generate declaration files powered by Oxc and Rolldown, incredibly fast!
-- ♻️ **Powerful ecosystem**: Support Rollup / Rolldown / unplugin plugins, and some Vite plugins.
-- 📦 **Out-of-box**: Support reusing configurations from Vite or Vitest.
+- ♻️ **Powerful ecosystem**: Support Rollup, Rolldown, unplugin plugins, and some Vite plugins.
+- ️🛠️ **Easy to use**: tsdown preconfigures everything you need to get started, so you can focus on writing code.
 - 🔄 **Seamless migration**: Compatible with tsup's main options and features, ensuring a smooth transition.
 
 ## Documentation
