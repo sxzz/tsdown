@@ -25,5 +25,3 @@ export function debounce<T extends (...args: any[]) => any>(
     }, wait)
   } as T
 }
-
-export function typeAsserts<T>(value: any): asserts value is T {}

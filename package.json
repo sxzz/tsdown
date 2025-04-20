@@ -102,7 +102,6 @@
     "typedoc-plugin-markdown": "^4.6.2",
     "typescript": "~5.8.3",
     "unocss": "^66.1.0-beta.12",
-    "unplugin-ast": "^0.14.6",
     "unplugin-unused": "^0.4.4",
     "vite": "^6.3.2",
     "vitepress": "^1.6.3",

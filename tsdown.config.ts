@@ -1,6 +1,3 @@
-import { isCallOf } from 'unplugin-ast/ast-kit'
-import AST from 'unplugin-ast/rolldown'
-import { RemoveNode } from 'unplugin-ast/transformers'
 import { defineConfig } from './src/config.ts'
 
 export default defineConfig({
@@ -16,10 +13,4 @@ export default defineConfig({
   onSuccess() {
     console.info('🙏 Build succeeded!')
   },
-  plugins: [
-    AST({
-      exclude: ['**/*.d.ts'],
-      transformer: [RemoveNode((node) => isCallOf(node, 'typeAsserts'))],
-    }),
-  ],
 })
