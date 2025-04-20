@@ -37,7 +37,7 @@ Please make sure to commit your changes before migrating. For more details, see 
 
 ## Credits
 
-This project also partially contains code derived or copied from [tsup](https://github.com/egoist/tsup).
+This project also partially contains code derived or copied from the following projects:
 
 - [tsup](https://github.com/egoist/tsup)
 - [pkgroll](https://github.com/privatenumber/pkgroll)
