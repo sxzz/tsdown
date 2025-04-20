@@ -27,8 +27,8 @@ To use plugins in `tsdown`, you need to add them to the `plugins` array in your 
 Here’s an example of how to use a plugin:
 
 ```ts [tsdown.config.ts]
-import { defineConfig } from 'tsdown'
 import SomePlugin from 'some-plugin'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   plugins: [SomePlugin()],

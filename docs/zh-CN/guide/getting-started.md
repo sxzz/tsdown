@@ -130,8 +130,8 @@ npm run build
 `tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。要使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
 
 ```ts [tsdown.config.ts]
-import { defineConfig } from 'tsdown'
 import SomePlugin from 'some-plugin'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   plugins: [SomePlugin()],

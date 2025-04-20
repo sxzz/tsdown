@@ -9,36 +9,19 @@ export function getLocaleConfig(lang: string) {
   const description = t('The Elegant Bundler for Libraries')
   const titleTemplate = `:title - ${description}`
 
+  const docsLink = `https://tsdown.dev/`
+  const ogImage = `${docsLink}og-image.png`
+
   const head: HeadConfig[] = [
-    [
-      'link',
-      {
-        rel: 'icon',
-        type: 'image/svg+xml',
-        href: '/tsdown.svg',
-      },
-    ],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/tsdown.svg' }],
     ['meta', { name: 'theme-color', content: '#ff7e17' }],
+    ['meta', { property: 'og:title', content: title }],
+    ['meta', { property: 'og:description', content: description }],
+    ['meta', { property: 'og:image', content: ogImage }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:locale', content: 'en' }],
-    [
-      'meta',
-      {
-        property: 'og:title',
-        content: `tsdown | ${description}`,
-      },
-    ],
-    [
-      'meta',
-      {
-        property: 'og:image',
-        content: 'https://tsdown.dev/og-image.png',
-      },
-    ],
-    ['meta', { property: 'og:site_name', content: 'Rolldown' }],
-    ['meta', { property: 'og:url', content: 'https://rolldown.rs/' }],
-    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:site', content: '@rolldown_rs' }],
+    ['meta', { property: 'og:url', content: docsLink }],
+    ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { property: 'twitter:image', content: ogImage }],
   ]
 
   const nav: DefaultTheme.NavItem[] = [

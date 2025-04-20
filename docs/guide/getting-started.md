@@ -130,8 +130,8 @@ For more details, refer to the [Config File](./config-file.md) documentation.
 `tsdown` supports plugins to extend its functionality. You can use Rolldown plugins, Unplugin plugins, and most Rollup plugins seamlessly. To use plugins, add them to the `plugins` array in your configuration file. For example:
 
 ```ts [tsdown.config.ts]
-import { defineConfig } from 'tsdown'
 import SomePlugin from 'some-plugin'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   plugins: [SomePlugin()],

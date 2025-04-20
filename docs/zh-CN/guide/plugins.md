@@ -27,8 +27,8 @@ Rolldown 与 Rollup 的插件 API 高度兼容，因此 `tsdown` 可以直接使
 以下是使用插件的示例：
 
 ```ts [tsdown.config.ts]
-import { defineConfig } from 'tsdown'
 import SomePlugin from 'some-plugin'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
   plugins: [SomePlugin()],
