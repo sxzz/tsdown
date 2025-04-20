@@ -22,6 +22,8 @@ tsdown src/index.ts src/util.ts
 
 禁用加载配置文件。如果您希望仅依赖命令行选项或默认设置，此选项非常有用。
 
+另请参阅 [禁用配置文件](../guide/config-file#禁用配置文件)。
+
 ## `--format <format>`
 
 定义打包格式。支持的格式包括：
@@ -81,6 +83,8 @@ tsdown src/index.ts src/util.ts
 
 启用 CommonJS (CJS) 和 ECMAScript 模块 (ESM) 的 shim。这确保了不同模块系统之间的兼容性。
 
+另请参阅 [Shims](../guide/shims.md)。
+
 ## `--platform <platform>`
 
 指定打包的目标平台。支持的平台包括：
@@ -94,6 +98,8 @@ tsdown src/index.ts src/util.ts
 ## `--dts`
 
 为打包代码生成 TypeScript 声明文件（`.d.ts`）。这对于需要提供类型定义的库非常有用。
+
+另请参阅 [声明文件](../guide/dts.md)。
 
 ## `--publint`
 

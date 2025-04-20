@@ -22,6 +22,8 @@ See also [Config File](../guide/config-file.md).
 
 Disable loading a configuration file. This is useful if you want to rely solely on command-line options or default settings.
 
+See also [Disabling the Config File](../guide/config-file.md#disabling-the-config-file).
+
 ## `--format <format>`
 
 Define the bundle format. Supported formats include:
@@ -81,6 +83,8 @@ See also [Source Maps](../guide/sourcemap.md).
 
 Enable CommonJS (CJS) and ECMAScript Module (ESM) shims. This ensures compatibility between different module systems.
 
+See also [Shims](../guide/shims.md).
+
 ## `--platform <platform>`
 
 Specify the target platform for the bundle. Supported platforms include:
@@ -94,6 +98,8 @@ See also [Platform](../guide/platform.md).
 ## `--dts`
 
 Generate TypeScript declaration (`.d.ts`) files for the bundled code. This is useful for libraries that need to provide type definitions.
+
+See also [Declaration Files](../guide/dts.md).
 
 ## `--publint`
 
