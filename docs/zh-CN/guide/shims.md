@@ -54,11 +54,3 @@ export default defineConfig({
   shims: true,
 })
 ```
-
-## 总结
-
-- **ESM 中的 `__dirname` 和 `__filename`**：当启用 `shims` 选项时会自动生成。
-- **CommonJS 中的 `import.meta.url`、`import.meta.dirname` 和 `import.meta.filename`**：始终生成，即使未启用 `shims` 选项。
-- **运行时开销**：极小，且未使用的 shims 会在打包过程中自动移除。
-
-Shims 提供了一种便捷的方式，确保 CommonJS 和 ESM 之间的兼容性，使您能够轻松编写跨环境代码，而无需担心模块系统的差异。

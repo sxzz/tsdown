@@ -67,6 +67,7 @@ export function getLocaleConfig(lang: string) {
           items: [
             { text: t('Entry'), link: '/entry.md' },
             { text: t('Config File'), link: '/config-file.md' },
+            { text: t('Declaration Files (dts)'), link: '/dts.md' },
             { text: t('Output Format'), link: '/output-format.md' },
             { text: t('Output Directory'), link: '/output-directory.md' },
             { text: t('Cleaning'), link: '/cleaning.md' },

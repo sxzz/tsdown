@@ -54,11 +54,3 @@ export default defineConfig({
   shims: true,
 })
 ```
-
-## Summary
-
-- **`__dirname` and `__filename` in ESM**: Automatically shimmed when the `shims` option is enabled.
-- **`import.meta.url`, `import.meta.dirname`, and `import.meta.filename` in CommonJS**: Always shimmed, even if the `shims` option is disabled.
-- **Runtime Overhead**: Minimal, and unused shims are automatically removed during bundling.
-
-Shims provide a convenient way to ensure compatibility between CommonJS and ESM, making it easier to write cross-environment code without worrying about module system differences.

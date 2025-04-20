@@ -23,6 +23,7 @@ export const zhCN = {
   'Tree-shaking': '除屑优化（Tree-shaking）',
   'Watch Mode': '监听模式',
   Shims: 'Shims（兼容代码）',
+  'Declaration Files (dts)': '声明文件（dts）',
 
   Advanced: '高级功能',
   'Rolldown Options': 'Rolldown 选项',
