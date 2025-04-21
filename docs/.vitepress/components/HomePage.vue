@@ -38,7 +38,8 @@ const { lang } = useData()
 }
 
 .voidzero {
-  background: url(https://voidzero.dev/logo.svg) no-repeat center / auto 75px;
+  background: url(https://voidzero.dev/logo.svg) no-repeat center;
+  background-size: contain;
 }
 
 .dark .voidzero {
