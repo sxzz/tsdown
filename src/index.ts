@@ -77,7 +77,7 @@ export const pkgRoot: string = path.resolve(dirname, '..')
 export async function buildSingle(
   config: ResolvedOptions,
 ): Promise<(() => Promise<void>) | undefined> {
-  const { outDir, format: formats, clean, dts, watch, onSuccess } = config
+  const { cwd, format: formats, clean, dts, watch, onSuccess } = config
   let onSuccessCleanup: (() => any) | undefined
 
   const pkg = await readPackageJson(process.cwd())
@@ -91,7 +91,7 @@ export async function buildSingle(
     const startTime = performance.now()
 
     onSuccessCleanup?.()
-    if (clean) await cleanOutDir(outDir, clean)
+    if (clean) await cleanOutDir(cwd, clean)
 
     let hasErrors = false
     await Promise.all(

@@ -211,7 +211,7 @@ export async function resolveOptions(options: Options): Promise<{
       } = subOptions
 
       entry = await resolveEntry(entry, cwd)
-      if (clean === true) clean = []
+      if (clean === true) clean = [outDir]
       if (publint === true) publint = {}
 
       if (tsconfig !== false) {
