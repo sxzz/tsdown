@@ -196,7 +196,7 @@ async function getBuildOptions(
     if (target) {
       plugins.push(
         transformPlugin({
-          include: /[cm]?[jt]sx?$/,
+          include: /\.[cm]?[jt]sx?$/,
           exclude: /\.d\.[cm]?ts$/,
           transformOptions: {
             target,
