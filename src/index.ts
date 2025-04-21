@@ -13,6 +13,7 @@ import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
+import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
@@ -171,6 +172,7 @@ async function getBuildOptions(
     shims,
     tsconfig,
     cwd,
+    report,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -204,7 +206,7 @@ async function getBuildOptions(
         }),
       )
     }
-    plugins.push(ShebangPlugin(cwd))
+    plugins.push(ShebangPlugin(cwd), report && ReportPlugin(cwd))
   }
   plugins.push(userPlugins)
 
