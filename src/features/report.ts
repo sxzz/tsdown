@@ -28,7 +28,7 @@ interface SizeInfo {
   brotliText: string
 }
 
-export function ReportPlugin(cwd: string): Plugin {
+export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
   return {
     name: 'tsdown:report',
     async writeBundle(options, bundle) {
@@ -75,17 +75,16 @@ export function ReportPlugin(cwd: string): Plugin {
         return b.brotli - a.brotli
       })
 
+      const format = cjsDts ? 'cjs' : options.format
+      const formatColor =
+        format === 'es' ? blue : format === 'cjs' ? yellow : noop
+      const formatText = formatColor(`[${prettyFormat(format)}]`)
+
       for (const size of sizes) {
-        const formatColor =
-          options.format === 'es'
-            ? blue
-            : options.format === 'cjs'
-              ? yellow
-              : noop
         const filenameColor = size.dts ? green : noop
 
         logger.info(
-          formatColor(`[${prettyFormat(options.format)}]`),
+          formatText,
           dim(`${outDir}/`) +
             filenameColor((size.isEntry ? bold : noop)(size.filename)),
           ` `.repeat(filenameLength - size.filename.length),

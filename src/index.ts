@@ -206,8 +206,12 @@ async function getBuildOptions(
         }),
       )
     }
-    plugins.push(ShebangPlugin(cwd), report && ReportPlugin(cwd))
+    plugins.push(ShebangPlugin(cwd))
   }
+  if (report) {
+    plugins.push(ReportPlugin(cwd, cjsDts))
+  }
+
   plugins.push(userPlugins)
 
   const inputOptions = await mergeUserOptions(
