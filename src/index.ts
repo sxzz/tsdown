@@ -196,9 +196,11 @@ async function getBuildOptions(
     if (target) {
       plugins.push(
         transformPlugin({
-          target:
-            target && (typeof target === 'string' ? target : target.join(',')),
+          include: /\.[cm]?[jt]sx?$/,
           exclude: /\.d\.[cm]?ts$/,
+          transformOptions: {
+            target,
+          },
         }),
       )
     }
