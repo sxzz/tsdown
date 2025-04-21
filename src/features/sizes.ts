@@ -1,37 +1,73 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { gzipSync } from 'node:zlib'
+import Debug from 'debug'
 import { formatBytes } from '../utils/format'
 import { logger } from '../utils/logger'
 
+const debug = Debug('tsdown:sizes')
+
+const DTS_EXTENSIONS = ['.d.ts', '.d.mts', '.d.cts']
+
+interface SizeInfo {
+  size: number
+  gzip: number
+}
+
+interface BundleFile {
+  file: string
+  size: SizeInfo
+}
+
+/**
+ * Calculate and display the sizes of bundled files
+ */
 export async function getSizes(outDir: string): Promise<void> {
+  debug(`Calculating sizes for files in ${outDir}`)
+
   try {
     const files = await fs.readdir(outDir)
-    const totalSize: { size: number; gzip: number } = { size: 0, gzip: 0 }
+    const totalSize: SizeInfo = { size: 0, gzip: 0 }
+    const typeFiles: string[] = []
+    const bundleFiles: BundleFile[] = []
 
-    for (const file of files) {
-      if (
-        file.endsWith('.d.ts') ||
-        file.endsWith('.d.mts') ||
-        file.endsWith('.d.cts')
-      ) {
-        logger.info(`type: ${file}`)
-        continue
-      }
+    await Promise.all(
+      files.map(async (file) => {
+        if (DTS_EXTENSIONS.some((ext) => file.endsWith(ext))) {
+          typeFiles.push(file)
+          return
+        }
 
-      const filePath = path.join(outDir, file)
-      const stats = await fs.stat(filePath)
-      const fileSizeFormat = formatBytes(stats.size)
+        const filePath = path.join(outDir, file)
+        const stats = await fs.stat(filePath)
 
-      const content = await fs.readFile(filePath)
-      const gzipSize = gzipSync(content).length
-      const fileGzipSizeFormat = formatBytes(gzipSize)
+        if (!stats.isFile()) {
+          return
+        }
 
-      totalSize.size += stats.size
-      totalSize.gzip += gzipSize
+        const content = await fs.readFile(filePath)
+        const gzipSize = gzipSync(content).length
 
+        totalSize.size += stats.size
+        totalSize.gzip += gzipSize
+
+        bundleFiles.push({
+          file,
+          size: {
+            size: stats.size,
+            gzip: gzipSize,
+          },
+        })
+      }),
+    )
+
+    for (const file of typeFiles) {
+      logger.info(`type: ${file}`)
+    }
+
+    for (const { file, size } of bundleFiles) {
       logger.info(
-        `entry: ${file} | size ${fileSizeFormat} | gzip ${fileGzipSizeFormat}`,
+        `entry: ${file} | size ${formatBytes(size.size)} | gzip ${formatBytes(size.gzip)}`,
       )
     }
 
