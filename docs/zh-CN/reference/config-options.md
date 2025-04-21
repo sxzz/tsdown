@@ -1,52 +1,52 @@
-# Interface: Options
+# 接口: Options
 
-Defined in: [options.ts:38](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L38)
+定义于: [options.ts:38](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L38)
 
-Options for tsdown.
+tsdown 的配置选项。
 
-## Properties
+## 属性
 
 ### alias?
 
-> `optional` **alias**: `Record`\<`string`, `string`\>
+> `可选` **alias**: `Record`\<`string`, `string`\>
 
-Defined in: [options.ts:48](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L48)
+定义于: [options.ts:48](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L48)
 
 ***
 
 ### clean?
 
-> `optional` **clean**: `boolean` \| `string`[]
+> `可选` **clean**: `boolean` \| `string`[]
 
-Defined in: [options.ts:66](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L66)
+定义于: [options.ts:66](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L66)
 
 ***
 
 ### config?
 
-> `optional` **config**: `string` \| `boolean`
+> `可选` **config**: `string` \| `boolean`
 
-Defined in: [options.ts:102](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L102)
+定义于: [options.ts:102](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L102)
 
-Config file path
+配置文件路径。
 
 ***
 
 ### define?
 
-> `optional` **define**: `Record`\<`string`, `string`\>
+> `可选` **define**: `Record`\<`string`, `string`\>
 
-Defined in: [options.ts:70](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L70)
+定义于: [options.ts:70](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L70)
 
 ***
 
 ### dts?
 
-> `optional` **dts**: `boolean` \| `Options`
+> `可选` **dts**: `boolean` \| `Options`
 
-Defined in: [options.ts:125](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L125)
+定义于: [options.ts:125](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L125)
 
-Emit declaration files
+生成声明文件。
 
 ***
 
@@ -54,29 +54,29 @@ Emit declaration files
 
 > `optional` **entry**: `InputOption`
 
-Defined in: [options.ts:40](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L40)
+定义于: [options.ts:40](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L40)
 
 ***
 
 ### external?
 
-> `optional` **external**: `ExternalOption`
+> `可选` **external**: `ExternalOption`
 
-Defined in: [options.ts:41](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L41)
+定义于: [options.ts:41](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L41)
 
 ***
 
 ### fixedExtension?
 
-> `optional` **fixedExtension**: `boolean`
+> `可选` **fixedExtension**: `boolean`
 
-Defined in: [options.ts:80](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L80)
+定义于: [options.ts:80](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L80)
 
-Use a fixed extension for output files.
-The extension will always be `.cjs` or `.mjs`.
-Otherwise, it will depend on the package type.
+为输出文件使用固定扩展名，
+扩展名始终为 .cjs 或 .mjs，
+否则将取决于包类型。
 
-#### Default
+#### 默认值
 
 ```ts
 false
@@ -86,11 +86,11 @@ false
 
 ### format?
 
-> `optional` **format**: `ModuleFormat` \| `ModuleFormat`[]
+> `可选` **format**: `ModuleFormat` \| `ModuleFormat`[]
 
-Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L61)
+定义于: [options.ts:61](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L61)
 
-#### Default
+#### 默认值
 
 ```ts
 'es'
@@ -100,13 +100,13 @@ Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/406082dcbc73
 
 ### fromVite?
 
-> `optional` **fromVite**: `boolean` \| `"vitest"`
+> `可选` **fromVite**: `boolean` \| `"vitest"`
 
-Defined in: [options.ts:119](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L119)
+定义于: [options.ts:119](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L119)
 
-Reuse config from Vite or Vitest (experimental)
+复用 Vite 或 Vitest 的配置（实验性功能）。
 
-#### Default
+#### 默认值
 
 ```ts
 false
@@ -116,27 +116,27 @@ false
 
 ### globalName?
 
-> `optional` **globalName**: `string`
+> `可选` **globalName**: `string`
 
-Defined in: [options.ts:62](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L62)
+定义于: [options.ts:62](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L62)
 
 ***
 
 ### inputOptions?
 
-> `optional` **inputOptions**: `InputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `InputOptions`\>
+> `可选` **inputOptions**: `InputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `InputOptions`\>
 
-Defined in: [options.ts:52](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L52)
+定义于: [options.ts:52](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L52)
 
 ***
 
 ### minify?
 
-> `optional` **minify**: `boolean`
+> `可选` **minify**: `boolean`
 
-Defined in: [options.ts:68](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L68)
+定义于: [options.ts:68](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L68)
 
-#### Default
+#### 默认值
 
 ```ts
 false
@@ -146,29 +146,29 @@ false
 
 ### noExternal?
 
-> `optional` **noExternal**: `Arrayable`\<`string` \| `RegExp`\> \| (`id`, `importer`) => `undefined` \| `null` \| `boolean` \| `void`
+> `可选` **noExternal**: `Arrayable`\<`string` \| `RegExp`\> \| (`id`, `importer`) => `undefined` \| `null` \| `boolean` \| `void`
 
-Defined in: [options.ts:42](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L42)
+定义于: [options.ts:42](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L42)
 
 ***
 
 ### onSuccess?
 
-> `optional` **onSuccess**: `string` \| (`config`) => `void` \| `Promise`\<`void`\>
+> `可选` **onSuccess**: `string` \| (`config`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [options.ts:108](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L108)
+定义于: [options.ts:108](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L108)
 
-You can specify command to be executed after a successful build, specially useful for Watch mode
+指定构建成功后执行的命令，在监视模式下特别有用。
 
 ***
 
 ### outDir?
 
-> `optional` **outDir**: `string`
+> `可选` **outDir**: `string`
 
-Defined in: [options.ts:64](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L64)
+定义于: [options.ts:64](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L64)
 
-#### Default
+#### 默认值
 
 ```ts
 'dist'
@@ -178,30 +178,30 @@ Defined in: [options.ts:64](https://github.com/rolldown/tsdown/blob/406082dcbc73
 
 ### outExtensions?
 
-> `optional` **outExtensions**: `OutExtensionFactory`
+> `可选` **outExtensions**: `OutExtensionFactory`
 
-Defined in: [options.ts:85](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L85)
+定义于: [options.ts:85](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L85)
 
-Custom extensions for output files.
-`fixedExtension` will be overridden by this option.
+自定义输出文件扩展名，
+此选项将覆盖 fixedExtension 的设置。
 
 ***
 
 ### outputOptions?
 
-> `optional` **outputOptions**: `OutputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `OutputOptions`\>
+> `可选` **outputOptions**: `OutputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `OutputOptions`\>
 
-Defined in: [options.ts:87](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L87)
+定义于: [options.ts:87](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L87)
 
 ***
 
 ### platform?
 
-> `optional` **platform**: `"node"` \| `"neutral"` \| `"browser"`
+> `可选` **platform**: `"node"` \| `"neutral"` \| `"browser"`
 
-Defined in: [options.ts:51](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L51)
+定义于: [options.ts:51](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L51)
 
-#### Default
+#### 默认值
 
 ```ts
 'node'
@@ -211,30 +211,30 @@ Defined in: [options.ts:51](https://github.com/rolldown/tsdown/blob/406082dcbc73
 
 ### plugins?
 
-> `optional` **plugins**: `RolldownPluginOption`
+> `可选` **plugins**: `RolldownPluginOption`
 
-Defined in: [options.ts:96](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L96)
+定义于: [options.ts:96](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L96)
 
 ***
 
 ### publint?
 
-> `optional` **publint**: `boolean` \| `Options`
+> `可选` **publint**: `boolean` \| `Options`
 
-Defined in: [options.ts:137](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L137)
+定义于: [options.ts:137](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L137)
 
-Run publint after bundling.
-Requires `publint` to be installed.
+构建完成后运行 publint 检查，
+需要安装 publint 依赖。
 
 ***
 
 ### shims?
 
-> `optional` **shims**: `boolean`
+> `可选` **shims**: `boolean`
 
-Defined in: [options.ts:72](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L72)
+定义于: [options.ts:72](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L72)
 
-#### Default
+#### 默认值
 
 ```ts
 false
@@ -244,45 +244,45 @@ false
 
 ### silent?
 
-> `optional` **silent**: `boolean`
+> `可选` **silent**: `boolean`
 
-Defined in: [options.ts:98](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L98)
+定义于: [options.ts:98](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L98)
 
 ***
 
 ### skipNodeModulesBundle?
 
-> `optional` **skipNodeModulesBundle**: `boolean`
+> `可选` **skipNodeModulesBundle**: `boolean`
 
-Defined in: [options.ts:113](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L113)
+定义于: [options.ts:113](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L113)
 
-Skip bundling node_modules.
+跳过 node_modules 的打包。
 
 ***
 
 ### sourcemap?
 
-> `optional` **sourcemap**: [`Sourcemap`](./type-aliases/Sourcemap.md)
+> `可选` **sourcemap**: [`Sourcemap`](./type-aliases/Sourcemap.md)
 
-Defined in: [options.ts:65](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L65)
+定义于: [options.ts:65](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L65)
 
 ***
 
 ### target?
 
-> `optional` **target**: `string` \| `string`[]
+> `可选` **target**: `string` \| `string`[]
 
-Defined in: [options.ts:69](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L69)
+定义于: [options.ts:69](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L69)
 
 ***
 
 ### treeshake?
 
-> `optional` **treeshake**: `boolean`
+> `可选` **treeshake**: `boolean`
 
-Defined in: [options.ts:95](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L95)
+定义于: [options.ts:95](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L95)
 
-#### Default
+#### 默认值
 
 ```ts
 true
@@ -292,25 +292,25 @@ true
 
 ### tsconfig?
 
-> `optional` **tsconfig**: `string` \| `boolean`
+> `可选` **tsconfig**: `string` \| `boolean`
 
-Defined in: [options.ts:49](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L49)
+定义于: [options.ts:49](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L49)
 
 ***
 
 ### unused?
 
-> `optional` **unused**: `boolean` \| `Options`
+> `可选` **unused**: `boolean` \| `Options`
 
-Defined in: [options.ts:131](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L131)
+定义于: [options.ts:131](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L131)
 
-Enable unused dependencies check with `unplugin-unused`
-Requires `unplugin-unused` to be installed.
+启用 `unplugin-unused` 进行未使用依赖检查，
+需要安装 `unplugin-unused` 依赖。
 
 ***
 
 ### watch?
 
-> `optional` **watch**: `string` \| `boolean` \| `string`[]
+> `可选` **watch**: `string` \| `boolean` \| `string`[]
 
-Defined in: [options.ts:103](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L103)
+定义于: [options.ts:103](https://github.com/rolldown/tsdown/blob/406082dcbc73c28bfb0e981b5dc39a0675d54c3d/src/options.ts#L103)

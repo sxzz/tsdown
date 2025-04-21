@@ -127,7 +127,7 @@ npm run build
 
 ## 使用插件
 
-`tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。要使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
+`tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
 
 ```ts [tsdown.config.ts]
 import SomePlugin from 'some-plugin'

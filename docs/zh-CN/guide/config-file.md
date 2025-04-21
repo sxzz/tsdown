@@ -64,7 +64,7 @@ tsdown --no-config
 
 ## 扩展 Vite 或 Vitest 配置（实验性功能）{#extending-vite-or-vitest-config-experimental}
 
-`tsdown` 提供了一个**实验性**功能，允许您扩展现有的 Vite 或 Vitest 配置文件。通过此功能，您可以重用特定的配置选项（如 `resolve` 和 `plugins`），同时忽略与 `tsdown` 无关的其他选项。
+`tsdown` 提供了一个**实验性**功能，允许您扩展现有的 Vite 或 Vitest 配置文件。通过此功能，您可以复用特定的配置选项（如 `resolve` 和 `plugins`），同时忽略与 `tsdown` 无关的其他选项。
 
 要启用此功能，请使用 `--from-vite` 选项：
 

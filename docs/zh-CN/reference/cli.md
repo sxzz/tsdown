@@ -117,6 +117,6 @@ tsdown src/index.ts src/util.ts
 
 ## `--from-vite [vitest]`
 
-重用 Vite 或 Vitest 的配置。这允许您无缝扩展或集成现有的 Vite 或 Vitest 配置。
+复用 Vite 或 Vitest 的配置。这允许您无缝扩展或集成现有的 Vite 或 Vitest 配置。
 
 另请参阅 [扩展 Vite 或 Vitest 配置](../guide/config-file.md#extending-vite-or-vitest-config-experimental)。
