@@ -36,7 +36,7 @@ catalogs:
     debug: ^4.4.0
     diff: ^7.0.0
     find-up-simple: ^1.0.1
-    rolldown: ^1.0.0-beta.7
+    rolldown: 1.0.0-beta.7-commit.c2596d3
     rolldown-plugin-dts: ^0.8.0
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.12

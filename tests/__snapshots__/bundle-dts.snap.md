@@ -1,7 +1,6 @@
 ## index.d.ts
 
 ```ts
-
 //#region src/utils/types.d.ts
 declare let str: string;
 
@@ -15,7 +14,6 @@ export { shared, str };
 ## index.js
 
 ```js
-
 //#region src/utils/types.ts
 let str = "hello";
 

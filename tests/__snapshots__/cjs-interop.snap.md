@@ -12,7 +12,6 @@ module.exports = cjs_interop_default;
 ## index.js
 
 ```js
-
 //#region index.ts
 var cjs_interop_default = {};
 

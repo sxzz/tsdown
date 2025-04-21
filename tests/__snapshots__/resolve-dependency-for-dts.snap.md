@@ -1,7 +1,6 @@
 ## index.d.ts
 
 ```ts
-
 export * from "consola"
 
 //#region ../../../node_modules/.pnpm/tinyglobby@0.2.12/node_modules/tinyglobby/dist/index.d.ts
