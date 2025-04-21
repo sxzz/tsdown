@@ -35,11 +35,11 @@ import { defineConfig } from 'tsdown/config'
 export default [
   defineConfig({
     entry: 'src/entry1.ts',
-    platfrom: 'node',
+    platform: 'node',
   }),
   defineConfig({
     entry: 'src/entry2.ts',
-    platfrom: 'browser',
+    platform: 'browser',
   }),
 ]
 ```
