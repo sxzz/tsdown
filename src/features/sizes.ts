@@ -22,7 +22,7 @@ interface BundleFile {
 /**
  * Calculate and display the sizes of bundled files
  */
-export async function getSizes(outDir: string): Promise<void> {
+export async function getBundleSizes(outDir: string): Promise<void> {
   debug(`Calculating sizes for files in ${outDir}`)
 
   try {

@@ -15,7 +15,7 @@ import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
-import { getSizes } from './features/sizes'
+import { getBundleSizes } from './features/sizes'
 import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
@@ -119,7 +119,7 @@ export async function buildSingle(
       return
     }
 
-    getSizes(outDir)
+    getBundleSizes(outDir)
 
     if (config.publint) {
       if (pkg) {
