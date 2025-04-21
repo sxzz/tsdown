@@ -119,7 +119,7 @@ export async function buildSingle(
       return
     }
 
-    getBundleSizes(outDir)
+    await getBundleSizes(outDir)
 
     if (config.publint) {
       if (pkg) {
