@@ -13,9 +13,9 @@ import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
+import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
-import { getBundleSizes } from './features/sizes'
 import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
@@ -119,8 +119,6 @@ export async function buildSingle(
       return
     }
 
-    await getBundleSizes(outDir)
-
     if (config.publint) {
       if (pkg) {
         await publint(pkg)
@@ -174,6 +172,7 @@ async function getBuildOptions(
     shims,
     tsconfig,
     cwd,
+    report,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -207,7 +206,7 @@ async function getBuildOptions(
         }),
       )
     }
-    plugins.push(ShebangPlugin(cwd))
+    plugins.push(ShebangPlugin(cwd), report && ReportPlugin(cwd))
   }
   plugins.push(userPlugins)
 

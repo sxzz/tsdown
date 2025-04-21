@@ -4,7 +4,7 @@ import { debug } from '../utils/logger'
 import type { NormalizedFormat } from '../options'
 import { toArray } from './general'
 import type { PackageJson } from 'pkg-types'
-import type { ModuleFormat } from 'rolldown'
+import type { InternalModuleFormat, ModuleFormat } from 'rolldown'
 
 export async function readPackageJson(
   dir: string,
@@ -42,4 +42,18 @@ export function normalizeFormat(
         return format
     }
   })
+}
+
+export function prettyFormat(format: InternalModuleFormat): string {
+  switch (format) {
+    case 'es':
+      return 'ESM'
+    case 'cjs':
+    case 'iife':
+    case 'umd':
+      return format.toUpperCase()
+
+    default:
+      return format
+  }
 }

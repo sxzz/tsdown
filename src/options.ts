@@ -135,6 +135,12 @@ export interface Options {
    * Requires `publint` to be installed.
    */
   publint?: boolean | PublintOptions
+
+  /**
+   * Enable size reporting after bundling.
+   * @default true
+   */
+  report?: boolean
 }
 
 /**
@@ -208,6 +214,7 @@ export async function resolveOptions(options: Options): Promise<{
         fromVite,
         alias,
         tsconfig,
+        report = true,
       } = subOptions
 
       entry = await resolveEntry(entry, cwd)
@@ -290,6 +297,7 @@ export async function resolveOptions(options: Options): Promise<{
         alias,
         tsconfig,
         cwd,
+        report,
       }
 
       return config
