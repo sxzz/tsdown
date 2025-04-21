@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { gzipSync } from 'node:zlib'
+import { brotliCompressSync, gzipSync } from 'node:zlib'
 import Debug from 'debug'
 import { formatBytes } from '../utils/format'
 import { logger } from '../utils/logger'
@@ -10,12 +10,13 @@ const debug = Debug('tsdown:sizes')
 const DTS_EXTENSIONS = ['.d.ts', '.d.mts', '.d.cts']
 
 interface SizeInfo {
-  size: number
+  raw: number
   gzip: number
+  brotli: number
 }
 
 interface BundleFile {
-  file: string
+  filaName: string
   size: SizeInfo
 }
 
@@ -27,7 +28,7 @@ export async function getBundleSizes(outDir: string): Promise<void> {
 
   try {
     const files = await fs.readdir(outDir)
-    const totalSize: SizeInfo = { size: 0, gzip: 0 }
+    const totalSize: SizeInfo = { raw: 0, gzip: 0, brotli: 0 }
     const typeFiles: string[] = []
     const bundleFiles: BundleFile[] = []
 
@@ -47,15 +48,18 @@ export async function getBundleSizes(outDir: string): Promise<void> {
 
         const content = await fs.readFile(filePath)
         const gzipSize = gzipSync(content).length
+        const brotliSize = brotliCompressSync(content).length
 
-        totalSize.size += stats.size
+        totalSize.raw += stats.size
         totalSize.gzip += gzipSize
+        totalSize.brotli += brotliSize
 
         bundleFiles.push({
-          file,
+          filaName: file,
           size: {
-            size: stats.size,
+            raw: stats.size,
             gzip: gzipSize,
+            brotli: brotliSize,
           },
         })
       }),
@@ -65,15 +69,22 @@ export async function getBundleSizes(outDir: string): Promise<void> {
       logger.info(`type: ${file}`)
     }
 
-    for (const { file, size } of bundleFiles) {
+    for (const file of bundleFiles) {
+      const name = file.filaName
+      const raw = formatBytes(file.size.raw)
+      const gzip = formatBytes(file.size.gzip)
+      const brotli = formatBytes(file.size.brotli)
+
       logger.info(
-        `entry: ${file} | size ${formatBytes(size.size)} | gzip ${formatBytes(size.gzip)}`,
+        `entry: ${name} | size ${raw} | gzip ${gzip} | brotli ${brotli}`,
       )
     }
 
-    logger.info(
-      `total: size ${formatBytes(totalSize.size)} | gzip ${formatBytes(totalSize.gzip)}`,
-    )
+    const raw = formatBytes(totalSize.raw)
+    const gzip = formatBytes(totalSize.gzip)
+    const brotli = formatBytes(totalSize.brotli)
+
+    logger.info(`total: size ${raw} | gzip ${gzip} | brotli ${brotli}`)
   } catch (error) {
     logger.error(error)
   }
