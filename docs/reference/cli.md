@@ -123,4 +123,4 @@ See also [Extending Vite or Vitest Config](../guide/config-file.md#extending-vit
 
 ## `--report`, `--no-report`
 
-Enable or disable the generation of a build report. When `--report` is enabled, the build process will output a summary of the generated artifacts, including their file names and sizes, to the console. This is useful for analyzing the output and ensuring the build meets size expectations.
+Enable or disable the generation of a build report. By default, the report is enabled and outputs the list of build artifacts along with their sizes to the console. This provides a quick overview of the build results, helping you analyze the output and identify potential optimizations. Disabling the report can be useful in scenarios where minimal console output is desired.
