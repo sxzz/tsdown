@@ -41,8 +41,6 @@ export function ReportPlugin(cwd: string): Plugin {
 
       const sizes: SizeInfo[] = []
       for (const chunk of Object.values(bundle)) {
-        const content = chunk.type === 'chunk' ? chunk.code : chunk.source
-        if (!content) continue
         const size = await calcSize(chunk)
         sizes.push(size)
       }
