@@ -1,6 +1,8 @@
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { gzipSync } from 'node:zlib'
 import {
   build as rolldownBuild,
   type BuildOptions,
@@ -25,6 +27,7 @@ import {
   type UserConfig,
 } from './options'
 import { ShebangPlugin } from './plugins'
+import { formatBytes } from './utils/format'
 import { debug, logger, setSilent } from './utils/logger'
 import { readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
@@ -116,6 +119,35 @@ export async function buildSingle(
 
     if (hasErrors) {
       return
+    }
+
+    try {
+      const files = await fs.readdir(outDir)
+
+      for (const file of files) {
+        if (
+          file.endsWith('.d.ts') ||
+          file.endsWith('.d.mts') ||
+          file.endsWith('.d.cts')
+        ) {
+          logger.info(file)
+          continue
+        }
+
+        const filePath = path.join(outDir, file)
+        const stats = await fs.stat(filePath)
+        const fileSizeFormat = formatBytes(stats.size)
+
+        const content = await fs.readFile(filePath)
+        const gzipSize = gzipSync(content).length
+        const fileGzipSizeFormat = formatBytes(gzipSize)
+
+        logger.info(
+          `${file} size ${fileSizeFormat} | gzip ${fileGzipSizeFormat}`,
+        )
+      }
+    } catch (error) {
+      logger.error(error)
     }
 
     if (config.publint) {
