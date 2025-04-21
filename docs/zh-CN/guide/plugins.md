@@ -1,12 +1,12 @@
 # 插件
 
-`tsdown` 使用 [Rolldown](https://rolldown.rs) 作为其核心引擎，这意味着它可以无缝支持 Rolldown 插件。插件是一种强大的方式，可以扩展和自定义打包过程，实现代码转换、资源处理等功能。
+`tsdown` 使用 [Rolldown](https://rolldown.rs) 作为其核心引擎，这意味着它可以无缝支持 Rolldown 插件体系。插件机制为扩展和定制打包流程提供了强大能力，可实现诸如代码转换、资源处理等高级功能。
 
 ## 支持的插件生态系统
 
 ### Rolldown 插件
 
-由于 `tsdown` 构建于 Rolldown 之上，它支持所有 Rolldown 插件。您可以使用任何为 Rolldown 设计的插件来增强构建过程。
+tsdown 基于 Rolldown 构建，因此全面支持所有 Rolldown 插件生态。您直接使用任何为 Rolldown 设计的各类插件来优化构建流程。
 
 ### Unplugin
 
@@ -14,11 +14,11 @@
 
 ### Rollup 插件
 
-Rolldown 与 Rollup 的插件 API 高度兼容，因此 `tsdown` 可以直接使用大多数 Rollup 插件。这为您提供了访问 Rollup 生态系统中大量现有插件的能力。
+Rolldown 与 Rollup 的插件 API 高度兼容，因此 `tsdown` 可以直接使用大多数 Rollup 插件。这一特性使开发者能够充分利用 Rollup 生态中丰富的现有插件资源。
 
 ### Vite 插件
 
-如果 Vite 插件不依赖于 Vite 特定的内部 API 或行为，它们可能可以与 `tsdown` 一起使用。然而，严重依赖 Vite 内部机制的插件可能不兼容。我们计划在未来改进对 Vite 插件的支持。
+如果 Vite 插件不依赖于 Vite 特定的内部 API 或运行机制，它们可能与 `tsdown` 兼容。但是，严重依赖 Vite 内部机制的插件可能存在兼容性问题。我们计划在未来增强对 Vite 插件的支持。
 
 ## 如何使用插件
 
