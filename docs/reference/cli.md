@@ -120,3 +120,7 @@ See also [Watch Mode](../guide/watch-mode.md).
 Reuse configuration from Vite or Vitest. This allows you to extend or integrate with existing Vite or Vitest configurations seamlessly.
 
 See also [Extending Vite or Vitest Config](../guide/config-file.md#extending-vite-or-vitest-config-experimental).
+
+## `--report`, `--no-report`
+
+Enable or disable the generation of a build report. When `--report` is enabled, the build process will output a summary of the generated artifacts, including their file names and sizes, to the console. This is useful for analyzing the output and ensuring the build meets size expectations.
