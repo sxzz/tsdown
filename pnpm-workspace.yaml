@@ -7,7 +7,7 @@ catalogs:
     '@types/diff': ^7.0.2
     '@types/node': ^22.14.1
     bumpp: ^10.1.0
-    eslint: ^9.25.0
+    eslint: ^9.25.1
     pkg-types: ^2.1.0
     prettier: ^3.5.3
     publint: ^0.3.12
@@ -15,11 +15,11 @@ catalogs:
     tsx: ^4.19.3
     typescript: ~5.8.3
     unplugin-unused: ^0.4.4
-    vitest: ^3.1.1
+    vitest: ^3.1.2
 
   docs:
     '@unocss/eslint-plugin': ^66.1.0-beta.12
-    typedoc: ^0.28.2
+    typedoc: ^0.28.3
     typedoc-plugin-markdown: ^4.6.2
     unocss: ^66.1.0-beta.12
     vite: ^6.3.2
@@ -36,10 +36,10 @@ catalogs:
     debug: ^4.4.0
     diff: ^7.0.0
     find-up-simple: ^1.0.1
-    rolldown: 1.0.0-beta.7-commit.c2596d3
-    rolldown-plugin-dts: ^0.8.0
+    rolldown: 1.0.0-beta.8-commit.d984417
+    rolldown-plugin-dts: ^0.8.3
     tinyexec: ^1.0.1
-    tinyglobby: ^0.2.12
+    tinyglobby: ^0.2.13
     unconfig: ^7.3.2
 
 onlyBuiltDependencies:
