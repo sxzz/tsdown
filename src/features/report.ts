@@ -59,10 +59,13 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
       const brotliTextLength = Math.max(
         ...sizes.map((size) => size.brotliText.length),
       )
+
+      let totalRaw = 0
       for (const size of sizes) {
         size.rawText = size.rawText.padStart(rawTextLength)
         size.gzipText = size.gzipText.padStart(gzipTextLength)
         size.brotliText = size.brotliText.padStart(brotliTextLength)
+        totalRaw += size.raw
       }
 
       // sort
@@ -91,6 +94,9 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
           dim`${size.rawText} │ gzip: ${size.gzipText} │ brotli: ${size.brotliText}`,
         )
       }
+
+      const totalSizeText = formatBytes(totalRaw)
+      logger.info(formatText, `${sizes.length} files, total: ${totalSizeText}`)
     },
   }
 }
