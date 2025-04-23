@@ -26,8 +26,8 @@ if [ -d "./docs/reference/type-aliases" ]; then
 fi
 # Create the type-aliases folder
 mkdir -p ./docs/reference/type-aliases
-# Move types-aliases/Sourcemap.md to ./docs/reference/type-aliases
-mv ./docs/reference/api/type-aliases/Sourcemap.md ./docs/reference/type-aliases/Sourcemap.md
+# Move types-aliases/{Sourcemap,Format}.md to ./docs/reference/type-aliases
+mv ./docs/reference/api/type-aliases/{Sourcemap,Format}.md ./docs/reference/type-aliases
 
 # Remove the api folder
 rm -rf ./docs/reference/api
