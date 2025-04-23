@@ -2,15 +2,15 @@ import { Buffer } from 'node:buffer'
 import path from 'node:path'
 import { promisify } from 'node:util'
 import { brotliCompress, gzip } from 'node:zlib'
-import { blue, bold, dim, green, yellow } from 'ansis'
+import { bold, dim, green } from 'ansis'
 import Debug from 'debug'
 import { formatBytes } from '../utils/format'
+import { noop } from '../utils/general'
 import { logger } from '../utils/logger'
 import { prettyFormat } from '../utils/package'
 import type { OutputAsset, OutputChunk, Plugin } from 'rolldown'
 
 const debug = Debug('tsdown:report')
-const noop = <T>(v: T): T => v
 const brotliCompressAsync = promisify(brotliCompress)
 const gzipAsync = promisify(gzip)
 
@@ -78,16 +78,13 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
         return b.brotli - a.brotli
       })
 
-      const format = cjsDts ? 'cjs' : options.format
-      const formatColor =
-        format === 'es' ? blue : format === 'cjs' ? yellow : noop
-      const formatText = formatColor(`[${prettyFormat(format)}]`)
+      const formatLabel = prettyFormat(cjsDts ? 'cjs' : options.format)
 
       for (const size of sizes) {
         const filenameColor = size.dts ? green : noop
 
         logger.info(
-          formatText,
+          formatLabel,
           dim(`${outDir}/`) +
             filenameColor((size.isEntry ? bold : noop)(size.filename)),
           ` `.repeat(filenameLength - size.filename.length),
@@ -96,7 +93,7 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
       }
 
       const totalSizeText = formatBytes(totalRaw)
-      logger.info(formatText, `${sizes.length} files, total: ${totalSizeText}`)
+      logger.info(formatLabel, `${sizes.length} files, total: ${totalSizeText}`)
     },
   }
 }

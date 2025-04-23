@@ -29,3 +29,5 @@ export function debounce<T extends (...args: any[]) => any>(
     }, wait)
   } as T
 }
+
+export const noop = <T>(v: T): T => v

@@ -33,6 +33,8 @@ import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
+export type Format = Exclude<ModuleFormat, 'experimental-app'>
+export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
 
 /**
  * Options for tsdown.
@@ -60,7 +62,7 @@ export interface Options {
 
   /// output options
   /** @default 'es' */
-  format?: ModuleFormat | ModuleFormat[]
+  format?: Format | Format[]
   globalName?: string
   /** @default 'dist' */
   outDir?: string
@@ -154,10 +156,6 @@ export interface Options {
  */
 export type UserConfig = Arrayable<Omit<Options, 'config'>>
 export type ResolvedConfigs = Extract<UserConfig, any[]>
-
-export type NormalizedFormat =
-  | Exclude<InternalModuleFormat, 'app'>
-  | 'experimental-app'
 
 export type ResolvedOptions = Omit<
   Overwrite<

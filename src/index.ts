@@ -28,7 +28,7 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { debug, logger, setSilent } from './utils/logger'
-import { readPackageJson } from './utils/package'
+import { prettyFormat, readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -102,6 +102,9 @@ export async function buildSingle(
     await Promise.all(
       formats.map(async (format) => {
         try {
+          const formatLabel = prettyFormat(format)
+          logger.info(formatLabel, 'Build start')
+
           const buildOptions = await getBuildOptions(config, pkg, format)
           await hooks.callHook('build:before', {
             ...context,

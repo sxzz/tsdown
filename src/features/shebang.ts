@@ -3,6 +3,7 @@ import path from 'node:path'
 import { underline } from 'ansis'
 import { fsExists } from '../utils/fs'
 import { logger } from '../utils/logger'
+import { prettyFormat } from '../utils/package'
 import type { Plugin } from 'rolldown'
 
 const RE_SHEBANG = /^#!.*/
@@ -21,6 +22,7 @@ export function ShebangPlugin(cwd: string): Plugin {
         )
         if (await fsExists(filepath)) {
           logger.info(
+            prettyFormat(options.format),
             `Granting execute permission to ${underline(path.relative(cwd, filepath))}`,
           )
           await chmod(filepath, 0o755)

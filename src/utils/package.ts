@@ -1,10 +1,11 @@
 import { readFile } from 'node:fs/promises'
+import { blue, yellow } from 'ansis'
 import { findUp } from 'find-up-simple'
 import { debug } from '../utils/logger'
-import type { NormalizedFormat } from '../options'
-import { resolveComma, toArray } from './general'
+import type { Format, NormalizedFormat } from '../options'
+import { noop, resolveComma, toArray } from './general'
 import type { PackageJson } from 'pkg-types'
-import type { InternalModuleFormat, ModuleFormat } from 'rolldown'
+import type { InternalModuleFormat } from 'rolldown'
 
 export async function readPackageJson(
   dir: string,
@@ -26,10 +27,8 @@ export function getPackageType(pkg: PackageJson | undefined): PackageType {
   }
 }
 
-export function normalizeFormat(
-  format: ModuleFormat | ModuleFormat[],
-): NormalizedFormat[] {
-  return resolveComma(toArray<ModuleFormat>(format, 'es')).map(
+export function normalizeFormat(format: Format | Format[]): NormalizedFormat[] {
+  return resolveComma(toArray<Format>(format, 'es')).map(
     (format): NormalizedFormat => {
       switch (format) {
         case 'es':
@@ -47,15 +46,17 @@ export function normalizeFormat(
 }
 
 export function prettyFormat(format: InternalModuleFormat): string {
+  const formatColor = format === 'es' ? blue : format === 'cjs' ? yellow : noop
+
+  let formatText: string
   switch (format) {
     case 'es':
-      return 'ESM'
-    case 'cjs':
-    case 'iife':
-    case 'umd':
-      return format.toUpperCase()
-
+      formatText = 'ESM'
+      break
     default:
-      return format
+      formatText = format.toUpperCase()
+      break
   }
+
+  return formatColor(`[${formatText}]`)
 }
