@@ -12,6 +12,10 @@ export function toArray<T>(
   }
 }
 
+export function resolveComma<T extends string>(arr: T[]): T[] {
+  return arr.flatMap((format) => format.split(',') as T[])
+}
+
 export function debounce<T extends (...args: any[]) => any>(
   fn: T,
   wait: number,

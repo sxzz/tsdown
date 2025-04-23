@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { findUp } from 'find-up-simple'
 import { debug } from '../utils/logger'
 import type { NormalizedFormat } from '../options'
-import { toArray } from './general'
+import { resolveComma, toArray } from './general'
 import type { PackageJson } from 'pkg-types'
 import type { InternalModuleFormat, ModuleFormat } from 'rolldown'
 
@@ -29,19 +29,21 @@ export function getPackageType(pkg: PackageJson | undefined): PackageType {
 export function normalizeFormat(
   format: ModuleFormat | ModuleFormat[],
 ): NormalizedFormat[] {
-  return toArray<ModuleFormat>(format, 'es').map((format): NormalizedFormat => {
-    switch (format) {
-      case 'es':
-      case 'esm':
-      case 'module':
-        return 'es'
-      case 'cjs':
-      case 'commonjs':
-        return 'cjs'
-      default:
-        return format
-    }
-  })
+  return resolveComma(toArray<ModuleFormat>(format, 'es')).map(
+    (format): NormalizedFormat => {
+      switch (format) {
+        case 'es':
+        case 'esm':
+        case 'module':
+          return 'es'
+        case 'cjs':
+        case 'commonjs':
+          return 'cjs'
+        default:
+          return format
+      }
+    },
+  )
 }
 
 export function prettyFormat(format: InternalModuleFormat): string {

@@ -6,7 +6,7 @@ import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
-import { toArray } from './utils/general'
+import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
@@ -167,7 +167,6 @@ export type ResolvedOptions = Omit<
       | 'inputOptions'
       | 'outputOptions'
       | 'minify'
-      | 'target'
       | 'define'
       | 'alias'
       | 'external'
@@ -180,6 +179,7 @@ export type ResolvedOptions = Omit<
     >,
     {
       format: NormalizedFormat[]
+      target?: string[]
       clean: string[] | false
       dts: false | DtsOptions
       tsconfig: string | false
@@ -222,6 +222,7 @@ export async function resolveOptions(options: Options): Promise<{
         alias,
         tsconfig,
         report = true,
+        target,
       } = subOptions
 
       entry = await resolveEntry(entry, cwd)
@@ -289,6 +290,7 @@ export async function resolveOptions(options: Options): Promise<{
         entry,
         plugins,
         format: normalizeFormat(format),
+        target: target ? resolveComma(toArray(target)) : undefined,
         outDir: path.resolve(outDir),
         clean,
         silent,
