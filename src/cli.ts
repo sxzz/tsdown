@@ -19,6 +19,7 @@ cli
     default: 'esm',
   })
   .option('--clean', 'Clean output directory')
+  .option('--external <module>', 'Mark dependencies as external')
   .option('--minify', 'Minify output')
   .option('--target <target>', 'Bundle target, e.g "es2015", "esnext"')
   .option('--silent', 'Suppress non-error logs')

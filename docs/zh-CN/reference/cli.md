@@ -40,6 +40,12 @@ tsdown src/index.ts src/util.ts
 
 另请参阅 [清理](../guide/cleaning.md)。
 
+## `--external <module>`
+
+将模块标记为外部依赖。这会阻止指定的模块被包含在打包文件中。
+
+另请参阅 [处理依赖](../guide/dependency-handling.md)。
+
 ## `--minify`
 
 启用输出包的压缩以减少文件大小。压缩会移除不必要的字符并优化代码以用于生产环境。

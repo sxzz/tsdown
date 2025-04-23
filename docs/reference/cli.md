@@ -40,6 +40,12 @@ Clean the output directory before building. This removes all files in the output
 
 See also [Cleaning](../guide/cleaning.md).
 
+## `--external <module>`
+
+Mark a module as external. This prevents the specified module from being included in the bundle.
+
+See also [Handling Dependencies](../guide/dependency-handling.md).
+
 ## `--minify`
 
 Enable minification of the output bundle to reduce file size. Minification removes unnecessary characters and optimizes the code for production.
