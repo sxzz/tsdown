@@ -16,7 +16,6 @@ catalogs:
     typescript: ~5.8.3
     unplugin-unused: ^0.4.4
     vitest: ^3.1.2
-
   docs:
     '@unocss/eslint-plugin': ^66.1.0-beta.12
     typedoc: ^0.28.3
@@ -27,7 +26,6 @@ catalogs:
     vitepress-plugin-group-icons: ^1.5.2
     vitepress-plugin-llms: ^1.1.0
     vue: ^3.5.13
-
   prod:
     ansis: ^3.17.0
     cac: ^6.7.14
@@ -45,3 +43,7 @@ catalogs:
 
 onlyBuiltDependencies:
   - esbuild
+
+ignoredBuiltDependencies:
+  - rolldown
+  - unrs-resolver
