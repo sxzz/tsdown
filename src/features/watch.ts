@@ -12,11 +12,17 @@ export async function watchBuild(
   rebuild: () => void,
   restart: () => void,
 ): Promise<FSWatcher> {
+  const root = process.cwd()
+  if (options.outDir === root) {
+    throw new Error(
+      'options.outDir cannot be an empty string, which will cause the watch to be invalid.',
+    )
+  }
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
   const files = toArray(
-    typeof options.watch === 'boolean' ? process.cwd() : options.watch,
+    typeof options.watch === 'boolean' ? root : options.watch,
   )
   logger.info(`Watching for changes in ${files.join(', ')}`)
   if (configFile) files.push(configFile)
