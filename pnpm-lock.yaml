@@ -104,6 +104,9 @@ catalogs:
     find-up-simple:
       specifier: ^1.0.1
       version: 1.0.1
+    hookable:
+      specifier: ^5.5.3
+      version: 5.5.3
     rolldown:
       specifier: 1.0.0-beta.8-commit.d984417
       version: 1.0.0-beta.8-commit.d984417
@@ -145,6 +148,9 @@ importers:
       find-up-simple:
         specifier: catalog:prod
         version: 1.0.1
+      hookable:
+        specifier: catalog:prod
+        version: 5.5.3
       rolldown:
         specifier: catalog:prod
         version: 1.0.0-beta.8-commit.d984417(typescript@5.8.3)

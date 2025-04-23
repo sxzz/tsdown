@@ -1,4 +1,4 @@
-import { beforeEach, expect, test } from 'vitest'
+import { beforeEach, expect, test, vi } from 'vitest'
 import { resolveOptions } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild, writeFixtures } from './utils'
@@ -214,4 +214,19 @@ test('resolve paths in tsconfig', async (context) => {
     dts: { isolatedDeclarations: true },
     tsconfig: 'tsconfig.build.json',
   })
+})
+
+test('hooks', async (context) => {
+  const fn = vi.fn()
+  const files = {
+    'index.ts': `export default 10`,
+  }
+  await testBuild(context, files, {
+    hooks: {
+      'build:prepare': fn,
+      'build:before': fn,
+      'build:done': fn,
+    },
+  })
+  expect(fn).toBeCalledTimes(3)
 })

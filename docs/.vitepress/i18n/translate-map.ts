@@ -29,6 +29,7 @@ export const zhCN = {
   Advanced: '高级功能',
   'Rolldown Options': 'Rolldown 选项',
   Plugins: '插件',
+  Hooks: '钩子（Hooks）',
 
   'Config Options': '配置选项',
   'Command Line Interface': '命令行接口',

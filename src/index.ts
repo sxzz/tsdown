@@ -12,6 +12,7 @@ import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
+import { createHooks } from './features/hooks'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -24,7 +25,6 @@ import {
   type NormalizedFormat,
   type Options,
   type ResolvedOptions,
-  type UserConfig,
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { debug, logger, setSilent } from './utils/logger'
@@ -83,6 +83,7 @@ export async function buildSingle(
   let onSuccessCleanup: (() => any) | undefined
 
   const pkg = await readPackageJson(process.cwd())
+  const { hooks, context } = await createHooks(config)
 
   await rebuild(true)
   if (watch) {
@@ -92,6 +93,8 @@ export async function buildSingle(
   async function rebuild(first?: boolean) {
     const startTime = performance.now()
 
+    await hooks.callHook('build:prepare', context)
+
     onSuccessCleanup?.()
     if (clean) await cleanOutDir(outDir, clean)
 
@@ -99,7 +102,12 @@ export async function buildSingle(
     await Promise.all(
       formats.map(async (format) => {
         try {
-          await rolldownBuild(await getBuildOptions(config, pkg, format))
+          const buildOptions = await getBuildOptions(config, pkg, format)
+          await hooks.callHook('build:before', {
+            ...context,
+            buildOptions,
+          })
+          await rolldownBuild(buildOptions)
           if (format === 'cjs' && dts) {
             await rolldownBuild(
               await getBuildOptions(config, pkg, format, true),
@@ -119,6 +127,8 @@ export async function buildSingle(
     if (hasErrors) {
       return
     }
+
+    await hooks.callHook('build:done', context)
 
     if (config.publint) {
       if (pkg) {
@@ -261,5 +271,6 @@ async function getBuildOptions(
 }
 
 export { defineConfig } from './config'
+export type { Options, UserConfig } from './options'
+export type { BuildContext, TsdownHooks } from './features/hooks'
 export { logger }
-export type { Options, UserConfig }

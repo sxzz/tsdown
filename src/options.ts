@@ -10,6 +10,7 @@ import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
+import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type {
   Arrayable,
@@ -17,6 +18,7 @@ import type {
   MarkPartial,
   Overwrite,
 } from './utils/types'
+import type { Hookable } from 'hookable'
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
@@ -141,6 +143,10 @@ export interface Options {
    * @default true
    */
   report?: boolean
+
+  hooks?:
+    | Partial<TsdownHooks>
+    | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
 }
 
 /**
@@ -170,6 +176,7 @@ export type ResolvedOptions = Omit<
       | 'dts'
       | 'fixedExtension'
       | 'outExtensions'
+      | 'hooks'
     >,
     {
       format: NormalizedFormat[]
