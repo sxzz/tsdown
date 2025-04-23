@@ -4,7 +4,7 @@ The `target` setting determines which JavaScript features are downleveled (trans
 
 For example, an arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
 
-> [!WARNING] Syntax Downgrade Only
+> [!WARNING] Syntax Downgrade Only  
 > The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.
 
 ### Customizing the Target
@@ -33,4 +33,16 @@ You can also pass an **array of targets** to ensure compatibility across multipl
 
 ```bash
 tsdown --target chrome100 --target node20.18
+```
+
+### Runtime Helpers
+
+When downleveling certain modern JavaScript features, `tsdown` may require runtime helpers provided by the `@oxc-project/runtime` package. For example:
+
+- Transforming `await` expressions into older syntax requires the helper `@oxc-project/runtime/helpers/asyncToGenerator`.
+
+If your target includes features that require these helpers, you may need to install the `@oxc-project/runtime` package in your project:
+
+```bash
+npm install @oxc-project/runtime
 ```

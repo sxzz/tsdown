@@ -34,3 +34,15 @@ tsdown --target es2020
 ```bash
 tsdown --target chrome100 --target node20.18
 ```
+
+### 运行时帮助函数
+
+在降级某些现代 JavaScript 特性时，`tsdown` 可能需要由 `@oxc-project/runtime` 包提供的运行时帮助函数。例如：
+
+- 将 `await` 表达式转换为旧语法时，需要使用帮助函数 `@oxc-project/runtime/helpers/asyncToGenerator`。
+
+如果您的目标环境包含需要这些帮助函数的特性，您可能需要在项目中安装 `@oxc-project/runtime` 包：
+
+```bash
+npm install @oxc-project/runtime
+```
