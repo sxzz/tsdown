@@ -12,6 +12,7 @@ export const zhCN = {
   Recipes: '实践指南',
   Entry: '入口文件',
   Cleaning: '清理',
+  'Handling Dependencies': '处理依赖',
   'Config File': '配置文件',
   Minification: '压缩',
   'Output Directory': '输出目录',

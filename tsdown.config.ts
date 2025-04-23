@@ -7,7 +7,7 @@ export default defineConfig({
   platform: 'node',
   skipNodeModulesBundle: true,
   shims: true,
-  dts: { isolatedDeclarations: true },
+  dts: { isolatedDeclarations: true, resolve: [] },
   unused: { level: 'error' },
   publint: true,
   onSuccess() {
