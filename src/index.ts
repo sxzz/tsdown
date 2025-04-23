@@ -1,6 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { green } from 'ansis'
 import {
   build as rolldownBuild,
   type BuildOptions,
@@ -128,9 +129,7 @@ export async function buildSingle(
     }
 
     logger.success(
-      `${first ? 'Build' : 'Rebuild'} complete in ${Math.round(
-        performance.now() - startTime,
-      )}ms`,
+      `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
     )
 
     if (typeof onSuccess === 'string') {
