@@ -43,5 +43,9 @@ catalogs:
     tinyglobby: ^0.2.13
     unconfig: ^7.3.2
 
+ignoredBuiltDependencies:
+  - rolldown
+  - unrs-resolver
+
 onlyBuiltDependencies:
   - esbuild
