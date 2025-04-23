@@ -29,31 +29,31 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-  publish-jsr:
-    name: 🚀 Publish JSR
-    runs-on: ubuntu-latest
+  # publish-jsr:
+  #   name: 🚀 Publish JSR
+  #   runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      id-token: write
+  #   permissions:
+  #     contents: read
+  #     id-token: write
 
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+  #   steps:
+  #     - name: 📥 Checkout
+  #       uses: actions/checkout@v4
+  #       with:
+  #         persist-credentials: false
 
-      - name: 📦 Install pnpm
-        uses: pnpm/action-setup@v4.1.0
+  #     - name: 📦 Install pnpm
+  #       uses: pnpm/action-setup@v4.1.0
 
-      - name: 🛠️ Set node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: pnpm
+  #     - name: 🛠️ Set node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: lts/*
+  #         cache: pnpm
 
-      - name: 📦 Install dependencies
-        run: pnpm install
+  #     - name: 📦 Install dependencies
+  #       run: pnpm install
 
-      - name: 🚀 Publish package
-        run: npx jsr publish
+  #     - name: 🚀 Publish package
+  #       run: npx jsr publish
