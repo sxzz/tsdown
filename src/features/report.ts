@@ -28,20 +28,40 @@ interface SizeInfo {
   brotliText: string
 }
 
-export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
+export interface ReportOptions {
+  /**
+   * Enable/disable brotli-compressed size reporting.
+   * Compressing large output files can be slow, so disabling this may increase build performance for large projects.
+   *
+   * @default false
+   */
+  brotli?: boolean
+
+  /**
+   * Skip reporting compressed size for files larger than this size.
+   * @default 1_000_000 // 1MB
+   */
+  maxCompressSize?: number
+}
+
+export function ReportPlugin(
+  options: ReportOptions,
+  cwd: string,
+  cjsDts?: boolean,
+): Plugin {
   return {
     name: 'tsdown:report',
-    async writeBundle(options, bundle) {
+    async writeBundle(outputOptions, bundle) {
       const outDir = path.relative(
         cwd,
-        options.file
-          ? path.resolve(cwd, options.file, '..')
-          : path.resolve(cwd, options.dir!),
+        outputOptions.file
+          ? path.resolve(cwd, outputOptions.file, '..')
+          : path.resolve(cwd, outputOptions.dir!),
       )
 
       const sizes: SizeInfo[] = []
       for (const chunk of Object.values(bundle)) {
-        const size = await calcSize(chunk)
+        const size = await calcSize(options, chunk)
         sizes.push(size)
       }
 
@@ -74,11 +94,11 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
         if (a.dts !== b.dts) return a.dts ? 1 : -1
         // entry first
         if (a.isEntry !== b.isEntry) return a.isEntry ? -1 : 1
-        // otherwise, sort by brotli size descending
-        return b.brotli - a.brotli
+        // otherwise, sort by raw size descending
+        return b.raw - a.raw
       })
 
-      const formatLabel = prettyFormat(cjsDts ? 'cjs' : options.format)
+      const formatLabel = prettyFormat(cjsDts ? 'cjs' : outputOptions.format)
 
       for (const size of sizes) {
         const filenameColor = size.dts ? green : noop
@@ -88,7 +108,8 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
           dim(`${outDir}/`) +
             filenameColor((size.isEntry ? bold : noop)(size.filename)),
           ` `.repeat(filenameLength - size.filename.length),
-          dim`${size.rawText} │ gzip: ${size.gzipText} │ brotli: ${size.brotliText}`,
+          dim`${size.rawText} │ gzip: ${size.gzipText}`,
+          options.brotli ? dim` │ brotli: ${size.brotliText}` : '',
         )
       }
 
@@ -98,14 +119,30 @@ export function ReportPlugin(cwd: string, cjsDts?: boolean): Plugin {
   }
 }
 
-async function calcSize(chunk: OutputAsset | OutputChunk): Promise<SizeInfo> {
-  debug(`Calculating size for ${chunk.fileName}`)
+async function calcSize(
+  options: ReportOptions,
+  chunk: OutputAsset | OutputChunk,
+): Promise<SizeInfo> {
+  debug(`Calculating size for`, chunk.fileName)
 
   const content = chunk.type === 'chunk' ? chunk.code : chunk.source
 
   const raw = Buffer.byteLength(content, 'utf8')
-  const gzip = (await gzipAsync(content)).length
-  const brotli = (await brotliCompressAsync(content)).length
+  debug('[size]', chunk.fileName, raw)
+
+  let gzip: number = Infinity
+  let brotli: number = Infinity
+  if (raw > (options.maxCompressSize ?? 1_000_000)) {
+    debug(chunk.fileName, 'file size exceeds limit, skip gzip/brotli')
+  } else {
+    gzip = (await gzipAsync(content)).length
+    debug('[gzip]', chunk.fileName, gzip)
+
+    if (options.brotli) {
+      brotli = (await brotliCompressAsync(content)).length
+      debug('[brotli]', chunk.fileName, brotli)
+    }
+  }
 
   return {
     filename: chunk.fileName,

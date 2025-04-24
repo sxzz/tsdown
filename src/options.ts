@@ -12,6 +12,7 @@ import { normalizeFormat } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
+import type { ReportOptions } from './features/report'
 import type {
   Arrayable,
   Awaitable,
@@ -144,7 +145,7 @@ export interface Options {
    * Enable size reporting after bundling.
    * @default true
    */
-  report?: boolean
+  report?: boolean | ReportOptions
 
   hooks?:
     | Partial<TsdownHooks>
@@ -170,7 +171,6 @@ export type ResolvedOptions = Omit<
       | 'external'
       | 'noExternal'
       | 'onSuccess'
-      | 'dts'
       | 'fixedExtension'
       | 'outExtensions'
       | 'hooks'
@@ -180,6 +180,7 @@ export type ResolvedOptions = Omit<
       target?: string[]
       clean: string[] | false
       dts: false | DtsOptions
+      report: false | ReportOptions
       tsconfig: string | false
       cwd: string
     }
@@ -296,6 +297,7 @@ export async function resolveOptions(options: Options): Promise<{
         platform,
         sourcemap,
         dts: dts === true ? {} : dts,
+        report: report === true ? {} : report,
         unused,
         watch,
         shims,
@@ -304,7 +306,6 @@ export async function resolveOptions(options: Options): Promise<{
         alias,
         tsconfig,
         cwd,
-        report,
       }
 
       return config

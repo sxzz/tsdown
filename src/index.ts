@@ -221,7 +221,7 @@ async function getBuildOptions(
     plugins.push(ShebangPlugin(cwd))
   }
   if (report) {
-    plugins.push(ReportPlugin(cwd, cjsDts))
+    plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 
   plugins.push(userPlugins)
