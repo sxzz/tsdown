@@ -12,9 +12,6 @@ export async function watchBuild(
   rebuild: () => void,
   restart: () => void,
 ): Promise<FSWatcher> {
-  const { watch } = await import('chokidar')
-  const debouncedRebuild = debounce(rebuild, 100)
-
   const cwd = process.cwd()
   if (typeof options.watch === 'boolean' && options.outDir === cwd) {
     throw new Error(
@@ -26,9 +23,11 @@ export async function watchBuild(
   const files = toArray(
     typeof options.watch === 'boolean' ? cwd : options.watch,
   )
-
   logger.info(`Watching for changes in ${files.join(', ')}`)
   if (configFile) files.push(configFile)
+
+  const { watch } = await import('chokidar')
+  const debouncedRebuild = debounce(rebuild, 100)
 
   const watcher = watch(files, {
     ignoreInitial: true,
