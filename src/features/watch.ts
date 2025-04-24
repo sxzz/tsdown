@@ -12,18 +12,21 @@ export async function watchBuild(
   rebuild: () => void,
   restart: () => void,
 ): Promise<FSWatcher> {
-  const root = process.cwd()
-  if (options.outDir === root) {
-    throw new Error(
-      'options.outDir cannot be an empty string, which will cause the watch to be invalid.',
-    )
-  }
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
+  const cwd = process.cwd()
+  if (typeof options.watch === 'boolean' && options.outDir === cwd) {
+    throw new Error(
+      `Watch is enabled, but output directory is the same as the current working directory.` +
+        `Please specify a different watch directory using \`watch\` option,` +
+        `or set \`outDir\` to a different directory.`,
+    )
+  }
   const files = toArray(
-    typeof options.watch === 'boolean' ? root : options.watch,
+    typeof options.watch === 'boolean' ? cwd : options.watch,
   )
+
   logger.info(`Watching for changes in ${files.join(', ')}`)
   if (configFile) files.push(configFile)
 
