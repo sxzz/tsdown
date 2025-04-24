@@ -30,7 +30,6 @@ import {
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat, readPackageJson } from './utils/package'
-
 import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -48,7 +47,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
   if (configFile) {
     debug('Loaded config:', configFile)
     configs.forEach((config) => {
-      debug('using resolved config: %O', { ...config })
+      debug('using resolved config: %O', config)
     })
   } else {
     debug('No config file found')
