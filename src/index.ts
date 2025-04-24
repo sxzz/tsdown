@@ -2,6 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
+import Debug from 'debug'
 import {
   build as rolldownBuild,
   type BuildOptions,
@@ -29,7 +30,6 @@ import {
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat, readPackageJson } from './utils/package'
-import Debug from 'debug'
 
 import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'

@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+import process from 'node:process'
 
-const debugIndex: number = process.argv.findIndex((arg) => /^--debug$/.test(arg))
+const debugIndex: number = process.argv.findIndex((arg) =>
+  /^--debug$/.test(arg),
+)
 
 if (debugIndex > 0) {
   let value = process.argv[debugIndex + 1]
@@ -13,15 +16,14 @@ if (debugIndex > 0) {
       .map((v) => `tsdown:${v}`)
       .join(',')
   }
-  process.env.DEBUG = `${process.env.DEBUG ? process.env.DEBUG + ',' : ''
-    }${value}`
+  process.env.DEBUG = `${
+    process.env.DEBUG ? `${process.env.DEBUG},` : ''
+  }${value}`
 }
 
 function start(): void {
-  import('./cli')
-    .then(({ runCLI }) => {
-      return runCLI()
-    }
-    )
+  import('./cli').then(({ runCLI }) => {
+    return runCLI()
+  })
 }
 start()
