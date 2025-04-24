@@ -15,9 +15,18 @@ export async function watchBuild(
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
+  const cwd = process.cwd()
+  if (typeof options.watch === 'boolean' && options.outDir === cwd) {
+    throw new Error(
+      `Watch is enabled, but output directory is the same as the current working directory.` +
+        `Please specify a different watch directory using \`watch\` option,` +
+        `or set \`outDir\` to a different directory.`,
+    )
+  }
   const files = toArray(
-    typeof options.watch === 'boolean' ? process.cwd() : options.watch,
+    typeof options.watch === 'boolean' ? cwd : options.watch,
   )
+
   logger.info(`Watching for changes in ${files.join(', ')}`)
   if (configFile) files.push(configFile)
 
