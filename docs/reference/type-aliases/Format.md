@@ -2,4 +2,4 @@
 
 > **Format** = `Exclude`\<`ModuleFormat`, `"experimental-app"`\>
 
-Defined in: [options.ts:36](https://github.com/rolldown/tsdown/blob/8662d4d1063ce13b59b875a592f948831764f601/src/options.ts#L36)
+Defined in: [options.ts:37](https://github.com/rolldown/tsdown/blob/4b95e82619cbfac9f7af2b67632779e053e54c4a/src/options.ts#L37)
