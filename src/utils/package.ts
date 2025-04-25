@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { blue, yellow } from 'ansis'
 import Debug from 'debug'
-import { findUp } from 'find-up-simple'
+import { up as findPackage } from 'empathic/package'
 import type { Format, NormalizedFormat } from '../options'
 import { noop, resolveComma, toArray } from './general'
 import type { PackageJson } from 'pkg-types'
@@ -12,7 +12,7 @@ const debug = Debug('tsdown:package')
 export async function readPackageJson(
   dir: string,
 ): Promise<PackageJson | undefined> {
-  const packageJsonPath = await findUp('package.json', { cwd: dir })
+  const packageJsonPath = findPackage({ cwd: dir })
   if (!packageJsonPath) return
   debug('Reading package.json:', packageJsonPath)
   const contents = await readFile(packageJsonPath, 'utf8')

@@ -1,8 +1,8 @@
-import { findUp } from 'find-up-simple'
+import { up as findUp } from 'empathic/find'
 
-export async function findTsconfig(
+export function findTsconfig(
   cwd?: string,
   name: string = 'tsconfig.json',
-): Promise<string | false> {
-  return (await findUp(name, { cwd })) || false
+): string | false {
+  return findUp(name, { cwd }) || false
 }

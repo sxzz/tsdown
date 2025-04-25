@@ -231,7 +231,7 @@ export async function resolveOptions(options: Options): Promise<{
       if (tsconfig !== false) {
         if (tsconfig === true || tsconfig == null) {
           const isSet = tsconfig
-          tsconfig = await findTsconfig(cwd)
+          tsconfig = findTsconfig(cwd)
           if (isSet && !tsconfig) {
             logger.warn(`No tsconfig found in \`${cwd}\``)
           }
@@ -243,7 +243,7 @@ export async function resolveOptions(options: Options): Promise<{
             logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
             tsconfig = false
           } else {
-            tsconfig = await findTsconfig(cwd, tsconfig)
+            tsconfig = findTsconfig(cwd, tsconfig)
             if (!tsconfig) {
               logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
             }

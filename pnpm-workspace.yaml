@@ -35,7 +35,7 @@ catalogs:
     consola: ^3.4.2
     debug: ^4.4.0
     diff: ^7.0.0
-    find-up-simple: ^1.0.1
+    empathic: ^1.0.0
     hookable: ^5.5.3
     rolldown: 1.0.0-beta.8-commit.2686eb1
     rolldown-plugin-dts: ^0.8.3

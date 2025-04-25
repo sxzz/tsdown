@@ -101,9 +101,9 @@ catalogs:
     diff:
       specifier: ^7.0.0
       version: 7.0.0
-    find-up-simple:
-      specifier: ^1.0.1
-      version: 1.0.1
+    empathic:
+      specifier: ^1.0.0
+      version: 1.0.0
     hookable:
       specifier: ^5.5.3
       version: 5.5.3
@@ -145,9 +145,9 @@ importers:
       diff:
         specifier: catalog:prod
         version: 7.0.0
-      find-up-simple:
+      empathic:
         specifier: catalog:prod
-        version: 1.0.1
+        version: 1.0.0
       hookable:
         specifier: catalog:prod
         version: 5.5.3
@@ -1961,6 +1961,10 @@ packages:
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  empathic@1.0.0:
+    resolution: {integrity: sha512-qtKgI1Mv8rTacvpaTkh28HM2Lbf+IOjXb7rhpt/42kZxRm8TBb/IVlo5iL2ztT19kc/EHAFN0fZ641avlXAgdg==}
+    engines: {node: '>=16'}
 
   enhanced-resolve@5.18.1:
     resolution: {integrity: sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==}
@@ -5259,6 +5263,8 @@ snapshots:
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
+
+  empathic@1.0.0: {}
 
   enhanced-resolve@5.18.1:
     dependencies:

@@ -76,7 +76,7 @@
     "consola": "catalog:prod",
     "debug": "catalog:prod",
     "diff": "catalog:prod",
-    "find-up-simple": "catalog:prod",
+    "empathic": "catalog:prod",
     "hookable": "catalog:prod",
     "rolldown": "catalog:prod",
     "rolldown-plugin-dts": "catalog:prod",
