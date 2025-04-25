@@ -194,6 +194,7 @@ async function getBuildOptions(
     tsconfig,
     cwd,
     report,
+    env,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -246,7 +247,15 @@ async function getBuildOptions(
       },
       treeshake,
       platform,
-      define,
+      define: {
+        ...define,
+        ...Object.keys(env).reduce((acc, key) => {
+          const value = JSON.stringify(env[key])
+          acc[`process.env.${key}`] = value
+          acc[`import.meta.env.${key}`] = value
+          return acc
+        }, Object.create(null)),
+      },
       plugins,
       inject: {
         ...(shims && !cjsDts && getShimsInject(format, platform)),

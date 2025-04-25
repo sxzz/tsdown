@@ -39,6 +39,7 @@ cli
   .option('-w, --watch [path]', 'Watch mode')
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .option('--report', 'Size report', { default: true })
+  .option('--env.* <value>', 'Define compile-time env variables')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
@@ -76,7 +77,7 @@ export async function runCLI(): Promise<void> {
     if (enabled) namespace += `,${enabled}`
 
     debug.enable(namespace)
-    debug('tsdown:debug')(`Debugging enabled`, namespace)
+    debug('tsdown:debug')('Debugging enabled', namespace)
   }
 
   try {

@@ -147,6 +147,16 @@ export interface Options {
    */
   report?: boolean | ReportOptions
 
+  /**
+   * Compile-time env variables.
+   * @example
+   * {
+   *   "DEBUG": "true",
+   *   "NODE_ENV": "production"
+   * }
+   */
+  env?: Record<string, string>
+
   hooks?:
     | Partial<TsdownHooks>
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
@@ -222,6 +232,7 @@ export async function resolveOptions(options: Options): Promise<{
         tsconfig,
         report = true,
         target,
+        env = {},
       } = subOptions
 
       entry = await resolveEntry(entry, cwd)
@@ -306,6 +317,7 @@ export async function resolveOptions(options: Options): Promise<{
         alias,
         tsconfig,
         cwd,
+        env,
       }
 
       return config
