@@ -1,11 +1,13 @@
 import { readFile } from 'node:fs/promises'
 import { blue, yellow } from 'ansis'
+import Debug from 'debug'
 import { findUp } from 'find-up-simple'
-import { debug } from '../utils/logger'
 import type { Format, NormalizedFormat } from '../options'
 import { noop, resolveComma, toArray } from './general'
 import type { PackageJson } from 'pkg-types'
 import type { InternalModuleFormat } from 'rolldown'
+
+const debug = Debug('tsdown:package')
 
 export async function readPackageJson(
   dir: string,

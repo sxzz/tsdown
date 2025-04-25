@@ -34,6 +34,7 @@ import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 const debug = Debug('tsdown:config')
+
 /**
  * Build with tsdown.
  */

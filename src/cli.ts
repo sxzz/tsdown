@@ -66,6 +66,7 @@ export async function runCLI(): Promise<void> {
     if (cli.options.debug === true) {
       namespace = 'tsdown:*'
     } else {
+      // support debugging multiple flags with comma-separated list
       namespace = resolveComma(toArray(cli.options.debug))
         .map((v) => `tsdown:${v}`)
         .join(',')
