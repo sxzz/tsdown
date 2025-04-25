@@ -2,6 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
+import Debug from 'debug'
 import {
   build as rolldownBuild,
   type BuildOptions,
@@ -27,10 +28,12 @@ import {
   type ResolvedOptions,
 } from './options'
 import { ShebangPlugin } from './plugins'
-import { debug, logger, setSilent } from './utils/logger'
+import { logger, setSilent } from './utils/logger'
 import { prettyFormat, readPackageJson } from './utils/package'
 import type { PackageJson } from 'pkg-types'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
+
+const debug = Debug('tsdown:config')
 
 /**
  * Build with tsdown.
@@ -42,8 +45,14 @@ export async function build(userOptions: Options = {}): Promise<void> {
 
   debug('Loading config')
   const { configs, file: configFile } = await resolveOptions(userOptions)
-  if (configFile) debug('Loaded config:', configFile)
-  else debug('No config file found')
+  if (configFile) {
+    debug('Loaded config:', configFile)
+    configs.forEach((config) => {
+      debug('using resolved config: %O', config)
+    })
+  } else {
+    debug('No config file found')
+  }
 
   const rebuilds = await Promise.all(configs.map(buildSingle))
   const cleanCbs: (() => Promise<void>)[] = []
