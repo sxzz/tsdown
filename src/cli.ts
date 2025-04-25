@@ -1,8 +1,10 @@
 import process from 'node:process'
 import { dim } from 'ansis'
 import { cac } from 'cac'
+import debug from 'debug'
 import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
+import { resolveComma, toArray } from './utils/general'
 import { logger, setSilent } from './utils/logger'
 import type { Options } from './options'
 
@@ -21,7 +23,7 @@ cli
   .option('--clean', 'Clean output directory')
   .option('--external <module>', 'Mark dependencies as external')
   .option('--minify', 'Minify output')
-  .option('--debug [feat]', 'Show debug logs')
+  .option('--debug [scope]', 'Show debug logs')
   .option('--target <target>', 'Bundle target, e.g "es2015", "esnext"')
   .option('--silent', 'Suppress non-error logs')
   .option('-d, --out-dir <dir>', 'Output directory', { default: 'dist' })
@@ -58,6 +60,24 @@ cli
 
 export async function runCLI(): Promise<void> {
   cli.parse(process.argv, { run: false })
+
+  if (cli.options.debug) {
+    let namespace: string
+    if (cli.options.debug === true) {
+      namespace = 'tsdown:*'
+    } else {
+      namespace = resolveComma(toArray(cli.options.debug))
+        .map((v) => `tsdown:${v}`)
+        .join(',')
+    }
+
+    if (namespace) {
+      let enabled = debug.disable()
+      if (enabled) enabled += ','
+      enabled += namespace
+      debug.enable(enabled)
+    }
+  }
 
   try {
     await cli.runMatchedCommand()
