@@ -72,12 +72,11 @@ export async function runCLI(): Promise<void> {
         .join(',')
     }
 
-    if (namespace) {
-      let enabled = debug.disable()
-      if (enabled) enabled += ','
-      enabled += namespace
-      debug.enable(enabled)
-    }
+    const enabled = debug.disable()
+    if (enabled) namespace += `,${enabled}`
+
+    debug.enable(namespace)
+    debug('tsdown:debug')(`Debugging enabled`, namespace)
   }
 
   try {
