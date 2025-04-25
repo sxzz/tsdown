@@ -131,6 +131,16 @@ See also [Extending Vite or Vitest Config](../guide/config-file.md#extending-vit
 
 Enable or disable the generation of a build report. By default, the report is enabled and outputs the list of build artifacts along with their sizes to the console. This provides a quick overview of the build results, helping you analyze the output and identify potential optimizations. Disabling the report can be useful in scenarios where minimal console output is desired.
 
+## `--env.* <value>`
+
+Define compile-time environment variables, for example:
+
+```bash
+tsdown --env.NODE_ENV=production
+```
+
+Note that environment variables defined with `--env.VAR_NAME` can only be accessed as `import.meta.env.VAR_NAME` or `process.env.VAR_NAME`.
+
 ## `--debug [feat]`
 
 Show debug logs.

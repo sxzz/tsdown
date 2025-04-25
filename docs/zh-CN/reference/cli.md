@@ -131,6 +131,16 @@ tsdown src/index.ts src/util.ts
 
 启用或禁用构建报告的生成。默认情况下，报告是启用的，并会将构建产物及其大小列表输出到控制台。这可以快速概览构建结果，帮助你分析输出并识别潜在的优化空间。在需要最小化控制台输出的场景下，可以禁用报告。
 
+## `--env.* <value>`
+
+定义编译时环境变量，例如：
+
+```bash
+tsdown --env.NODE_ENV=production
+```
+
+注意，使用 `--env.VAR_NAME` 设置的环境变量只能以 `import.meta.env.VAR_NAME` 或 `process.env.VAR_NAME` 访问。
+
 ## `--debug [feat]`
 
 显示调试日志。

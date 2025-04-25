@@ -150,10 +150,12 @@ export interface Options {
   /**
    * Compile-time env variables.
    * @example
+   * ```ts
    * {
    *   "DEBUG": "true",
    *   "NODE_ENV": "production"
    * }
+   * ```
    */
   env?: Record<string, string>
 
