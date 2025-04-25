@@ -152,12 +152,12 @@ export interface Options {
    * @example
    * ```ts
    * {
-   *   "DEBUG": "true",
+   *   "DEBUG": true,
    *   "NODE_ENV": "production"
    * }
    * ```
    */
-  env?: Record<string, string>
+  env?: Record<string, any>
 
   hooks?:
     | Partial<TsdownHooks>
