@@ -230,3 +230,24 @@ test('hooks', async (context) => {
   })
   expect(fn).toBeCalledTimes(3)
 })
+
+test('env flag', async (context) => {
+  const files = {
+    'index.ts': `export const env = process.env.NODE_ENV
+    export const meta = import.meta.env.NODE_ENV
+    export const custom = import.meta.env.CUSTOM
+    export const debug = import.meta.env.DEBUG
+    `,
+  }
+  const { snapshot } = await testBuild(context, files, {
+    env: {
+      NODE_ENV: 'production',
+      CUSTOM: 'tsdown',
+      DEBUG: true,
+    },
+  })
+  expect(snapshot).contains('const env = "production"')
+  expect(snapshot).contains('const meta = "production"')
+  expect(snapshot).contains('const custom = "tsdown"')
+  expect(snapshot).contains('const debug = true')
+})
