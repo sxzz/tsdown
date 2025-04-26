@@ -37,7 +37,7 @@ catalogs:
     diff: ^7.0.0
     empathic: ^1.0.0
     hookable: ^5.5.3
-    rolldown: 1.0.0-beta.8-commit.2686eb1
+    rolldown: 1.0.0-beta.8-commit.151352b
     rolldown-plugin-dts: ^0.8.3
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13

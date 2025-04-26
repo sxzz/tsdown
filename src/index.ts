@@ -277,7 +277,7 @@ async function getBuildOptions(
       name: config.globalName,
       sourcemap,
       dir: outDir,
-      minify,
+      minify: minify as any,
       entryFileNames,
       chunkFileNames,
     },

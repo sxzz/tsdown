@@ -36,6 +36,11 @@ import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
 export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
+export interface MinifyOptions {
+  mangle?: boolean
+  compress?: boolean
+  removeWhitespace?: boolean
+}
 
 /**
  * Options for tsdown.
@@ -70,7 +75,7 @@ export interface Options {
   sourcemap?: Sourcemap
   clean?: boolean | string[]
   /** @default false */
-  minify?: boolean
+  minify?: boolean | 'dce-only' | MinifyOptions
   target?: string | string[]
   define?: Record<string, string>
   /** @default false */
