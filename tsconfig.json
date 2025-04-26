@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": ["es2022"],
-    "module": "esnext",
+    "moduleDetection": "force",
+    "module": "preserve",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": ["node"],
