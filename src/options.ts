@@ -173,6 +173,7 @@ export interface Options {
  * Options without specifying config file path.
  */
 export type UserConfig = Arrayable<Omit<Options, 'config'>>
+export type UserConfigFn = (cliOptions: Options) => Awaitable<UserConfig>
 export type ResolvedConfigs = Extract<UserConfig, any[]>
 
 export type ResolvedOptions = Omit<
@@ -364,8 +365,8 @@ async function loadConfigFile(options: Options): Promise<{
   const nativeTS =
     process.features.typescript || process.versions.bun || process.versions.deno
 
-  const { config, sources } = await loadConfig
-    .async<UserConfig>({
+  let { config, sources } = await loadConfig
+    .async<UserConfig | UserConfigFn>({
       sources: overrideConfig
         ? [{ files: filePath as string, extensions: [] }]
         : [
@@ -392,11 +393,15 @@ async function loadConfigFile(options: Options): Promise<{
     })
     .finally(() => (loaded = true))
 
-  if (sources.length > 0) {
-    logger.info(`Using tsdown config: ${underline(sources.join(', '))}`)
+  const file = sources[0]
+  if (file) {
+    logger.info(`Using tsdown config: ${underline(file)}`)
   }
 
-  const file = sources[0]
+  if (typeof config === 'function') {
+    config = await config(options)
+  }
+
   return {
     configs: toArray(config),
     file,
