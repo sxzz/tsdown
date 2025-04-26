@@ -251,3 +251,17 @@ test('env flag', async (context) => {
   expect(snapshot).contains('const custom = "tsdown"')
   expect(snapshot).contains('const debug = true')
 })
+
+test('minify', async (context) => {
+  const files = { 'index.ts': `export const foo = true` }
+  const { snapshot } = await testBuild(context, files, {
+    minify: {
+      mangle: true,
+      compress: true,
+      removeWhitespace: false,
+    },
+  })
+  expect(snapshot).contains('!0')
+  expect(snapshot).not.contains('true')
+  expect(snapshot).not.contains('const foo')
+})
