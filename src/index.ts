@@ -230,7 +230,8 @@ async function getBuildOptions(
     }
     plugins.push(ShebangPlugin(cwd))
   }
-  if (report) {
+
+  if (report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 
