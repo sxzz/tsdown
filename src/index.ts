@@ -238,6 +238,11 @@ async function getBuildOptions(
 
   if (hasCSSInput(entry)) {
     plugins.push(
+      // Use Lightning CSS to handle CSS input, until Rolldown supports CSS
+      // syntax lowering natively.
+      //
+      // Use dynamic import to avoid unnecessary imports when input doesn't
+      // contain CSS.
       import('./features/lightningcss').then(({ LightningCSSPlugin }) => {
         return LightningCSSPlugin({ target })
       }),
