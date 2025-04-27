@@ -30,6 +30,7 @@ catalogs:
 
   prod:
     ansis: ^3.17.0
+    browserslist: ^4.24.4
     cac: ^6.7.14
     chokidar: ^4.0.3
     consola: ^3.4.2
@@ -37,14 +38,13 @@ catalogs:
     diff: ^7.0.0
     empathic: ^1.0.0
     hookable: ^5.5.3
+    lightningcss: ^1.29.3
     rolldown: 1.0.0-beta.8-commit.151352b
     rolldown-plugin-dts: ^0.9.4
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
     unconfig: ^7.3.2
-    lightningcss: ^1.29.3
     unplugin-lightningcss: ^0.3.2
-    browserslist: ^4.24.4
 
 ignoredBuiltDependencies:
   - rolldown
