@@ -7,11 +7,8 @@ import type { Plugin } from 'rolldown'
 const debug = Debug('tsdown:external')
 const RE_DTS = /\.d\.[cm]?ts$/
 
-export function ExternalPlugin(
-  options: ResolvedOptions,
-  pkg?: PackageJson,
-): Plugin {
-  const deps = pkg && Array.from(getProductionDeps(pkg))
+export function ExternalPlugin(options: ResolvedOptions): Plugin {
+  const deps = options.pkg && Array.from(getProductionDeps(options.pkg))
   return {
     name: 'tsdown:external',
     async resolveId(id, importer, { isEntry }) {

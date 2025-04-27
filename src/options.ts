@@ -8,7 +8,7 @@ import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
-import { normalizeFormat } from './utils/package'
+import { normalizeFormat, readPackageJson } from './utils/package'
 import { findTsconfig } from './utils/tsconfig'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
@@ -20,6 +20,7 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Hookable } from 'hookable'
+import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
@@ -206,6 +207,7 @@ export type ResolvedOptions = Omit<
       report: false | ReportOptions
       tsconfig: string | false
       cwd: string
+      pkg?: PackageJson
     }
   >,
   'config' | 'fromVite'
@@ -315,7 +317,9 @@ export async function resolveOptions(options: Options): Promise<{
         }
       }
 
-      const config = {
+      const pkg = await readPackageJson(cwd)
+
+      const config: ResolvedOptions = {
         ...subOptions,
         entry,
         plugins,
@@ -338,6 +342,7 @@ export async function resolveOptions(options: Options): Promise<{
         tsconfig,
         cwd,
         env,
+        pkg,
       }
 
       return config

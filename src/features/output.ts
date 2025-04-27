@@ -1,6 +1,5 @@
 import { getPackageType, type PackageType } from '../utils/package'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
-import type { PackageJson } from 'pkg-types'
 import type { InputOptions, PreRenderedChunk } from 'rolldown'
 
 export interface OutExtensionContext {
@@ -33,10 +32,9 @@ function resolveJsOutputExtension(
 }
 
 export function resolveChunkFilename(
-  pkg: PackageJson | undefined,
+  { outExtensions, fixedExtension, pkg }: ResolvedOptions,
   inputOptions: InputOptions,
   format: NormalizedFormat,
-  { outExtensions, fixedExtension }: ResolvedOptions,
 ): [entry: ChunkFileName, chunk: ChunkFileName] {
   const packageType = getPackageType(pkg)
 
