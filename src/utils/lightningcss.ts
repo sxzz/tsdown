@@ -19,7 +19,7 @@ export function esbuildTargetToLightningCSS(
     // The name in the esbuild target format.
     const name = match[1]
     // The browser name in Lightning CSS targets format.
-    const browser = ESBUILD_LIGHTNINGCSS_TARGET_MAP[name]
+    const browser = ESBUILD_LIGHTNINGCSS_MAPPING[name]
     if (!browser) {
       continue
     }
@@ -42,7 +42,9 @@ export function esbuildTargetToLightningCSS(
 
 const TARGET_REGEX = /([a-z]+)(\d+(?:\.\d+)*)/g
 
-const ESBUILD_LIGHTNINGCSS_TARGET_MAP: Record<string, keyof Targets> = {
+// A mapping from the name in the esbuild target format to the browser name in
+// Lightning CSS targets format.
+const ESBUILD_LIGHTNINGCSS_MAPPING: Record<string, keyof Targets> = {
   chrome: 'chrome',
   edge: 'edge',
   firefox: 'firefox',
