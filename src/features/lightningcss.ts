@@ -3,9 +3,12 @@ import { browserslistToTargets, type Targets } from 'lightningcss'
 import LightningCSS from 'unplugin-lightningcss/rolldown'
 
 import { esbuildTargetToBrowserslist } from '../utils/browserslist'
+import type { ResolvedOptions } from '../options'
 import type { Plugin } from 'rolldown'
 
-export function LightningCSSPlugin(options: { target?: string[] }): Plugin {
+export function LightningCSSPlugin(
+  options: Pick<ResolvedOptions, 'target'>,
+): Plugin {
   // Converts the user-provided esbuild-format target into a LightningCSS
   // targets object.
   const targets: Targets | undefined =
