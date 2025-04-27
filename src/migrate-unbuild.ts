@@ -3,22 +3,14 @@ import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import consola from 'consola'
 import { version } from '../package.json'
-import { migrateFromUnbuild } from './migrate-unbuild'
 
-export async function migrate({
+export async function migrateFromUnbuild({
   cwd,
   dryRun,
-  from,
 }: {
   cwd?: string
   dryRun?: boolean
-  from?: 'tsup' | 'unbuild'
 }): Promise<void> {
-  if (from === 'unbuild') {
-    return migrateFromUnbuild({ cwd, dryRun })
-  }
-
-  // Default to tsup migration
   if (dryRun) {
     consola.info('Dry run enabled. No changes were made.')
   } else {
@@ -36,7 +28,7 @@ export async function migrate({
   if (cwd) process.chdir(cwd)
 
   let migrated = await migratePackageJson(dryRun)
-  if (await migrateTsupConfig(dryRun)) {
+  if (await migrateUnbuildConfig(dryRun)) {
     migrated = true
   }
   if (migrated) {
@@ -59,51 +51,51 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
   let pkg = JSON.parse(pkgRaw)
   const semver = `^${version}`
   let found = false
-  if (pkg.dependencies?.tsup) {
+  if (pkg.dependencies?.unbuild) {
     consola.info('Migrating `dependencies` to tsdown.')
     found = true
-    pkg.dependencies = renameKey(pkg.dependencies, 'tsup', 'tsdown', semver)
+    pkg.dependencies = renameKey(pkg.dependencies, 'unbuild', 'tsdown', semver)
   }
-  if (pkg.devDependencies?.tsup) {
+  if (pkg.devDependencies?.unbuild) {
     consola.info('Migrating `devDependencies` to tsdown.')
     found = true
     pkg.devDependencies = renameKey(
       pkg.devDependencies,
-      'tsup',
+      'unbuild',
       'tsdown',
       semver,
     )
   }
-  if (pkg.peerDependencies?.tsup) {
+  if (pkg.peerDependencies?.unbuild) {
     consola.info('Migrating `peerDependencies` to tsdown.')
     found = true
     pkg.peerDependencies = renameKey(
       pkg.peerDependencies,
-      'tsup',
+      'unbuild',
       'tsdown',
       '*',
     )
   }
   if (pkg.scripts) {
     for (const key of Object.keys(pkg.scripts)) {
-      if (pkg.scripts[key].includes('tsup')) {
+      if (pkg.scripts[key].includes('unbuild')) {
         consola.info(`Migrating \`${key}\` script to tsdown`)
         found = true
         pkg.scripts[key] = pkg.scripts[key].replaceAll(
-          /tsup(?:-node)?/g,
+          /unbuild(?:-node)?/g,
           'tsdown',
         )
       }
     }
   }
-  if (pkg.tsup) {
-    consola.info('Migrating `tsup` field in package.json to `tsdown`.')
+  if (pkg.unbuild) {
+    consola.info('Migrating `unbuild` field in package.json to `tsdown`.')
     found = true
-    pkg = renameKey(pkg, 'tsup', 'tsdown')
+    pkg = renameKey(pkg, 'unbuild', 'tsdown')
   }
 
   if (!found) {
-    consola.warn('No tsup-related fields found in package.json')
+    consola.warn('No unbuild-related fields found in package.json')
     return false
   }
 
@@ -119,44 +111,55 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
   return true
 }
 
-const TSUP_FILES = [
-  'tsup.config.ts',
-  'tsup.config.cts',
-  'tsup.config.mts',
-  'tsup.config.js',
-  'tsup.config.cjs',
-  'tsup.config.mjs',
-  'tsup.config.json',
+const UNBUILD_CONFIG_FILES = [
+  'build.config.ts',
+  'build.config.cts',
+  'build.config.mts',
+  'build.config.js',
+  'build.config.cjs',
+  'build.config.mjs',
+  'build.config.json',
 ]
-async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
+
+async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
   let found = false
 
-  for (const file of TSUP_FILES) {
+  for (const file of UNBUILD_CONFIG_FILES) {
     if (!existsSync(file)) continue
     consola.info(`Found \`${file}\``)
     found = true
 
-    const tsupConfigRaw = await readFile(file, 'utf-8')
-    const tsupConfig = tsupConfigRaw
-      .replaceAll(/\btsup\b/g, 'tsdown')
-      .replaceAll(/\bTSUP\b/g, 'TSDOWN')
+    const unbuildConfigRaw = await readFile(file, 'utf-8')
+    
+    // Replace unbuild imports with tsdown
+    let tsdownConfig = unbuildConfigRaw
+      .replace(/from ["']unbuild["']/g, 'from "tsdown"')
+      .replace(/import\s*{\s*defineBuildConfig\s*}/g, 'import { defineConfig }')
+      .replace(/defineBuildConfig\(/g, 'defineConfig(')
 
-    const renamed = file.replaceAll('tsup', 'tsdown')
+    // Replace unbuild specific options with tsdown equivalents
+    // This is a simplified approach - might need to be expanded based on actual options mapping
+    tsdownConfig = tsdownConfig
+      .replace(/builder:\s*["']mkdist["']/g, 'builder: "dts"')
+      .replace(/rollup:/g, 'rolldown:')
+    
+    const tsdownFileName = file.replace('build.config', 'tsdown.config');
+    
     if (dryRun) {
       const { createTwoFilesPatch } = await import('diff')
-      consola.info(`[dry-run] ${file} -> ${renamed}:`)
+      consola.info(`[dry-run] ${file} -> ${tsdownFileName}:`)
       console.info(
-        createTwoFilesPatch(file, renamed, tsupConfigRaw, tsupConfig),
+        createTwoFilesPatch(file, tsdownFileName, unbuildConfigRaw, tsdownConfig),
       )
     } else {
-      await writeFile(renamed, tsupConfig, 'utf8')
+      await writeFile(tsdownFileName, tsdownConfig, 'utf8')
       await unlink(file)
-      consola.success(`Migrated \`${file}\` to \`${renamed}\``)
+      consola.success(`Migrated \`${file}\` to \`${tsdownFileName}\``)
     }
   }
 
   if (!found) {
-    consola.warn('No tsup config found')
+    consola.warn('No unbuild config found')
   }
 
   return found
