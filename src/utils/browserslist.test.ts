@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 import { esbuildTargetToBrowserslist } from './browserslist'
 
 test('esbuildTargetToBrowserslist', () => {
-  expect(esbuildTargetToBrowserslist('chrome108')).toMatchInlineSnapshot(`
+  expect(esbuildTargetToBrowserslist(['chrome108'])).toMatchInlineSnapshot(`
     [
       "chrome 108",
     ]

@@ -5,12 +5,8 @@
  * [^2]: https://github.com/rolldown/rolldown/blob/v1.0.0-beta.8/packages/rolldown/src/binding.d.ts#L1429-L1431
  * [^3]: https://github.com/browserslist/browserslist
  */
-export function esbuildTargetToBrowserslist(
-  target: string | string[],
-): string[] {
-  const targetString = (
-    Array.isArray(target) ? target.join(' ') : target
-  ).toLowerCase()
+export function esbuildTargetToBrowserslist(target: string[]): string[] {
+  const targetString = target.join(' ').toLowerCase()
 
   const matches = [...targetString.matchAll(TARGET_REGEX)]
 
