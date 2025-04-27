@@ -73,6 +73,11 @@ export interface Options {
   /** @default 'dist' */
   outDir?: string
   sourcemap?: Sourcemap
+  /**
+   * Clean directories before build.
+   *
+   * Default to output directory.
+   */
   clean?: boolean | string[]
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
@@ -198,7 +203,7 @@ export type ResolvedOptions = Omit<
     {
       format: NormalizedFormat[]
       target?: string[]
-      clean: string[] | false
+      clean: string[]
       dts: false | DtsOptions
       report: false | ReportOptions
       tsconfig: string | false
@@ -225,7 +230,7 @@ export async function resolveOptions(options: Options): Promise<{
         entry,
         format = ['es'],
         plugins = [],
-        clean = false,
+        clean = true,
         silent = false,
         treeshake = true,
         platform = 'node',
@@ -245,8 +250,15 @@ export async function resolveOptions(options: Options): Promise<{
         env = {},
       } = subOptions
 
+      outDir = path.resolve(outDir)
       entry = await resolveEntry(entry, cwd)
-      if (clean === true) clean = []
+
+      if (clean === true) {
+        clean = [outDir]
+      } else if (!clean) {
+        clean = []
+      }
+
       if (publint === true) publint = {}
 
       if (tsconfig !== false) {
@@ -311,7 +323,7 @@ export async function resolveOptions(options: Options): Promise<{
         plugins,
         format: normalizeFormat(format),
         target: target ? resolveComma(toArray(target)) : undefined,
-        outDir: path.resolve(outDir),
+        outDir,
         clean,
         silent,
         treeshake,
