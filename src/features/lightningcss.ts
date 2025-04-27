@@ -15,3 +15,11 @@ export function LightningCSSPlugin(
 
   return LightningCSS({ options: { targets } })
 }
+
+/**
+ * Whether the target contains browsers like `chrome`, `firefox`, `safari`, etc
+ * that affect the CSS transpilation.
+ */
+export function hasCSSTarget(target: ResolvedOptions['target']): boolean {
+  return !!(target && esbuildTargetToLightningCSS(target))
+}
