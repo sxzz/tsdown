@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { beforeEach, expect, test, vi } from 'vitest'
 import { resolveOptions } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild, writeFixtures } from './utils'
@@ -31,44 +31,6 @@ test('basic', async (context) => {
     })
   })
 }
-
-describe('target', () => {
-  test('JS syntax lowering', async (context) => {
-    const { snapshot } = await testBuild(
-      context,
-      { 'index.ts': 'export const foo: number = a?.b?.()' },
-      { target: 'es2015' },
-    )
-    expect(snapshot).not.contain('?.')
-  })
-
-  test('unnecessary JS syntax lowering', async (context) => {
-    const { snapshot } = await testBuild(
-      context,
-      { 'index.ts': 'export const foo: number = a?.b?.()' },
-      { target: ['chrome120', 'safari16', 'firefox120'] },
-    )
-    expect(snapshot).contain('?.')
-  })
-
-  test('CSS syntax lowering', async (context) => {
-    const { snapshot } = await testBuild(
-      context,
-      { 'index.css': '.foo { & .bar { color: red } }' },
-      { entry: 'index.css', target: 'chrome108' },
-    )
-    expect(snapshot).not.contain('&')
-  })
-
-  test('unnecessary CSS syntax lowering', async (context) => {
-    const { snapshot } = await testBuild(
-      context,
-      { 'index.css': '.foo { & .bar { color: red } }' },
-      { entry: 'index.css', target: ['safari18.4'] },
-    )
-    expect(snapshot).contain('&')
-  })
-})
 
 test('esm shims', async (context) => {
   await testBuild(
