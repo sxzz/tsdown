@@ -60,4 +60,27 @@ If `isolatedDeclarations` is not enabled, `tsdown` will fall back to using the T
 
 ## Advanced Options
 
+### Declaration Maps
+
+Declaration maps allow developers to navigate directly to the original TypeScript source files when using "Go to Definition" on types from your library. This makes debugging and exploring external libraries much more convenient.
+
+To enable declaration maps, set the `declarationMap` option in your config:
+
+```ts [tsdown.config.ts]
+import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  dts: {
+    declarationMap: true,
+  },
+})
+```
+
+When enabled, `.d.ts.map` files will be generated alongside your declaration files.
+
+> [!NOTE]
+> Declaration maps are only available when using the TypeScript compiler for declaration generation (not in `isolatedDeclarations` mode).
+
+### Plugin Options
+
 `rolldown-plugin-dts` provides several advanced options to customize `.d.ts` generation. For a detailed explanation of these options, refer to the [plugin's documentation](https://github.com/sxzz/rolldown-plugin-dts#options).

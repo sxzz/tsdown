@@ -204,7 +204,17 @@ async function getBuildOptions(
 
   if (dts) {
     const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
-    const options: DtsOptions = { tsconfig, ...dts }
+    const { declarationMap, ...dtsOptions } = dts as DtsOptions & {
+      declarationMap?: boolean
+    }
+    const options: DtsOptions = {
+      tsconfig,
+      ...dtsOptions,
+      compilerOptions: {
+        ...dtsOptions.compilerOptions,
+        ...(declarationMap ? { declarationMap: true } : {}),
+      },
+    }
 
     if (format === 'es') {
       plugins.push(dtsPlugin(options))

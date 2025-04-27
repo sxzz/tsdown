@@ -60,4 +60,27 @@ export default defineConfig({
 
 ## 高级选项
 
-`rolldown-plugin-dts` 提供了多个高级选项，用于自定义 `.d.ts` 文件的生成。有关这些选项的详细说明，请参阅 [插件文档](https://github.com/sxzz/rolldown-plugin-dts#options)。
+### 声明文件映射
+
+声明文件映射（Declaration Maps）允许开发者在使用库中的类型进行"转到定义"导航时，直接跳转到原始的 TypeScript 源文件。这使得调试和探索外部库变得更加方便。
+
+要启用声明文件映射，请在配置中设置 `declarationMap` 选项：
+
+```ts [tsdown.config.ts]
+import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  dts: {
+    declarationMap: true,
+  },
+})
+```
+
+启用后，系统将在声明文件旁边生成 `.d.ts.map` 文件。
+
+> [!NOTE]
+> 声明文件映射仅在使用 TypeScript 编译器进行声明生成时可用（不适用于 `isolatedDeclarations` 模式）。
+
+### 插件选项
+
+`rolldown-plugin-dts` 提供了多个高级选项，用于自定义 `.d.ts` 文件的生成。有关这些选项的详细说明，请参阅 [插件文档](https://github.com/sxzz/rolldown-plugin-dts#options).

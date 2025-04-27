@@ -132,7 +132,7 @@ export interface Options {
   /**
    * Emit declaration files
    */
-  dts?: boolean | DtsOptions
+  dts?: boolean | (DtsOptions & { declarationMap?: boolean })
 
   /**
    * Enable unused dependencies check with `unplugin-unused`
