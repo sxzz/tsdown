@@ -80,6 +80,8 @@ export interface Options {
   define?: Record<string, string>
   /** @default false */
   shims?: boolean
+  /** @default false */
+  stub?: boolean
 
   /**
    * Use a fixed extension for output files.

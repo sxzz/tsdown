@@ -20,6 +20,7 @@ import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
+import { StubbingPlugin } from './features/stubbing'
 import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
@@ -196,6 +197,7 @@ async function getBuildOptions(
     cwd,
     report,
     env,
+    stub,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -230,6 +232,10 @@ async function getBuildOptions(
       )
     }
     plugins.push(ShebangPlugin(cwd))
+  }
+
+  if (stub) {
+    plugins.push(StubbingPlugin(entry) as any)
   }
 
   if (report && logger.level >= 3) {
