@@ -24,7 +24,7 @@ export function esbuildTargetToLightningCSS(
       continue
     }
 
-    // A version string.
+    // The version string.
     const version = match[2]
     // An integer representing the major, minor, and patch version numbers in
     // Lightning CSS targets format.

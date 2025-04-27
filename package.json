@@ -71,7 +71,6 @@
   },
   "dependencies": {
     "ansis": "catalog:prod",
-    "browserslist": "catalog:prod",
     "cac": "catalog:prod",
     "chokidar": "catalog:prod",
     "consola": "catalog:prod",

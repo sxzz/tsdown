@@ -86,9 +86,6 @@ catalogs:
     ansis:
       specifier: ^3.17.0
       version: 3.17.0
-    browserslist:
-      specifier: ^4.24.4
-      version: 4.24.4
     cac:
       specifier: ^6.7.14
       version: 6.7.14
@@ -139,9 +136,6 @@ importers:
       ansis:
         specifier: catalog:prod
         version: 3.17.0
-      browserslist:
-        specifier: catalog:prod
-        version: 4.24.4
       cac:
         specifier: catalog:prod
         version: 6.7.14
