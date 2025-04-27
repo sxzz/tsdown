@@ -33,7 +33,7 @@ import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
-const debug = Debug('tsdown:config')
+const debug = Debug('tsdown:main')
 
 /**
  * Build with tsdown.

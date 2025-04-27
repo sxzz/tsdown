@@ -3,6 +3,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
+import Debug from 'debug'
 import { loadConfig } from 'unconfig'
 import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
@@ -33,6 +34,8 @@ import type {
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
+
+const debug = Debug('tsdown:options')
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
@@ -221,6 +224,9 @@ export async function resolveOptions(options: Options): Promise<{
   if (userConfigs.length === 0) {
     userConfigs.push({})
   }
+
+  debug('Loaded config file %s from %s', file, cwd)
+  debug('User configs %o', userConfigs)
 
   const configs = await Promise.all(
     userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
