@@ -12,6 +12,7 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
+import { hasCSSInput } from './features/css'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { resolveChunkFilename } from './features/output'
@@ -233,6 +234,14 @@ async function getBuildOptions(
 
   if (report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
+  }
+
+  if (hasCSSInput(entry)) {
+    plugins.push(
+      import('./features/lightningcss').then(({ LightningCSSPlugin }) => {
+        return LightningCSSPlugin({ target })
+      }),
+    )
   }
 
   plugins.push(userPlugins)

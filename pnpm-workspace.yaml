@@ -42,6 +42,9 @@ catalogs:
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
     unconfig: ^7.3.2
+    lightningcss: ^1.29.3
+    unplugin-lightningcss: ^0.3.2
+    browserslist: ^4.24.4
 
 ignoredBuiltDependencies:
   - rolldown
