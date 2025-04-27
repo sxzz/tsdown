@@ -5,7 +5,7 @@ catalogs:
     '@sxzz/test-utils': ^0.5.5
     '@types/debug': ^4.1.12
     '@types/diff': ^7.0.2
-    '@types/node': ^22.14.1
+    '@types/node': ^22.15.2
     bumpp: ^10.1.0
     eslint: ^9.25.1
     pkg-types: ^2.1.0
@@ -20,9 +20,9 @@ catalogs:
   docs:
     '@unocss/eslint-plugin': ^66.1.0-beta.12
     typedoc: ^0.28.3
-    typedoc-plugin-markdown: ^4.6.2
+    typedoc-plugin-markdown: ^4.6.3
     unocss: ^66.1.0-beta.12
-    vite: ^6.3.2
+    vite: ^6.3.3
     vitepress: ^1.6.3
     vitepress-plugin-group-icons: ^1.5.2
     vitepress-plugin-llms: ^1.1.0
@@ -38,7 +38,7 @@ catalogs:
     empathic: ^1.0.0
     hookable: ^5.5.3
     rolldown: 1.0.0-beta.8-commit.151352b
-    rolldown-plugin-dts: ^0.8.3
+    rolldown-plugin-dts: ^0.9.4
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
     unconfig: ^7.3.2
