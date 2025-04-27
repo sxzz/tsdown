@@ -1,8 +1,11 @@
 # Target
 
-The `target` setting determines which JavaScript features are downleveled (transformed to older syntax) and which are left intact in the output. This allows you to control the compatibility of your bundled code with specific environments or JavaScript versions.
+The `target` setting determines which JavaScript and CSS features are downleveled (transformed to older syntax) and which are left intact in the output. This allows you to control the compatibility of your bundled code with specific environments or JavaScript versions.
 
-For example, an arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
+For example:
+
+- An arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
+- A CSS nesting `&` selector will be flattened if the target is `chrome108` or lower.
 
 > [!WARNING] Syntax Downgrade Only  
 > The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.

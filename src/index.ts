@@ -14,6 +14,7 @@ import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
+import { LightningCSSPlugin } from './features/lightningcss'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -233,6 +234,14 @@ async function getBuildOptions(
 
   if (report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
+  }
+
+  if (target) {
+    plugins.push(
+      // Use Lightning CSS to handle CSS input. This is a temporary solution
+      // until Rolldown supports CSS syntax lowering natively.
+      LightningCSSPlugin({ target }),
+    )
   }
 
   plugins.push(userPlugins)

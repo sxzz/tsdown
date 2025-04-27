@@ -78,11 +78,13 @@
     "diff": "catalog:prod",
     "empathic": "catalog:prod",
     "hookable": "catalog:prod",
+    "lightningcss": "catalog:prod",
     "rolldown": "catalog:prod",
     "rolldown-plugin-dts": "catalog:prod",
     "tinyexec": "catalog:prod",
     "tinyglobby": "catalog:prod",
-    "unconfig": "catalog:prod"
+    "unconfig": "catalog:prod",
+    "unplugin-lightningcss": "catalog:prod"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "catalog:dev",
