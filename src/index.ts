@@ -12,9 +12,9 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
-import { hasCSSInput } from './features/css'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
+import { LightningCSSPlugin } from './features/lightningcss'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -236,16 +236,11 @@ async function getBuildOptions(
     plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 
-  if (hasCSSInput(entry)) {
+  if (target) {
     plugins.push(
-      // Use Lightning CSS to handle CSS input, until Rolldown supports CSS
-      // syntax lowering natively.
-      //
-      // Use dynamic import to avoid unnecessary imports when input doesn't
-      // contain CSS.
-      import('./features/lightningcss').then(({ LightningCSSPlugin }) => {
-        return LightningCSSPlugin({ target })
-      }),
+      // Use Lightning CSS to handle CSS input. This is a temporary solution
+      // until Rolldown supports CSS syntax lowering natively.
+      LightningCSSPlugin({ target }),
     )
   }
 
