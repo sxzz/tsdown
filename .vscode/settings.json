@@ -1,6 +1,9 @@
 {
   "editor.formatOnSave": true,
   "cSpell.words": ["tsdown"],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "files.readonlyInclude": {
     "docs/**/config-options.md": true,
     "docs/**/type-aliases/*.md": true

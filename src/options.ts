@@ -4,6 +4,7 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import { loadConfig } from 'unconfig'
+import { glob } from 'tinyglobby'
 import { resolveEntry } from './features/entry'
 import { fsExists } from './utils/fs'
 import { resolveComma, toArray } from './utils/general'
@@ -43,9 +44,36 @@ export interface MinifyOptions {
 }
 
 /**
+ * Options for tsdown workspace.
+ */
+export interface Workspace {
+  /**
+   * Workspace members.
+   * @default 'auto'
+   */
+  members?: string[] | 'auto'
+  /**
+   * Exclude packages from workspace.
+   */
+  exclude?: string[]
+  /**
+   * Keys for inheriting in packages.
+   * @default {}
+   */
+  package?: Omit<Options, 'workspace'>
+}
+
+/**
  * Options for tsdown.
  */
 export interface Options {
+  /// workspace options
+  /**
+   * Workspace configs.
+   * @default false
+   */
+  workspace?: Workspace | false
+
   /// build options
   entry?: InputOption
   external?: ExternalOption
@@ -210,16 +238,27 @@ export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   file?: string
 }> {
-  const { configs: userConfigs, file, cwd } = await loadConfigFile(options)
+  const {
+    configs: userConfigs,
+    file,
+    cwd,
+    workspace,
+  } = await loadConfigFile(options)
   if (userConfigs.length === 0) {
     userConfigs.push({})
   }
+
+  const workspaceConfigs = workspace
+    ? await resolveWorkspace(workspace, cwd)
+    : []
+  console.log(workspaceConfigs)
 
   const configs = await Promise.all(
     userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
       const subOptions = { ...subConfig, ...options }
 
       let {
+        workspace = {},
         entry,
         format = ['es'],
         plugins = [],
@@ -305,6 +344,7 @@ export async function resolveOptions(options: Options): Promise<{
 
       const config = {
         ...subOptions,
+        workspace,
         entry,
         plugins,
         format: normalizeFormat(format),
@@ -335,12 +375,69 @@ export async function resolveOptions(options: Options): Promise<{
   return { configs, file }
 }
 
+async function resolveWorkspace(
+  workspace: Workspace,
+  cwd: string,
+): Promise<
+  {
+    configs: UserConfig
+    source: string
+  }[]
+> {
+  const { members = 'auto', exclude = [] } = workspace
+  if (members === 'auto') {
+    // const pkg = await readPackageJson(cwd)
+    throw new Error()
+  }
+
+  const pkgDirs = await glob(members, {
+    cwd,
+    absolute: true,
+    onlyDirectories: true,
+    ignore: ['node_modules', ...exclude],
+  })
+
+  const configs = await Promise.all(
+    pkgDirs.map(async (dir) => {
+      return loadConfig
+        .async<UserConfig | UserConfigFn>({
+          sources: [
+            {
+              files: 'tsdown.config',
+              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+              parser: 'import',
+            },
+          ],
+          cwd: dir,
+          stopAt: path.join(dir, '..'),
+        })
+        .then(async ({ config, sources }) => {
+          if (typeof config === 'function') {
+            config = await config(workspace.package || {})
+          }
+          const configs = toArray(config, {})
+          if (configs.some((config) => config.workspace)) {
+            throw new Error(
+              'Multiple workspace configurations found in:\n' +
+                `   - ${dir}\n` +
+                `   - ${cwd}`,
+            )
+          }
+          return { configs, source: sources[0] }
+        })
+    }),
+  )
+
+  return configs
+}
+
 let loaded = false
 
 async function loadConfigFile(options: Options): Promise<{
   configs: ResolvedConfigs
   file?: string
   cwd: string
+  workspace?: Workspace
 }> {
   let cwd = process.cwd()
   let overrideConfig = false
@@ -402,10 +499,23 @@ async function loadConfigFile(options: Options): Promise<{
     config = await config(options)
   }
 
+  const configs = toArray(config, Object.create(null))
+
+  let workspace: Workspace | undefined = undefined
+  configs.forEach((config) => {
+    if (config.workspace) {
+      if (workspace !== undefined) {
+        throw new Error(`Multiple workspace configurations found in ${file}`)
+      }
+      workspace = config.workspace
+    }
+  })
+
   return {
-    configs: toArray(config),
+    configs,
     file,
     cwd,
+    workspace,
   }
 }
 
