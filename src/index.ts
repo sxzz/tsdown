@@ -20,7 +20,7 @@ import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
-import { StubbingPlugin } from './features/stubbing'
+import { StubPlugin } from './features/stub'
 import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
@@ -217,7 +217,7 @@ async function getBuildOptions(
     plugins.push(ExternalPlugin(config, pkg))
   }
 
-  if (dts) {
+  if (!stub && dts) {
     const { dts: dtsPlugin } = await import('rolldown-plugin-dts')
     const options: DtsOptions = { tsconfig, ...dts }
 
@@ -228,7 +228,7 @@ async function getBuildOptions(
     }
   }
   if (!cjsDts) {
-    if (unused) {
+    if (!stub && unused) {
       const { Unused } = await import('unplugin-unused')
       plugins.push(Unused.rolldown(unused === true ? {} : unused))
     }
@@ -247,10 +247,10 @@ async function getBuildOptions(
   }
 
   if (stub) {
-    plugins.push(StubbingPlugin(entry) as any)
+    plugins.push(StubPlugin(entry) as any)
   }
 
-  if (report && logger.level >= 3) {
+  if (!stub && report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 
@@ -268,7 +268,7 @@ async function getBuildOptions(
     {
       input: entry,
       cwd,
-      external,
+      external: stub ? undefined : external,
       resolve: {
         alias,
         tsconfigFilename: tsconfig || undefined,

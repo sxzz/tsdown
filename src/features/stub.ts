@@ -7,9 +7,9 @@ import type {
   PluginContext,
 } from 'rolldown'
 
-export function StubbingPlugin(entry: Options['entry']): Plugin {
+export function StubPlugin(entry: Options['entry']): Plugin {
   return {
-    name: 'tsdown:stubbing',
+    name: 'tsdown:stub',
     generateBundle(
       this: PluginContext,
       _: NormalizedOutputOptions,

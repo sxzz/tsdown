@@ -257,21 +257,7 @@ test('minify', async (context) => {
   expect(snapshot).not.contains('const foo')
 })
 
-test('stubbing', async (context) => {
-  // Default entry
-  const files = {
-    'index.ts': `export const foo = 42`,
-  }
-  const { snapshot } = await testBuild(context, files, {
-    entry: 'index.ts',
-    stub: true,
-  })
-  expect(snapshot).contains(
-    'export * from "[CWD]/tests/temp/stubbing/index.ts"',
-  )
-})
-
-test('stubbing with multiple entries', async (context) => {
+test('stub', async (context) => {
   // Default entry
   const files = {
     'index.ts': `export const foo = 42`,
@@ -281,7 +267,5 @@ test('stubbing with multiple entries', async (context) => {
     entry: ['index.ts', 'index-two.ts'],
     stub: true,
   })
-  expect(snapshot).contains(
-    'export * from "[CWD]/tests/temp/stubbing-with-multiple-entries/index.ts"',
-  )
+  expect(snapshot).contains('export * from "[CWD]/tests/temp/stub/index.ts"')
 })

@@ -208,6 +208,7 @@ export type ResolvedOptions = Omit<
       report: false | ReportOptions
       tsconfig: string | false
       cwd: string
+      stub: boolean
     }
   >,
   'config' | 'fromVite'
@@ -240,6 +241,7 @@ export async function resolveOptions(options: Options): Promise<{
         unused = false,
         watch = false,
         shims = false,
+        stub = false,
         skipNodeModulesBundle = false,
         publint = false,
         fromVite,
@@ -334,6 +336,7 @@ export async function resolveOptions(options: Options): Promise<{
         unused,
         watch,
         shims,
+        stub,
         skipNodeModulesBundle,
         publint,
         alias,
