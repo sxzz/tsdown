@@ -14,10 +14,6 @@ export async function migrate({
   dryRun?: boolean
   from?: 'tsup' | 'unbuild'
 }): Promise<void> {
-  if (from === 'unbuild') {
-    return migrateFromUnbuild({ cwd, dryRun })
-  }
-
   // Default to tsup migration
   if (dryRun) {
     consola.info('Dry run enabled. No changes were made.')
@@ -34,7 +30,9 @@ export async function migrate({
   }
 
   if (cwd) process.chdir(cwd)
-
+  if (from === 'unbuild') {
+    return migrateFromUnbuild({ cwd, dryRun })
+  }
   let migrated = await migratePackageJson(dryRun)
   if (await migrateTsupConfig(dryRun)) {
     migrated = true
@@ -163,12 +161,12 @@ async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
 }
 
 // rename key but keep order
-function renameKey(
+export function renameKey(
   obj: Record<string, any>,
   oldKey: string,
   newKey: string,
   newValue?: any,
-) {
+): Record<string, any> {
   const newObj: Record<string, any> = {}
   for (const key of Object.keys(obj)) {
     if (key === oldKey) {

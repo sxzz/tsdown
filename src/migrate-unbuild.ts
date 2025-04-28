@@ -3,7 +3,7 @@ import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import consola from 'consola'
 import { version } from '../package.json'
-
+import { renameKey } from "./migrate"
 export async function migrateFromUnbuild({
   cwd,
   dryRun,
@@ -76,18 +76,6 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
       '*',
     )
   }
-  if (pkg.scripts) {
-    for (const key of Object.keys(pkg.scripts)) {
-      if (pkg.scripts[key].includes('unbuild')) {
-        consola.info(`Migrating \`${key}\` script to tsdown`)
-        found = true
-        pkg.scripts[key] = pkg.scripts[key].replaceAll(
-          /unbuild(?:-node)?/g,
-          'tsdown',
-        )
-      }
-    }
-  }
   if (pkg.unbuild) {
     consola.info('Migrating `unbuild` field in package.json to `tsdown`.')
     found = true
@@ -130,7 +118,7 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
     found = true
 
     const unbuildConfigRaw = await readFile(file, 'utf-8')
-    
+
     // Replace unbuild imports with tsdown
     let tsdownConfig = unbuildConfigRaw
       .replace(/from ["']unbuild["']/g, 'from "tsdown"')
@@ -142,9 +130,9 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
     tsdownConfig = tsdownConfig
       .replace(/builder:\s*["']mkdist["']/g, 'builder: "dts"')
       .replace(/rollup:/g, 'rolldown:')
-    
+
     const tsdownFileName = file.replace('build.config', 'tsdown.config');
-    
+
     if (dryRun) {
       const { createTwoFilesPatch } = await import('diff')
       consola.info(`[dry-run] ${file} -> ${tsdownFileName}:`)
@@ -163,22 +151,4 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
   }
 
   return found
-}
-
-// rename key but keep order
-function renameKey(
-  obj: Record<string, any>,
-  oldKey: string,
-  newKey: string,
-  newValue?: any,
-) {
-  const newObj: Record<string, any> = {}
-  for (const key of Object.keys(obj)) {
-    if (key === oldKey) {
-      newObj[newKey] = newValue || obj[oldKey]
-    } else {
-      newObj[key] = obj[key]
-    }
-  }
-  return newObj
 }
