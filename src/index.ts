@@ -9,6 +9,7 @@ import {
   type OutputOptions,
   type RolldownPluginOption,
 } from 'rolldown'
+import type { Options as PublintOptions } from 'publint'
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
@@ -153,7 +154,7 @@ export async function buildSingle(
 
     if (config.publint) {
       if (config.pkg) {
-        await publint(config.pkg)
+        await publint(config.pkg, config.publint as PublintOptions)
       } else {
         logger.warn('publint is enabled but package.json is not found')
       }
