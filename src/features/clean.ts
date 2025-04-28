@@ -2,7 +2,7 @@ import Debug from 'debug'
 import { glob } from 'tinyglobby'
 import { fsRemove } from '../utils/fs'
 import { logger } from '../utils/logger'
-import type { ResolvedOptions } from '../options'
+import type { Options, ResolvedOptions } from '../options'
 
 const debug = Debug('tsdown:clean')
 
@@ -26,4 +26,16 @@ export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
     }),
   )
   debug('Removed %d files', removes.size)
+}
+
+export function resolveClean(
+  clean: Options['clean'],
+  outDir: string,
+): string[] {
+  if (clean === true) {
+    clean = [outDir]
+  } else if (!clean) {
+    clean = []
+  }
+  return clean
 }

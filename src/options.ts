@@ -4,13 +4,14 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import { glob } from 'tinyglobby'
+import Debug from 'debug'
 import { loadConfig } from 'unconfig'
+import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
-import { fsExists } from './utils/fs'
+import { resolveTsconfig } from './features/tsconfig'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
-import { normalizeFormat } from './utils/package'
-import { findTsconfig } from './utils/tsconfig'
+import { normalizeFormat, readPackageJson } from './utils/package'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type { ReportOptions } from './features/report'
@@ -21,6 +22,7 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Hookable } from 'hookable'
+import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
@@ -33,6 +35,8 @@ import type {
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
+
+const debug = Debug('tsdown:options')
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
@@ -163,7 +167,11 @@ export interface Options {
 
   /// addons
   /**
-   * Emit declaration files
+   * Emit TypeScript declaration files (.d.ts).
+   *
+   * By default, this feature is auto-detected based on the presence of the `types` field in the `package.json` file.
+   * - If the `types` field is present in `package.json`, declaration file emission is enabled.
+   * - If the `types` field is absent, declaration file emission is disabled by default.
    */
   dts?: boolean | DtsOptions
 
@@ -234,6 +242,7 @@ export type ResolvedOptions = Omit<
       report: false | ReportOptions
       tsconfig: string | false
       cwd: string
+      pkg?: PackageJson
     }
   >,
   'config' | 'fromVite'
@@ -258,7 +267,7 @@ async function resolveConfig(
     platform = 'node',
     outDir = 'dist',
     sourcemap = false,
-    dts = false,
+    dts,
     unused = false,
     watch = false,
     shims = false,
@@ -274,43 +283,16 @@ async function resolveConfig(
 
   outDir = path.resolve(outDir)
   entry = await resolveEntry(entry, root)
+  clean = resolveClean(clean, outDir)
 
-  if (clean === true) {
-    clean = [outDir]
-  } else if (!clean) {
-    clean = []
+  const pkg = await readPackageJson(root)
+
+  if (dts == null) {
+    dts = !!(pkg?.types || pkg?.typings)
   }
 
+  tsconfig = await resolveTsconfig(tsconfig, cwd ?? root)
   if (publint === true) publint = {}
-
-  if (tsconfig !== false) {
-    if (tsconfig === true || tsconfig == null) {
-      const isSet = tsconfig
-      tsconfig = findTsconfig(root)
-      if (isSet && !tsconfig) {
-        logger.warn(`No tsconfig found in \`${root}\``)
-      }
-    } else {
-      const tsconfigPath = path.resolve(root, tsconfig)
-      if (await fsExists(tsconfigPath)) {
-        tsconfig = tsconfigPath
-      } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
-        logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
-        tsconfig = false
-      } else {
-        tsconfig = findTsconfig(root, tsconfig)
-        if (!tsconfig) {
-          logger.warn(`No \`${tsconfig}\` found in \`${root}\``)
-        }
-      }
-    }
-
-    if (tsconfig) {
-      logger.info(
-        `Using tsconfig: ${underline(path.relative(cwd ?? root, tsconfig))}`,
-      )
-    }
-  }
 
   if (fromVite) {
     const viteUserConfig = await loadViteConfig(
@@ -339,7 +321,7 @@ async function resolveConfig(
     }
   }
 
-  const config = {
+  const config: ResolvedOptions = {
     ...subOptions,
     workspace,
     entry,
@@ -363,9 +345,131 @@ async function resolveConfig(
     tsconfig,
     cwd: root,
     env,
+    pkg,
   }
 
   return config
+  // const subOptions = { ...subConfig, ...options }
+
+  // let {
+  //   workspace = {},
+  //   entry,
+  //   format = ['es'],
+  //   plugins = [],
+  //   clean = true,
+  //   silent = false,
+  //   treeshake = true,
+  //   platform = 'node',
+  //   outDir = 'dist',
+  //   sourcemap = false,
+  //   dts = false,
+  //   unused = false,
+  //   watch = false,
+  //   shims = false,
+  //   skipNodeModulesBundle = false,
+  //   publint = false,
+  //   fromVite,
+  //   alias,
+  //   tsconfig,
+  //   report = true,
+  //   target,
+  //   env = {},
+  // } = subOptions
+
+  // outDir = path.resolve(outDir)
+  // entry = await resolveEntry(entry, root)
+
+  // if (clean === true) {
+  //   clean = [outDir]
+  // } else if (!clean) {
+  //   clean = []
+  // }
+
+  // if (publint === true) publint = {}
+
+  // if (tsconfig !== false) {
+  //   if (tsconfig === true || tsconfig == null) {
+  //     const isSet = tsconfig
+  //     tsconfig = findTsconfig(root)
+  //     if (isSet && !tsconfig) {
+  //       logger.warn(`No tsconfig found in \`${root}\``)
+  //     }
+  //   } else {
+  //     const tsconfigPath = path.resolve(root, tsconfig)
+  //     if (await fsExists(tsconfigPath)) {
+  //       tsconfig = tsconfigPath
+  //     } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
+  //       logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
+  //       tsconfig = false
+  //     } else {
+  //       tsconfig = findTsconfig(root, tsconfig)
+  //       if (!tsconfig) {
+  //         logger.warn(`No \`${tsconfig}\` found in \`${root}\``)
+  //       }
+  //     }
+  //   }
+
+  //   if (tsconfig) {
+  //     logger.info(
+  //       `Using tsconfig: ${underline(path.relative(cwd ?? root, tsconfig))}`,
+  //     )
+  //   }
+  // }
+
+  // if (fromVite) {
+  //   const viteUserConfig = await loadViteConfig(
+  //     fromVite === true ? 'vite' : fromVite,
+  //     root,
+  //   )
+  //   if (viteUserConfig) {
+  //     // const alias = viteUserConfig.resolve?.alias
+  //     if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
+  //       throw new TypeError(
+  //         'Unsupported resolve.alias in Vite config. Use object instead of array',
+  //       )
+  //     }
+
+  //     if (viteUserConfig.plugins) {
+  //       plugins = [viteUserConfig.plugins as any, plugins]
+  //     }
+
+  //     const viteAlias = viteUserConfig.resolve?.alias
+  //     if (
+  //       viteAlias &&
+  //       !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
+  //     ) {
+  //       alias = viteAlias
+  //     }
+  //   }
+  // }
+
+  // const config = {
+  //   ...subOptions,
+  //   workspace,
+  //   entry,
+  //   plugins,
+  //   format: normalizeFormat(format),
+  //   target: target ? resolveComma(toArray(target)) : undefined,
+  //   outDir,
+  //   clean,
+  //   silent,
+  //   treeshake,
+  //   platform,
+  //   sourcemap,
+  //   dts: dts === true ? {} : dts,
+  //   report: report === true ? {} : report,
+  //   unused,
+  //   watch,
+  //   shims,
+  //   skipNodeModulesBundle,
+  //   publint,
+  //   alias,
+  //   tsconfig,
+  //   cwd: root,
+  //   env,
+  // }
+
+  // return config
 }
 
 interface ResolvedProject {
@@ -397,6 +501,9 @@ export async function resolveOptions(options: Options): Promise<{
       (config) => `   - ${underline(path.relative(cwd, config.source))}`,
     ),
   )
+
+  debug('Loaded config file %s from %s', file, cwd)
+  debug('User configs %o', userConfigs)
 
   const configs = await Promise.all(
     userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),

@@ -30,11 +30,10 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
-import { prettyFormat, readPackageJson } from './utils/package'
-import type { PackageJson } from 'pkg-types'
+import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
-const debug = Debug('tsdown:config')
+const debug = Debug('tsdown:main')
 
 /**
  * Build with tsdown.
@@ -106,7 +105,6 @@ export async function buildSingle(
   const { format: formats, dts, watch, onSuccess } = config
   let onSuccessCleanup: (() => any) | undefined
 
-  const pkg = await readPackageJson(process.cwd())
   const { hooks, context } = await createHooks(config)
 
   await rebuild(true)
@@ -129,16 +127,14 @@ export async function buildSingle(
           const formatLabel = prettyFormat(format)
           logger.info(formatLabel, 'Build start')
 
-          const buildOptions = await getBuildOptions(config, pkg, format)
+          const buildOptions = await getBuildOptions(config, format)
           await hooks.callHook('build:before', {
             ...context,
             buildOptions,
           })
           await rolldownBuild(buildOptions)
           if (format === 'cjs' && dts) {
-            await rolldownBuild(
-              await getBuildOptions(config, pkg, format, true),
-            )
+            await rolldownBuild(await getBuildOptions(config, format, true))
           }
         } catch (error) {
           if (watch) {
@@ -158,8 +154,8 @@ export async function buildSingle(
     await hooks.callHook('build:done', context)
 
     if (config.publint) {
-      if (pkg) {
-        await publint(pkg)
+      if (config.pkg) {
+        await publint(config.pkg)
       } else {
         logger.warn('publint is enabled but package.json is not found')
       }
@@ -187,7 +183,6 @@ export async function buildSingle(
 
 async function getBuildOptions(
   config: ResolvedOptions,
-  pkg: PackageJson | undefined,
   format: NormalizedFormat,
   cjsDts?: boolean,
 ): Promise<BuildOptions> {
@@ -213,8 +208,8 @@ async function getBuildOptions(
   } = config
 
   const plugins: RolldownPluginOption = []
-  if (pkg || config.skipNodeModulesBundle) {
-    plugins.push(ExternalPlugin(config, pkg))
+  if (config.pkg || config.skipNodeModulesBundle) {
+    plugins.push(ExternalPlugin(config))
   }
 
   if (dts) {
@@ -290,10 +285,9 @@ async function getBuildOptions(
   )
 
   const [entryFileNames, chunkFileNames] = resolveChunkFilename(
-    pkg,
+    config,
     inputOptions,
     format,
-    config,
   )
   const outputOptions: OutputOptions = await mergeUserOptions(
     {
