@@ -5,12 +5,12 @@ import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
 import Debug from 'debug'
 import { loadConfig } from 'unconfig'
+import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
-import { fsExists } from './utils/fs'
+import { resolveTsconfig } from './features/tsconfig'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
-import { findTsconfig } from './utils/tsconfig'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type { ReportOptions } from './features/report'
@@ -139,7 +139,11 @@ export interface Options {
 
   /// addons
   /**
-   * Emit declaration files
+   * Emit TypeScript declaration files (.d.ts).
+   *
+   * By default, this feature is auto-detected based on the presence of the `types` field in the `package.json` file.
+   * - If the `types` field is present in `package.json`, declaration file emission is enabled.
+   * - If the `types` field is absent, declaration file emission is disabled by default.
    */
   dts?: boolean | DtsOptions
 
@@ -242,7 +246,7 @@ export async function resolveOptions(options: Options): Promise<{
         platform = 'node',
         outDir = 'dist',
         sourcemap = false,
-        dts = false,
+        dts,
         unused = false,
         watch = false,
         shims = false,
@@ -258,43 +262,16 @@ export async function resolveOptions(options: Options): Promise<{
 
       outDir = path.resolve(outDir)
       entry = await resolveEntry(entry, cwd)
+      clean = resolveClean(clean, outDir)
 
-      if (clean === true) {
-        clean = [outDir]
-      } else if (!clean) {
-        clean = []
+      const pkg = await readPackageJson(cwd)
+
+      if (dts == null) {
+        dts = !!(pkg?.types || pkg?.typings)
       }
 
+      tsconfig = await resolveTsconfig(tsconfig, cwd)
       if (publint === true) publint = {}
-
-      if (tsconfig !== false) {
-        if (tsconfig === true || tsconfig == null) {
-          const isSet = tsconfig
-          tsconfig = findTsconfig(cwd)
-          if (isSet && !tsconfig) {
-            logger.warn(`No tsconfig found in \`${cwd}\``)
-          }
-        } else {
-          const tsconfigPath = path.resolve(cwd, tsconfig)
-          if (await fsExists(tsconfigPath)) {
-            tsconfig = tsconfigPath
-          } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
-            logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
-            tsconfig = false
-          } else {
-            tsconfig = findTsconfig(cwd, tsconfig)
-            if (!tsconfig) {
-              logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
-            }
-          }
-        }
-
-        if (tsconfig) {
-          logger.info(
-            `Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`,
-          )
-        }
-      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -322,8 +299,6 @@ export async function resolveOptions(options: Options): Promise<{
           }
         }
       }
-
-      const pkg = await readPackageJson(cwd)
 
       const config: ResolvedOptions = {
         ...subOptions,
