@@ -242,7 +242,8 @@ export type ResolvedOptions = Omit<
 async function resolveConfig(
   subConfig: Omit<Options, 'config'>,
   options: Options,
-  cwd: string,
+  root: string,
+  cwd?: string,
 ): Promise<ResolvedOptions> {
   const subOptions = { ...subConfig, ...options }
 
@@ -272,7 +273,7 @@ async function resolveConfig(
   } = subOptions
 
   outDir = path.resolve(outDir)
-  entry = await resolveEntry(entry, cwd)
+  entry = await resolveEntry(entry, root)
 
   if (clean === true) {
     clean = [outDir]
@@ -285,34 +286,36 @@ async function resolveConfig(
   if (tsconfig !== false) {
     if (tsconfig === true || tsconfig == null) {
       const isSet = tsconfig
-      tsconfig = findTsconfig(cwd)
+      tsconfig = findTsconfig(root)
       if (isSet && !tsconfig) {
-        logger.warn(`No tsconfig found in \`${cwd}\``)
+        logger.warn(`No tsconfig found in \`${root}\``)
       }
     } else {
-      const tsconfigPath = path.resolve(cwd, tsconfig)
+      const tsconfigPath = path.resolve(root, tsconfig)
       if (await fsExists(tsconfigPath)) {
         tsconfig = tsconfigPath
       } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
         logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
         tsconfig = false
       } else {
-        tsconfig = findTsconfig(cwd, tsconfig)
+        tsconfig = findTsconfig(root, tsconfig)
         if (!tsconfig) {
-          logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
+          logger.warn(`No \`${tsconfig}\` found in \`${root}\``)
         }
       }
     }
 
     if (tsconfig) {
-      logger.info(`Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`)
+      logger.info(
+        `Using tsconfig: ${underline(path.relative(cwd ?? root, tsconfig))}`,
+      )
     }
   }
 
   if (fromVite) {
     const viteUserConfig = await loadViteConfig(
       fromVite === true ? 'vite' : fromVite,
-      cwd,
+      root,
     )
     if (viteUserConfig) {
       // const alias = viteUserConfig.resolve?.alias
@@ -358,16 +361,20 @@ async function resolveConfig(
     publint,
     alias,
     tsconfig,
-    cwd,
+    cwd: root,
     env,
   }
 
   return config
 }
 
-export async function resolveOptions(options: Options): Promise<{
+interface ResolvedProject {
   configs: ResolvedOptions[]
   file?: string
+}
+export async function resolveOptions(options: Options): Promise<{
+  root: ResolvedProject
+  workspaces: ResolvedProject[]
 }> {
   const {
     configs: userConfigs,
@@ -379,29 +386,38 @@ export async function resolveOptions(options: Options): Promise<{
     userConfigs.push({})
   }
 
-  const workspaces = workspace ? await resolveWorkspace(workspace, cwd) : []
+  const workspaceConfigs = workspace
+    ? await resolveWorkspace(workspace, cwd)
+    : []
   logger.info(
-    `Resolved ${workspaces.length} workspace ${
-      workspaces.length === 1 ? 'config' : 'configs'
+    `Resolved ${workspaceConfigs.length} workspace ${
+      workspaceConfigs.length === 1 ? 'config' : 'configs'
     } from:\n`,
-    ...workspaces.map((config) => `   - ${underline(config.source)}`),
+    ...workspaceConfigs.map(
+      (config) => `   - ${underline(path.relative(cwd, config.source))}`,
+    ),
   )
 
   const configs = await Promise.all(
     userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
   )
-  const workspaceConfigs = await Promise.all(
-    workspaces
-      .map(({ configs, source }) =>
-        configs.map((config) =>
-          resolveConfig(config, options, path.dirname(source)),
+  const workspaces = await Promise.all(
+    workspaceConfigs.map(async ({ configs, source }) => {
+      return {
+        configs: await Promise.all(
+          configs.map((config) =>
+            resolveConfig(config, options, path.dirname(source), cwd),
+          ),
         ),
-      )
-      .flat(),
+        file: source,
+      }
+    }),
   )
-  console.log(workspaceConfigs)
 
-  return { configs, file }
+  return {
+    root: { configs, file },
+    workspaces,
+  }
 }
 
 async function resolveWorkspace(

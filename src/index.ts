@@ -45,7 +45,9 @@ export async function build(userOptions: Options = {}): Promise<void> {
   }
 
   debug('Loading config')
-  const { configs, file: configFile } = await resolveOptions(userOptions)
+  const {
+    root: { configs, file: configFile },
+  } = await resolveOptions(userOptions)
   if (configFile) {
     debug('Loaded config:', configFile)
     configs.forEach((config) => {
