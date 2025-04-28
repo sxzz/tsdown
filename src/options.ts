@@ -256,7 +256,12 @@ export async function resolveOptions(options: Options): Promise<{
   const workspaceConfigs = workspace
     ? await resolveWorkspace(workspace, cwd)
     : []
-  console.log(workspaceConfigs)
+  logger.info(
+    `Resolved ${workspaceConfigs.length} workspace ${
+      workspaceConfigs.length === 1 ? 'config' : 'configs'
+    } from:\n`,
+    ...workspaceConfigs.map((config) => `   - ${underline(config.source)}`),
+  )
 
   const configs = await Promise.all(
     userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
