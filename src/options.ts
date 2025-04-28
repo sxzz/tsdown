@@ -3,8 +3,8 @@ import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
-import { glob } from 'tinyglobby'
 import Debug from 'debug'
+import { glob } from 'tinyglobby'
 import { loadConfig } from 'unconfig'
 import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
@@ -418,7 +418,7 @@ async function resolveWorkspace(
   const { members = 'auto', exclude = [] } = workspace
   if (members === 'auto') {
     // const pkg = await readPackageJson(cwd)
-    throw new Error()
+    throw new Error('Unimplemented')
   }
 
   const pkgDirs = await glob(members, {
@@ -429,6 +429,7 @@ async function resolveWorkspace(
   })
 
   const configs = await Promise.all(
+    // eslint-disable-next-line require-await we use Promise.all to parallelize the config loading
     pkgDirs.map(async (dir) => {
       return loadConfig
         .async<UserConfig | UserConfigFn>({
@@ -449,9 +450,7 @@ async function resolveWorkspace(
           const configs = toArray(config, {})
           if (configs.some((config) => config.workspace)) {
             throw new Error(
-              'Multiple workspace configurations found in:\n' +
-                `   - ${dir}\n` +
-                `   - ${cwd}`,
+              `Multiple workspace configurations found in:\n   - ${dir}\n   - ${cwd}`,
             )
           }
           return { configs, source: sources[0] }
