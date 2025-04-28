@@ -55,7 +55,7 @@ export interface Workspace {
    * Workspace members.
    * @default 'auto'
    */
-  members?: string[] | 'auto'
+  packages?: string[] | 'auto'
   /**
    * Exclude packages from workspace.
    */
@@ -64,7 +64,7 @@ export interface Workspace {
    * Keys for inheriting in packages.
    * @default {}
    */
-  package?: Omit<Options, 'workspace'>
+  config?: Omit<Options, 'workspace'>
 }
 
 /**
@@ -425,7 +425,7 @@ async function resolveWorkspace(
     source: string
   }[]
 > {
-  const { members = 'auto', exclude = [] } = workspace
+  const { packages: members = 'auto', exclude = [] } = workspace
   if (members === 'auto') {
     // const pkg = await readPackageJson(cwd)
     throw new Error('Unimplemented')
@@ -454,7 +454,7 @@ async function resolveWorkspace(
         })
         .then(async ({ config, sources }) => {
           if (typeof config === 'function') {
-            config = await config(workspace.package || {})
+            config = await config(workspace.config || {})
           }
           const configs = toArray(config, {})
           if (configs.some((config) => config.workspace)) {
