@@ -72,13 +72,6 @@ export type WorkspaceFn = (workspace: Workspace) => Awaitable<Workspace>
  * Options for tsdown.
  */
 export interface Options {
-  /// workspace options
-  /**
-   * Workspace configs.
-   * @default false
-   */
-  workspace?: Workspace | false
-
   /// build options
   entry?: InputOption
   external?: ExternalOption
@@ -258,7 +251,6 @@ async function resolveConfig(
   const subOptions = { ...subConfig, ...options }
 
   let {
-    workspace = {},
     entry,
     format = ['es'],
     plugins = [],
@@ -324,7 +316,6 @@ async function resolveConfig(
 
   const config: ResolvedOptions = {
     ...subOptions,
-    workspace,
     entry,
     plugins,
     format: normalizeFormat(format),
@@ -426,13 +417,13 @@ async function resolveWorkspace(
     source: string
   }[]
 > {
-  const { packages: members = 'auto', exclude = [] } = workspace
-  if (members === 'auto') {
+  const { packages = 'auto', exclude = [] } = workspace
+  if (packages === 'auto') {
     // const pkg = await readPackageJson(cwd)
     throw new Error('Unimplemented')
   }
 
-  const pkgDirs = await glob(members, {
+  const pkgDirs = await glob(packages, {
     cwd,
     absolute: true,
     onlyDirectories: true,
@@ -457,13 +448,7 @@ async function resolveWorkspace(
           if (typeof config === 'function') {
             config = await config(workspace.config || {})
           }
-          const configs = toArray(config, {})
-          if (configs.some((config) => config.workspace)) {
-            throw new Error(
-              `Multiple workspace configurations found in:\n   - ${dir}\n   - ${cwd}`,
-            )
-          }
-          return { configs, source: sources[0] }
+          return { configs: toArray(config, {}), source: sources[0] }
         }),
     ),
   )
