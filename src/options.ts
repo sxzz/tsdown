@@ -66,6 +66,7 @@ export interface Workspace {
    */
   config?: Omit<Options, 'workspace'>
 }
+export type WorkspaceFn = (workspace: Workspace) => Awaitable<Workspace>
 
 /**
  * Options for tsdown.
