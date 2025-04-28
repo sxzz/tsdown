@@ -14,6 +14,7 @@ import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
+import { LightningCSSPlugin } from './features/lightningcss'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -54,7 +55,15 @@ export async function build(userOptions: Options = {}): Promise<void> {
     debug('No config file found')
   }
 
-  const rebuilds = await Promise.all(configs.map(buildSingle))
+  let cleanPromise: Promise<void> | undefined
+  const clean = () => {
+    if (cleanPromise) return cleanPromise
+    return (cleanPromise = cleanOutDir(configs))
+  }
+
+  const rebuilds = await Promise.all(
+    configs.map((options) => buildSingle(options, clean)),
+  )
   const cleanCbs: (() => Promise<void>)[] = []
 
   for (const [i, config] of configs.entries()) {
@@ -83,12 +92,16 @@ export const pkgRoot: string = path.resolve(dirname, '..')
 /**
  * Build a single configuration, without watch and shortcuts features.
  *
+ * Internal API, not for public use
+ *
+ * @private
  * @param config Resolved options
  */
 export async function buildSingle(
   config: ResolvedOptions,
+  clean: () => Promise<void>,
 ): Promise<(() => Promise<void>) | undefined> {
-  const { outDir, format: formats, clean, dts, watch, onSuccess } = config
+  const { format: formats, dts, watch, onSuccess } = config
   let onSuccessCleanup: (() => any) | undefined
 
   const pkg = await readPackageJson(process.cwd())
@@ -103,9 +116,9 @@ export async function buildSingle(
     const startTime = performance.now()
 
     await hooks.callHook('build:prepare', context)
-
     onSuccessCleanup?.()
-    if (clean) await cleanOutDir(outDir, clean)
+
+    await clean()
 
     let hasErrors = false
     await Promise.all(
@@ -233,6 +246,14 @@ async function getBuildOptions(
 
   if (report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
+  }
+
+  if (target) {
+    plugins.push(
+      // Use Lightning CSS to handle CSS input. This is a temporary solution
+      // until Rolldown supports CSS syntax lowering natively.
+      LightningCSSPlugin({ target }),
+    )
   }
 
   plugins.push(userPlugins)

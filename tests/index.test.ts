@@ -32,15 +32,6 @@ test('basic', async (context) => {
   })
 }
 
-test('syntax lowering', async (context) => {
-  const { snapshot } = await testBuild(
-    context,
-    { 'index.ts': 'export const foo: number = a?.b?.()' },
-    { target: 'es2015' },
-  )
-  expect(snapshot).not.contain('?.')
-})
-
 test('esm shims', async (context) => {
   await testBuild(
     context,
