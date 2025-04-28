@@ -369,6 +369,9 @@ export async function resolveOptions(options: Options): Promise<{
     userConfigs.push({})
   }
 
+  debug('Loaded config file %s from %s', file, cwd)
+  debug('User configs %o', userConfigs)
+
   const workspaceConfigs = workspace
     ? await resolveWorkspace(workspace, cwd)
     : []
@@ -381,8 +384,15 @@ export async function resolveOptions(options: Options): Promise<{
     ),
   )
 
-  debug('Loaded config file %s from %s', file, cwd)
-  debug('User configs %o', userConfigs)
+  if (debug.enabled) {
+    for (const workspaceConfig of workspaceConfigs) {
+      debug(
+        'Workspace user configs %o from %s',
+        workspaceConfig.configs,
+        workspaceConfig.source,
+      )
+    }
+  }
 
   const configs = await Promise.all(
     userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
