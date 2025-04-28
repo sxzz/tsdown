@@ -239,6 +239,132 @@ export type ResolvedOptions = Omit<
   'config' | 'fromVite'
 >
 
+async function resolveConfig(
+  subConfig: Omit<Options, 'config'>,
+  options: Options,
+  cwd: string,
+): Promise<ResolvedOptions> {
+  const subOptions = { ...subConfig, ...options }
+
+  let {
+    workspace = {},
+    entry,
+    format = ['es'],
+    plugins = [],
+    clean = true,
+    silent = false,
+    treeshake = true,
+    platform = 'node',
+    outDir = 'dist',
+    sourcemap = false,
+    dts = false,
+    unused = false,
+    watch = false,
+    shims = false,
+    skipNodeModulesBundle = false,
+    publint = false,
+    fromVite,
+    alias,
+    tsconfig,
+    report = true,
+    target,
+    env = {},
+  } = subOptions
+
+  outDir = path.resolve(outDir)
+  entry = await resolveEntry(entry, cwd)
+
+  if (clean === true) {
+    clean = [outDir]
+  } else if (!clean) {
+    clean = []
+  }
+
+  if (publint === true) publint = {}
+
+  if (tsconfig !== false) {
+    if (tsconfig === true || tsconfig == null) {
+      const isSet = tsconfig
+      tsconfig = findTsconfig(cwd)
+      if (isSet && !tsconfig) {
+        logger.warn(`No tsconfig found in \`${cwd}\``)
+      }
+    } else {
+      const tsconfigPath = path.resolve(cwd, tsconfig)
+      if (await fsExists(tsconfigPath)) {
+        tsconfig = tsconfigPath
+      } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
+        logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
+        tsconfig = false
+      } else {
+        tsconfig = findTsconfig(cwd, tsconfig)
+        if (!tsconfig) {
+          logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
+        }
+      }
+    }
+
+    if (tsconfig) {
+      logger.info(`Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`)
+    }
+  }
+
+  if (fromVite) {
+    const viteUserConfig = await loadViteConfig(
+      fromVite === true ? 'vite' : fromVite,
+      cwd,
+    )
+    if (viteUserConfig) {
+      // const alias = viteUserConfig.resolve?.alias
+      if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
+        throw new TypeError(
+          'Unsupported resolve.alias in Vite config. Use object instead of array',
+        )
+      }
+
+      if (viteUserConfig.plugins) {
+        plugins = [viteUserConfig.plugins as any, plugins]
+      }
+
+      const viteAlias = viteUserConfig.resolve?.alias
+      if (
+        viteAlias &&
+        !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
+      ) {
+        alias = viteAlias
+      }
+    }
+  }
+
+  const config = {
+    ...subOptions,
+    workspace,
+    entry,
+    plugins,
+    format: normalizeFormat(format),
+    target: target ? resolveComma(toArray(target)) : undefined,
+    outDir,
+    clean,
+    silent,
+    treeshake,
+    platform,
+    sourcemap,
+    dts: dts === true ? {} : dts,
+    report: report === true ? {} : report,
+    unused,
+    watch,
+    shims,
+    skipNodeModulesBundle,
+    publint,
+    alias,
+    tsconfig,
+    cwd,
+    env,
+  }
+
+  return config
+}
+
 export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   file?: string
@@ -253,140 +379,23 @@ export async function resolveOptions(options: Options): Promise<{
     userConfigs.push({})
   }
 
-  const workspaceConfigs = workspace
-    ? await resolveWorkspace(workspace, cwd)
-    : []
+  const workspaces = workspace ? await resolveWorkspace(workspace, cwd) : []
   logger.info(
-    `Resolved ${workspaceConfigs.length} workspace ${
-      workspaceConfigs.length === 1 ? 'config' : 'configs'
+    `Resolved ${workspaces.length} workspace ${
+      workspaces.length === 1 ? 'config' : 'configs'
     } from:\n`,
-    ...workspaceConfigs.map((config) => `   - ${underline(config.source)}`),
+    ...workspaces.map((config) => `   - ${underline(config.source)}`),
   )
 
   const configs = await Promise.all(
-    userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
-      const subOptions = { ...subConfig, ...options }
-
-      let {
-        workspace = {},
-        entry,
-        format = ['es'],
-        plugins = [],
-        clean = true,
-        silent = false,
-        treeshake = true,
-        platform = 'node',
-        outDir = 'dist',
-        sourcemap = false,
-        dts = false,
-        unused = false,
-        watch = false,
-        shims = false,
-        skipNodeModulesBundle = false,
-        publint = false,
-        fromVite,
-        alias,
-        tsconfig,
-        report = true,
-        target,
-        env = {},
-      } = subOptions
-
-      outDir = path.resolve(outDir)
-      entry = await resolveEntry(entry, cwd)
-
-      if (clean === true) {
-        clean = [outDir]
-      } else if (!clean) {
-        clean = []
-      }
-
-      if (publint === true) publint = {}
-
-      if (tsconfig !== false) {
-        if (tsconfig === true || tsconfig == null) {
-          const isSet = tsconfig
-          tsconfig = findTsconfig(cwd)
-          if (isSet && !tsconfig) {
-            logger.warn(`No tsconfig found in \`${cwd}\``)
-          }
-        } else {
-          const tsconfigPath = path.resolve(cwd, tsconfig)
-          if (await fsExists(tsconfigPath)) {
-            tsconfig = tsconfigPath
-          } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
-            logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
-            tsconfig = false
-          } else {
-            tsconfig = findTsconfig(cwd, tsconfig)
-            if (!tsconfig) {
-              logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
-            }
-          }
-        }
-
-        if (tsconfig) {
-          logger.info(
-            `Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`,
-          )
-        }
-      }
-
-      if (fromVite) {
-        const viteUserConfig = await loadViteConfig(
-          fromVite === true ? 'vite' : fromVite,
-          cwd,
-        )
-        if (viteUserConfig) {
-          // const alias = viteUserConfig.resolve?.alias
-          if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
-            throw new TypeError(
-              'Unsupported resolve.alias in Vite config. Use object instead of array',
-            )
-          }
-
-          if (viteUserConfig.plugins) {
-            plugins = [viteUserConfig.plugins as any, plugins]
-          }
-
-          const viteAlias = viteUserConfig.resolve?.alias
-          if (
-            viteAlias &&
-            !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
-          ) {
-            alias = viteAlias
-          }
-        }
-      }
-
-      const config = {
-        ...subOptions,
-        workspace,
-        entry,
-        plugins,
-        format: normalizeFormat(format),
-        target: target ? resolveComma(toArray(target)) : undefined,
-        outDir,
-        clean,
-        silent,
-        treeshake,
-        platform,
-        sourcemap,
-        dts: dts === true ? {} : dts,
-        report: report === true ? {} : report,
-        unused,
-        watch,
-        shims,
-        skipNodeModulesBundle,
-        publint,
-        alias,
-        tsconfig,
-        cwd,
-        env,
-      }
-
-      return config
-    }),
+    userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
+  )
+  const workspaceConfigs = Promise.all(
+    workspaces
+      .map(({ configs, source }) =>
+        configs.map((config) => resolveConfig(config, options, source)),
+      )
+      .flat(),
   )
 
   return { configs, file }
@@ -397,7 +406,7 @@ async function resolveWorkspace(
   cwd: string,
 ): Promise<
   {
-    configs: UserConfig
+    configs: Omit<Options, 'config' | 'workspace'>[]
     source: string
   }[]
 > {
