@@ -12,7 +12,9 @@
 
 ## 启用 dts 生成
 
-您可以通过 CLI 中的 `--dts` 选项或在配置文件中设置 `dts: true` 来启用 `.d.ts` 生成。
+如果您的 `package.json` 中包含 `types` 或 `typings` 字段，`tsdown` 将**默认启用**声明文件的生成。
+
+您还可以通过 CLI 中的 `--dts` 选项或在配置文件中设置 `dts: true` 来显式启用 `.d.ts` 文件的生成。
 
 ### CLI
 
