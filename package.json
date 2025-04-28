@@ -100,7 +100,7 @@
     "prettier": "catalog:dev",
     "publint": "catalog:dev",
     "tsup": "catalog:dev",
-    "unbuild": "catalog:dev",
+    "unbuild": "catalog:prod",
     "tsx": "catalog:dev",
     "typedoc": "catalog:docs",
     "typedoc-plugin-markdown": "catalog:docs",

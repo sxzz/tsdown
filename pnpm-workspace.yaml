@@ -44,6 +44,7 @@ catalogs:
     tinyglobby: ^0.2.13
     unconfig: ^7.3.2
     unplugin-lightningcss: ^0.3.3
+    unbuild: ^3.5.0
 
 ignoredBuiltDependencies:
   - rolldown
