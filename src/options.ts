@@ -390,13 +390,16 @@ export async function resolveOptions(options: Options): Promise<{
   const configs = await Promise.all(
     userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
   )
-  const workspaceConfigs = Promise.all(
+  const workspaceConfigs = await Promise.all(
     workspaces
       .map(({ configs, source }) =>
-        configs.map((config) => resolveConfig(config, options, source)),
+        configs.map((config) =>
+          resolveConfig(config, options, path.dirname(source)),
+        ),
       )
       .flat(),
   )
+  console.log(workspaceConfigs)
 
   return { configs, file }
 }
