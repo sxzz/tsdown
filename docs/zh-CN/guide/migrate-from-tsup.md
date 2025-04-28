@@ -2,6 +2,8 @@
 
 [tsup](https://tsup.egoist.dev/) 是一个功能强大且广泛使用的打包器，与 `tsdown` 有许多相似之处。虽然 `tsup` 构建于 [esbuild](https://esbuild.github.io/) 之上，`tsdown` 则利用了 [Rolldown](https://rolldown.rs/) 的强大功能，提供了更**快速**且更**强大**的打包体验。
 
+## 迁移指南
+
 如果您当前正在使用 `tsup` 并希望迁移到 `tsdown`，迁移过程非常简单，因为 `tsdown` 提供了专门的 `migrate` 命令：
 
 ```bash
@@ -19,6 +21,22 @@ npx tsdown migrate
 - `--dry-run`（或 `-d`）：执行预览迁移（dry run），不会进行任何实际更改。
 
 通过这些选项，您可以轻松调整迁移过程以适应您的特定项目设置。
+
+## 与 tsup 的区别
+
+虽然 `tsdown` 旨在与 `tsup` 高度兼容，但仍有一些差异需要注意：
+
+### 默认值
+
+- **`format`**：默认值为 `esm`。
+- **`clean`**：默认启用，每次构建前会清理 `outDir`。
+- **`dts`**：如果您的 `package.json` 中包含 `typings` 或 `types` 字段，则会自动启用。
+
+### 功能差距
+
+`tsdown` 尚未实现 `tsup` 中的某些功能。如果您发现缺少某些您需要的选项，请 [提交问题](https://github.com/rolldown/tsdown/issues) 告诉我们您的需求。
+
+迁移后，请仔细检查您的配置以确保其符合您的预期。
 
 ## 致谢
 

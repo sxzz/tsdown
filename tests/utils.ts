@@ -56,6 +56,7 @@ export async function testBuild(
     entry: 'index.ts',
     config: false,
     outDir: 'dist',
+    dts: false,
     ...options,
   }
   await build(resolvedOptions)
