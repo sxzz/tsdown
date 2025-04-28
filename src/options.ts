@@ -429,9 +429,8 @@ async function resolveWorkspace(
   })
 
   const configs = await Promise.all(
-    // eslint-disable-next-line require-await we use Promise.all to parallelize the config loading
-    pkgDirs.map(async (dir) => {
-      return loadConfig
+    pkgDirs.map((dir) =>
+      loadConfig
         .async<UserConfig | UserConfigFn>({
           sources: [
             {
@@ -454,8 +453,8 @@ async function resolveWorkspace(
             )
           }
           return { configs, source: sources[0] }
-        })
-    }),
+        }),
+    ),
   )
 
   return configs
