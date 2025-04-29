@@ -164,7 +164,7 @@ export interface Options {
   /**
    * Compile-time env variables.
    * @example
-   * ```ts
+   * ```json
    * {
    *   "DEBUG": true,
    *   "NODE_ENV": "production"

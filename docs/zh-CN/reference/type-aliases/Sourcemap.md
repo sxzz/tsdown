@@ -2,4 +2,4 @@
 
 > **Sourcemap** = `boolean` \| `"inline"` \| `"hidden"`
 
-Defined in: [options.ts:41](https://github.com/rolldown/tsdown/blob/d75cd32d9160588e3d3446bf4f6be99024c1b65e/src/options.ts#L41)
+Defined in: [options.ts:41](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L41)
