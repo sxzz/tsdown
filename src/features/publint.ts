@@ -6,7 +6,10 @@ import type { Options as PublintOptions } from 'publint'
 
 const debug = Debug('tsdown:publint')
 
-export async function publint(pkg: PackageJson, options: PublintOptions): Promise<void> {
+export async function publint(
+  pkg: PackageJson,
+  options: PublintOptions,
+): Promise<void> {
   debug('Running publint')
   const { publint } = await import('publint')
   const { formatMessage } = await import('publint/utils')

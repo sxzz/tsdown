@@ -9,7 +9,6 @@ import {
   type OutputOptions,
   type RolldownPluginOption,
 } from 'rolldown'
-import type { Options as PublintOptions } from 'publint'
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
@@ -32,6 +31,7 @@ import {
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'
+import type { Options as PublintOptions } from 'publint'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 const debug = Debug('tsdown:main')
