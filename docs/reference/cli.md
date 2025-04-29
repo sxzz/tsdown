@@ -141,6 +141,14 @@ tsdown --env.NODE_ENV=production
 
 Note that environment variables defined with `--env.VAR_NAME` can only be accessed as `import.meta.env.VAR_NAME` or `process.env.VAR_NAME`.
 
-## `--debug [feat]`
+## `--debug [scope]`
 
 Show debug logs.
+
+## `--on-success <command>`
+
+Specify a command to run after a successful build. This is especially useful in watch mode to trigger additional scripts or actions automatically after each build completes.
+
+```bash
+tsdown --on-success "echo Build finished!"
+```

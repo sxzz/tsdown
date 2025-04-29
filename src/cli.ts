@@ -40,6 +40,7 @@ cli
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .option('--report', 'Size report', { default: true })
   .option('--env.* <value>', 'Define compile-time env variables')
+  .option('--on-success <command>', 'Command to run on success')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
