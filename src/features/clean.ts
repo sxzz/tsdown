@@ -11,9 +11,17 @@ export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
 
   for (const config of configs) {
     if (!config.clean.length) continue
-    const files = await glob(config.clean, { cwd: config.cwd, absolute: true })
+    const files = await glob(config.clean, {
+      cwd: config.cwd,
+      absolute: true,
+      onlyFiles: false,
+    })
+    const normalizedOutDir = config.outDir.replace(/\/$/, '')
     for (const file of files) {
-      removes.add(file)
+      const normalizedFile = file.replace(/\/$/, '')
+      if (normalizedFile !== normalizedOutDir) {
+        removes.add(file)
+      }
     }
   }
   if (!removes.size) return
