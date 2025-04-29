@@ -1,41 +1,32 @@
-import path from 'node:path'
-import type { Options } from '../options'
-import type {
-  NormalizedOutputOptions,
-  OutputBundle,
-  Plugin,
-  PluginContext,
-} from 'rolldown'
+import { RE_SHEBANG } from './shebang'
+import type { Plugin } from 'rolldown'
 
-export function StubPlugin(entry: Options['entry']): Plugin {
+export const RE_JS: RegExp = /\.([cm]?)jsx?$/
+function filename_js_to_dts(id: string): string {
+  return id.replace(RE_JS, '.d.$1ts')
+}
+
+export function StubPlugin(dts?: boolean): Plugin {
   return {
     name: 'tsdown:stub',
-    generateBundle(
-      this: PluginContext,
-      _: NormalizedOutputOptions,
-      bundle: OutputBundle,
-    ): void {
-      /**
-       * Generate a stub to each entry point.
-       */
-      let code = ''
-      // Entry is always a Record<string, string>
-      if (typeof entry === 'object') {
-        // eslint-disable-next-line unused-imports/no-unused-vars
-        for (const [_, file] of Object.entries(entry)) {
-          const fileName = path.basename(file)
-          code += `export * from "${path.resolve(fileName)}";\n`
-        }
-      }
 
-      /**
-       * Iterate over the bundle and replace the code for each chunk
-       */
-      for (const fileName of Object.keys(bundle)) {
-        if (bundle[fileName].type === 'chunk') {
-          bundle[fileName].code = code
-        }
+    transform(code) {
+      // preserve shebang only
+      const shebang = RE_SHEBANG.exec(code)?.[0]
+      return shebang || ''
+    },
+
+    renderChunk(code, chunk) {
+      if (code) code += '\n'
+      code += `export * from "${chunk.facadeModuleId}";\nexport { default } from "${chunk.facadeModuleId}";`
+      if (dts) {
+        this.emitFile({
+          type: 'asset',
+          fileName: filename_js_to_dts(chunk.fileName),
+          source: code,
+        })
       }
+      return code
     },
   }
 }

@@ -39,6 +39,7 @@ cli
   .option('-w, --watch [path]', 'Watch mode')
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .option('--report', 'Size report', { default: true })
+  .option('--stub', 'Enable stub mode')
   .option('--env.* <value>', 'Define compile-time env variables')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)

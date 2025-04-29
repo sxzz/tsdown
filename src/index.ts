@@ -208,7 +208,7 @@ async function getBuildOptions(
   } = config
 
   const plugins: RolldownPluginOption = []
-  if (config.pkg || config.skipNodeModulesBundle) {
+  if (!stub && (config.pkg || config.skipNodeModulesBundle)) {
     plugins.push(ExternalPlugin(config))
   }
 
@@ -222,39 +222,39 @@ async function getBuildOptions(
       plugins.push(dtsPlugin({ ...options, emitDtsOnly: true }))
     }
   }
+
   if (!cjsDts) {
-    if (!stub && unused) {
-      const { Unused } = await import('unplugin-unused')
-      plugins.push(Unused.rolldown(unused === true ? {} : unused))
+    if (!stub) {
+      if (unused) {
+        const { Unused } = await import('unplugin-unused')
+        plugins.push(Unused.rolldown(unused === true ? {} : unused))
+      }
+      if (target) {
+        plugins.push(
+          transformPlugin({
+            include: /\.[cm]?[jt]sx?$/,
+            exclude: /\.d\.[cm]?ts$/,
+            transformOptions: {
+              target,
+            },
+          }),
+
+          // Use Lightning CSS to handle CSS input. This is a temporary solution
+          // until Rolldown supports CSS syntax lowering natively.
+          LightningCSSPlugin({ target }),
+        )
+      }
     }
-    if (target) {
-      plugins.push(
-        transformPlugin({
-          include: /\.[cm]?[jt]sx?$/,
-          exclude: /\.d\.[cm]?ts$/,
-          transformOptions: {
-            target,
-          },
-        }),
-      )
-    }
+
     plugins.push(ShebangPlugin(cwd))
   }
 
   if (stub) {
-    plugins.push(StubPlugin(entry) as any)
+    plugins.push(StubPlugin(!!dts))
   }
 
   if (!stub && report && logger.level >= 3) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
-  }
-
-  if (target) {
-    plugins.push(
-      // Use Lightning CSS to handle CSS input. This is a temporary solution
-      // until Rolldown supports CSS syntax lowering natively.
-      LightningCSSPlugin({ target }),
-    )
   }
 
   plugins.push(userPlugins)
@@ -297,9 +297,9 @@ async function getBuildOptions(
     {
       format: cjsDts ? 'es' : format,
       name: config.globalName,
-      sourcemap,
+      sourcemap: stub ? false : sourcemap,
       dir: outDir,
-      minify: minify as any,
+      minify: stub ? false : minify,
       entryFileNames,
       chunkFileNames,
     },

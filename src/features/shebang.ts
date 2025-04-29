@@ -6,7 +6,7 @@ import { logger } from '../utils/logger'
 import { prettyFormat } from '../utils/package'
 import type { Plugin } from 'rolldown'
 
-const RE_SHEBANG = /^#!.*/
+export const RE_SHEBANG: RegExp = /^#!.*/
 
 export function ShebangPlugin(cwd: string): Plugin {
   return {
