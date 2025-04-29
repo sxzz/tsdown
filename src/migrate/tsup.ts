@@ -2,37 +2,10 @@ import { existsSync } from 'node:fs'
 import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import consola from 'consola'
-import { version } from '../package.json'
-import { migrateFromUnbuild } from './migrate-unbuild'
+import { version } from '../../package.json'
+import { renameKey } from '.'
 
-export async function migrate({
-  cwd,
-  dryRun,
-  from,
-}: {
-  cwd?: string
-  dryRun?: boolean
-  from?: 'tsup' | 'unbuild'
-}): Promise<void> {
-  // Default to tsup migration
-  if (dryRun) {
-    consola.info('Dry run enabled. No changes were made.')
-  } else {
-    const confirm = await consola.prompt(
-      'Please make sure to commit your changes before migrating. Continue?',
-      { type: 'confirm' },
-    )
-    if (!confirm) {
-      consola.error('Migration cancelled.')
-      process.exitCode = 1
-      return
-    }
-  }
-
-  if (cwd) process.chdir(cwd)
-  if (from === 'unbuild') {
-    return migrateFromUnbuild({ cwd, dryRun })
-  }
+export async function migrateTsup(dryRun?: boolean): Promise<void> {
   let migrated = await migratePackageJson(dryRun)
   if (await migrateTsupConfig(dryRun)) {
     migrated = true
@@ -126,6 +99,7 @@ const TSUP_FILES = [
   'tsup.config.mjs',
   'tsup.config.json',
 ]
+
 async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
   let found = false
 
@@ -158,22 +132,4 @@ async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
   }
 
   return found
-}
-
-// rename key but keep order
-export function renameKey(
-  obj: Record<string, any>,
-  oldKey: string,
-  newKey: string,
-  newValue?: any,
-): Record<string, any> {
-  const newObj: Record<string, any> = {}
-  for (const key of Object.keys(obj)) {
-    if (key === oldKey) {
-      newObj[newKey] = newValue || obj[oldKey]
-    } else {
-      newObj[key] = obj[key]
-    }
-  }
-  return newObj
 }

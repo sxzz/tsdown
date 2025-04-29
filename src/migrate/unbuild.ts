@@ -2,31 +2,10 @@ import { existsSync } from 'node:fs'
 import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import consola from 'consola'
-import { version } from '../package.json'
-import { renameKey } from "./migrate"
-export async function migrateFromUnbuild({
-  cwd,
-  dryRun,
-}: {
-  cwd?: string
-  dryRun?: boolean
-}): Promise<void> {
-  if (dryRun) {
-    consola.info('Dry run enabled. No changes were made.')
-  } else {
-    const confirm = await consola.prompt(
-      'Please make sure to commit your changes before migrating. Continue?',
-      { type: 'confirm' },
-    )
-    if (!confirm) {
-      consola.error('Migration cancelled.')
-      process.exitCode = 1
-      return
-    }
-  }
+import { version } from '../../package.json'
+import { renameKey } from '.'
 
-  if (cwd) process.chdir(cwd)
-
+export async function migrateUnbuild(dryRun?: boolean): Promise<void> {
   let migrated = await migratePackageJson(dryRun)
   if (await migrateUnbuildConfig(dryRun)) {
     migrated = true
@@ -121,23 +100,31 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
 
     // Replace unbuild imports with tsdown
     let tsdownConfig = unbuildConfigRaw
-      .replace(/from ["']unbuild["']/g, 'from "tsdown"')
-      .replace(/import\s*{\s*defineBuildConfig\s*}/g, 'import { defineConfig }')
-      .replace(/defineBuildConfig\(/g, 'defineConfig(')
+      .replaceAll(/from ["']unbuild["']/g, 'from "tsdown"')
+      .replaceAll(
+        /import\s*\{\s*defineBuildConfig\s*\}/g,
+        'import { defineConfig }',
+      )
+      .replaceAll('defineBuildConfig(', 'defineConfig(')
 
     // Replace unbuild specific options with tsdown equivalents
     // This is a simplified approach - might need to be expanded based on actual options mapping
     tsdownConfig = tsdownConfig
-      .replace(/builder:\s*["']mkdist["']/g, 'builder: "dts"')
-      .replace(/rollup:/g, 'rolldown:')
+      .replaceAll(/builder:\s*["']mkdist["']/g, 'builder: "dts"')
+      .replaceAll('rollup:', 'rolldown:')
 
-    const tsdownFileName = file.replace('build.config', 'tsdown.config');
+    const tsdownFileName = file.replace('build.config', 'tsdown.config')
 
     if (dryRun) {
       const { createTwoFilesPatch } = await import('diff')
       consola.info(`[dry-run] ${file} -> ${tsdownFileName}:`)
       console.info(
-        createTwoFilesPatch(file, tsdownFileName, unbuildConfigRaw, tsdownConfig),
+        createTwoFilesPatch(
+          file,
+          tsdownFileName,
+          unbuildConfigRaw,
+          tsdownConfig,
+        ),
       )
     } else {
       await writeFile(tsdownFileName, tsdownConfig, 'utf8')

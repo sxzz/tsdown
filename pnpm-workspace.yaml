@@ -42,10 +42,10 @@ catalogs:
     rolldown-plugin-dts: ^0.9.4
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
-    unconfig: ^7.3.2
-    unplugin-lightningcss: ^0.3.3
     unbuild: ^3.5.0
 
+    unconfig: ^7.3.2
+    unplugin-lightningcss: ^0.3.3
 ignoredBuiltDependencies:
   - rolldown
   - unrs-resolver
