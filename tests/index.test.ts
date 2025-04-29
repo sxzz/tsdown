@@ -256,3 +256,17 @@ test('minify', async (context) => {
   expect(snapshot).not.contains('true')
   expect(snapshot).not.contains('const foo')
 })
+
+test('iife and umd', async (context) => {
+  const files = { 'index.ts': `export const foo = true` }
+  const { outputFiles } = await testBuild(context, files, {
+    format: ['iife', 'umd'],
+    globalName: 'Lib',
+  })
+  expect(outputFiles).toMatchInlineSnapshot(`
+    [
+      "index.iife.js",
+      "index.umd.js",
+    ]
+  `)
+})

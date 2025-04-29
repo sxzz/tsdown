@@ -29,6 +29,7 @@ import type {
   InputOption,
   InputOptions,
   InternalModuleFormat,
+  MinifyOptions,
   ModuleFormat,
   OutputOptions,
 } from 'rolldown'
@@ -41,11 +42,6 @@ const debug = Debug('tsdown:options')
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
 export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
-export interface MinifyOptions {
-  mangle?: boolean
-  compress?: boolean
-  removeWhitespace?: boolean
-}
 
 /**
  * Options for tsdown workspace.
@@ -190,7 +186,7 @@ export interface Options {
   /**
    * Compile-time env variables.
    * @example
-   * ```ts
+   * ```json
    * {
    *   "DEBUG": true,
    *   "NODE_ENV": "production"
