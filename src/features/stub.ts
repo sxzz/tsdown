@@ -18,7 +18,9 @@ export function StubPlugin(dts?: boolean): Plugin {
 
     renderChunk(code, chunk) {
       if (code) code += '\n'
-      code += `export * from "${chunk.facadeModuleId}";\nexport { default } from "${chunk.facadeModuleId}";`
+
+      const entryId = chunk.moduleIds[0].replaceAll('\\', '/')
+      code += `export * from "${entryId}";\nexport { default } from "${entryId}";`
       if (dts) {
         this.emitFile({
           type: 'asset',
