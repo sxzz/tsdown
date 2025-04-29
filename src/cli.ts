@@ -33,7 +33,7 @@ cli
   .option('--platform <platform>', 'Target platform', {
     default: 'node',
   })
-  .option('--dts', 'Generate dts files', { default: false })
+  .option('--dts', 'Generate dts files')
   .option('--publint', 'Enable publint', { default: false })
   .option('--unused', 'Enable unused dependencies check', { default: false })
   .option('-w, --watch [path]', 'Watch mode')

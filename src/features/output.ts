@@ -1,6 +1,5 @@
 import { getPackageType, type PackageType } from '../utils/package'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
-import type { PackageJson } from 'pkg-types'
 import type { InputOptions, PreRenderedChunk } from 'rolldown'
 
 export interface OutExtensionContext {
@@ -14,8 +13,8 @@ export interface OutExtensionObject {
   dts?: string
 }
 export type OutExtensionFactory = (
-  ctx: OutExtensionContext,
-) => OutExtensionObject
+  context: OutExtensionContext,
+) => OutExtensionObject | undefined
 
 function resolveJsOutputExtension(
   packageType: PackageType,
@@ -33,10 +32,9 @@ function resolveJsOutputExtension(
 }
 
 export function resolveChunkFilename(
-  pkg: PackageJson | undefined,
+  { outExtensions, fixedExtension, pkg }: ResolvedOptions,
   inputOptions: InputOptions,
   format: NormalizedFormat,
-  { outExtensions, fixedExtension }: ResolvedOptions,
 ): [entry: ChunkFileName, chunk: ChunkFileName] {
   const packageType = getPackageType(pkg)
 
@@ -44,20 +42,22 @@ export function resolveChunkFilename(
   let dtsExtension: string | undefined
 
   if (outExtensions) {
-    const { js, dts } = outExtensions({
-      options: inputOptions,
-      format,
-      pkgType: packageType,
-    })
+    const { js, dts } =
+      outExtensions({
+        options: inputOptions,
+        format,
+        pkgType: packageType,
+      }) || {}
     jsExtension = js
     dtsExtension = dts
   }
 
   jsExtension ||= `.${resolveJsOutputExtension(packageType, format, fixedExtension)}`
 
+  const suffix = format === 'iife' || format === 'umd' ? `.${format}` : ''
   return [
-    createChunkFilename('[name]', jsExtension, dtsExtension),
-    createChunkFilename(`[name]-[hash]`, jsExtension, dtsExtension),
+    createChunkFilename(`[name]${suffix}`, jsExtension, dtsExtension),
+    createChunkFilename(`[name]${suffix}-[hash]`, jsExtension, dtsExtension),
   ]
 }
 

@@ -12,7 +12,9 @@ If you encounter any issues related to `.d.ts` generation, please report them di
 
 ## Enabling dts Generation
 
-You can enable `.d.ts` generation using the `--dts` option in the CLI or by setting `dts: true` in your configuration file.
+If your `package.json` contains a `types` or `typings` field, declaration file generation will be **enabled by default** in `tsdown`.
+
+You can also explicitly enable `.d.ts` generation using the `--dts` option in the CLI or by setting `dts: true` in your configuration file.
 
 ### CLI
 

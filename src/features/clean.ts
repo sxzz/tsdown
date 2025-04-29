@@ -1,29 +1,41 @@
-import { readdir } from 'node:fs/promises'
-import path from 'node:path'
 import Debug from 'debug'
 import { glob } from 'tinyglobby'
-import { fsExists, fsRemove } from '../utils/fs'
+import { fsRemove } from '../utils/fs'
 import { logger } from '../utils/logger'
+import type { Options, ResolvedOptions } from '../options'
 
 const debug = Debug('tsdown:clean')
 
-// clean cwd dir + patterns
-export async function cleanOutDir(
-  cwd: string,
-  patterns: string[],
-): Promise<void> {
-  const files = []
+export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
+  const removes = new Set<string>()
 
-  if (await fsExists(cwd))
-    files.push(...(await readdir(cwd)).map((file) => path.resolve(cwd, file)))
-
-  if (patterns.length) {
-    files.push(...(await glob(patterns, { cwd, absolute: true })))
+  for (const config of configs) {
+    if (!config.clean.length) continue
+    const files = await glob(config.clean, { cwd: config.cwd, absolute: true })
+    for (const file of files) {
+      removes.add(file)
+    }
   }
+  if (!removes.size) return
 
-  logger.info('Cleaning output folder')
-  for (const file of files) {
-    debug('Removing', file)
-    await fsRemove(file)
+  logger.info('Cleaning %d files', removes.size)
+  await Promise.all(
+    [...removes].map(async (file) => {
+      debug('Removing', file)
+      await fsRemove(file)
+    }),
+  )
+  debug('Removed %d files', removes.size)
+}
+
+export function resolveClean(
+  clean: Options['clean'],
+  outDir: string,
+): string[] {
+  if (clean === true) {
+    clean = [outDir]
+  } else if (!clean) {
+    clean = []
   }
+  return clean
 }

@@ -3,13 +3,14 @@ import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { underline } from 'ansis'
+import Debug from 'debug'
 import { loadConfig } from 'unconfig'
+import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
-import { fsExists } from './utils/fs'
+import { resolveTsconfig } from './features/tsconfig'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
-import { normalizeFormat } from './utils/package'
-import { findTsconfig } from './utils/tsconfig'
+import { normalizeFormat, readPackageJson } from './utils/package'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type { ReportOptions } from './features/report'
@@ -20,12 +21,14 @@ import type {
   Overwrite,
 } from './utils/types'
 import type { Hookable } from 'hookable'
+import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
 import type {
   ExternalOption,
   InputOption,
   InputOptions,
   InternalModuleFormat,
+  MinifyOptions,
   ModuleFormat,
   OutputOptions,
 } from 'rolldown'
@@ -33,14 +36,11 @@ import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
+const debug = Debug('tsdown:options')
+
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
 export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
-export interface MinifyOptions {
-  mangle?: boolean
-  compress?: boolean
-  removeWhitespace?: boolean
-}
 
 /**
  * Options for tsdown.
@@ -73,6 +73,11 @@ export interface Options {
   /** @default 'dist' */
   outDir?: string
   sourcemap?: Sourcemap
+  /**
+   * Clean directories before build.
+   *
+   * Default to output directory.
+   */
   clean?: boolean | string[]
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
@@ -130,7 +135,11 @@ export interface Options {
 
   /// addons
   /**
-   * Emit declaration files
+   * Emit TypeScript declaration files (.d.ts).
+   *
+   * By default, this feature is auto-detected based on the presence of the `types` field in the `package.json` file.
+   * - If the `types` field is present in `package.json`, declaration file emission is enabled.
+   * - If the `types` field is absent, declaration file emission is disabled by default.
    */
   dts?: boolean | DtsOptions
 
@@ -155,7 +164,7 @@ export interface Options {
   /**
    * Compile-time env variables.
    * @example
-   * ```ts
+   * ```json
    * {
    *   "DEBUG": true,
    *   "NODE_ENV": "production"
@@ -196,11 +205,12 @@ export type ResolvedOptions = Omit<
     {
       format: NormalizedFormat[]
       target?: string[]
-      clean: string[] | false
+      clean: string[]
       dts: false | DtsOptions
       report: false | ReportOptions
       tsconfig: string | false
       cwd: string
+      pkg?: PackageJson
     }
   >,
   'config' | 'fromVite'
@@ -215,6 +225,9 @@ export async function resolveOptions(options: Options): Promise<{
     userConfigs.push({})
   }
 
+  debug('Loaded config file %s from %s', file, cwd)
+  debug('User configs %o', userConfigs)
+
   const configs = await Promise.all(
     userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
       const subOptions = { ...subConfig, ...options }
@@ -223,13 +236,13 @@ export async function resolveOptions(options: Options): Promise<{
         entry,
         format = ['es'],
         plugins = [],
-        clean = false,
+        clean = true,
         silent = false,
         treeshake = true,
         platform = 'node',
         outDir = 'dist',
         sourcemap = false,
-        dts = false,
+        dts,
         unused = false,
         watch = false,
         shims = false,
@@ -243,38 +256,18 @@ export async function resolveOptions(options: Options): Promise<{
         env = {},
       } = subOptions
 
+      outDir = path.resolve(outDir)
       entry = await resolveEntry(entry, cwd)
-      if (clean === true) clean = []
-      if (publint === true) publint = {}
+      clean = resolveClean(clean, outDir)
 
-      if (tsconfig !== false) {
-        if (tsconfig === true || tsconfig == null) {
-          const isSet = tsconfig
-          tsconfig = findTsconfig(cwd)
-          if (isSet && !tsconfig) {
-            logger.warn(`No tsconfig found in \`${cwd}\``)
-          }
-        } else {
-          const tsconfigPath = path.resolve(cwd, tsconfig)
-          if (await fsExists(tsconfigPath)) {
-            tsconfig = tsconfigPath
-          } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
-            logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
-            tsconfig = false
-          } else {
-            tsconfig = findTsconfig(cwd, tsconfig)
-            if (!tsconfig) {
-              logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
-            }
-          }
-        }
+      const pkg = await readPackageJson(cwd)
 
-        if (tsconfig) {
-          logger.info(
-            `Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`,
-          )
-        }
+      if (dts == null) {
+        dts = !!(pkg?.types || pkg?.typings)
       }
+
+      tsconfig = await resolveTsconfig(tsconfig, cwd)
+      if (publint === true) publint = {}
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -303,13 +296,13 @@ export async function resolveOptions(options: Options): Promise<{
         }
       }
 
-      const config = {
+      const config: ResolvedOptions = {
         ...subOptions,
         entry,
         plugins,
         format: normalizeFormat(format),
         target: target ? resolveComma(toArray(target)) : undefined,
-        outDir: path.resolve(outDir),
+        outDir,
         clean,
         silent,
         treeshake,
@@ -326,6 +319,7 @@ export async function resolveOptions(options: Options): Promise<{
         tsconfig,
         cwd,
         env,
+        pkg,
       }
 
       return config

@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { green, underline } from 'ansis'
 import consola from 'consola'
 import { migrateTsup } from './tsup'
 import { migrateUnbuild } from './unbuild'
@@ -16,7 +17,9 @@ export async function migrate({
     consola.info('Dry run enabled. No changes were made.')
   } else {
     const confirm = await consola.prompt(
-      'Please make sure to commit your changes before migrating. Continue?',
+      `Before proceeding, review the migration guide at ${underline`https://tsdown.dev/guide/migrate-from-tsup`}, as this process will modify your files.\n` +
+        `Uncommitted changes will be lost. Use the ${green`--dry-run`} flag to preview changes without applying them.\n\n` +
+        'Continue?',
       { type: 'confirm' },
     )
     if (!confirm) {

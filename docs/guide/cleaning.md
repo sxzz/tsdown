@@ -1,14 +1,12 @@
 # Cleaning
 
-<!-- TODO enable clean by default -->
+By default, `tsdown` will **clean the output directory** (`outDir`) before each build. This ensures that any files from previous builds are removed, preventing outdated or unused files from remaining in your output.
 
-By default, `tsdown` does not clean the output folder for you. This means that if your bundling process generates files with different names compared to a previous build, the older files will remain in the output directory.
-
-To ensure the output directory is cleaned before building, you can use the `--clean` option:
+If you want to disable this behavior and keep existing files in the output directory, you can use the `--no-clean` option:
 
 ```bash
-tsdown --clean
+tsdown --no-clean
 ```
 
 > [!NOTE]
-> Using the `--clean` option will remove all files in the output directory before the build process begins. Make sure this behavior aligns with your project requirements to avoid accidentally deleting important files.
+> By default, all files in the output directory will be removed before the build process begins. Make sure this behavior aligns with your project requirements to avoid accidentally deleting important files.
