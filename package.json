@@ -104,7 +104,6 @@
     "typedoc": "catalog:docs",
     "typedoc-plugin-markdown": "catalog:docs",
     "typescript": "catalog:dev",
-    "unbuild": "catalog:prod",
     "unocss": "catalog:docs",
     "unplugin-unused": "catalog:dev",
     "vite": "catalog:docs",
