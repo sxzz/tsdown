@@ -98,14 +98,9 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
 
     const unbuildConfigRaw = await readFile(file, 'utf-8')
 
-    // Replace unbuild imports with tsdown
     let tsdownConfig = unbuildConfigRaw
-      .replaceAll(/from ["']unbuild["']/g, 'from "tsdown"')
-      .replaceAll(
-        /import\s*\{\s*defineBuildConfig\s*\}/g,
-        'import { defineConfig }',
-      )
-      .replaceAll('defineBuildConfig(', 'defineConfig(')
+      .replaceAll(/\bunbuild\b/g, 'tsdown')
+      .replaceAll(/\bdefineBuildConfig\b/g, 'defineConfig')
 
     // Replace unbuild specific options with tsdown equivalents
     // This is a simplified approach - might need to be expanded based on actual options mapping
@@ -113,23 +108,17 @@ async function migrateUnbuildConfig(dryRun?: boolean): Promise<boolean> {
       .replaceAll(/builder:\s*["']mkdist["']/g, 'builder: "dts"')
       .replaceAll('rollup:', 'rolldown:')
 
-    const tsdownFileName = file.replace('build.config', 'tsdown.config')
-
+    const renamed = file.replace('build', 'tsdown')
     if (dryRun) {
       const { createTwoFilesPatch } = await import('diff')
-      consola.info(`[dry-run] ${file} -> ${tsdownFileName}:`)
+      consola.info(`[dry-run] ${file} -> ${renamed}:`)
       console.info(
-        createTwoFilesPatch(
-          file,
-          tsdownFileName,
-          unbuildConfigRaw,
-          tsdownConfig,
-        ),
+        createTwoFilesPatch(file, renamed, unbuildConfigRaw, tsdownConfig),
       )
     } else {
-      await writeFile(tsdownFileName, tsdownConfig, 'utf8')
+      await writeFile(renamed, tsdownConfig, 'utf8')
       await unlink(file)
-      consola.success(`Migrated \`${file}\` to \`${tsdownFileName}\``)
+      consola.success(`Migrated \`${file}\` to \`${renamed}\``)
     }
   }
 
