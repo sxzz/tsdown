@@ -141,6 +141,14 @@ tsdown --env.NODE_ENV=production
 
 注意，使用 `--env.VAR_NAME` 设置的环境变量只能以 `import.meta.env.VAR_NAME` 或 `process.env.VAR_NAME` 访问。
 
-## `--debug [feat]`
+## `--debug [scope]`
 
 显示调试日志。
+
+## `--on-success <command>`
+
+在构建成功后执行指定命令。此选项在监听模式下尤其有用，可以在每次构建完成后自动触发额外的脚本或操作。
+
+```bash
+tsdown --on-success "echo Build finished!"
+```

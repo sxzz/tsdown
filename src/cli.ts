@@ -41,6 +41,7 @@ cli
   .option('--report', 'Size report', { default: true })
   .option('--stub', 'Enable stub mode')
   .option('--env.* <value>', 'Define compile-time env variables')
+  .option('--on-success <command>', 'Command to run on success')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
