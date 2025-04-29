@@ -17,7 +17,7 @@ export async function migrate({
     consola.info('Dry run enabled. No changes were made.')
   } else {
     const confirm = await consola.prompt(
-      `Before proceeding, review the migration guide at ${underline`https://tsdown.dev/guide/migrate-from-tsup`}, as this process will modify your files.\n` +
+      `Before proceeding, review the migration guide at ${underline`https://tsdown.dev/guide/migrate-from-${from}`}, as this process will modify your files.\n` +
         `Uncommitted changes will be lost. Use the ${green`--dry-run`} flag to preview changes without applying them.\n\n` +
         'Continue?',
       { type: 'confirm' },

@@ -51,11 +51,13 @@ cli
   })
 
 cli
-  .command('migrate [from]', 'Migrate from tsup or unbuild to tsdown')
+  .command('migrate', 'Migrate from tsup or unbuild to tsdown')
   .option('-c, --cwd <dir>', 'Working directory')
   .option('-d, --dry-run', 'Dry run')
+  .option('--tsup', 'Migrate from tsup, default')
+  .option('--unbuild', 'Migrate from unbuild')
   .action(async (args) => {
-    args.from = args.from || 'tsup'
+    args.from = args.unbuild ? 'unbuild' : 'tsup'
     const { migrate } = await import('./migrate')
     await migrate(args)
   })
