@@ -13,8 +13,8 @@ catalogs:
       specifier: ^2.2.1
       version: 2.2.1
     '@sxzz/test-utils':
-      specifier: ^0.5.5
-      version: 0.5.5
+      specifier: ^0.5.6
+      version: 0.5.6
     '@types/debug':
       specifier: ^4.1.12
       version: 4.1.12
@@ -187,7 +187,7 @@ importers:
         version: 2.2.1
       '@sxzz/test-utils':
         specifier: catalog:dev
-        version: 0.5.5(esbuild@0.25.3)(rolldown@1.0.0-beta.8-commit.852c603(typescript@5.8.3))(rollup@4.40.1)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.3)(tsx@4.19.4)(yaml@2.7.1))
+        version: 0.5.6(esbuild@0.25.3)(rolldown@1.0.0-beta.8-commit.852c603(typescript@5.8.3))(rollup@4.40.1)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.3)(tsx@4.19.4)(yaml@2.7.1))
       '@types/debug':
         specifier: catalog:dev
         version: 4.1.12
@@ -1183,8 +1183,8 @@ packages:
   '@sxzz/prettier-config@2.2.1':
     resolution: {integrity: sha512-4eKrQdzJpMOFrUD9rFm1IfVkpchPvnPOObJvnX+DQB0KHRtHbU0vBwSpOLHioxLPYFwJGjSl6NC0trrCDkCtsA==}
 
-  '@sxzz/test-utils@0.5.5':
-    resolution: {integrity: sha512-3oHM0DRUxGevwNInP+STIvTTHSTSpM+gFgBHpd3tSe7Ny7uD41O7+FNP7H+7uLFxo/Z12bTRh9NVRW3WmUnNdw==}
+  '@sxzz/test-utils@0.5.6':
+    resolution: {integrity: sha512-BikHJPOsAqwKIwG5Eg9s8STJMIlg0USi1AdKqTkj9oXt2b/fAK+fV2EVgL1CKD3WQq1622G21AZXWqVLHKC+Lg==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       esbuild: '>=0.20.0'
@@ -4410,7 +4410,7 @@ snapshots:
 
   '@sxzz/prettier-config@2.2.1': {}
 
-  '@sxzz/test-utils@0.5.5(esbuild@0.25.3)(rolldown@1.0.0-beta.8-commit.852c603(typescript@5.8.3))(rollup@4.40.1)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.3)(tsx@4.19.4)(yaml@2.7.1))':
+  '@sxzz/test-utils@0.5.6(esbuild@0.25.3)(rolldown@1.0.0-beta.8-commit.852c603(typescript@5.8.3))(rollup@4.40.1)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.3)(tsx@4.19.4)(yaml@2.7.1))':
     dependencies:
       tinyglobby: 0.2.13
       unplugin-utils: 0.2.4

@@ -2,7 +2,7 @@ catalogs:
   dev:
     '@sxzz/eslint-config': ^6.2.0
     '@sxzz/prettier-config': ^2.2.1
-    '@sxzz/test-utils': ^0.5.5
+    '@sxzz/test-utils': ^0.5.6
     '@types/debug': ^4.1.12
     '@types/diff': ^7.0.2
     '@types/node': ^22.15.3
