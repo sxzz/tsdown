@@ -42,6 +42,14 @@ pnpm install
 
 This template includes a ready-to-use configuration and best practices for building TypeScript libraries.
 
+## Try Online
+
+You can try tsdown directly in your browser using StackBlitz:
+
+[![tsdown-starter-stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz)
+
+This template is preconfigured for tsdown, so you can experiment and get started quickly—no local setup required.
+
 ## Using the CLI
 
 To verify that `tsdown` is installed correctly, run the following command in your project directory:
