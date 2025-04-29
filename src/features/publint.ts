@@ -2,13 +2,13 @@ import process from 'node:process'
 import Debug from 'debug'
 import { logger } from '../utils/logger'
 import type { PackageJson } from 'pkg-types'
-import type { Options as PublintOptions } from 'publint'
+import type { Options } from 'publint'
 
 const debug = Debug('tsdown:publint')
 
 export async function publint(
   pkg: PackageJson,
-  options: PublintOptions,
+  options?: Options,
 ): Promise<void> {
   debug('Running publint')
   const { publint } = await import('publint')
