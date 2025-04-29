@@ -6,14 +6,25 @@ import type { Options, ResolvedOptions } from '../options'
 
 const debug = Debug('tsdown:clean')
 
+const RE_LAST_SLASH = /[/\\]$/
+
 export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
   const removes = new Set<string>()
 
   for (const config of configs) {
     if (!config.clean.length) continue
-    const files = await glob(config.clean, { cwd: config.cwd, absolute: true })
+    const files = await glob(config.clean, {
+      cwd: config.cwd,
+      absolute: true,
+      onlyFiles: false,
+    })
+
+    const normalizedOutDir = config.outDir.replace(RE_LAST_SLASH, '')
     for (const file of files) {
-      removes.add(file)
+      const normalizedFile = file.replace(RE_LAST_SLASH, '')
+      if (normalizedFile !== normalizedOutDir) {
+        removes.add(file)
+      }
     }
   }
   if (!removes.size) return

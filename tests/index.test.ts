@@ -269,3 +269,17 @@ test('stub', async (context) => {
   })
   expect(snapshot).contains('export * from "[CWD]/tests/temp/stub/index.ts"')
 })
+
+test('iife and umd', async (context) => {
+  const files = { 'index.ts': `export const foo = true` }
+  const { outputFiles } = await testBuild(context, files, {
+    format: ['iife', 'umd'],
+    globalName: 'Lib',
+  })
+  expect(outputFiles).toMatchInlineSnapshot(`
+    [
+      "index.iife.js",
+      "index.umd.js",
+    ]
+  `)
+})

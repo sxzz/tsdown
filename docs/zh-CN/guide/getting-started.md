@@ -42,6 +42,14 @@ pnpm install
 
 该模板包含一个可直接使用的配置以及构建 TypeScript 库的最佳实践。
 
+## 在线体验
+
+你可以通过 StackBlitz 在线试用 tsdown：
+
+[![tsdown-starter-stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz)
+
+该模板已预配置好 tsdown，无需本地环境即可快速体验和测试。
+
 ## 使用 CLI
 
 要验证 `tsdown` 是否正确安装，请在项目目录中运行以下命令：
