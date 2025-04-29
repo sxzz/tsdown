@@ -153,7 +153,7 @@ export async function buildSingle(
 
     if (config.publint) {
       if (config.pkg) {
-        await publint(config.pkg)
+        await publint(config.pkg, config.publint === true ? {} : config.publint)
       } else {
         logger.warn('publint is enabled but package.json is not found')
       }
