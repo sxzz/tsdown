@@ -178,12 +178,13 @@ export interface Options {
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
 
   /**
-   * Remove `node:` protocol from import specifiers.
+   * If enabled, strips the `node:` protocol prefix from import source.
+   *
    * @default false
+   *
    * @example
-   * ```ts
-   * import('node:fs')
-   * // => import('fs')
+   * // With removeNodeProtocol enabled:
+   * import('node:fs'); // becomes import('fs')
    */
   removeNodeProtocol?: boolean
 }
