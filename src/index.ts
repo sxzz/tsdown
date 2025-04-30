@@ -15,6 +15,7 @@ import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
+import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -28,7 +29,6 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
-import { nodeProtocolPlugin } from './plugin/node-protocol'
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'
@@ -256,7 +256,7 @@ async function getBuildOptions(
   plugins.push(userPlugins)
 
   if (removeNodeProtocol) {
-    plugins.push(nodeProtocolPlugin())
+    plugins.push(NodeProtocolPlugin())
   }
 
   const inputOptions = await mergeUserOptions(

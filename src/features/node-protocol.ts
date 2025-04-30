@@ -1,12 +1,12 @@
 import type { Plugin } from 'rolldown'
 
 /**
- * The node: protocol was added to require in Node v14.18.0
- * https://nodejs.org/api/esm.html#node-imports
+ * The `node:` protocol was added in Node.js v14.18.0.
+ * @see https://nodejs.org/api/esm.html#node-imports
  */
-export const nodeProtocolPlugin = (): Plugin => {
+export const NodeProtocolPlugin = (): Plugin => {
   return {
-    name: 'node-protocol-plugin',
+    name: 'tsdown:node-protocol',
     transform(code) {
       let transformedCode = code.replaceAll(
         /from\s+['"]node:([^'"]+)['"]/g,
