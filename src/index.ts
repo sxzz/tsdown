@@ -14,6 +14,7 @@ import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
+import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -201,6 +202,7 @@ async function getBuildOptions(
     cwd,
     report,
     env,
+    removeNodeProtocol,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -250,6 +252,10 @@ async function getBuildOptions(
   }
 
   plugins.push(userPlugins)
+
+  if (removeNodeProtocol) {
+    plugins.push(NodeProtocolPlugin())
+  }
 
   const inputOptions = await mergeUserOptions(
     {
