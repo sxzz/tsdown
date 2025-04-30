@@ -28,6 +28,7 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
+import { nodeProtocolPlugin } from './plugin/node-protocol'
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'
@@ -203,6 +204,7 @@ async function getBuildOptions(
     cwd,
     report,
     env,
+    removeNodeProtocol,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -252,6 +254,10 @@ async function getBuildOptions(
   }
 
   plugins.push(userPlugins)
+
+  if (removeNodeProtocol) {
+    plugins.push(nodeProtocolPlugin())
+  }
 
   const inputOptions = await mergeUserOptions(
     {
