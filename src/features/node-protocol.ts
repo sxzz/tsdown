@@ -7,14 +7,15 @@ import type { Plugin } from 'rolldown'
 export function NodeProtocolPlugin(): Plugin {
   return {
     name: 'tsdown:node-protocol',
-    resolveId(id) {
-      if (id.startsWith('node:')) {
+    resolveId: {
+      filter: { id: /^node:/ },
+      handler(id) {
         return {
           id: id.slice(5),
           external: true,
           moduleSideEffects: false,
         }
-      }
+      },
     },
   }
 }
