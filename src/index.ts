@@ -28,6 +28,7 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
+import { copyPubDir, isInPublicDir } from './features/pubdir'
 import { ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'

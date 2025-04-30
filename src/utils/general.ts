@@ -11,6 +11,14 @@ export function toArray<T>(
     return [val]
   }
 }
+export function slash(path: string): string {
+  const isExtendedLengthPath = path.startsWith('\\\\?\\')
+
+  if (isExtendedLengthPath) {
+    return path
+  }
+  return path.replace(/\\/g, '/')
+}
 
 export function resolveComma<T extends string>(arr: T[]): T[] {
   return arr.flatMap((format) => format.split(',') as T[])
