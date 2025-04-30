@@ -184,7 +184,7 @@ export interface Options {
    *
    * @example
    * // With removeNodeProtocol enabled:
-   * import('node:fs'); // becomes import('fs')
+   * import('node:fs'); // becomes import('node')
    */
   removeNodeProtocol?: boolean
 }

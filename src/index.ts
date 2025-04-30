@@ -11,10 +11,8 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
-import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
-import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -28,7 +26,7 @@ import {
   type Options,
   type ResolvedOptions,
 } from './options'
-import { ShebangPlugin } from './plugins'
+import { ExternalPlugin, NodeProtocolPlugin, ShebangPlugin } from './plugins'
 import { logger, setSilent } from './utils/logger'
 import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
