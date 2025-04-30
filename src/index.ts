@@ -16,6 +16,7 @@ import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
 import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
+import { copyPublicDir } from './features/public-dir'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
@@ -148,15 +149,10 @@ export async function buildSingle(
       return
     }
 
-    await hooks.callHook('build:done', context)
+    await publint(config)
+    await copyPublicDir(config)
 
-    if (config.publint) {
-      if (config.pkg) {
-        await publint(config.pkg, config.publint === true ? {} : config.publint)
-      } else {
-        logger.warn('publint is enabled but package.json is not found')
-      }
-    }
+    await hooks.callHook('build:done', context)
 
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,

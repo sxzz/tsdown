@@ -13,6 +13,7 @@ import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
+import type { PublicDir, PublicDirFn } from './features/public-dir'
 import type { ReportOptions } from './features/report'
 import type {
   Arrayable,
@@ -123,7 +124,7 @@ export interface Options {
   onSuccess?: string | ((config: ResolvedOptions) => void | Promise<void>)
 
   /**
-   * Skip bundling node_modules.
+   * Skip bundling `node_modules`.
    */
   skipNodeModulesBundle?: boolean
 
@@ -173,6 +174,8 @@ export interface Options {
    */
   env?: Record<string, any>
 
+  publicDir?: PublicDir | PublicDirFn
+
   hooks?:
     | Partial<TsdownHooks>
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
@@ -213,6 +216,7 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
+      | 'publicDir'
     >,
     {
       format: NormalizedFormat[]
