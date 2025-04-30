@@ -8,16 +8,14 @@ export function NodeProtocolPlugin(): Plugin {
   return {
     name: 'tsdown:node-protocol',
     resolveId: {
-      filter: {
-        id: /^node:/,
-      },
+      filter: { id: /^node:/ },
       handler(id) {
         return {
           id: id.slice(5),
           external: true,
           moduleSideEffects: false,
         }
-      }
+      },
     },
   }
 }
