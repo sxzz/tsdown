@@ -62,7 +62,7 @@ export interface Workspace {
    */
   config?: Omit<Options, 'workspace'>
 }
-export type WorkspaceFn = (workspace: Workspace) => Awaitable<Workspace>
+export type WorkspaceFn = (options: Options) => Awaitable<Workspace>
 
 /**
  * Options for tsdown.
@@ -344,15 +344,55 @@ interface ResolvedProject {
   file?: string
 }
 export async function resolveOptions(options: Options): Promise<{
-  root: ResolvedProject
-  workspaces: ResolvedProject[]
+  root?: ResolvedProject
+  workspaces?: ResolvedProject[]
 }> {
-  const {
-    configs: userConfigs,
-    file,
-    cwd,
-    workspace,
-  } = await loadConfigFile(options)
+  const loadResult = await loadConfigFile(options)
+  const { file, cwd } = loadResult
+
+  if ('workspace' in loadResult) {
+    const workspace = loadResult.workspace
+    const workspaceConfigs = workspace
+      ? await resolveWorkspace(workspace, cwd)
+      : []
+
+    logger.info(
+      `Resolved ${workspaceConfigs.length} workspace ${
+        workspaceConfigs.length === 1 ? 'config' : 'configs'
+      } from:\n`,
+      ...workspaceConfigs.map(
+        (config) => `   - ${underline(path.relative(cwd, config.source))}`,
+      ),
+    )
+
+    if (debug.enabled) {
+      for (const workspaceConfig of workspaceConfigs) {
+        debug(
+          'Workspace user configs %o from %s',
+          workspaceConfig.configs,
+          workspaceConfig.source,
+        )
+      }
+    }
+
+    const workspaces = await Promise.all(
+      workspaceConfigs.map(async ({ configs, source }) => {
+        return {
+          configs: await Promise.all(
+            configs.map((config) =>
+              resolveConfig(config, options, path.dirname(source), cwd),
+            ),
+          ),
+          file: source,
+        }
+      }),
+    )
+
+    return { workspaces }
+  }
+
+  const userConfigs = loadResult.configs
+
   if (userConfigs.length === 0) {
     userConfigs.push({})
   }
@@ -360,47 +400,12 @@ export async function resolveOptions(options: Options): Promise<{
   debug('Loaded config file %s from %s', file, cwd)
   debug('User configs %o', userConfigs)
 
-  const workspaceConfigs = workspace
-    ? await resolveWorkspace(workspace, cwd)
-    : []
-  logger.info(
-    `Resolved ${workspaceConfigs.length} workspace ${
-      workspaceConfigs.length === 1 ? 'config' : 'configs'
-    } from:\n`,
-    ...workspaceConfigs.map(
-      (config) => `   - ${underline(path.relative(cwd, config.source))}`,
-    ),
-  )
-
-  if (debug.enabled) {
-    for (const workspaceConfig of workspaceConfigs) {
-      debug(
-        'Workspace user configs %o from %s',
-        workspaceConfig.configs,
-        workspaceConfig.source,
-      )
-    }
-  }
-
   const configs = await Promise.all(
     userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
-  )
-  const workspaces = await Promise.all(
-    workspaceConfigs.map(async ({ configs, source }) => {
-      return {
-        configs: await Promise.all(
-          configs.map((config) =>
-            resolveConfig(config, options, path.dirname(source), cwd),
-          ),
-        ),
-        file: source,
-      }
-    }),
   )
 
   return {
     root: { configs, file },
-    workspaces,
   }
 }
 
@@ -458,7 +463,17 @@ async function loadConfigFile(options: Options): Promise<{
   configs: ResolvedConfigs
   file?: string
   cwd: string
+}>
+async function loadConfigFile(options: Options): Promise<{
+  workspace: Workspace
+  file?: string
+  cwd: string
+}>
+async function loadConfigFile(options: Options): Promise<{
   workspace?: Workspace
+  configs?: ResolvedConfigs
+  file?: string
+  cwd: string
 }> {
   let cwd = process.cwd()
   let overrideConfig = false
@@ -482,6 +497,45 @@ async function loadConfigFile(options: Options): Promise<{
 
   const nativeTS =
     process.features.typescript || process.versions.bun || process.versions.deno
+
+  let { config: workspace, sources: workspaceSources } = await loadConfig
+    .async<Workspace | WorkspaceFn>({
+      sources: overrideConfig
+        ? [{ files: filePath as string, extensions: [] }]
+        : [
+            {
+              files: 'tsdown-workspace.config',
+              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+              parser:
+                loaded || !nativeTS
+                  ? 'auto'
+                  : async (filepath) => {
+                      const mod = await import(pathToFileURL(filepath).href)
+                      const config = mod.default || mod
+                      return config
+                    },
+            },
+            {
+              files: 'package.json',
+              extensions: [],
+              rewrite: (config: any) => config?.tsdown,
+            },
+          ],
+      cwd,
+      defaults: undefined,
+    })
+    .finally(() => (loaded = true))
+
+  if (workspace) {
+    if (typeof workspace === 'function') {
+      workspace = await workspace(options)
+    }
+    return {
+      cwd,
+      file: workspaceSources[0],
+      workspace,
+    }
+  }
 
   let { config, sources } = await loadConfig
     .async<UserConfig | UserConfigFn>({
@@ -520,23 +574,12 @@ async function loadConfigFile(options: Options): Promise<{
     config = await config(options)
   }
 
-  const configs = toArray(config, Object.create(null))
-
-  let workspace: Workspace | undefined = undefined
-  configs.forEach((config) => {
-    if (config.workspace) {
-      if (workspace !== undefined) {
-        throw new Error(`Multiple workspace configurations found in ${file}`)
-      }
-      workspace = config.workspace
-    }
-  })
+  const configs = toArray(config, {})
 
   return {
     configs,
     file,
     cwd,
-    workspace,
   }
 }
 
