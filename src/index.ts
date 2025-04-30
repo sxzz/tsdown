@@ -1,6 +1,5 @@
 import path from 'node:path'
 import process from 'node:process'
-import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
 import Debug from 'debug'
 import {
@@ -15,6 +14,7 @@ import { cleanOutDir } from './features/clean'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
+import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -86,8 +86,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
   }
 }
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
-export const pkgRoot: string = path.resolve(dirname, '..')
+export const pkgRoot: string = path.resolve(import.meta.dirname, '..')
 
 /**
  * Build a single configuration, without watch and shortcuts features.
@@ -205,6 +204,7 @@ async function getBuildOptions(
     report,
     env,
     stub,
+    removeNodeProtocol,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -258,6 +258,10 @@ async function getBuildOptions(
   }
 
   plugins.push(userPlugins)
+
+  if (removeNodeProtocol) {
+    plugins.push(NodeProtocolPlugin())
+  }
 
   const inputOptions = await mergeUserOptions(
     {

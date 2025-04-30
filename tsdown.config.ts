@@ -2,7 +2,7 @@ import { defineConfig } from './src/config.ts'
 
 export default defineConfig({
   entry: ['./src/{index,run,plugins,config}.ts'],
-  target: 'node18',
+  target: 'node20.18',
   platform: 'node',
   skipNodeModulesBundle: true,
   shims: true,

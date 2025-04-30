@@ -114,7 +114,7 @@
     "vue": "catalog:docs"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.18.0"
   },
   "prettier": "@sxzz/prettier-config"
 }

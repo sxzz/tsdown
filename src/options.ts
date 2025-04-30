@@ -178,6 +178,17 @@ export interface Options {
   hooks?:
     | Partial<TsdownHooks>
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
+
+  /**
+   * If enabled, strips the `node:` protocol prefix from import source.
+   *
+   * @default false
+   *
+   * @example
+   * // With removeNodeProtocol enabled:
+   * import('node:fs'); // becomes import('fs')
+   */
+  removeNodeProtocol?: boolean
 }
 
 /**
@@ -203,6 +214,7 @@ export type ResolvedOptions = Omit<
       | 'fixedExtension'
       | 'outExtensions'
       | 'hooks'
+      | 'removeNodeProtocol'
     >,
     {
       format: NormalizedFormat[]
