@@ -24,6 +24,14 @@ Disable loading a configuration file. This is useful if you want to rely solely 
 
 See also [Disabling the Config File](../guide/config-file.md#disabling-the-config-file).
 
+## `--tsconfig <tsconfig>`
+
+Specify the path or filename of your `tsconfig` file. `tsdown` will search upwards from the current directory to find the specified file. By default, it uses `tsconfig.json`.
+
+```bash
+tsdown --tsconfig tsconfig.build.json
+```
+
 ## `--format <format>`
 
 Define the bundle format. Supported formats include:

@@ -1,11 +1,16 @@
-import { access, cp, rm } from 'node:fs/promises'
+import { access, cp, rm, stat } from 'node:fs/promises'
 import { dirname, normalize, sep } from 'node:path'
+import type { Stats } from 'node:fs'
 
 export function fsExists(path: string): Promise<boolean> {
   return access(path).then(
     () => true,
     () => false,
   )
+}
+
+export function fsStat(path: string): Promise<Stats | null> {
+  return stat(path).catch(() => null)
 }
 
 export function fsRemove(path: string): Promise<void> {

@@ -43,6 +43,7 @@ cli
   .option('--on-success <command>', 'Command to run on success')
   .option('--copy <dir>', 'Copy files to output dir')
   .option('--public-dir <dir>', 'Alias for --copy, deprecated')
+  .option('--tsconfig <tsconfig>', 'Set tsconfig path')
   .action(async (input: string[], flags: Options) => {
     logger.setSilent(!!flags.silent)
     logger.info(

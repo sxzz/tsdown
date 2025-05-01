@@ -24,6 +24,14 @@ tsdown src/index.ts src/util.ts
 
 另请参阅 [禁用配置文件](../guide/config-file#禁用配置文件)。
 
+## `--tsconfig <tsconfig>`
+
+指定您的 `tsconfig` 文件的路径或文件名。`tsdown` 会从当前目录向上查找指定的文件。默认情况下使用 `tsconfig.json`。
+
+```bash
+tsdown --tsconfig tsconfig.build.json
+```
+
 ## `--format <format>`
 
 定义打包格式。支持的格式包括：
