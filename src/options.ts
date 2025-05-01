@@ -11,6 +11,7 @@ import { resolveTsconfig } from './features/tsconfig'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
+import type { CopyOptions, CopyOptionsFn } from './features/copy'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type { ReportOptions } from './features/report'
@@ -123,7 +124,7 @@ export interface Options {
   onSuccess?: string | ((config: ResolvedOptions) => void | Promise<void>)
 
   /**
-   * Skip bundling node_modules.
+   * Skip bundling `node_modules`.
    */
   skipNodeModulesBundle?: boolean
 
@@ -173,6 +174,22 @@ export interface Options {
    */
   env?: Record<string, any>
 
+  /**
+   * @deprecated Alias for `copy`, will be removed in the future.
+   */
+  publicDir?: CopyOptions | CopyOptionsFn
+
+  /**
+   * Copy files to another directory.
+   * @example
+   * ```ts
+   * [
+   *   'src/assets',
+   *   { from: 'src/assets', to: 'dist/assets' },
+   * ]
+   */
+  copy?: CopyOptions | CopyOptionsFn
+
   hooks?:
     | Partial<TsdownHooks>
     | ((hooks: Hookable<TsdownHooks>) => Awaitable<void>)
@@ -199,7 +216,7 @@ export type ResolvedConfigs = Extract<UserConfig, any[]>
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Options,
+      Omit<Options, 'publicDir'>,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -213,6 +230,7 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
+      | 'copy'
     >,
     {
       format: NormalizedFormat[]
@@ -266,6 +284,8 @@ export async function resolveOptions(options: Options): Promise<{
         report = true,
         target,
         env = {},
+        copy,
+        publicDir,
       } = subOptions
 
       outDir = path.resolve(outDir)
@@ -280,6 +300,16 @@ export async function resolveOptions(options: Options): Promise<{
 
       tsconfig = await resolveTsconfig(tsconfig, cwd)
       if (publint === true) publint = {}
+
+      if (publicDir) {
+        if (copy) {
+          throw new TypeError(
+            '`publicDir` is deprecated. Cannot be used with `copy`',
+          )
+        } else {
+          logger.warn('`publicDir` is deprecated. Use `copy` instead.')
+        }
+      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -332,6 +362,7 @@ export async function resolveOptions(options: Options): Promise<{
         cwd,
         env,
         pkg,
+        copy: publicDir || copy,
       }
 
       return config

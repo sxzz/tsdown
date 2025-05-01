@@ -11,6 +11,7 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
+import { copy } from './features/copy'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
@@ -148,15 +149,10 @@ export async function buildSingle(
       return
     }
 
-    await hooks.callHook('build:done', context)
+    await publint(config)
+    await copy(config)
 
-    if (config.publint) {
-      if (config.pkg) {
-        await publint(config.pkg, config.publint === true ? {} : config.publint)
-      } else {
-        logger.warn('publint is enabled but package.json is not found')
-      }
-    }
+    await hooks.callHook('build:done', context)
 
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
