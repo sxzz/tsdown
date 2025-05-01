@@ -59,10 +59,14 @@
   },
   "peerDependencies": {
     "publint": "^0.3.0",
+    "unplugin-lightningcss": "^0.3.3",
     "unplugin-unused": "^0.4.0"
   },
   "peerDependenciesMeta": {
     "publint": {
+      "optional": true
+    },
+    "unplugin-lightningcss": {
       "optional": true
     },
     "unplugin-unused": {
@@ -77,14 +81,12 @@
     "diff": "catalog:prod",
     "empathic": "catalog:prod",
     "hookable": "catalog:prod",
-    "lightningcss": "catalog:prod",
     "rolldown": "catalog:prod",
     "rolldown-plugin-dts": "catalog:prod",
     "semver": "catalog:prod",
     "tinyexec": "catalog:prod",
     "tinyglobby": "catalog:prod",
-    "unconfig": "catalog:prod",
-    "unplugin-lightningcss": "catalog:prod"
+    "unconfig": "catalog:prod"
   },
   "devDependencies": {
     "@sxzz/eslint-config": "catalog:dev",
@@ -97,6 +99,7 @@
     "@unocss/eslint-plugin": "catalog:docs",
     "bumpp": "catalog:dev",
     "eslint": "catalog:dev",
+    "lightningcss": "catalog:dev",
     "pkg-types": "catalog:dev",
     "prettier": "catalog:dev",
     "publint": "catalog:dev",
@@ -106,6 +109,7 @@
     "typedoc-plugin-markdown": "catalog:docs",
     "typescript": "catalog:dev",
     "unocss": "catalog:docs",
+    "unplugin-lightningcss": "catalog:dev",
     "unplugin-unused": "catalog:dev",
     "vite": "catalog:docs",
     "vitepress": "catalog:docs",

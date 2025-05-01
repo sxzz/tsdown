@@ -2,15 +2,12 @@
 
 The `target` setting determines which JavaScript and CSS features are downleveled (transformed to older syntax) and which are left intact in the output. This allows you to control the compatibility of your bundled code with specific environments or JavaScript versions.
 
-For example:
-
-- An arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
-- A CSS nesting `&` selector will be flattened if the target is `chrome108` or lower.
+For example, an arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
 
 > [!WARNING] Syntax Downgrade Only  
 > The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.
 
-### Customizing the Target
+## Customizing the Target
 
 You can specify the target using the `--target` option:
 
@@ -20,11 +17,9 @@ tsdown --target <target>
 
 ### Supported Targets
 
-`tsdown` supports a wide range of targets, including:
-
-- **ECMAScript versions:** `es5`, `es2015`, `es2020`, `esnext`, etc.
-- **Browser versions:** `chrome100`, `safari18`, `firefox110`, etc.
-- **Node.js versions:** `node20.18`, `node16`, etc.
+- ECMAScript versions: `es5`, `es2015`, `es2020`, `esnext`, etc.
+- Browser versions: `chrome100`, `safari18`, `firefox110`, etc.
+- Node.js versions: `node20.18`, `node16`, etc.
 
 ### Example
 
@@ -32,20 +27,32 @@ tsdown --target <target>
 tsdown --target es2020
 ```
 
-You can also pass an **array of targets** to ensure compatibility across multiple environments. For example:
+You can also pass an array of targets to ensure compatibility across multiple environments:
 
 ```bash
 tsdown --target chrome100 --target node20.18
 ```
 
-### Runtime Helpers
+## Runtime Helpers
 
-When downleveling certain modern JavaScript features, `tsdown` may require runtime helpers provided by the `@oxc-project/runtime` package. For example:
-
-- Transforming `await` expressions into older syntax requires the helper `@oxc-project/runtime/helpers/asyncToGenerator`.
+When downleveling certain modern JavaScript features, `tsdown` may require runtime helpers provided by the `@oxc-project/runtime` package. For example, transforming `await` expressions into older syntax requires the helper `@oxc-project/runtime/helpers/asyncToGenerator`.
 
 If your target includes features that require these helpers, you may need to install the `@oxc-project/runtime` package in your project:
 
 ```bash
 npm install @oxc-project/runtime
 ```
+
+# CSS Targeting
+
+`tsdown` can also downlevel CSS features to match your specified browser targets. For example, a CSS nesting `&` selector will be flattened if the target is `chrome108` or lower.
+
+To enable CSS downleveling, you need to manually install [`unplugin-lightningcss`](https://github.com/unplugin/unplugin-lightningcss):
+
+```bash
+npm install -D unplugin-lightningcss
+```
+
+Once installed, simply set your browser target (for example, `target: 'chrome100'`) in your configuration or CLI options, and CSS downleveling will be enabled automatically.
+
+For more information on browser targets and CSS compatibility, refer to the [Lightning CSS documentation](https://lightningcss.dev/).

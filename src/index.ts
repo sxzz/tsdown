@@ -243,7 +243,7 @@ async function getBuildOptions(
     plugins.push(
       // Use Lightning CSS to handle CSS input. This is a temporary solution
       // until Rolldown supports CSS syntax lowering natively.
-      LightningCSSPlugin({ target }),
+      await LightningCSSPlugin({ target }),
     )
   }
 

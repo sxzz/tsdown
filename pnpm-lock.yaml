@@ -33,6 +33,9 @@ catalogs:
     eslint:
       specifier: ^9.25.1
       version: 9.25.1
+    lightningcss:
+      specifier: ^1.29.3
+      version: 1.29.3
     pkg-types:
       specifier: ^2.1.0
       version: 2.1.0
@@ -51,6 +54,9 @@ catalogs:
     typescript:
       specifier: ~5.8.3
       version: 5.8.3
+    unplugin-lightningcss:
+      specifier: ^0.3.3
+      version: 0.3.3
     unplugin-unused:
       specifier: ^0.4.4
       version: 0.4.4
@@ -107,9 +113,6 @@ catalogs:
     hookable:
       specifier: ^5.5.3
       version: 5.5.3
-    lightningcss:
-      specifier: ^1.29.3
-      version: 1.29.3
     rolldown:
       specifier: 1.0.0-beta.8-commit.852c603
       version: 1.0.0-beta.8-commit.852c603
@@ -128,9 +131,6 @@ catalogs:
     unconfig:
       specifier: ^7.3.2
       version: 7.3.2
-    unplugin-lightningcss:
-      specifier: ^0.3.3
-      version: 0.3.3
 
 importers:
 
@@ -157,9 +157,6 @@ importers:
       hookable:
         specifier: catalog:prod
         version: 5.5.3
-      lightningcss:
-        specifier: catalog:prod
-        version: 1.29.3
       rolldown:
         specifier: catalog:prod
         version: 1.0.0-beta.8-commit.852c603(typescript@5.8.3)
@@ -178,9 +175,6 @@ importers:
       unconfig:
         specifier: catalog:prod
         version: 7.3.2
-      unplugin-lightningcss:
-        specifier: catalog:prod
-        version: 0.3.3
     devDependencies:
       '@sxzz/eslint-config':
         specifier: catalog:dev
@@ -212,6 +206,9 @@ importers:
       eslint:
         specifier: catalog:dev
         version: 9.25.1(jiti@2.4.2)
+      lightningcss:
+        specifier: catalog:dev
+        version: 1.29.3
       pkg-types:
         specifier: catalog:dev
         version: 2.1.0
@@ -239,6 +236,9 @@ importers:
       unocss:
         specifier: catalog:docs
         version: 66.1.0-beta.12(postcss@8.5.3)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.3)(tsx@4.19.4)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))
+      unplugin-lightningcss:
+        specifier: catalog:dev
+        version: 0.3.3
       unplugin-unused:
         specifier: catalog:dev
         version: 0.4.4
