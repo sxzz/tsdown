@@ -11,7 +11,7 @@ export interface CopyEntry {
 export type CopyOptions = Arrayable<string | CopyEntry>
 export type CopyOptionsFn = (options: ResolvedOptions) => Awaitable<CopyOptions>
 
-export async function copyPublicDir(options: ResolvedOptions): Promise<void> {
+export async function copy(options: ResolvedOptions): Promise<void> {
   if (!options.copy) return
 
   const copy: CopyOptions =

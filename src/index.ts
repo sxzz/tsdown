@@ -11,12 +11,12 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
+import { copy } from './features/copy'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
 import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
-import { copyPublicDir } from './features/copy'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
@@ -150,7 +150,7 @@ export async function buildSingle(
     }
 
     await publint(config)
-    await copyPublicDir(config)
+    await copy(config)
 
     await hooks.callHook('build:done', context)
 
