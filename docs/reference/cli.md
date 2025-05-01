@@ -152,3 +152,18 @@ Specify a command to run after a successful build. This is especially useful in 
 ```bash
 tsdown --on-success "echo Build finished!"
 ```
+
+## `--copy <dir>`
+
+Copies all files from the specified directory to the output directory. This is useful for including static assets such as images, stylesheets, or other resources in your build output.
+
+```bash
+tsdown --copy public
+```
+
+All contents of the `public` directory will be copied to your output directory (e.g., `dist`).
+
+## `--public-dir <dir>`
+
+An alias for `--copy`.  
+**Deprecated:** Please use `--copy` instead for better clarity and consistency.

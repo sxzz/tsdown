@@ -152,3 +152,18 @@ tsdown --env.NODE_ENV=production
 ```bash
 tsdown --on-success "echo Build finished!"
 ```
+
+## `--copy <dir>`
+
+将指定目录下的所有文件复制到输出目录。此功能适用于在构建输出中包含静态资源，如图片、样式表或其他资源。
+
+```bash
+tsdown --copy public
+```
+
+`public` 目录中的所有内容将被复制到您的输出目录（如 `dist`）。
+
+## `--public-dir <dir>`
+
+`--copy` 的别名。  
+**已废弃：** 为了更清晰和一致，建议使用 `--copy` 选项。
