@@ -175,8 +175,7 @@ export interface Options {
   env?: Record<string, any>
 
   /**
-   * @deprecated Use `copy` instead.
-   * Copy public directory to output directory.
+   * @deprecated Alias for `copy`, will be removed in the future.
    */
   publicDir?: CopyOptions | CopyOptionsFn
 
