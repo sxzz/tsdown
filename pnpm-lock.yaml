@@ -24,6 +24,9 @@ catalogs:
     '@types/node':
       specifier: ^22.15.3
       version: 22.15.3
+    '@types/semver':
+      specifier: ^7.7.0
+      version: 7.7.0
     bumpp:
       specifier: ^10.1.0
       version: 10.1.0
@@ -116,6 +119,9 @@ catalogs:
     rolldown-plugin-dts:
       specifier: ^0.9.7
       version: 0.9.7
+    semver:
+      specifier: ^7.7.1
+      version: 7.7.1
     tinyexec:
       specifier: ^1.0.1
       version: 1.0.1
@@ -166,6 +172,9 @@ importers:
       rolldown-plugin-dts:
         specifier: catalog:prod
         version: 0.9.7(rolldown@1.0.0-beta.8-commit.852c603(typescript@5.8.3))(typescript@5.8.3)
+      semver:
+        specifier: catalog:prod
+        version: 7.7.1
       tinyexec:
         specifier: catalog:prod
         version: 1.0.1
@@ -197,6 +206,9 @@ importers:
       '@types/node':
         specifier: catalog:dev
         version: 22.15.3
+      '@types/semver':
+        specifier: catalog:dev
+        version: 7.7.0
       '@unocss/eslint-plugin':
         specifier: catalog:docs
         version: 66.1.0-beta.12(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
@@ -1237,6 +1249,9 @@ packages:
 
   '@types/node@22.15.3':
     resolution: {integrity: sha512-lX7HFZeHf4QG/J7tBZqrCAXwz9J5RD56Y6MpP0eJkka8p+K0RY/yBTW7CYFJ4VGCclxqOLKmiGP5juQc6MKgcw==}
+
+  '@types/semver@7.7.0':
+    resolution: {integrity: sha512-k107IF4+Xr7UHjwDc7Cfd6PRQfbdkiRabXGRjo07b4WyPahFBZCZ1sE+BNxYIJPPg73UkfOsVOLwqVc/6ETrIA==}
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
@@ -4462,6 +4477,8 @@ snapshots:
   '@types/node@22.15.3':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/semver@7.7.0': {}
 
   '@types/unist@3.0.3': {}
 
