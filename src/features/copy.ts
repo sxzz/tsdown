@@ -14,12 +14,10 @@ export type CopyOptionsFn = (options: ResolvedOptions) => Awaitable<CopyOptions>
 export async function copyPublicDir(options: ResolvedOptions): Promise<void> {
   if (!options.copy) return
 
-  let copy: CopyOptions
-  if (typeof options.copy === 'function') {
-    copy = await options.copy(options)
-  } else {
-    copy = options.copy
-  }
+  const copy: CopyOptions =
+    typeof options.copy === 'function'
+      ? await options.copy(options)
+      : options.copy
 
   await Promise.all(
     toArray(copy).map((dir) => {
