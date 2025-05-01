@@ -7,6 +7,24 @@
 > [!WARNING] 仅限语法降级  
 > `target` 选项仅影响语法转换。它不会为目标环境中可能不存在的 API 提供运行时 polyfill 或 shim。例如，如果您的代码使用了 `Promise`，但目标环境不支持原生 `Promise`，则不会自动添加 polyfill。
 
+## 默认目标行为
+
+默认情况下，`tsdown` 会读取您的 `package.json` 中的 `engines.node` 字段，并自动将目标设置为所声明的最低兼容 Node.js 版本。这可以确保您的输出与您为包声明的运行环境兼容。
+
+例如，如果您的 `package.json` 包含：
+
+```json
+{
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+```
+
+那么 `tsdown` 会自动将目标设置为 `node18.0.0`。
+
+如果您希望覆盖此行为，可以通过 CLI 或配置文件显式指定目标。
+
 ## 自定义目标
 
 您可以使用 `--target` 选项指定目标：

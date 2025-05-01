@@ -7,6 +7,24 @@ For example, an arrow function `() => this` will be transformed into an equivale
 > [!WARNING] Syntax Downgrade Only  
 > The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.
 
+## Default Target Behavior
+
+By default, `tsdown` will read the `engines.node` field from your `package.json` and automatically set the target to the minimum compatible Node.js version specified. This ensures your output is compatible with the environments you declare for your package.
+
+For example, if your `package.json` contains:
+
+```json
+{
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+```
+
+Then `tsdown` will automatically set the target to `node18.0.0`.
+
+If you want to override this behavior, you can specify the target explicitly using the CLI or configuration file.
+
 ## Customizing the Target
 
 You can specify the target using the `--target` option:
