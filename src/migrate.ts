@@ -1,9 +1,10 @@
 import { existsSync } from 'node:fs'
 import { readFile, unlink, writeFile } from 'node:fs/promises'
 import process from 'node:process'
-import { green, underline } from 'ansis'
-import consola from 'consola'
+import { createInterface } from 'node:readline/promises'
+import { bold, green, underline } from 'ansis'
 import { version } from '../package.json'
+import { logger } from './utils/logger'
 
 export async function migrate({
   cwd,
@@ -13,16 +14,24 @@ export async function migrate({
   dryRun?: boolean
 }): Promise<void> {
   if (dryRun) {
-    consola.info('Dry run enabled. No changes were made.')
+    logger.info('Dry run enabled. No changes were made.')
   } else {
-    const confirm = await consola.prompt(
-      `Before proceeding, review the migration guide at ${underline`https://tsdown.dev/guide/migrate-from-tsup`}, as this process will modify your files.\n` +
-        `Uncommitted changes will be lost. Use the ${green`--dry-run`} flag to preview changes without applying them.\n\n` +
-        'Continue?',
-      { type: 'confirm' },
+    const rl = createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    logger.warn(
+      `\n\n` +
+        `Before proceeding, review the migration guide at ${underline`https://tsdown.dev/guide/migrate-from-tsup`}, as this process will modify your files.\n` +
+        `Uncommitted changes will be lost. Use the ${green`--dry-run`} flag to preview changes without applying them.`,
     )
+    const input = await rl.question(bold`Continue? (Y/n) `)
+    rl.close()
+
+    const confirm = input.toLowerCase() === 'y' || input === ''
     if (!confirm) {
-      consola.error('Migration cancelled.')
+      logger.error('Migration cancelled.')
       process.exitCode = 1
       return
     }
@@ -35,18 +44,18 @@ export async function migrate({
     migrated = true
   }
   if (migrated) {
-    consola.success(
+    logger.success(
       'Migration completed. Remember to run install command with your package manager.',
     )
   } else {
-    consola.error('No migration performed.')
+    logger.error('No migration performed.')
     process.exitCode = 1
   }
 }
 
 async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
   if (!existsSync('package.json')) {
-    consola.error('No package.json found')
+    logger.error('No package.json found')
     return false
   }
 
@@ -55,12 +64,12 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
   const semver = `^${version}`
   let found = false
   if (pkg.dependencies?.tsup) {
-    consola.info('Migrating `dependencies` to tsdown.')
+    logger.info('Migrating `dependencies` to tsdown.')
     found = true
     pkg.dependencies = renameKey(pkg.dependencies, 'tsup', 'tsdown', semver)
   }
   if (pkg.devDependencies?.tsup) {
-    consola.info('Migrating `devDependencies` to tsdown.')
+    logger.info('Migrating `devDependencies` to tsdown.')
     found = true
     pkg.devDependencies = renameKey(
       pkg.devDependencies,
@@ -70,7 +79,7 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
     )
   }
   if (pkg.peerDependencies?.tsup) {
-    consola.info('Migrating `peerDependencies` to tsdown.')
+    logger.info('Migrating `peerDependencies` to tsdown.')
     found = true
     pkg.peerDependencies = renameKey(
       pkg.peerDependencies,
@@ -82,7 +91,7 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
   if (pkg.scripts) {
     for (const key of Object.keys(pkg.scripts)) {
       if (pkg.scripts[key].includes('tsup')) {
-        consola.info(`Migrating \`${key}\` script to tsdown`)
+        logger.info(`Migrating \`${key}\` script to tsdown`)
         found = true
         pkg.scripts[key] = pkg.scripts[key].replaceAll(
           /tsup(?:-node)?/g,
@@ -92,24 +101,24 @@ async function migratePackageJson(dryRun?: boolean): Promise<boolean> {
     }
   }
   if (pkg.tsup) {
-    consola.info('Migrating `tsup` field in package.json to `tsdown`.')
+    logger.info('Migrating `tsup` field in package.json to `tsdown`.')
     found = true
     pkg = renameKey(pkg, 'tsup', 'tsdown')
   }
 
   if (!found) {
-    consola.warn('No tsup-related fields found in package.json')
+    logger.warn('No tsup-related fields found in package.json')
     return false
   }
 
   const pkgStr = `${JSON.stringify(pkg, null, 2)}\n`
   if (dryRun) {
     const { createPatch } = await import('diff')
-    consola.info('[dry-run] package.json:')
+    logger.info('[dry-run] package.json:')
     console.info(createPatch('package.json', pkgRaw, pkgStr))
   } else {
     await writeFile('package.json', pkgStr)
-    consola.success('Migrated `package.json`')
+    logger.success('Migrated `package.json`')
   }
   return true
 }
@@ -128,7 +137,7 @@ async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
 
   for (const file of TSUP_FILES) {
     if (!existsSync(file)) continue
-    consola.info(`Found \`${file}\``)
+    logger.info(`Found \`${file}\``)
     found = true
 
     const tsupConfigRaw = await readFile(file, 'utf-8')
@@ -139,19 +148,19 @@ async function migrateTsupConfig(dryRun?: boolean): Promise<boolean> {
     const renamed = file.replaceAll('tsup', 'tsdown')
     if (dryRun) {
       const { createTwoFilesPatch } = await import('diff')
-      consola.info(`[dry-run] ${file} -> ${renamed}:`)
+      logger.info(`[dry-run] ${file} -> ${renamed}:`)
       console.info(
         createTwoFilesPatch(file, renamed, tsupConfigRaw, tsupConfig),
       )
     } else {
       await writeFile(renamed, tsupConfig, 'utf8')
       await unlink(file)
-      consola.success(`Migrated \`${file}\` to \`${renamed}\``)
+      logger.success(`Migrated \`${file}\` to \`${renamed}\``)
     }
   }
 
   if (!found) {
-    consola.warn('No tsup config found')
+    logger.warn('No tsup config found')
   }
 
   return found

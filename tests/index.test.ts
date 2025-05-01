@@ -183,12 +183,12 @@ test('fromVite', async (context) => {
 test('resolve dependency for dts', async (context) => {
   const files = {
     'index.ts': `export type { GlobOptions } from 'tinyglobby'
-    export type * from 'consola'`,
+    export type * from 'unconfig'`,
   }
   const { snapshot } = await testBuild(context, files, {
     dts: { resolve: ['tinyglobby'] },
   })
-  expect(snapshot).contain(`export * from "consola"`)
+  expect(snapshot).contain(`export * from "unconfig"`)
 })
 
 test('resolve paths in tsconfig', async (context) => {

@@ -29,7 +29,7 @@ export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
   }
   if (!removes.size) return
 
-  logger.info('Cleaning %d files', removes.size)
+  logger.info(`Cleaning ${removes.size} files`)
   await Promise.all(
     [...removes].map(async (file) => {
       debug('Removing', file)

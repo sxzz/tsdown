@@ -30,7 +30,7 @@ import {
   type ResolvedOptions,
 } from './options'
 import { ShebangPlugin } from './plugins'
-import { logger, setSilent } from './utils/logger'
+import { logger } from './utils/logger'
 import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -41,7 +41,7 @@ const debug = Debug('tsdown:main')
  */
 export async function build(userOptions: Options = {}): Promise<void> {
   if (typeof userOptions.silent === 'boolean') {
-    setSilent(userOptions.silent)
+    logger.setSilent(userOptions.silent)
   }
 
   debug('Loading config')
@@ -235,7 +235,7 @@ async function getBuildOptions(
     plugins.push(ShebangPlugin(cwd))
   }
 
-  if (report && logger.level >= 3) {
+  if (report && !logger.silent) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 

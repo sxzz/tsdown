@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { blue } from 'ansis'
 import { debounce, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
@@ -16,8 +17,8 @@ export async function watchBuild(
   if (typeof options.watch === 'boolean' && options.outDir === cwd) {
     throw new Error(
       `Watch is enabled, but output directory is the same as the current working directory.` +
-        `Please specify a different watch directory using \`watch\` option,` +
-        `or set \`outDir\` to a different directory.`,
+        `Please specify a different watch directory using ${blue`watch`} option,` +
+        `or set ${blue`outDir`} to a different directory.`,
     )
   }
   const files = toArray(

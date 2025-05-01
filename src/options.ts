@@ -2,7 +2,7 @@ import { stat } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
-import { underline } from 'ansis'
+import { blue, underline } from 'ansis'
 import Debug from 'debug'
 import { loadConfig } from 'unconfig'
 import { resolveClean } from './features/clean'
@@ -328,7 +328,9 @@ export async function resolveOptions(options: Options): Promise<{
             '`publicDir` is deprecated. Cannot be used with `copy`',
           )
         } else {
-          logger.warn('`publicDir` is deprecated. Use `copy` instead.')
+          logger.warn(
+            `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
+          )
         }
       }
 

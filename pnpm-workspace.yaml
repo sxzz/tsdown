@@ -33,7 +33,6 @@ catalogs:
     ansis: ^3.17.0
     cac: ^6.7.14
     chokidar: ^4.0.3
-    consola: ^3.4.2
     debug: ^4.4.0
     diff: ^7.0.0
     empathic: ^1.0.0
