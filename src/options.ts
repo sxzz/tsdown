@@ -94,12 +94,16 @@ export interface Options {
    * @see {@link https://tsdown.dev/guide/target#supported-targets} for a list of valid targets and more details.
    *
    * @example
+   * ```jsonc
    * // Target a single environment
-   * target: 'node18'
+   * { "target": "node18" }
+   * ```
    *
    * @example
+   * ```jsonc
    * // Target multiple environments
-   * target: ['node18', 'es2020']
+   * { "target": ["node18", "es2020"] }
+   * ```
    */
   target?: string | string[]
 
@@ -207,6 +211,7 @@ export interface Options {
    *   'src/assets',
    *   { from: 'src/assets', to: 'dist/assets' },
    * ]
+   * ```
    */
   copy?: CopyOptions | CopyOptionsFn
 
