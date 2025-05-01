@@ -363,6 +363,7 @@ export async function resolveOptions(options: Options): Promise<{
         cwd,
         env,
         pkg,
+        copy: publicDir || copy,
       }
 
       return config

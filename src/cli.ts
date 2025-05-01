@@ -42,7 +42,7 @@ cli
   .option('--env.* <value>', 'Define compile-time env variables')
   .option('--on-success <command>', 'Command to run on success')
   .option(
-    '--public-dir',
+    '--public-dir <dir>',
     'Copy public directory to output dir, deprecated, use --copy instead',
   )
   .option('--copy <dir>', 'Copy files to output dir')
