@@ -11,9 +11,9 @@ import { resolveTsconfig } from './features/tsconfig'
 import { resolveComma, toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
+import type { CopyOptions, CopyOptionsFn } from './features/copy'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
-import type { PublicDir, PublicDirFn } from './features/public-dir'
 import type { ReportOptions } from './features/report'
 import type {
   Arrayable,
@@ -174,7 +174,22 @@ export interface Options {
    */
   env?: Record<string, any>
 
-  publicDir?: PublicDir | PublicDirFn
+  /**
+   * @deprecated Use `copy` instead.
+   * Copy public directory to output directory.
+   */
+  publicDir?: CopyOptions | CopyOptionsFn
+
+  /**
+   * Copy files to another directory.
+   * @example
+   * ```ts
+   * [
+   *   'src/assets',
+   *   { from: 'src/assets', to: 'dist/assets' },
+   * ]
+   */
+  copy?: CopyOptions | CopyOptionsFn
 
   hooks?:
     | Partial<TsdownHooks>
@@ -202,7 +217,7 @@ export type ResolvedConfigs = Extract<UserConfig, any[]>
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Options,
+      Omit<Options, 'publicDir'>,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -216,7 +231,7 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
-      | 'publicDir'
+      | 'copy'
     >,
     {
       format: NormalizedFormat[]
@@ -270,6 +285,8 @@ export async function resolveOptions(options: Options): Promise<{
         report = true,
         target,
         env = {},
+        copy,
+        publicDir,
       } = subOptions
 
       outDir = path.resolve(outDir)
@@ -284,6 +301,16 @@ export async function resolveOptions(options: Options): Promise<{
 
       tsconfig = await resolveTsconfig(tsconfig, cwd)
       if (publint === true) publint = {}
+
+      if (publicDir) {
+        if (copy) {
+          throw new TypeError(
+            '`publicDir` is deprecated. Cannot be used with `copy`',
+          )
+        } else {
+          logger.warn('`publicDir` is deprecated. Use `copy` instead.')
+        }
+      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(

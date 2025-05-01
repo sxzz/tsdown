@@ -41,6 +41,11 @@ cli
   .option('--report', 'Size report', { default: true })
   .option('--env.* <value>', 'Define compile-time env variables')
   .option('--on-success <command>', 'Command to run on success')
+  .option(
+    '--public-dir',
+    'Copy public directory to output dir, deprecated, use --copy instead',
+  )
+  .option('--copy <dir>', 'Copy files to output dir')
   .action(async (input: string[], flags: Options) => {
     setSilent(!!flags.silent)
     logger.info(
