@@ -1,4 +1,4 @@
-import minVersion from 'semver/ranges/min-version'
+import minVersion from 'semver/ranges/min-version.js'
 import { resolveComma, toArray } from '../utils/general'
 import type { PackageJson } from 'pkg-types'
 
