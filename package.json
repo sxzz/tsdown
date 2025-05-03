@@ -45,8 +45,8 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
-    "build": "tsx ./src/run.ts",
-    "dev": "tsx ./src/run.ts",
+    "build": "node --import @oxc-node/core/register ./src/run.ts",
+    "dev": "node --import @oxc-node/core/register ./src/run.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "format": "prettier --cache --write .",
@@ -89,6 +89,7 @@
     "unconfig": "catalog:prod"
   },
   "devDependencies": {
+    "@oxc-node/core": "catalog:dev",
     "@sxzz/eslint-config": "catalog:dev",
     "@sxzz/prettier-config": "catalog:dev",
     "@sxzz/test-utils": "catalog:dev",
@@ -104,7 +105,6 @@
     "prettier": "catalog:dev",
     "publint": "catalog:dev",
     "tsup": "catalog:dev",
-    "tsx": "catalog:dev",
     "typedoc": "catalog:docs",
     "typedoc-plugin-markdown": "catalog:docs",
     "typescript": "catalog:dev",
