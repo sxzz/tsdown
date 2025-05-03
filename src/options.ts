@@ -69,16 +69,18 @@ export interface Options {
       ) => Awaitable<InputOptions | void | null>)
 
   /// output options
-  /** @default 'es' */
+  /** @default ['es'] */
   format?: Format | Format[]
   globalName?: string
   /** @default 'dist' */
   outDir?: string
+  /** @default false */
   sourcemap?: Sourcemap
   /**
    * Clean directories before build.
    *
    * Default to output directory.
+   * @default true
    */
   clean?: boolean | string[]
   /** @default false */
@@ -135,11 +137,13 @@ export interface Options {
   treeshake?: boolean
   plugins?: InputOptions['plugins']
 
+  /** @default false */
   silent?: boolean
   /**
    * Config file path
    */
   config?: boolean | string
+  /** @default false */
   watch?: boolean | string | string[]
 
   /**
@@ -149,6 +153,7 @@ export interface Options {
 
   /**
    * Skip bundling `node_modules`.
+   * @default false
    */
   skipNodeModulesBundle?: boolean
 
@@ -171,12 +176,14 @@ export interface Options {
   /**
    * Enable unused dependencies check with `unplugin-unused`
    * Requires `unplugin-unused` to be installed.
+   * @default false
    */
   unused?: boolean | UnusedOptions
 
   /**
    * Run publint after bundling.
    * Requires `publint` to be installed.
+   * @default false
    */
   publint?: boolean | PublintOptions
 
