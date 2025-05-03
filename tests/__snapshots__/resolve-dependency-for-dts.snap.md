@@ -3,7 +3,7 @@
 ```ts
 export * from "unconfig";
 
-//#region ../../../node_modules/.pnpm/tinyglobby@0.2.13/node_modules/tinyglobby/dist/index.d.ts
+//#region ../../../node_modules/.pnpm/tinyglobby@0.2.13/node_modules/tinyglobby/dist/index.d.mts
 
 interface GlobOptions {
   absolute?: boolean;
