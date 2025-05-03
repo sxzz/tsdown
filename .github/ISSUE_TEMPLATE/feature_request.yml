@@ -1,5 +1,6 @@
 name: 🚀 New feature proposal
 description: Propose a new feature
+type: Feature
 labels: [enhancement]
 body:
   - type: markdown
