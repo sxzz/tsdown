@@ -321,6 +321,13 @@ export async function resolveOptions(options: Options): Promise<{
       } = subOptions
 
       outDir = path.resolve(outDir)
+      if (outDir === process.cwd()) {
+        throw new Error(
+          'Output directory cannot be the same as the current working directory. ' +
+            `Please specify a different watch directory using ${blue`watch`} option,` +
+            `or set ${blue`outDir`} to a different directory.`,
+        )
+      }
       entry = await resolveEntry(entry, cwd)
       clean = resolveClean(clean, outDir)
 

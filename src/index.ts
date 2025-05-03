@@ -1,7 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { blue, green } from 'ansis'
+import { green } from 'ansis'
 import Debug from 'debug'
 import {
   build as rolldownBuild,
@@ -54,16 +54,6 @@ export async function build(userOptions: Options = {}): Promise<void> {
     })
   } else {
     debug('No config file found')
-  }
-
-  for (const config of configs) {
-    if (config.outDir === process.cwd()) {
-      throw new Error(
-        'Output directory cannot be the same as the current working directory. ' +
-          `Please specify a different watch directory using ${blue`watch`} option,` +
-          `or set ${blue`outDir`} to a different directory.`,
-      )
-    }
   }
 
   let cleanPromise: Promise<void> | undefined
