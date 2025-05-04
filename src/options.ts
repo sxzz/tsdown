@@ -321,16 +321,23 @@ export async function resolveOptions(options: Options): Promise<{
       } = subOptions
 
       outDir = path.resolve(outDir)
-      if (outDir === process.cwd()) {
+      entry = await resolveEntry(entry, cwd)
+      clean = resolveClean(clean, outDir)
+      if (outDir === process.cwd() && (clean.length || watch)) {
+        let msg = ''
+        if (clean.length && watch) {
+          msg = 'Watch and clean are enabled, '
+        } else if (clean.length) {
+          msg = 'Clean is enabled, '
+        } else {
+          msg = 'Watch is enabled, '
+        }
         throw new Error(
-          'Output directory cannot be the same as the current working directory. ' +
+          `${msg}but output directory cannot be the same as the current working directory. ` +
             `Please specify a different watch directory using ${blue`watch`} option,` +
             `or set ${blue`outDir`} to a different directory.`,
         )
       }
-      entry = await resolveEntry(entry, cwd)
-      clean = resolveClean(clean, outDir)
-
       const pkg = await readPackageJson(cwd)
 
       if (dts == null) {
