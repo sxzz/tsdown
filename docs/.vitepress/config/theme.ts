@@ -74,6 +74,7 @@ export function getLocaleConfig(lang: string) {
             { text: t('Plugins'), link: '/plugins.md' },
             { text: t('Hooks'), link: '/hooks.md' },
             { text: t('Rolldown Options'), link: '/rolldown-options.md' },
+            { text: t('FAQ'), link: '/faq.md' },
           ],
         },
       ],
