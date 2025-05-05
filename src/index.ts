@@ -1,5 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
 import Debug from 'debug'
 import {
@@ -86,7 +87,8 @@ export async function build(userOptions: Options = {}): Promise<void> {
   }
 }
 
-export const pkgRoot: string = path.resolve(import.meta.dirname, '..')
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+export const pkgRoot: string = path.resolve(dirname, '..')
 
 /**
  * Build a single configuration, without watch and shortcuts features.

@@ -29,7 +29,7 @@ bun add -D tsdown
 :::
 
 :::tip 兼容性说明
-`tsdown` 需要 Node.js 版本 20.18 或更高。请确保您的开发环境满足此要求后再进行安装。
+`tsdown` 需要 Node.js 18 或更高。请确保您的开发环境满足此要求后再进行安装。
 `tsdown` 主要在 Node.js 下测试，但对 Deno 和 Bun 的支持仍为实验性，可能无法正常工作。
 :::
 
