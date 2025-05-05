@@ -3,8 +3,6 @@ import type { UserConfig, UserConfigFn } from './options'
 /**
  * Defines the configuration for tsdown.
  */
-export function defineConfig(options: UserConfig): UserConfig
-export function defineConfig(options: UserConfigFn): UserConfigFn
 export function defineConfig(
   options: UserConfig | UserConfigFn,
 ): UserConfig | UserConfigFn {
