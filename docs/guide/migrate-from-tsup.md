@@ -31,6 +31,7 @@ While `tsdown` aims to be highly compatible with `tsup`, there are some differen
 - **`format`**: Defaults to `esm`.
 - **`clean`**: Enabled by default and will clean the `outDir` before each build.
 - **`dts`**: Automatically enabled if your `package.json` contains a `typings` or `types` field.
+- **`target`**: By default, reads from the `engines.node` field in your `package.json` if available.
 
 ### Feature Gaps
 

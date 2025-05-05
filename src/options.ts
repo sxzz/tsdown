@@ -2,15 +2,17 @@ import { stat } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
-import { underline } from 'ansis'
+import { blue, underline } from 'ansis'
 import Debug from 'debug'
 import { loadConfig } from 'unconfig'
 import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
+import { resolveTarget } from './features/target'
 import { resolveTsconfig } from './features/tsconfig'
-import { resolveComma, toArray } from './utils/general'
+import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
+import type { CopyOptions, CopyOptionsFn } from './features/copy'
 import type { TsdownHooks } from './features/hooks'
 import type { OutExtensionFactory } from './features/output'
 import type { ReportOptions } from './features/report'
@@ -67,21 +69,46 @@ export interface Options {
       ) => Awaitable<InputOptions | void | null>)
 
   /// output options
-  /** @default 'es' */
+  /** @default ['es'] */
   format?: Format | Format[]
   globalName?: string
   /** @default 'dist' */
   outDir?: string
+  /** @default false */
   sourcemap?: Sourcemap
   /**
    * Clean directories before build.
    *
    * Default to output directory.
+   * @default true
    */
   clean?: boolean | string[]
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
+  /**
+   * Specifies the compilation target environment(s).
+   *
+   * Determines the JavaScript version or runtime(s) for which the code should be compiled.
+   * If not set, defaults to the value of `engines.node` in your project's `package.json`.
+   *
+   * Accepts a single target (e.g., `'es2020'`, `'node18'`) or an array of targets.
+   *
+   * @see {@link https://tsdown.dev/guide/target#supported-targets} for a list of valid targets and more details.
+   *
+   * @example
+   * ```jsonc
+   * // Target a single environment
+   * { "target": "node18" }
+   * ```
+   *
+   * @example
+   * ```jsonc
+   * // Target multiple environments
+   * { "target": ["node18", "es2020"] }
+   * ```
+   */
   target?: string | string[]
+
   define?: Record<string, string>
   /** @default false */
   shims?: boolean
@@ -112,11 +139,13 @@ export interface Options {
   treeshake?: boolean
   plugins?: InputOptions['plugins']
 
+  /** @default false */
   silent?: boolean
   /**
    * Config file path
    */
   config?: boolean | string
+  /** @default false */
   watch?: boolean | string | string[]
 
   /**
@@ -125,7 +154,8 @@ export interface Options {
   onSuccess?: string | ((config: ResolvedOptions) => void | Promise<void>)
 
   /**
-   * Skip bundling node_modules.
+   * Skip bundling `node_modules`.
+   * @default false
    */
   skipNodeModulesBundle?: boolean
 
@@ -148,12 +178,14 @@ export interface Options {
   /**
    * Enable unused dependencies check with `unplugin-unused`
    * Requires `unplugin-unused` to be installed.
+   * @default false
    */
   unused?: boolean | UnusedOptions
 
   /**
    * Run publint after bundling.
    * Requires `publint` to be installed.
+   * @default false
    */
   publint?: boolean | PublintOptions
 
@@ -174,6 +206,23 @@ export interface Options {
    * ```
    */
   env?: Record<string, any>
+
+  /**
+   * @deprecated Alias for `copy`, will be removed in the future.
+   */
+  publicDir?: CopyOptions | CopyOptionsFn
+
+  /**
+   * Copy files to another directory.
+   * @example
+   * ```ts
+   * [
+   *   'src/assets',
+   *   { from: 'src/assets', to: 'dist/assets' },
+   * ]
+   * ```
+   */
+  copy?: CopyOptions | CopyOptionsFn
 
   hooks?:
     | Partial<TsdownHooks>
@@ -201,7 +250,7 @@ export type ResolvedConfigs = Extract<UserConfig, any[]>
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Options,
+      Omit<Options, 'publicDir'>,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -215,6 +264,7 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
+      | 'copy'
     >,
     {
       format: NormalizedFormat[]
@@ -270,6 +320,8 @@ export async function resolveOptions(options: Options): Promise<{
         report = true,
         target,
         env = {},
+        copy,
+        publicDir,
       } = subOptions
 
       outDir = path.resolve(outDir)
@@ -284,6 +336,19 @@ export async function resolveOptions(options: Options): Promise<{
 
       tsconfig = await resolveTsconfig(tsconfig, cwd)
       if (publint === true) publint = {}
+      target = resolveTarget(target, pkg)
+
+      if (publicDir) {
+        if (copy) {
+          throw new TypeError(
+            '`publicDir` is deprecated. Cannot be used with `copy`',
+          )
+        } else {
+          logger.warn(
+            `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
+          )
+        }
+      }
 
       if (fromVite) {
         const viteUserConfig = await loadViteConfig(
@@ -317,7 +382,7 @@ export async function resolveOptions(options: Options): Promise<{
         entry,
         plugins,
         format: normalizeFormat(format),
-        target: target ? resolveComma(toArray(target)) : undefined,
+        target,
         outDir,
         clean,
         silent,
@@ -337,6 +402,7 @@ export async function resolveOptions(options: Options): Promise<{
         cwd,
         env,
         pkg,
+        copy: publicDir || copy,
       }
 
       return config

@@ -57,6 +57,7 @@ export async function testBuild(
     config: false,
     outDir: 'dist',
     dts: false,
+    silent: true,
     ...options,
   }
   await build(resolvedOptions)

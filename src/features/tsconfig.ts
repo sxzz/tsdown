@@ -1,7 +1,7 @@
 import path from 'node:path'
-import { underline } from 'ansis'
+import { blue, underline } from 'ansis'
 import { up as findUp } from 'empathic/find'
-import { fsExists } from '../utils/fs'
+import { fsStat } from '../utils/fs'
 import { logger } from '../utils/logger'
 import type { Options } from '../options'
 
@@ -16,24 +16,28 @@ export async function resolveTsconfig(
   tsconfig: Options['tsconfig'],
   cwd: string,
 ): Promise<string | false> {
+  const original = tsconfig
+
   if (tsconfig !== false) {
     if (tsconfig === true || tsconfig == null) {
-      const isSet = tsconfig
       tsconfig = findTsconfig(cwd)
-      if (isSet && !tsconfig) {
-        logger.warn(`No tsconfig found in \`${cwd}\``)
+      if (original && !tsconfig) {
+        logger.warn(`No tsconfig found in ${blue(cwd)}`)
       }
     } else {
       const tsconfigPath = path.resolve(cwd, tsconfig)
-      if (await fsExists(tsconfigPath)) {
+      const stat = await fsStat(tsconfigPath)
+      if (stat?.isFile()) {
         tsconfig = tsconfigPath
-      } else if (tsconfig.includes('\\') || tsconfig.includes('/')) {
-        logger.warn(`tsconfig \`${tsconfig}\` doesn't exist`)
-        tsconfig = false
+      } else if (stat?.isDirectory()) {
+        tsconfig = findTsconfig(tsconfigPath)
+        if (!tsconfig) {
+          logger.warn(`No tsconfig found in ${blue(tsconfigPath)}`)
+        }
       } else {
         tsconfig = findTsconfig(cwd, tsconfig)
         if (!tsconfig) {
-          logger.warn(`No \`${tsconfig}\` found in \`${cwd}\``)
+          logger.warn(`tsconfig ${blue(original)} doesn't exist`)
         }
       }
     }

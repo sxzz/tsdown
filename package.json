@@ -1,6 +1,6 @@
 {
   "name": "tsdown",
-  "version": "0.10.2",
+  "version": "0.11.0-beta.3",
   "packageManager": "pnpm@10.10.0",
   "description": "The Elegant Bundler for Libraries",
   "type": "module",
@@ -45,8 +45,8 @@
   "scripts": {
     "lint": "eslint --cache .",
     "lint:fix": "pnpm run lint --fix",
-    "build": "tsx ./src/run.ts",
-    "dev": "tsx ./src/run.ts",
+    "build": "node --import @oxc-node/core/register ./src/run.ts",
+    "dev": "node --import @oxc-node/core/register ./src/run.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "format": "prettier --cache --write .",
@@ -59,10 +59,14 @@
   },
   "peerDependencies": {
     "publint": "^0.3.0",
+    "unplugin-lightningcss": "^0.3.3",
     "unplugin-unused": "^0.4.0"
   },
   "peerDependenciesMeta": {
     "publint": {
+      "optional": true
+    },
+    "unplugin-lightningcss": {
       "optional": true
     },
     "unplugin-unused": {
@@ -73,38 +77,39 @@
     "ansis": "catalog:prod",
     "cac": "catalog:prod",
     "chokidar": "catalog:prod",
-    "consola": "catalog:prod",
     "debug": "catalog:prod",
     "diff": "catalog:prod",
     "empathic": "catalog:prod",
     "hookable": "catalog:prod",
-    "lightningcss": "catalog:prod",
     "rolldown": "catalog:prod",
     "rolldown-plugin-dts": "catalog:prod",
+    "semver": "catalog:prod",
     "tinyexec": "catalog:prod",
     "tinyglobby": "catalog:prod",
-    "unconfig": "catalog:prod",
-    "unplugin-lightningcss": "catalog:prod"
+    "unconfig": "catalog:prod"
   },
   "devDependencies": {
+    "@oxc-node/core": "catalog:dev",
     "@sxzz/eslint-config": "catalog:dev",
     "@sxzz/prettier-config": "catalog:dev",
     "@sxzz/test-utils": "catalog:dev",
     "@types/debug": "catalog:dev",
     "@types/diff": "catalog:dev",
     "@types/node": "catalog:dev",
+    "@types/semver": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:docs",
     "bumpp": "catalog:dev",
     "eslint": "catalog:dev",
+    "lightningcss": "catalog:dev",
     "pkg-types": "catalog:dev",
     "prettier": "catalog:dev",
     "publint": "catalog:dev",
     "tsup": "catalog:dev",
-    "tsx": "catalog:dev",
     "typedoc": "catalog:docs",
     "typedoc-plugin-markdown": "catalog:docs",
     "typescript": "catalog:dev",
     "unocss": "catalog:docs",
+    "unplugin-lightningcss": "catalog:dev",
     "unplugin-unused": "catalog:dev",
     "vite": "catalog:docs",
     "vitepress": "catalog:docs",

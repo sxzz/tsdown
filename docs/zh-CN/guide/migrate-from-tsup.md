@@ -31,6 +31,7 @@ npx tsdown migrate
 - **`format`**：默认值为 `esm`。
 - **`clean`**：默认启用，每次构建前会清理 `outDir`。
 - **`dts`**：如果您的 `package.json` 中包含 `typings` 或 `types` 字段，则会自动启用。
+- **`target`**：默认情况下，如果 `package.json` 中存在 `engines.node` 字段，则会读取该字段的值。
 
 ### 功能差距
 

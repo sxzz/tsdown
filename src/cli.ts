@@ -5,7 +5,7 @@ import debug from 'debug'
 import { VERSION as rolldownVersion } from 'rolldown'
 import { version } from '../package.json'
 import { resolveComma, toArray } from './utils/general'
-import { logger, setSilent } from './utils/logger'
+import { logger } from './utils/logger'
 import type { Options } from './options'
 
 const cli = cac('tsdown')
@@ -42,8 +42,11 @@ cli
   .option('--stub', 'Enable stub mode')
   .option('--env.* <value>', 'Define compile-time env variables')
   .option('--on-success <command>', 'Command to run on success')
+  .option('--copy <dir>', 'Copy files to output dir')
+  .option('--public-dir <dir>', 'Alias for --copy, deprecated')
+  .option('--tsconfig <tsconfig>', 'Set tsconfig path')
   .action(async (input: string[], flags: Options) => {
-    setSilent(!!flags.silent)
+    logger.setSilent(!!flags.silent)
     logger.info(
       `tsdown ${dim`v${version}`} powered by rolldown ${dim`v${rolldownVersion}`}`,
     )
@@ -85,7 +88,7 @@ export async function runCLI(): Promise<void> {
   try {
     await cli.runMatchedCommand()
   } catch (error) {
-    logger.fatal(error)
+    logger.error(error)
     process.exit(1)
   }
 }

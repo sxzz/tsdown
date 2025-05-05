@@ -24,6 +24,14 @@ tsdown src/index.ts src/util.ts
 
 另请参阅 [禁用配置文件](../guide/config-file#禁用配置文件)。
 
+## `--tsconfig <tsconfig>`
+
+指定您的 `tsconfig` 文件的路径或文件名。`tsdown` 会从当前目录向上查找指定的文件。默认情况下使用 `tsconfig.json`。
+
+```bash
+tsdown --tsconfig tsconfig.build.json
+```
+
 ## `--format <format>`
 
 定义打包格式。支持的格式包括：
@@ -152,3 +160,18 @@ tsdown --env.NODE_ENV=production
 ```bash
 tsdown --on-success "echo Build finished!"
 ```
+
+## `--copy <dir>`
+
+将指定目录下的所有文件复制到输出目录。此功能适用于在构建输出中包含静态资源，如图片、样式表或其他资源。
+
+```bash
+tsdown --copy public
+```
+
+`public` 目录中的所有内容将被复制到您的输出目录（如 `dist`）。
+
+## `--public-dir <dir>`
+
+`--copy` 的别名。  
+**已废弃：** 为了更清晰和一致，建议使用 `--copy` 选项。
