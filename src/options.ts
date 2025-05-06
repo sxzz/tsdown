@@ -107,7 +107,7 @@ export interface Options {
    * { "target": ["node18", "es2020"] }
    * ```
    */
-  target?: string | string[]
+  target?: string | string[] | false
 
   define?: Record<string, string>
   /** @default false */

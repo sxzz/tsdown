@@ -3,10 +3,11 @@ import { resolveComma, toArray } from '../utils/general'
 import type { PackageJson } from 'pkg-types'
 
 export function resolveTarget(
-  target: string | string[] | undefined,
+  target: string | string[] | false | undefined,
   pkg?: PackageJson,
 ): string[] | undefined {
-  if (!target) {
+  if (target === false) return
+  if (target == null) {
     const pkgTarget = resolvePackageTarget(pkg)
     if (pkgTarget) {
       target = pkgTarget
