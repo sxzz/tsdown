@@ -236,6 +236,12 @@ export interface Options {
    * import('node:fs'); // becomes import('fs')
    */
   removeNodeProtocol?: boolean
+
+  /**
+   * If enabled, appends hash to output files.
+   * @default true
+   */
+  hash?: boolean
 }
 
 /**
@@ -318,6 +324,7 @@ export async function resolveOptions(options: Options): Promise<{
         env = {},
         copy,
         publicDir,
+        hash,
       } = subOptions
 
       outDir = path.resolve(outDir)
@@ -398,6 +405,7 @@ export async function resolveOptions(options: Options): Promise<{
         env,
         pkg,
         copy: publicDir || copy,
+        hash: hash ?? true,
       }
 
       return config

@@ -345,3 +345,41 @@ test('remove node protocol', async (context) => {
   })
   expect(snapshot).not.contains('node:')
 })
+
+test('without hash and filename conflict', async (context) => {
+  const files = {
+    'index.ts': `
+      import { foo as utilsFoo } from './utils/foo.ts'
+      export * from './foo.ts'
+      export { utilsFoo }
+    `,
+    'run.ts': `
+      import { foo } from "./foo";
+      import { foo as utilsFoo } from "./utils/foo";
+
+      foo("hello world");
+      utilsFoo("hello world");
+    `,
+    'foo.ts': `
+      export const foo = (a: string) => {
+        console.log("foo:" + a)
+      }
+    `,
+    'utils/foo.ts': `
+      export const foo = (a: string) => {
+        console.log("utils/foo:" + a)
+      }
+    `,
+  }
+  const { outputFiles } = await testBuild(context, files, {
+    entry: ['index.ts', 'run.ts'],
+    hash: false,
+  })
+  expect(outputFiles).toMatchInlineSnapshot(`
+    [
+      "foo.js",
+      "index.js",
+      "run.js",
+    ]
+  `)
+})
