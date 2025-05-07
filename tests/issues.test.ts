@@ -36,8 +36,8 @@ test('#61', async (context) => {
 test('#206', async (context) => {
   const { outputFiles } = await testBuild({
     context,
-    fixtureName: 'issue-206',
-    relativeWorkingDir: 'packages/pkg2',
+    fixture: 'issue-206',
+    cwd: 'packages/pkg2',
     options: {
       entry: 'src/index.ts',
       outDir: 'dist',

@@ -38,10 +38,8 @@ export async function writeFixtures(
 
   if (fixtureName) {
     const fixtureDir = path.resolve(fixturesDir, fixtureName)
-    const filePaths = await glob('./**/*', {
+    const filePaths = await glob('**/*', {
       cwd: fixtureDir,
-      onlyFiles: true,
-      absolute: false,
       followSymbolicLinks: false,
     })
     files = Object.fromEntries(
@@ -68,14 +66,7 @@ export async function writeFixtures(
   return { testName, testDir }
 }
 
-export async function testBuild({
-  context,
-  files,
-  fixtureName,
-  options,
-  relativeWorkingDir,
-  beforeBuild,
-}: {
+export interface TestBuildOptions {
   context: TestContext
 
   /**
@@ -90,7 +81,7 @@ export async function testBuild({
    *
    * One of `files` or `fixtureName` must be provided.
    */
-  fixtureName?: string
+  fixture?: string
 
   /**
    * The options for the build.
@@ -102,23 +93,32 @@ export async function testBuild({
    *
    * @default '.'
    */
-  relativeWorkingDir?: string
+  cwd?: string
 
   /**
    * A function that will be called before the build.
    */
   beforeBuild?: () => Promise<void>
-}): Promise<{
+}
+
+export async function testBuild({
+  context,
+  files,
+  fixture,
+  options,
+  cwd,
+  beforeBuild,
+}: TestBuildOptions): Promise<{
   outputFiles: string[]
   outputDir: string
   snapshot: string
 }> {
   const { expect } = context
-  const { testName, testDir } = await writeFixtures(context, files, fixtureName)
+  const { testName, testDir } = await writeFixtures(context, files, fixture)
 
   const workingDirBefore = process.cwd()
 
-  const workingDir = path.join(testDir, relativeWorkingDir || '.')
+  const workingDir = path.join(testDir, cwd || '.')
   process.chdir(workingDir)
   const resolvedOptions: Options = {
     entry: 'index.ts',
