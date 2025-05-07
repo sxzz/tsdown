@@ -10,7 +10,7 @@ import type { RunnerTask, TestContext } from 'vitest'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const tmpDir = path.resolve(dirname, 'temp')
 const snapshotsDir = path.resolve(dirname, '__snapshots__')
-const fixturesDir = path.resolve(dirname, '__fixtures__')
+const fixturesDir = path.resolve(dirname, 'fixtures')
 
 function getTestFilename(task: RunnerTask) {
   return filenamify(task.name)
@@ -86,7 +86,7 @@ export async function testBuild({
   files?: Record<string, string>
 
   /**
-   * The directory name under `tests/__fixtures__` to use as a fixture.
+   * The directory name under `tests/fixtures` to use as a fixture.
    *
    * One of `files` or `fixtureName` must be provided.
    */

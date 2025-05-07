@@ -17,5 +17,5 @@
     "skipLibCheck": true
   },
   "include": ["src", "tests"],
-  "exclude": ["**/temp", "**/__fixtures__"]
+  "exclude": ["**/temp", "**/fixtures"]
 }
