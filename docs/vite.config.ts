@@ -19,6 +19,6 @@ export default defineConfig({
       ignoreFiles: ['index.md', 'README.md', 'zh-CN/**/*'],
       description: 'tsdown is an even faster bundler powered by Rolldown.',
       details: '',
-    }) as any,
+    }),
   ],
 })
