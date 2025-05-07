@@ -328,11 +328,10 @@ export async function resolveOptions(options: Options): Promise<{
       } = subOptions
 
       outDir = path.resolve(outDir)
-      entry = await resolveEntry(entry, cwd)
-      clean = resolveClean(clean, outDir)
+      clean = resolveClean(clean, outDir, cwd)
 
       const pkg = await readPackageJson(cwd)
-
+      entry = await resolveEntry(entry, cwd)
       if (dts == null) {
         dts = !!(pkg?.types || pkg?.typings)
       }

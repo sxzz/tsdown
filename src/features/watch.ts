@@ -1,4 +1,3 @@
-import process from 'node:process'
 import { blue } from 'ansis'
 import { debounce, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
@@ -13,16 +12,16 @@ export async function watchBuild(
   rebuild: () => void,
   restart: () => void,
 ): Promise<FSWatcher> {
-  const cwd = process.cwd()
-  if (typeof options.watch === 'boolean' && options.outDir === cwd) {
+  if (typeof options.watch === 'boolean' && options.outDir === options.cwd) {
     throw new Error(
       `Watch is enabled, but output directory is the same as the current working directory.` +
         `Please specify a different watch directory using ${blue`watch`} option,` +
         `or set ${blue`outDir`} to a different directory.`,
     )
   }
+
   const files = toArray(
-    typeof options.watch === 'boolean' ? cwd : options.watch,
+    typeof options.watch === 'boolean' ? options.cwd : options.watch,
   )
   logger.info(`Watching for changes in ${files.join(', ')}`)
   if (configFile) files.push(configFile)
