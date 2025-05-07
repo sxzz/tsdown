@@ -49,6 +49,5 @@ test('#206', async (context) => {
   })
   expect(outputFiles).toContain('index.d.ts')
   expect(outputFiles).toContain('index.js')
-  // TODO: the following line doesn't work because of bug https://github.com/rolldown/tsdown/issues/206
-  // expect(outputFiles).toHaveLength(2)
+  expect(outputFiles).toHaveLength(2)
 })
