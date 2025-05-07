@@ -1,6 +1,7 @@
 import Debug from 'debug'
 import { glob } from 'tinyglobby'
 import { fsRemove } from '../utils/fs'
+import { slash } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { Options, ResolvedOptions } from '../options'
 
@@ -44,7 +45,7 @@ export function resolveClean(
   outDir: string,
 ): string[] {
   if (clean === true) {
-    clean = [outDir]
+    clean = [slash(outDir)]
   } else if (!clean) {
     clean = []
   }
