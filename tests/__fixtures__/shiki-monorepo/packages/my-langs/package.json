@@ -4,7 +4,7 @@
   "type": "module",
   "exports": {
     "./css": "./css.mjs",
-    "./elixir": "./elixir.mjs"
+    "./html": "./html.mjs"
   },
   "sideEffects": false
 }
