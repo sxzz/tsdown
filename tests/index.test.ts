@@ -371,9 +371,13 @@ test('without hash and filename conflict', async (context) => {
       }
     `,
   }
-  const { outputFiles } = await testBuild(context, files, {
-    entry: ['index.ts', 'run.ts'],
-    hash: false,
+  const { outputFiles } = await testBuild({
+    context,
+    files,
+    options: {
+      entry: ['index.ts', 'run.ts'],
+      hash: false,
+    },
   })
   expect(outputFiles).toMatchInlineSnapshot(`
     [
