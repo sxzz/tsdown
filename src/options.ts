@@ -544,22 +544,18 @@ async function resolveWorkspace(
 
 let loaded = false
 
-async function loadConfigFile(options: Options): Promise<{
-  configs: ResolvedConfigs
-  file?: string
-  cwd: string
-}>
-async function loadConfigFile(options: Options): Promise<{
-  workspace: Workspace
-  file?: string
-  cwd: string
-}>
-async function loadConfigFile(options: Options): Promise<{
-  workspace?: Workspace
-  configs?: ResolvedConfigs
-  file?: string
-  cwd: string
-}> {
+export async function loadConfigFile(options: Options): Promise<
+  | {
+      configs: ResolvedConfigs
+      file?: string
+      cwd: string
+    }
+  | {
+      workspace: Workspace
+      file?: string
+      cwd: string
+    }
+> {
   let cwd = process.cwd()
   let overrideConfig = false
 
