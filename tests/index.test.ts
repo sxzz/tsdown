@@ -193,7 +193,8 @@ test('fromVite', async (context) => {
   const options = await resolveOptions({
     config: testDir,
   })
-  expect(options.root.configs).toMatchObject([
+  expect(options.root).toBeTruthy()
+  expect(options.root?.configs).toMatchObject([
     {
       fromVite: true,
       alias: {
