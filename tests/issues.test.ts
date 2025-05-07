@@ -1,5 +1,5 @@
 import { exec } from 'tinyexec'
-import { beforeEach, test } from 'vitest'
+import { beforeEach, expect, test } from 'vitest'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild } from './utils'
 
@@ -34,7 +34,7 @@ test('#61', async (context) => {
 })
 
 test('#206', async (context) => {
-  await testBuild({
+  const { outputFiles } = await testBuild({
     context,
     fixtureName: 'shiki-monorepo',
     relativeWorkingDir: 'packages/pkg2',
@@ -47,4 +47,8 @@ test('#206', async (context) => {
       await exec('pnpm', ['install'])
     },
   })
+  expect(outputFiles).toContain('index.d.ts')
+  expect(outputFiles).toContain('index.js')
+  // TODO: the following line doesn't work because of bug https://github.com/rolldown/tsdown/issues/206
+  // expect(outputFiles).toHaveLength(2)
 })
