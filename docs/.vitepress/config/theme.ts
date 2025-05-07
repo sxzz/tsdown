@@ -31,6 +31,7 @@ export function getLocaleConfig(lang: string) {
       text: t('API Reference'),
       link: `${urlPrefix}/reference/config-options.md`,
     },
+    { text: t('FAQ'), link: `${urlPrefix}/guide/faq.md` },
   ]
 
   const sidebar: DefaultTheme.SidebarItem[] = [
@@ -76,6 +77,7 @@ export function getLocaleConfig(lang: string) {
             { text: t('Rolldown Options'), link: '/rolldown-options.md' },
           ],
         },
+        { text: t('FAQ'), link: '/faq.md' },
       ],
     },
     {

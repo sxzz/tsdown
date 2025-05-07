@@ -24,6 +24,14 @@ Disable loading a configuration file. This is useful if you want to rely solely 
 
 See also [Disabling the Config File](../guide/config-file.md#disabling-the-config-file).
 
+## `--tsconfig <tsconfig>`
+
+Specify the path or filename of your `tsconfig` file. `tsdown` will search upwards from the current directory to find the specified file. By default, it uses `tsconfig.json`.
+
+```bash
+tsdown --tsconfig tsconfig.build.json
+```
+
 ## `--format <format>`
 
 Define the bundle format. Supported formats include:
@@ -141,6 +149,29 @@ tsdown --env.NODE_ENV=production
 
 Note that environment variables defined with `--env.VAR_NAME` can only be accessed as `import.meta.env.VAR_NAME` or `process.env.VAR_NAME`.
 
-## `--debug [feat]`
+## `--debug [scope]`
 
 Show debug logs.
+
+## `--on-success <command>`
+
+Specify a command to run after a successful build. This is especially useful in watch mode to trigger additional scripts or actions automatically after each build completes.
+
+```bash
+tsdown --on-success "echo Build finished!"
+```
+
+## `--copy <dir>`
+
+Copies all files from the specified directory to the output directory. This is useful for including static assets such as images, stylesheets, or other resources in your build output.
+
+```bash
+tsdown --copy public
+```
+
+All contents of the `public` directory will be copied to your output directory (e.g., `dist`).
+
+## `--public-dir <dir>`
+
+An alias for `--copy`.  
+**Deprecated:** Please use `--copy` instead for better clarity and consistency.

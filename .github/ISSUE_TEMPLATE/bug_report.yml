@@ -1,64 +1,45 @@
 name: 🐞 Bug report
 description: Report an issue
+type: Bug
 labels: [pending triage]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        **Before You Start...**
+
+        This form is only for submitting bug reports. If you have a usage question
+        or are unsure if this is really a bug, make sure to:
+        - Read the [docs](https://tsdown.dev/)
+        - Ask on [GitHub Discussions](https://github.com/rolldown/tsdown/discussions)
+
+        Also try to search for your issue - it may have already been answered or even fixed in the development branch.
+        However, if you find that an old, closed issue still persists in the latest version,
+        you should open a new issue using the form below instead of commenting on the old issue.
   - type: textarea
-    id: bug-description
+    id: reproduction-link-or-steps
     attributes:
-      label: Describe the bug
-      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell us in the description. Thanks!
-      placeholder: Bug description
-    validations:
-      required: true
-  - type: input
-    id: reproduction
-    attributes:
-      label: Reproduction
+      label: Reproduction link or steps
       description: |
-        A [minimal reproduction](https://stackoverflow.com/help/minimal-reproducible-example) is **required**, otherwise the issue might be closed without further notice. [**Why & How?**](https://antfu.me/posts/why-reproductions-are-required)
-        **必填，否则可能会被直接关闭。**
-      placeholder: Reproduction
+        - Use [StackBlitz](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz) to create a minimal reproduction and share the link.
+        - Or provide a minimal repository on GitHub that can reproduce the issue. You could use [this template](https://github.com/rolldown/tsdown-starter-stackblitz).
+      placeholder: Reproduction link or steps
     validations:
       required: true
   - type: textarea
-    id: system-info
+    id: expected
     attributes:
-      label: System Info
-      description: Output of `npx envinfo --system --binaries --browsers`
-      render: Shell
-      placeholder: System, Binaries, Browsers
+      label: What is expected?
     validations:
       required: true
-  - type: dropdown
-    id: package-manager
+  - type: textarea
+    id: actually-happening
     attributes:
-      label: Used Package Manager
-      description: Select the used package manager
-      options:
-        - npm
-        - yarn
-        - pnpm
-        - bun
-        - n/a
+      label: What is actually happening?
     validations:
       required: true
-  - type: checkboxes
-    id: checkboxes
+  - type: textarea
+    id: additional-comments
     attributes:
-      label: Validations
-      description: Before submitting the issue, please make sure you do the following
-      options:
-        - label: Follow our [Code of Conduct](https://github.com/sxzz/.github/blob/main/CODE_OF_CONDUCT.md)
-          required: true
-        - label: Read the [Contributing Guide](https://github.com/sxzz/contribute).
-          required: true
-        - label: Check that there isn't already an issue that reports the same bug to avoid creating a duplicate.
-          required: true
-        - label: Check that this is a concrete bug. For Q&A, please open a GitHub Discussion instead.
-          required: true
-        - label: The provided reproduction is a [minimal reproducible](https://stackoverflow.com/help/minimal-reproducible-example) of the bug.
-          required: true
+      label: Any additional comments?
+      description: e.g. some background/context of how you ran into this bug.

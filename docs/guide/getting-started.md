@@ -28,6 +28,10 @@ bun add -D tsdown
 
 :::
 
+:::tip Compatibility Note
+`tsdown` requires Node.js version 18 or higher. Please ensure your development environment meets this requirement before installing. While `tsdown` is primarily tested with Node.js, support for Deno and Bun is experimental and may not work as expected.
+:::
+
 ## Starter Template
 
 To get started even faster, you can use the [ts-starter](https://github.com/sxzz/ts-starter) template. This starter project is pre-configured for TypeScript library development with `tsdown`, allowing you to hit the ground running.
@@ -41,6 +45,14 @@ pnpm install
 ```
 
 This template includes a ready-to-use configuration and best practices for building TypeScript libraries.
+
+## Try Online
+
+You can try tsdown directly in your browser using StackBlitz:
+
+[![tsdown-starter-stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz)
+
+This template is preconfigured for tsdown, so you can experiment and get started quickly—no local setup required.
 
 ## Using the CLI
 

@@ -1,6 +1,6 @@
 # Interface: Options
 
-Defined in: [options.ts:48](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L48)
+Defined in: [options.ts:50](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L50)
 
 Options for tsdown.
 
@@ -10,7 +10,7 @@ Options for tsdown.
 
 > `optional` **alias**: `Record`\<`string`, `string`\>
 
-Defined in: [options.ts:58](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L58)
+Defined in: [options.ts:60](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L60)
 
 ***
 
@@ -18,11 +18,17 @@ Defined in: [options.ts:58](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **clean**: `boolean` \| `string`[]
 
-Defined in: [options.ts:81](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L81)
+Defined in: [options.ts:85](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L85)
 
 Clean directories before build.
 
 Default to output directory.
+
+#### Default
+
+```ts
+true
+```
 
 ***
 
@@ -30,9 +36,28 @@ Default to output directory.
 
 > `optional` **config**: `string` \| `boolean`
 
-Defined in: [options.ts:117](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L117)
+Defined in: [options.ts:145](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L145)
 
 Config file path
+
+***
+
+### copy?
+
+> `optional` **copy**: `CopyOptions` \| `CopyOptionsFn`
+
+Defined in: [options.ts:223](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L223)
+
+Copy files to another directory.
+
+#### Example
+
+```ts
+[
+  'src/assets',
+  { from: 'src/assets', to: 'dist/assets' },
+]
+```
 
 ***
 
@@ -40,7 +65,7 @@ Config file path
 
 > `optional` **define**: `Record`\<`string`, `string`\>
 
-Defined in: [options.ts:85](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L85)
+Defined in: [options.ts:112](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L112)
 
 ***
 
@@ -48,7 +73,7 @@ Defined in: [options.ts:85](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **dts**: `boolean` \| `Options`
 
-Defined in: [options.ts:144](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L144)
+Defined in: [options.ts:174](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L174)
 
 Emit TypeScript declaration files (.d.ts).
 
@@ -62,7 +87,7 @@ By default, this feature is auto-detected based on the presence of the `types` f
 
 > `optional` **entry**: `InputOption`
 
-Defined in: [options.ts:50](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L50)
+Defined in: [options.ts:52](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L52)
 
 ***
 
@@ -70,7 +95,7 @@ Defined in: [options.ts:50](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **env**: `Record`\<`string`, `any`\>
 
-Defined in: [options.ts:174](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L174)
+Defined in: [options.ts:206](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L206)
 
 Compile-time env variables.
 
@@ -89,7 +114,7 @@ Compile-time env variables.
 
 > `optional` **external**: `ExternalOption`
 
-Defined in: [options.ts:51](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L51)
+Defined in: [options.ts:53](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L53)
 
 ***
 
@@ -97,7 +122,7 @@ Defined in: [options.ts:51](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **fixedExtension**: `boolean`
 
-Defined in: [options.ts:95](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L95)
+Defined in: [options.ts:122](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L122)
 
 Use a fixed extension for output files.
 The extension will always be `.cjs` or `.mjs`.
@@ -115,12 +140,12 @@ false
 
 > `optional` **format**: [`Format`](./type-aliases/Format.md) \| [`Format`](./type-aliases/Format.md)[]
 
-Defined in: [options.ts:71](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L71)
+Defined in: [options.ts:73](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L73)
 
 #### Default
 
 ```ts
-'es'
+['es']
 ```
 
 ***
@@ -129,7 +154,7 @@ Defined in: [options.ts:71](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **fromVite**: `boolean` \| `"vitest"`
 
-Defined in: [options.ts:134](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L134)
+Defined in: [options.ts:164](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L164)
 
 Reuse config from Vite or Vitest (experimental)
 
@@ -145,7 +170,7 @@ false
 
 > `optional` **globalName**: `string`
 
-Defined in: [options.ts:72](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L72)
+Defined in: [options.ts:74](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L74)
 
 ***
 
@@ -153,7 +178,7 @@ Defined in: [options.ts:72](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **hooks**: `Partial`\<`TsdownHooks`\> \| (`hooks`) => `Awaitable`\<`void`\>
 
-Defined in: [options.ts:176](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L176)
+Defined in: [options.ts:225](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L225)
 
 ***
 
@@ -161,7 +186,7 @@ Defined in: [options.ts:176](https://github.com/rolldown/tsdown/blob/6f00871acd7
 
 > `optional` **inputOptions**: `InputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `InputOptions`\>
 
-Defined in: [options.ts:62](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L62)
+Defined in: [options.ts:64](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L64)
 
 ***
 
@@ -169,7 +194,7 @@ Defined in: [options.ts:62](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **minify**: `boolean` \| `BindingMinifyOptions` \| `"dce-only"`
 
-Defined in: [options.ts:83](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L83)
+Defined in: [options.ts:87](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L87)
 
 #### Default
 
@@ -183,7 +208,7 @@ false
 
 > `optional` **noExternal**: `Arrayable`\<`string` \| `RegExp`\> \| (`id`, `importer`) => `undefined` \| `null` \| `boolean` \| `void`
 
-Defined in: [options.ts:52](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L52)
+Defined in: [options.ts:54](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L54)
 
 ***
 
@@ -191,7 +216,7 @@ Defined in: [options.ts:52](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **onSuccess**: `string` \| (`config`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [options.ts:123](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L123)
+Defined in: [options.ts:152](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L152)
 
 You can specify command to be executed after a successful build, specially useful for Watch mode
 
@@ -201,7 +226,7 @@ You can specify command to be executed after a successful build, specially usefu
 
 > `optional` **outDir**: `string`
 
-Defined in: [options.ts:74](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L74)
+Defined in: [options.ts:76](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L76)
 
 #### Default
 
@@ -215,7 +240,7 @@ Defined in: [options.ts:74](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **outExtensions**: `OutExtensionFactory`
 
-Defined in: [options.ts:100](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L100)
+Defined in: [options.ts:127](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L127)
 
 Custom extensions for output files.
 `fixedExtension` will be overridden by this option.
@@ -226,7 +251,7 @@ Custom extensions for output files.
 
 > `optional` **outputOptions**: `OutputOptions` \| (`options`, `format`) => `Awaitable`\<`null` \| `void` \| `OutputOptions`\>
 
-Defined in: [options.ts:102](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L102)
+Defined in: [options.ts:129](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L129)
 
 ***
 
@@ -234,7 +259,7 @@ Defined in: [options.ts:102](https://github.com/rolldown/tsdown/blob/6f00871acd7
 
 > `optional` **platform**: `"node"` \| `"neutral"` \| `"browser"`
 
-Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L61)
+Defined in: [options.ts:63](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L63)
 
 #### Default
 
@@ -248,7 +273,19 @@ Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **plugins**: `RolldownPluginOption`\<`any`\>
 
-Defined in: [options.ts:111](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L111)
+Defined in: [options.ts:138](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L138)
+
+***
+
+### ~~publicDir?~~
+
+> `optional` **publicDir**: `CopyOptions` \| `CopyOptionsFn`
+
+Defined in: [options.ts:211](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L211)
+
+#### Deprecated
+
+Alias for `copy`, will be removed in the future.
 
 ***
 
@@ -256,10 +293,39 @@ Defined in: [options.ts:111](https://github.com/rolldown/tsdown/blob/6f00871acd7
 
 > `optional` **publint**: `boolean` \| `Options`
 
-Defined in: [options.ts:156](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L156)
+Defined in: [options.ts:188](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L188)
 
 Run publint after bundling.
 Requires `publint` to be installed.
+
+#### Default
+
+```ts
+false
+```
+
+***
+
+### removeNodeProtocol?
+
+> `optional` **removeNodeProtocol**: `boolean`
+
+Defined in: [options.ts:238](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L238)
+
+If enabled, strips the `node:` protocol prefix from import source.
+
+#### Default
+
+```ts
+false
+```
+
+#### Example
+
+```ts
+// With removeNodeProtocol enabled:
+import('node:fs'); // becomes import('fs')
+```
 
 ***
 
@@ -267,7 +333,7 @@ Requires `publint` to be installed.
 
 > `optional` **report**: `boolean` \| `ReportOptions`
 
-Defined in: [options.ts:162](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L162)
+Defined in: [options.ts:194](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L194)
 
 Enable size reporting after bundling.
 
@@ -283,7 +349,7 @@ true
 
 > `optional` **shims**: `boolean`
 
-Defined in: [options.ts:87](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L87)
+Defined in: [options.ts:114](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L114)
 
 #### Default
 
@@ -297,7 +363,13 @@ false
 
 > `optional` **silent**: `boolean`
 
-Defined in: [options.ts:113](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L113)
+Defined in: [options.ts:141](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L141)
+
+#### Default
+
+```ts
+false
+```
 
 ***
 
@@ -305,9 +377,15 @@ Defined in: [options.ts:113](https://github.com/rolldown/tsdown/blob/6f00871acd7
 
 > `optional` **skipNodeModulesBundle**: `boolean`
 
-Defined in: [options.ts:128](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L128)
+Defined in: [options.ts:158](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L158)
 
-Skip bundling node_modules.
+Skip bundling `node_modules`.
+
+#### Default
+
+```ts
+false
+```
 
 ***
 
@@ -315,7 +393,13 @@ Skip bundling node_modules.
 
 > `optional` **sourcemap**: [`Sourcemap`](./type-aliases/Sourcemap.md)
 
-Defined in: [options.ts:75](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L75)
+Defined in: [options.ts:78](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L78)
+
+#### Default
+
+```ts
+false
+```
 
 ***
 
@@ -323,7 +407,30 @@ Defined in: [options.ts:75](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **target**: `string` \| `string`[]
 
-Defined in: [options.ts:84](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L84)
+Defined in: [options.ts:110](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L110)
+
+Specifies the compilation target environment(s).
+
+Determines the JavaScript version or runtime(s) for which the code should be compiled.
+If not set, defaults to the value of `engines.node` in your project's `package.json`.
+
+Accepts a single target (e.g., `'es2020'`, `'node18'`) or an array of targets.
+
+#### See
+
+[https://tsdown.dev/guide/target#supported-targets](https://tsdown.dev/guide/target#supported-targets) for a list of valid targets and more details.
+
+#### Examples
+
+```jsonc
+// Target a single environment
+{ "target": "node18" }
+```
+
+```jsonc
+// Target multiple environments
+{ "target": ["node18", "es2020"] }
+```
 
 ***
 
@@ -331,7 +438,7 @@ Defined in: [options.ts:84](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **treeshake**: `boolean`
 
-Defined in: [options.ts:110](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L110)
+Defined in: [options.ts:137](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L137)
 
 #### Default
 
@@ -345,7 +452,7 @@ true
 
 > `optional` **tsconfig**: `string` \| `boolean`
 
-Defined in: [options.ts:59](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L59)
+Defined in: [options.ts:61](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L61)
 
 ***
 
@@ -353,10 +460,16 @@ Defined in: [options.ts:59](https://github.com/rolldown/tsdown/blob/6f00871acd7a
 
 > `optional` **unused**: `boolean` \| `Options`
 
-Defined in: [options.ts:150](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L150)
+Defined in: [options.ts:181](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L181)
 
 Enable unused dependencies check with `unplugin-unused`
 Requires `unplugin-unused` to be installed.
+
+#### Default
+
+```ts
+false
+```
 
 ***
 
@@ -364,4 +477,10 @@ Requires `unplugin-unused` to be installed.
 
 > `optional` **watch**: `string` \| `boolean` \| `string`[]
 
-Defined in: [options.ts:118](https://github.com/rolldown/tsdown/blob/6f00871acd7aada2e6f895db2db913b1dbe12c29/src/options.ts#L118)
+Defined in: [options.ts:147](https://github.com/rolldown/tsdown/blob/0f71a8dc0229b7ba9c44a19dc9cf6d7c3566fca2/src/options.ts#L147)
+
+#### Default
+
+```ts
+false
+```

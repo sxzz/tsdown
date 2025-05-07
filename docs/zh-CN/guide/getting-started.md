@@ -28,6 +28,11 @@ bun add -D tsdown
 
 :::
 
+:::tip 兼容性说明
+`tsdown` 需要 Node.js 18 或更高。请确保您的开发环境满足此要求后再进行安装。
+`tsdown` 主要在 Node.js 下测试，但对 Deno 和 Bun 的支持仍为实验性，可能无法正常工作。
+:::
+
 ## 起步模板
 
 为了更快速地开始，您可以使用 [ts-starter](https://github.com/sxzz/ts-starter) 模板。这个起步项目已经为使用 `tsdown` 进行 TypeScript 库开发预先配置好，让您可以快速上手。
@@ -41,6 +46,14 @@ pnpm install
 ```
 
 该模板包含一个可直接使用的配置以及构建 TypeScript 库的最佳实践。
+
+## 在线体验
+
+你可以通过 StackBlitz 在线试用 tsdown：
+
+[![tsdown-starter-stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz)
+
+该模板已预配置好 tsdown，无需本地环境即可快速体验和测试。
 
 ## 使用 CLI
 

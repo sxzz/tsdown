@@ -1,4 +1,4 @@
-name: 🚀 Release
+name: Release
 
 permissions:
   contents: write
@@ -13,24 +13,24 @@ jobs:
     name: 🚀 Release
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: 🛠️ Set node
+      - name: Set node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: 📝 Generate changelog
+      - name: Generate changelog
         run: npx changelogithub
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   # publish-jsr:
-  #   name: 🚀 Publish JSR
+  #   name: Publish JSR
   #   runs-on: ubuntu-latest
 
   #   permissions:
@@ -38,22 +38,22 @@ jobs:
   #     id-token: write
 
   #   steps:
-  #     - name: 📥 Checkout
+  #     - name: Checkout
   #       uses: actions/checkout@v4
   #       with:
   #         persist-credentials: false
 
-  #     - name: 📦 Install pnpm
+  #     - name: Install pnpm
   #       uses: pnpm/action-setup@v4.1.0
 
-  #     - name: 🛠️ Set node
+  #     - name: Set node
   #       uses: actions/setup-node@v4
   #       with:
   #         node-version: lts/*
   #         cache: pnpm
 
-  #     - name: 📦 Install dependencies
+  #     - name: Install dependencies
   #       run: pnpm install
 
-  #     - name: 🚀 Publish package
+  #     - name: Publish package
   #       run: npx jsr publish

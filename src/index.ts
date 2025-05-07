@@ -12,9 +12,11 @@ import {
 import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
+import { copy } from './features/copy'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
+import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
@@ -29,7 +31,7 @@ import {
   type ResolvedOptions,
 } from './options'
 import { ShebangPlugin } from './plugins'
-import { logger, setSilent } from './utils/logger'
+import { logger } from './utils/logger'
 import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -40,7 +42,7 @@ const debug = Debug('tsdown:main')
  */
 export async function build(userOptions: Options = {}): Promise<void> {
   if (typeof userOptions.silent === 'boolean') {
-    setSilent(userOptions.silent)
+    logger.setSilent(userOptions.silent)
   }
 
   debug('Loading config')
@@ -151,15 +153,10 @@ export async function buildSingle(
       return
     }
 
-    await hooks.callHook('build:done', context)
+    await publint(config)
+    await copy(config)
 
-    if (config.publint) {
-      if (config.pkg) {
-        await publint(config.pkg, config.publint === true ? {} : config.publint)
-      } else {
-        logger.warn('publint is enabled but package.json is not found')
-      }
-    }
+    await hooks.callHook('build:done', context)
 
     logger.success(
       `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
@@ -205,6 +202,7 @@ async function getBuildOptions(
     cwd,
     report,
     env,
+    removeNodeProtocol,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -241,7 +239,7 @@ async function getBuildOptions(
     plugins.push(ShebangPlugin(cwd))
   }
 
-  if (report && logger.level >= 3) {
+  if (report && !logger.silent) {
     plugins.push(ReportPlugin(report, cwd, cjsDts))
   }
 
@@ -249,11 +247,15 @@ async function getBuildOptions(
     plugins.push(
       // Use Lightning CSS to handle CSS input. This is a temporary solution
       // until Rolldown supports CSS syntax lowering natively.
-      LightningCSSPlugin({ target }),
+      await LightningCSSPlugin({ target }),
     )
   }
 
   plugins.push(userPlugins)
+
+  if (removeNodeProtocol) {
+    plugins.push(NodeProtocolPlugin())
+  }
 
   const inputOptions = await mergeUserOptions(
     {
@@ -295,7 +297,7 @@ async function getBuildOptions(
       name: config.globalName,
       sourcemap,
       dir: outDir,
-      minify: minify as any,
+      minify,
       entryFileNames,
       chunkFileNames,
     },
@@ -310,6 +312,6 @@ async function getBuildOptions(
 }
 
 export { defineConfig } from './config'
-export type { Options, UserConfig } from './options'
+export type { Options, UserConfig, UserConfigFn } from './options'
 export type { BuildContext, TsdownHooks } from './features/hooks'
 export { logger }

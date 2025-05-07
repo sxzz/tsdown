@@ -32,6 +32,38 @@ export default defineConfig({
 })
 ```
 
+## Declaration Map
+
+Declaration maps allow `.d.ts` files to be mapped back to their original `.ts` sources, which is especially useful in monorepo setups for improved navigation and debugging. Learn more in the [TypeScript documentation](https://www.typescriptlang.org/tsconfig/#declarationMap).
+
+You can enable declaration maps in either of the following ways (no need to set both):
+
+### Enable in `tsconfig.json`
+
+Enable the `declarationMap` option under `compilerOptions`:
+
+```json [tsconfig.json]
+{
+  "compilerOptions": {
+    "declarationMap": true
+  }
+}
+```
+
+### Enable in tsdown Config
+
+Set the `dts.sourcemap` option to `true` in your tsdown config file:
+
+```ts [tsdown.config.ts]
+import { defineConfig } from 'tsdown'
+
+export default defineConfig({
+  dts: {
+    sourcemap: true,
+  },
+})
+```
+
 ## Performance Considerations
 
 The performance of `.d.ts` generation depends on your `tsconfig.json` configuration:
