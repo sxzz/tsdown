@@ -1,3 +1,4 @@
+import { exec } from 'tinyexec'
 import { beforeEach, test } from 'vitest'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild } from './utils'
@@ -8,9 +9,9 @@ beforeEach(async (context) => {
 })
 
 test('#61', async (context) => {
-  await testBuild(
+  await testBuild({
     context,
-    {
+    files: {
       'index.ts': `
       export * as debug from "debug"
       export * as foo from "~/foo"
@@ -23,11 +24,27 @@ test('#61', async (context) => {
         },
       }),
     },
-    {
+    options: {
       external: ['hono/compress', 'hono', 'hono/pretty-json'],
       skipNodeModulesBundle: true,
       target: 'es2022',
       platform: 'node',
     },
-  )
+  })
+})
+
+test('#206', async (context) => {
+  await testBuild({
+    context,
+    fixtureName: 'shiki-monorepo',
+    relativeWorkingDir: 'packages/pkg2',
+    options: {
+      entry: 'src/index.ts',
+      outDir: 'dist',
+      dts: true,
+    },
+    beforeBuild: async () => {
+      await exec('pnpm', ['install'])
+    },
+  })
 })
