@@ -321,25 +321,27 @@ export async function resolveOptions(options: Options): Promise<{
       } = subOptions
 
       outDir = path.resolve(outDir)
-      entry = await resolveEntry(entry, cwd)
-      clean = resolveClean(clean, outDir)
-      if (outDir === process.cwd() && (clean.length || watch)) {
-        let msg = ''
-        if (clean.length && watch) {
-          msg = 'Watch and clean are enabled, '
-        } else if (clean.length) {
-          msg = 'Clean is enabled, '
-        } else {
-          msg = 'Watch is enabled, '
-        }
-        throw new Error(
-          `${msg}but output directory cannot be the same as the current working directory. ` +
-            `Please specify a different watch directory using ${blue`watch`} option,` +
-            `or set ${blue`outDir`} to a different directory.`,
-        )
-      }
-      const pkg = await readPackageJson(cwd)
+      clean = resolveClean(clean, outDir, cwd)
 
+      if (outDir === process.cwd() && (clean.length || watch)) {
+        // let subject = ''
+        // if (clean.length && watch) {
+        //   subject = 'Watch and clean options are'
+        // } else if (clean.length) {
+        //   subject = 'Clean option is'
+        // } else {
+        //   subject = 'Watch option is'
+        // }
+        // throw new Error(
+        //   `Output directory cannot be the same as the current working directory, ` +
+        //     "if you' using clean or watch options" +
+        //     `Please specify a different watch directory using ${blue`watch`} option,` +
+        //     `or set ${blue`outDir`} to a different directory.`,
+        // )
+      }
+
+      const pkg = await readPackageJson(cwd)
+      entry = await resolveEntry(entry, cwd)
       if (dts == null) {
         dts = !!(pkg?.types || pkg?.typings)
       }

@@ -1,3 +1,4 @@
+import path from 'node:path'
 import Debug from 'debug'
 import { glob } from 'tinyglobby'
 import { fsRemove } from '../utils/fs'
@@ -43,11 +44,19 @@ export async function cleanOutDir(configs: ResolvedOptions[]): Promise<void> {
 export function resolveClean(
   clean: Options['clean'],
   outDir: string,
+  cwd: string,
 ): string[] {
   if (clean === true) {
     clean = [slash(outDir)]
   } else if (!clean) {
     clean = []
   }
+
+  if (clean.some((item) => path.resolve(item) === cwd)) {
+    throw new Error(
+      'Cannot clean the current working directory. Please specify a different path to clean option.',
+    )
+  }
+
   return clean
 }
