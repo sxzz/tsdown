@@ -44,7 +44,11 @@ test('#206', async (context) => {
       dts: true,
     },
     beforeBuild: async () => {
-      await exec('pnpm', ['install'])
+      await exec('pnpm', ['install'], {
+        nodeOptions: {
+          stdio: ['ignore', 'ignore', 'inherit'],
+        },
+      })
     },
   })
   expect(outputFiles.sort()).toEqual(['index.d.ts', 'index.js'])
