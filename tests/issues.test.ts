@@ -36,7 +36,7 @@ test('#61', async (context) => {
 test('#206', async (context) => {
   const { outputFiles } = await testBuild({
     context,
-    fixtureName: 'shiki-monorepo',
+    fixtureName: 'issue-206',
     relativeWorkingDir: 'packages/pkg2',
     options: {
       entry: 'src/index.ts',
@@ -47,7 +47,5 @@ test('#206', async (context) => {
       await exec('pnpm', ['install'])
     },
   })
-  expect(outputFiles).toContain('index.d.ts')
-  expect(outputFiles).toContain('index.js')
-  expect(outputFiles).toHaveLength(2)
+  expect(outputFiles.sort()).toEqual(['index.d.ts', 'index.js'])
 })
