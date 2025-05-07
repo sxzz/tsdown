@@ -32,7 +32,7 @@ function resolveJsOutputExtension(
 }
 
 export function resolveChunkFilename(
-  { outExtensions, fixedExtension, pkg }: ResolvedOptions,
+  { outExtensions, fixedExtension, pkg, hash }: ResolvedOptions,
   inputOptions: InputOptions,
   format: NormalizedFormat,
 ): [entry: ChunkFileName, chunk: ChunkFileName] {
@@ -57,7 +57,11 @@ export function resolveChunkFilename(
   const suffix = format === 'iife' || format === 'umd' ? `.${format}` : ''
   return [
     createChunkFilename(`[name]${suffix}`, jsExtension, dtsExtension),
-    createChunkFilename(`[name]${suffix}-[hash]`, jsExtension, dtsExtension),
+    createChunkFilename(
+      `[name]${suffix}${hash ? '-[hash]' : ''}`,
+      jsExtension,
+      dtsExtension,
+    ),
   ]
 }
 
