@@ -238,7 +238,7 @@ export interface Options {
   removeNodeProtocol?: boolean
 
   /**
-   * If enabled, appends hash to output files.
+   * If enabled, appends hash to chunk filenames.
    * @default true
    */
   hash?: boolean
