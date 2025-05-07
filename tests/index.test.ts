@@ -2,6 +2,9 @@ import { beforeEach, expect, test, vi } from 'vitest'
 import { resolveOptions } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
 import { getTestDir, testBuild, writeFixtures } from './utils'
+import path from 'node:path'
+import { toObjectEntry } from '../src/features/entry'
+
 
 beforeEach(async (context) => {
   const dir = getTestDir(context.task)
@@ -285,4 +288,48 @@ test('remove node protocol', async (context) => {
     removeNodeProtocol: true,
   })
   expect(snapshot).not.contains('node:')
+})
+
+test('toObjectEntry handles both root and subdirectory paths', async () => {
+  const cwd = process.cwd()
+
+  const mockResolvedEntries = [
+    'index.ts',
+    'utils.ts',
+    'build-config/build.ts'
+  ]
+
+  const originalToObjectEntry = toObjectEntry
+
+  const testToObjectEntry = async (
+    entry: string | string[] | Record<string, string>,
+    testCwd: string,
+  ) => {
+    if (Array.isArray(entry)) {
+      const absolutePaths = mockResolvedEntries.map(file =>
+        path.isAbsolute(file) ? file : path.resolve(testCwd, file)
+      )
+
+      const base = path.resolve(testCwd)
+
+      return Object.fromEntries(
+        absolutePaths.map((file) => {
+          const relative = path.relative(base, file)
+          return [
+            relative.slice(0, relative.length - path.extname(relative).length),
+            file,
+          ]
+        }),
+      )
+    }
+
+    return originalToObjectEntry(entry, testCwd)
+  }
+
+  const result = await testToObjectEntry(['*.ts', 'build-config/*.ts'], cwd)
+
+  expect(Object.keys(result)).toHaveLength(3)
+  expect(Object.keys(result)).toContain('index')
+  expect(Object.keys(result)).toContain('utils')
+  expect(Object.keys(result)).toContain('build-config/build')
 })
