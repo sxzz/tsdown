@@ -43,7 +43,7 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "eslint --cache .",
+    "lint": "eslint --cache --max-warnings 0 .",
     "lint:fix": "pnpm run lint --fix",
     "build": "node --import @oxc-node/core/register ./src/run.ts",
     "dev": "node --import @oxc-node/core/register ./src/run.ts",
