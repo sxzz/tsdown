@@ -1,6 +1,6 @@
 {
   "name": "@sxzz/tsdown",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "exports": "./src/index.ts",
   "publish": {
     "include": [
