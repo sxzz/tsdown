@@ -4,6 +4,7 @@ import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { blue, underline } from 'ansis'
 import Debug from 'debug'
+import { glob } from 'tinyglobby'
 import { loadConfig } from 'unconfig'
 import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
@@ -43,6 +44,27 @@ const debug = Debug('tsdown:options')
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
 export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
+
+/**
+ * Options for tsdown workspace.
+ */
+export interface Workspace {
+  /**
+   * Workspace members.
+   * @default 'auto'
+   */
+  packages?: string[] | 'auto'
+  /**
+   * Exclude packages from workspace.
+   */
+  exclude?: string[]
+  /**
+   * Keys for inheriting in packages.
+   * @default {}
+   */
+  config?: Omit<Options, 'workspace'>
+}
+export type WorkspaceFn = (options: Options) => Awaitable<Workspace>
 
 /**
  * Options for tsdown.
@@ -284,11 +306,178 @@ export type ResolvedOptions = Omit<
   'config' | 'fromVite'
 >
 
-export async function resolveOptions(options: Options): Promise<{
+async function resolveConfig(
+  subConfig: Omit<Options, 'config'>,
+  options: Options,
+  root: string,
+  cwd?: string,
+): Promise<ResolvedOptions> {
+  const subOptions = { ...subConfig, ...options }
+
+  let {
+    entry,
+    format = ['es'],
+    plugins = [],
+    clean = true,
+    silent = false,
+    treeshake = true,
+    platform = 'node',
+    outDir = 'dist',
+    sourcemap = false,
+    dts,
+    unused = false,
+    watch = false,
+    shims = false,
+    skipNodeModulesBundle = false,
+    publint = false,
+    fromVite,
+    alias,
+    tsconfig,
+    report = true,
+    target,
+    env = {},
+    copy,
+    publicDir,
+    hash,
+  } = subOptions
+
+  outDir = path.resolve(outDir)
+  clean = resolveClean(clean, outDir, root)
+
+  const pkg = await readPackageJson(root)
+  entry = await resolveEntry(entry, root)
+  if (dts == null) {
+    dts = !!(pkg?.types || pkg?.typings)
+  }
+
+  tsconfig = await resolveTsconfig(tsconfig, cwd ?? root)
+  if (publint === true) publint = {}
+  target = resolveTarget(target, pkg)
+
+  if (publicDir) {
+    if (copy) {
+      throw new TypeError(
+        '`publicDir` is deprecated. Cannot be used with `copy`',
+      )
+    } else {
+      logger.warn(
+        `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
+      )
+    }
+  }
+
+  if (fromVite) {
+    const viteUserConfig = await loadViteConfig(
+      fromVite === true ? 'vite' : fromVite,
+      root,
+    )
+    if (viteUserConfig) {
+      // const alias = viteUserConfig.resolve?.alias
+      if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
+        throw new TypeError(
+          'Unsupported resolve.alias in Vite config. Use object instead of array',
+        )
+      }
+
+      if (viteUserConfig.plugins) {
+        plugins = [viteUserConfig.plugins as any, plugins]
+      }
+
+      const viteAlias = viteUserConfig.resolve?.alias
+      if (
+        viteAlias &&
+        !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
+      ) {
+        alias = viteAlias
+      }
+    }
+  }
+
+  const config: ResolvedOptions = {
+    ...subOptions,
+    entry,
+    plugins,
+    format: normalizeFormat(format),
+    target,
+    outDir,
+    clean,
+    silent,
+    treeshake,
+    platform,
+    sourcemap,
+    dts: dts === true ? {} : dts,
+    report: report === true ? {} : report,
+    unused,
+    watch,
+    shims,
+    skipNodeModulesBundle,
+    publint,
+    alias,
+    tsconfig,
+    cwd: root,
+    env,
+    pkg,
+    copy: publicDir || copy,
+    hash: hash ?? true,
+  }
+
+  return config
+}
+
+interface ResolvedProject {
   configs: ResolvedOptions[]
   file?: string
+}
+export async function resolveOptions(options: Options): Promise<{
+  root?: ResolvedProject
+  workspaces?: ResolvedProject[]
 }> {
-  const { configs: userConfigs, file, cwd } = await loadConfigFile(options)
+  const loadResult = await loadConfigFile(options)
+  const { file, cwd } = loadResult
+
+  if ('workspace' in loadResult) {
+    const workspace = loadResult.workspace
+    const workspaceConfigs = workspace
+      ? await resolveWorkspace(workspace, cwd)
+      : []
+
+    logger.info(
+      `Resolved ${workspaceConfigs.length} workspace ${
+        workspaceConfigs.length === 1 ? 'config' : 'configs'
+      } from:\n`,
+      ...workspaceConfigs.map(
+        (config) => `   - ${underline(path.relative(cwd, config.source))}`,
+      ),
+    )
+
+    if (debug.enabled) {
+      for (const workspaceConfig of workspaceConfigs) {
+        debug(
+          'Workspace user configs %o from %s',
+          workspaceConfig.configs,
+          workspaceConfig.source,
+        )
+      }
+    }
+
+    const workspaces = await Promise.all(
+      workspaceConfigs.map(async ({ configs, source }) => {
+        return {
+          configs: await Promise.all(
+            configs.map((config) =>
+              resolveConfig(config, options, path.dirname(source), cwd),
+            ),
+          ),
+          file: source,
+        }
+      }),
+    )
+
+    return { workspaces }
+  }
+
+  const userConfigs = loadResult.configs
+
   if (userConfigs.length === 0) {
     userConfigs.push({})
   }
@@ -297,130 +486,76 @@ export async function resolveOptions(options: Options): Promise<{
   debug('User configs %o', userConfigs)
 
   const configs = await Promise.all(
-    userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
-      const subOptions = { ...subConfig, ...options }
-
-      let {
-        entry,
-        format = ['es'],
-        plugins = [],
-        clean = true,
-        silent = false,
-        treeshake = true,
-        platform = 'node',
-        outDir = 'dist',
-        sourcemap = false,
-        dts,
-        unused = false,
-        watch = false,
-        shims = false,
-        skipNodeModulesBundle = false,
-        publint = false,
-        fromVite,
-        alias,
-        tsconfig,
-        report = true,
-        target,
-        env = {},
-        copy,
-        publicDir,
-        hash,
-      } = subOptions
-
-      outDir = path.resolve(outDir)
-      clean = resolveClean(clean, outDir, cwd)
-
-      const pkg = await readPackageJson(cwd)
-      entry = await resolveEntry(entry, cwd)
-      if (dts == null) {
-        dts = !!(pkg?.types || pkg?.typings)
-      }
-
-      tsconfig = await resolveTsconfig(tsconfig, cwd)
-      if (publint === true) publint = {}
-      target = resolveTarget(target, pkg)
-
-      if (publicDir) {
-        if (copy) {
-          throw new TypeError(
-            '`publicDir` is deprecated. Cannot be used with `copy`',
-          )
-        } else {
-          logger.warn(
-            `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
-          )
-        }
-      }
-
-      if (fromVite) {
-        const viteUserConfig = await loadViteConfig(
-          fromVite === true ? 'vite' : fromVite,
-          cwd,
-        )
-        if (viteUserConfig) {
-          // const alias = viteUserConfig.resolve?.alias
-          if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
-            throw new TypeError(
-              'Unsupported resolve.alias in Vite config. Use object instead of array',
-            )
-          }
-
-          if (viteUserConfig.plugins) {
-            plugins = [viteUserConfig.plugins as any, plugins]
-          }
-
-          const viteAlias = viteUserConfig.resolve?.alias
-          if (
-            viteAlias &&
-            !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
-          ) {
-            alias = viteAlias
-          }
-        }
-      }
-
-      const config: ResolvedOptions = {
-        ...subOptions,
-        entry,
-        plugins,
-        format: normalizeFormat(format),
-        target,
-        outDir,
-        clean,
-        silent,
-        treeshake,
-        platform,
-        sourcemap,
-        dts: dts === true ? {} : dts,
-        report: report === true ? {} : report,
-        unused,
-        watch,
-        shims,
-        skipNodeModulesBundle,
-        publint,
-        alias,
-        tsconfig,
-        cwd,
-        env,
-        pkg,
-        copy: publicDir || copy,
-        hash: hash ?? true,
-      }
-
-      return config
-    }),
+    userConfigs.map((subConfig) => resolveConfig(subConfig, options, cwd)),
   )
 
-  return { configs, file }
+  return {
+    root: { configs, file },
+  }
+}
+
+async function resolveWorkspace(
+  workspace: Workspace,
+  cwd: string,
+): Promise<
+  {
+    configs: Omit<Options, 'config' | 'workspace'>[]
+    source: string
+  }[]
+> {
+  const { packages = 'auto', exclude = [] } = workspace
+  if (packages === 'auto') {
+    // const pkg = await readPackageJson(cwd)
+    throw new Error('Unimplemented')
+  }
+
+  const pkgDirs = await glob(packages, {
+    cwd,
+    absolute: true,
+    onlyDirectories: true,
+    ignore: ['node_modules', ...exclude],
+  })
+
+  const configs = await Promise.all(
+    pkgDirs.map((dir) =>
+      loadConfig
+        .async<UserConfig | UserConfigFn>({
+          sources: [
+            {
+              files: 'tsdown.config',
+              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+              parser: 'import',
+            },
+          ],
+          cwd: dir,
+          stopAt: path.join(dir, '..'),
+        })
+        .then(async ({ config, sources }) => {
+          if (typeof config === 'function') {
+            config = await config(workspace.config || {})
+          }
+          return { configs: toArray(config, {}), source: sources[0] }
+        }),
+    ),
+  )
+
+  return configs
 }
 
 let loaded = false
 
-async function loadConfigFile(options: Options): Promise<{
-  configs: ResolvedConfigs
-  file?: string
-  cwd: string
-}> {
+export async function loadConfigFile(options: Options): Promise<
+  | {
+      configs: ResolvedConfigs
+      file?: string
+      cwd: string
+    }
+  | {
+      workspace: Workspace
+      file?: string
+      cwd: string
+    }
+> {
   let cwd = process.cwd()
   let overrideConfig = false
 
@@ -443,6 +578,45 @@ async function loadConfigFile(options: Options): Promise<{
 
   const nativeTS =
     process.features.typescript || process.versions.bun || process.versions.deno
+
+  let { config: workspace, sources: workspaceSources } = await loadConfig
+    .async<Workspace | WorkspaceFn>({
+      sources: overrideConfig
+        ? [{ files: filePath as string, extensions: [] }]
+        : [
+            {
+              files: 'tsdown-workspace.config',
+              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+              parser:
+                loaded || !nativeTS
+                  ? 'auto'
+                  : async (filepath) => {
+                      const mod = await import(pathToFileURL(filepath).href)
+                      const config = mod.default || mod
+                      return config
+                    },
+            },
+            {
+              files: 'package.json',
+              extensions: [],
+              rewrite: (config: any) => config?.tsdown,
+            },
+          ],
+      cwd,
+      defaults: undefined,
+    })
+    .finally(() => (loaded = true))
+
+  if (workspace) {
+    if (typeof workspace === 'function') {
+      workspace = await workspace(options)
+    }
+    return {
+      cwd,
+      file: workspaceSources[0],
+      workspace,
+    }
+  }
 
   let { config, sources } = await loadConfig
     .async<UserConfig | UserConfigFn>({
@@ -481,8 +655,10 @@ async function loadConfigFile(options: Options): Promise<{
     config = await config(options)
   }
 
+  const configs = toArray(config, {})
+
   return {
-    configs: toArray(config),
+    configs,
     file,
     cwd,
   }

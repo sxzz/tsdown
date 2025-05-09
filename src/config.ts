@@ -1,4 +1,9 @@
-import type { UserConfig, UserConfigFn } from './options'
+import type {
+  UserConfig,
+  UserConfigFn,
+  Workspace,
+  WorkspaceFn,
+} from './options'
 
 /**
  * Defines the configuration for tsdown.
@@ -9,4 +14,15 @@ export function defineConfig(
   return options
 }
 
-export type { UserConfig, UserConfigFn }
+/**
+ * Defines the workspace configuration for tsdown.
+ */
+export function defineWorkspace(options: Workspace): Workspace
+export function defineWorkspace(options: WorkspaceFn): WorkspaceFn
+export function defineWorkspace(
+  options: Workspace | WorkspaceFn,
+): Workspace | WorkspaceFn {
+  return options
+}
+
+export type { UserConfig, UserConfigFn, Workspace, WorkspaceFn }
