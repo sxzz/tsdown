@@ -1,12 +1,12 @@
 catalogs:
   dev:
     '@oxc-node/core': ^0.0.27
-    '@sxzz/eslint-config': ^6.2.0
+    '@sxzz/eslint-config': ^7.0.1
     '@sxzz/prettier-config': ^2.2.1
     '@sxzz/test-utils': ^0.5.6
     '@types/debug': ^4.1.12
     '@types/diff': ^7.0.2
-    '@types/node': ^22.15.14
+    '@types/node': ^22.15.17
     '@types/semver': ^7.7.0
     bumpp: ^10.1.0
     eslint: ^9.26.0
@@ -16,15 +16,15 @@ catalogs:
     publint: ^0.3.12
     tsup: ^8.4.0
     typescript: ~5.8.3
-    unplugin-lightningcss: ^0.3.3
-    unplugin-unused: ^0.4.4
+    unplugin-lightningcss: ^0.4.0
+    unplugin-unused: ^0.5.0
     vitest: ^3.1.3
 
   docs:
-    '@unocss/eslint-plugin': ^66.1.0
+    '@unocss/eslint-plugin': ^66.1.1
     typedoc: ^0.28.4
     typedoc-plugin-markdown: ^4.6.3
-    unocss: ^66.1.0
+    unocss: ^66.1.1
     vite: ^6.3.5
     vitepress: ^1.6.3
     vitepress-plugin-group-icons: ^1.5.2
@@ -32,7 +32,7 @@ catalogs:
     vue: ^3.5.13
 
   prod:
-    ansis: ^3.17.0
+    ansis: ^4.0.0
     cac: ^6.7.14
     chokidar: ^4.0.3
     debug: ^4.4.0
@@ -40,7 +40,7 @@ catalogs:
     empathic: ^1.1.0
     hookable: ^5.5.3
     rolldown: 1.0.0-beta.8-commit.534fde3
-    rolldown-plugin-dts: ^0.11.1
+    rolldown-plugin-dts: ^0.11.4
     semver: ^7.7.1
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
