@@ -1,0 +1,12 @@
+{
+  "name": "pkg1",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "my-shiki": "workspace:*"
+  }
+}

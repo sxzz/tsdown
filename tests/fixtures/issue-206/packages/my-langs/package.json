@@ -1,0 +1,10 @@
+{
+  "name": "my-langs",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./css": "./css.mjs",
+    "./html": "./html.mjs"
+  },
+  "sideEffects": false
+}

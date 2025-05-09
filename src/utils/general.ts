@@ -30,4 +30,8 @@ export function debounce<T extends (...args: any[]) => any>(
   } as T
 }
 
+export function slash(string: string): string {
+  return string.replaceAll('\\', '/')
+}
+
 export const noop = <T>(v: T): T => v

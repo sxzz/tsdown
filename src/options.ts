@@ -107,7 +107,7 @@ export interface Options {
    * { "target": ["node18", "es2020"] }
    * ```
    */
-  target?: string | string[]
+  target?: string | string[] | false
 
   define?: Record<string, string>
   /** @default false */
@@ -236,6 +236,12 @@ export interface Options {
    * import('node:fs'); // becomes import('fs')
    */
   removeNodeProtocol?: boolean
+
+  /**
+   * If enabled, appends hash to chunk filenames.
+   * @default true
+   */
+  hash?: boolean
 }
 
 /**
@@ -318,14 +324,14 @@ export async function resolveOptions(options: Options): Promise<{
         env = {},
         copy,
         publicDir,
+        hash,
       } = subOptions
 
       outDir = path.resolve(outDir)
-      entry = await resolveEntry(entry, cwd)
-      clean = resolveClean(clean, outDir)
+      clean = resolveClean(clean, outDir, cwd)
 
       const pkg = await readPackageJson(cwd)
-
+      entry = await resolveEntry(entry, cwd)
       if (dts == null) {
         dts = !!(pkg?.types || pkg?.typings)
       }
@@ -398,6 +404,7 @@ export async function resolveOptions(options: Options): Promise<{
         env,
         pkg,
         copy: publicDir || copy,
+        hash: hash ?? true,
       }
 
       return config
