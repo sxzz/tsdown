@@ -1,7 +1,8 @@
+import path from 'node:path'
 import { beforeEach, expect, test, vi } from 'vitest'
 import { resolveOptions } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
-import { getTestDir, testBuild, writeFixtures } from './utils'
+import { chdir, getTestDir, testBuild, writeFixtures } from './utils'
 
 beforeEach(async (context) => {
   const dir = getTestDir(context.task)
@@ -179,7 +180,7 @@ test('fromVite', async (context) => {
     'tsdown.config.ts': `
     import { resolve } from 'node:path'
     export default {
-      entry: resolve(import.meta.dirname, 'index.ts').replaceAll('\\\\', '/'),
+      entry: "index.ts",
       fromVite: true,
     }`,
     'vite.config.ts': `
@@ -190,6 +191,7 @@ test('fromVite', async (context) => {
     `,
   }
   const { testDir } = await writeFixtures(context, files)
+  const restoreCwd = chdir(testDir)
   const options = await resolveOptions({
     config: testDir,
   })
@@ -209,6 +211,7 @@ test('fromVite', async (context) => {
       ],
     },
   ])
+  restoreCwd()
 })
 
 test('resolve dependency for dts', async (context) => {
@@ -386,4 +389,15 @@ test('without hash and filename conflict', async (context) => {
       "run.js",
     ]
   `)
+})
+
+test('cwd option', async (context) => {
+  const files = {
+    'test/index.ts': `export default 10`,
+  }
+  await testBuild({
+    context,
+    files,
+    options: (cwd) => ({ cwd: path.join(cwd, 'test') }),
+  })
 })

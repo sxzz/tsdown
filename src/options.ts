@@ -1,4 +1,3 @@
-import { stat } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
@@ -9,6 +8,7 @@ import { resolveClean } from './features/clean'
 import { resolveEntry } from './features/entry'
 import { resolveTarget } from './features/target'
 import { resolveTsconfig } from './features/tsconfig'
+import { fsStat } from './utils/fs'
 import { toArray } from './utils/general'
 import { logger } from './utils/logger'
 import { normalizeFormat, readPackageJson } from './utils/package'
@@ -242,6 +242,12 @@ export interface Options {
    * @default true
    */
   hash?: boolean
+
+  /**
+   * The working directory of the config file.
+   * @default process.cwd()
+   */
+  cwd?: string
 }
 
 /**
@@ -277,7 +283,6 @@ export type ResolvedOptions = Omit<
       dts: false | DtsOptions
       report: false | ReportOptions
       tsconfig: string | false
-      cwd: string
       pkg?: PackageJson
     }
   >,
@@ -288,13 +293,15 @@ export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   file?: string
 }> {
-  const { configs: userConfigs, file, cwd } = await loadConfigFile(options)
+  const { configs: userConfigs, file } = await loadConfigFile(options)
   if (userConfigs.length === 0) {
     userConfigs.push({})
   }
 
-  debug('Loaded config file %s from %s', file, cwd)
-  debug('User configs %o', userConfigs)
+  if (file) {
+    debug('Loaded config file %s', file)
+    debug('User configs %o', userConfigs)
+  }
 
   const configs = await Promise.all(
     userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
@@ -325,6 +332,7 @@ export async function resolveOptions(options: Options): Promise<{
         copy,
         publicDir,
         hash,
+        cwd = process.cwd(),
       } = subOptions
 
       outDir = path.resolve(outDir)
@@ -419,16 +427,15 @@ let loaded = false
 async function loadConfigFile(options: Options): Promise<{
   configs: ResolvedConfigs
   file?: string
-  cwd: string
 }> {
-  let cwd = process.cwd()
+  let cwd = options.cwd || process.cwd()
   let overrideConfig = false
 
   let { config: filePath } = options
-  if (filePath === false) return { configs: [], cwd }
+  if (filePath === false) return { configs: [] }
 
   if (typeof filePath === 'string') {
-    const stats = await stat(filePath).catch(() => null)
+    const stats = await fsStat(filePath)
     if (stats) {
       const resolved = path.resolve(filePath)
       if (stats.isFile()) {
@@ -484,7 +491,6 @@ async function loadConfigFile(options: Options): Promise<{
   return {
     configs: toArray(config),
     file,
-    cwd,
   }
 }
 

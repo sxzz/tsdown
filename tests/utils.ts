@@ -86,7 +86,7 @@ export interface TestBuildOptions {
   /**
    * The options for the build.
    */
-  options?: Options
+  options?: Options | ((cwd: string) => Options)
 
   /**
    * The working directory of the test. It's a relative path to the test directory.
@@ -116,21 +116,19 @@ export async function testBuild({
   const { expect } = context
   const { testName, testDir } = await writeFixtures(context, files, fixture)
 
-  const workingDirBefore = process.cwd()
-
   const workingDir = path.join(testDir, cwd || '.')
-  process.chdir(workingDir)
+  const restoreCwd = chdir(workingDir)
   const resolvedOptions: Options = {
     entry: 'index.ts',
     config: false,
     outDir: 'dist',
     dts: false,
     silent: true,
-    ...options,
+    ...(typeof options === 'function' ? options(workingDir) : options),
   }
   await beforeBuild?.()
   await build(resolvedOptions)
-  process.chdir(workingDirBefore)
+  restoreCwd()
 
   const outputDir = path.resolve(workingDir, resolvedOptions.outDir!)
   const { files: outputFiles, snapshot } = await expectFilesSnapshot(
@@ -148,4 +146,10 @@ export async function testBuild({
 
 function filenamify(input: string) {
   return input.replaceAll(/[^\da-z]/gi, '-')
+}
+
+export function chdir(dir: string) {
+  const oldCwd = process.cwd()
+  process.chdir(dir)
+  return (): void => process.chdir(oldCwd)
 }
