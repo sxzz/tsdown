@@ -343,10 +343,10 @@ export async function resolveOptions(options: Options): Promise<{
       if (dts == null) {
         dts = !!(pkg?.types || pkg?.typings)
       }
+      target = resolveTarget(target, pkg)
 
       tsconfig = await resolveTsconfig(tsconfig, cwd)
       if (publint === true) publint = {}
-      target = resolveTarget(target, pkg)
 
       if (publicDir) {
         if (copy) {

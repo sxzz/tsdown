@@ -1,5 +1,7 @@
+import { blue } from 'ansis'
 import minVersion from 'semver/ranges/min-version.js'
 import { resolveComma, toArray } from '../utils/general'
+import { logger } from '../utils/logger'
 import type { PackageJson } from 'pkg-types'
 
 export function resolveTarget(
@@ -15,7 +17,13 @@ export function resolveTarget(
       return
     }
   }
-  return resolveComma(toArray(target))
+  const targets = resolveComma(toArray(target))
+  if (targets.length)
+    logger.info(
+      `target${targets.length > 1 ? 's' : ''}: ${blue(targets.join(', '))}`,
+    )
+
+  return targets
 }
 
 export function resolvePackageTarget(pkg?: PackageJson): string | undefined {
