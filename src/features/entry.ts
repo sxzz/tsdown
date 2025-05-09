@@ -14,13 +14,15 @@ export async function resolveEntry(
     throw new Error(`No input files, try "tsdown <your-file>" instead`)
   }
 
-  const objectEntry = await toObjectEntry(entry, cwd)
-  const entries = Object.values(objectEntry)
+  const entryMap = await toObjectEntry(entry, cwd)
+  const entries = Object.values(entryMap)
   if (entries.length === 0) {
     throw new Error(`Cannot find entry: ${JSON.stringify(entry)}`)
   }
-  logger.info(`entry: ${blue(entries.join(', '))}`)
-  return objectEntry
+  logger.info(
+    `entry: ${blue(entries.map((entry) => path.relative(cwd, entry)).join(', '))}`,
+  )
+  return entryMap
 }
 
 export async function toObjectEntry(
