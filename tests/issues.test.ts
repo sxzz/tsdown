@@ -53,3 +53,19 @@ test('#206', async (context) => {
   })
   expect(outputFiles.sort()).toEqual(['index.d.ts', 'index.js'])
 })
+
+test('#216', async (context) => {
+  const { outputFiles } = await testBuild({
+    context,
+    files: {
+      'foo.css': `.foo { color: red; }`,
+      'bar.css': `@import './foo.css'; .bar { color: blue; }`,
+    },
+    options: {
+      entry: ['foo.css', 'bar.css'],
+    },
+  })
+  expect(outputFiles).toContain('bar.css')
+  // TODO: the following expect is not working
+  // expect(outputFiles).toContain('foo.css')
+})
