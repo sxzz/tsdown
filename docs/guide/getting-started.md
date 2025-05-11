@@ -135,7 +135,7 @@ npm run build
 
 While you can use the CLI directly, it's recommended to use a configuration file for more complex projects. This allows you to define and manage your build settings in a centralized and reusable way.
 
-For more details, refer to the [Config File](./config-file.md) documentation.
+For more details, refer to the [Config File](../options/config-file.md) documentation.
 
 ## Using Plugins
 
@@ -150,7 +150,7 @@ export default defineConfig({
 })
 ```
 
-For more details, refer to the [Plugins](./plugins.md) documentation.
+For more details, refer to the [Plugins](../advanced/plugins.md) documentation.
 
 ## Using Watch Mode
 
@@ -160,4 +160,4 @@ You can enable watch mode to automatically rebuild your project whenever files c
 tsdown --watch
 ```
 
-For more details, refer to the [Watch Mode](./watch-mode.md) documentation.
+For more details, refer to the [Watch Mode](../options/watch-mode.md) documentation.

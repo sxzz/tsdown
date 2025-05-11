@@ -36,48 +36,48 @@ export function getLocaleConfig(lang: string) {
 
   const sidebar: DefaultTheme.SidebarItem[] = [
     {
+      text: t('Guide'),
       base: `${urlPrefix}/guide`,
       items: [
-        {
-          text: t('Guide'),
-          items: [
-            { text: t('Introduction'), link: '/index.md' },
-            { text: t('Getting Started'), link: '/getting-started.md' },
-            { text: t('Migrate from tsup'), link: '/migrate-from-tsup.md' },
-          ],
-        },
-        {
-          text: t('Recipes'),
-          items: [
-            { text: t('Entry'), link: '/entry.md' },
-            { text: t('Config File'), link: '/config-file.md' },
-            { text: t('Declaration Files (dts)'), link: '/dts.md' },
-            { text: t('Output Format'), link: '/output-format.md' },
-            { text: t('Output Directory'), link: '/output-directory.md' },
-            { text: t('Cleaning'), link: '/cleaning.md' },
-            {
-              text: t('Handling Dependencies'),
-              link: '/dependency-handling.md',
-            },
-            { text: t('Watch Mode'), link: '/watch-mode.md' },
-            { text: t('Target'), link: '/target.md' },
-            { text: t('Platform'), link: '/platform.md' },
-            { text: t('Tree-shaking'), link: '/tree-shaking.md' },
-            { text: t('Source Maps'), link: '/sourcemap.md' },
-            { text: t('Minification'), link: '/minification.md' },
-            { text: t('Silent Mode'), link: '/silent-mode.md' },
-            { text: t('Shims'), link: '/shims.md' },
-          ],
-        },
-        {
-          text: t('Advanced'),
-          items: [
-            { text: t('Plugins'), link: '/plugins.md' },
-            { text: t('Hooks'), link: '/hooks.md' },
-            { text: t('Rolldown Options'), link: '/rolldown-options.md' },
-          ],
-        },
-        { text: t('FAQ'), link: '/faq.md' },
+        { text: t('Introduction'), link: '/index.md' },
+        { text: t('Getting Started'), link: '/getting-started.md' },
+        { text: t('Migrate from tsup'), link: '/migrate-from-tsup.md' },
+        { text: t('FAQ'), link: `/faq.md` },
+      ],
+    },
+    {
+      text: t('Options'),
+      base: `${urlPrefix}/options`,
+      items: [
+        { text: t('Entry'), link: '/entry.md' },
+        { text: t('Config File'), link: '/config-file.md' },
+        { text: t('Declaration Files (dts)'), link: '/dts.md' },
+        { text: t('Output Format'), link: '/output-format.md' },
+        { text: t('Output Directory'), link: '/output-directory.md' },
+        { text: t('Cleaning'), link: '/cleaning.md' },
+        { text: t('Dependencies'), link: '/dependencies.md' },
+        { text: t('Watch Mode'), link: '/watch-mode.md' },
+        { text: t('Target'), link: '/target.md' },
+        { text: t('Platform'), link: '/platform.md' },
+        { text: t('Tree-shaking'), link: '/tree-shaking.md' },
+        { text: t('Source Maps'), link: '/sourcemap.md' },
+        { text: t('Minification'), link: '/minification.md' },
+        { text: t('Silent Mode'), link: '/silent-mode.md' },
+        { text: t('Shims'), link: '/shims.md' },
+      ],
+    },
+    {
+      text: t('Recipes'),
+      base: `${urlPrefix}/recipes`,
+      items: [{ text: t('Vue Support'), link: '/vue-support.md' }],
+    },
+    {
+      text: t('Advanced'),
+      base: `${urlPrefix}/advanced`,
+      items: [
+        { text: t('Plugins'), link: '/plugins.md' },
+        { text: t('Hooks'), link: '/hooks.md' },
+        { text: t('Rolldown Options'), link: '/rolldown-options.md' },
       ],
     },
     {

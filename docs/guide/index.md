@@ -16,7 +16,7 @@
 
 `tsdown` supports the entire Rolldown plugin ecosystem, making it easy to extend and customize your build process. Additionally, it is compatible with most Rollup plugins, giving you access to a vast library of existing tools.
 
-For more details, refer to the [Plugins](./plugins.md) documentation.
+For more details, refer to the [Plugins](../advanced/plugins.md) documentation.
 
 ## What Can It Bundle?
 
@@ -27,7 +27,7 @@ For more details, refer to the [Plugins](./plugins.md) documentation.
 - **Multiple Output Formats**: Generate `esm`, `cjs`, and `iife` bundles to ensure compatibility across different environments.
 - **Assets**: Include and process non-code assets like `.json` or `.wasm` files.
 
-With its built-in support for [tree shaking](./tree-shaking.md), [minification](./minification.md), and [source maps](./sourcemap.md), `tsdown` ensures your library is optimized for production.
+With its built-in support for [tree shaking](../options/tree-shaking.md), [minification](../options/minification.md), and [source maps](../options/sourcemap.md), `tsdown` ensures your library is optimized for production.
 
 ## Fast and Elegant
 

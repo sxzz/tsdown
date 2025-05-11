@@ -1,4 +1,4 @@
-# Handling Dependencies
+# Dependencies
 
 When bundling with `tsdown`, dependencies are handled intelligently to ensure your library remains lightweight and easy to consume. Here's how `tsdown` processes different types of dependencies and how you can customize this behavior.
 

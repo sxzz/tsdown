@@ -52,7 +52,7 @@ export default [
 tsdown --config ./path/to/config
 ```
 
-## 禁用配置文件
+## 禁用配置文件 {#disable-config-file}
 
 如果您希望完全禁用加载配置文件，可以使用 `--no-config` 选项：
 

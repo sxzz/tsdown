@@ -9,10 +9,10 @@ export const zhCN = {
   'Getting Started': '快速上手',
   'Migrate from tsup': ' 从 tsup 迁移',
 
-  Recipes: '实践指南',
+  Options: '选项',
   Entry: '入口文件',
   Cleaning: '清理',
-  'Handling Dependencies': '处理依赖',
+  Dependencies: '依赖',
   'Config File': '配置文件',
   Minification: '压缩',
   'Output Directory': '输出目录',
@@ -25,6 +25,9 @@ export const zhCN = {
   'Watch Mode': '监听模式',
   Shims: 'Shims（兼容代码）',
   'Declaration Files (dts)': '声明文件（dts）',
+
+  Recipes: '实践指南',
+  'Vue Support': 'Vue 支持',
 
   Advanced: '高级功能',
   'Rolldown Options': 'Rolldown 选项',

@@ -52,7 +52,7 @@ If your configuration file is located elsewhere or has a different name, you can
 tsdown --config ./path/to/config
 ```
 
-## Disabling the Config File
+## Disabling the Config File {#disable-config-file}
 
 To disable loading a configuration file entirely, use the `--no-config` option:
 

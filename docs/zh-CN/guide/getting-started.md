@@ -136,7 +136,7 @@ npm run build
 
 虽然可以直接使用 CLI，但对于更复杂的项目，推荐使用配置文件。这可以让您以集中且可复用的方式定义和管理构建设置。
 
-有关更多详细信息，请参阅 [配置文件](./config-file.md) 文档。
+有关更多详细信息，请参阅 [配置文件](../options/config-file.md) 文档。
 
 ## 使用插件
 
@@ -151,7 +151,7 @@ export default defineConfig({
 })
 ```
 
-有关更多详细信息，请参阅 [插件](./plugins.md) 文档。
+有关更多详细信息，请参阅 [插件](../advanced/plugins.md) 文档。
 
 ## 使用监听模式
 
@@ -161,4 +161,4 @@ export default defineConfig({
 tsdown --watch
 ```
 
-有关更多详细信息，请参阅 [监听模式](./watch-mode.md) 文档。
+有关更多详细信息，请参阅 [监听模式](../options/watch-mode.md) 文档。
