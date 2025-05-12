@@ -108,7 +108,7 @@ export interface Options {
    *
    * Accepts a single target (e.g., `'es2020'`, `'node18'`) or an array of targets.
    *
-   * @see {@link https://tsdown.dev/guide/target#supported-targets} for a list of valid targets and more details.
+   * @see {@link https://tsdown.dev/options/target#supported-targets} for a list of valid targets and more details.
    *
    * @example
    * ```jsonc
