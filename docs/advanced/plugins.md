@@ -16,9 +16,22 @@ Since `tsdown` is built on Rolldown, it supports all Rolldown plugins. You can u
 
 Rolldown is highly compatible with Rollup's plugin API, so `tsdown` can use most Rollup plugins without modification. This gives you access to a wide range of existing plugins in the Rollup ecosystem.
 
+> [!NOTE] Type Compatibility
+> Rollup plugins may sometimes cause TypeScript type errors because the Rollup and Rolldown plugin APIs are not 100% compatible. If you encounter type errors when using Rollup plugins, you can safely ignore them by using `// @ts-expect-error` or casting the plugin as `any`:
+>
+> ```ts
+> import SomeRollupPlugin from 'some-rollup-plugin'
+> export default defineConfig({
+>   plugins: [SomeRollupPlugin() as any],
+> })
+> ```
+
 ### Vite Plugins
 
 Vite plugins may work with `tsdown` if they do not rely on Vite-specific internal APIs or behaviors. However, plugins that depend heavily on Vite's internals may not be compatible. We plan to improve support for Vite plugins in the future.
+
+> [!NOTE] Type Compatibility
+> Similarly, Vite plugins may also cause type errors due to API differences. You can use `// @ts-expect-error` or `as any` to suppress these errors if needed.
 
 ## How to Use Plugins
 
