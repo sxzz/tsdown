@@ -205,6 +205,11 @@ async function getBuildOptions(
   } = config
 
   const plugins: RolldownPluginOption = []
+
+  if (removeNodeProtocol) {
+    plugins.push(NodeProtocolPlugin())
+  }
+
   if (config.pkg || config.skipNodeModulesBundle) {
     plugins.push(ExternalPlugin(config))
   }
@@ -251,10 +256,6 @@ async function getBuildOptions(
   }
 
   plugins.push(userPlugins)
-
-  if (removeNodeProtocol) {
-    plugins.push(NodeProtocolPlugin())
-  }
 
   const inputOptions = await mergeUserOptions(
     {

@@ -8,6 +8,7 @@ export function NodeProtocolPlugin(): Plugin {
   return {
     name: 'tsdown:node-protocol',
     resolveId: {
+      order: 'pre',
       filter: { id: /^node:/ },
       handler(id) {
         return {

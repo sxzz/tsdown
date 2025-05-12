@@ -68,3 +68,16 @@ test.fails('#216', async (context) => {
   expect(outputFiles).toContain('bar.css')
   expect(outputFiles).toContain('foo.css')
 })
+
+test('#221', async (context) => {
+  await testBuild({
+    context,
+    files: {
+      'index.ts': `export { versions } from 'node:process';`,
+    },
+    options: {
+      removeNodeProtocol: true,
+      skipNodeModulesBundle: true,
+    },
+  })
+})
