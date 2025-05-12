@@ -10,7 +10,7 @@ catalogs:
     '@types/semver': ^7.7.0
     bumpp: ^10.1.0
     eslint: ^9.26.0
-    lightningcss: ^1.29.3
+    lightningcss: ^1.30.0
     pkg-types: ^2.1.0
     prettier: ^3.5.3
     publint: ^0.3.12
