@@ -401,3 +401,30 @@ test('cwd option', async (context) => {
     options: (cwd) => ({ cwd: path.join(cwd, 'test') }),
   })
 })
+
+test('loader option', async (context) => {
+  const files = {
+    'index.ts': `
+      export { default as a } from './a.a';
+      export { default as b } from './b.b';
+      export { default as c } from './c.c';
+      export { default as d } from './d.d';
+    `,
+    'a.a': `hello-world`,
+    'b.b': `hello-world`,
+    'c.c': `hello-world`,
+    'd.d': `hello-world`,
+  }
+  await testBuild({
+    context,
+    files,
+    options: {
+      loader: {
+        '.a': 'dataurl',
+        '.b': 'base64',
+        '.c': 'text',
+        '.d': 'binary',
+      },
+    },
+  })
+})
