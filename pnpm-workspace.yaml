@@ -40,7 +40,7 @@ catalogs:
     empathic: ^1.1.0
     hookable: ^5.5.3
     rolldown: 1.0.0-beta.8-commit.2a5c6a6
-    rolldown-plugin-dts: ^0.11.4
+    rolldown-plugin-dts: ^0.12.0
     semver: ^7.7.1
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
