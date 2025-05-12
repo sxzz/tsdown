@@ -43,6 +43,21 @@ const debug = Debug('tsdown:options')
 export type Sourcemap = boolean | 'inline' | 'hidden'
 export type Format = Exclude<ModuleFormat, 'experimental-app'>
 export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
+export type ModuleTypes = Record<
+  string,
+  | 'js'
+  | 'jsx'
+  | 'ts'
+  | 'tsx'
+  | 'json'
+  | 'text'
+  | 'base64'
+  | 'dataurl'
+  | 'binary'
+  | 'empty'
+  | 'css'
+  | 'asset'
+>
 
 /**
  * Options for tsdown.
@@ -248,6 +263,17 @@ export interface Options {
    * @default process.cwd()
    */
   cwd?: string
+
+  /**
+   * Sets how input files are processed.
+   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
+   * Lets you import or require files like images or fonts.
+   * @example
+   * ```json
+   * { '.jpg': 'asset', '.png': 'base64' }
+   * ```
+   */
+  loader?: ModuleTypes
 }
 
 /**
@@ -275,6 +301,7 @@ export type ResolvedOptions = Omit<
       | 'hooks'
       | 'removeNodeProtocol'
       | 'copy'
+      | 'loader'
     >,
     {
       format: NormalizedFormat[]

@@ -11,7 +11,7 @@ safe_sed() {
 echo "📚 Generating reference..."
 
 # Generate API documentation
-./node_modules/.bin/typedoc --tsconfig tsconfig.json >/dev/null 2>&1
+./node_modules/.bin/typedoc --tsconfig tsconfig.json
 
 echo "✅ Reference generated successfully!"
 
@@ -27,7 +27,7 @@ fi
 # Create the type-aliases folder
 mkdir -p ./docs/reference/type-aliases
 # Move types-aliases/{Sourcemap,Format}.md to ./docs/reference/type-aliases
-mv ./docs/reference/api/type-aliases/{Sourcemap,Format}.md ./docs/reference/type-aliases
+mv ./docs/reference/api/type-aliases/{Sourcemap,Format,ModuleTypes}.md ./docs/reference/type-aliases
 
 # Remove the api folder
 rm -rf ./docs/reference/api

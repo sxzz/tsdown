@@ -201,6 +201,7 @@ async function getBuildOptions(
     report,
     env,
     removeNodeProtocol,
+    loader,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -279,6 +280,7 @@ async function getBuildOptions(
       inject: {
         ...(shims && !cjsDts && getShimsInject(format, platform)),
       },
+      moduleTypes: loader,
     },
     config.inputOptions,
     [format],
