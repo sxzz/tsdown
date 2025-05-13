@@ -64,13 +64,13 @@ const DEFAULT_EXCLUDE_WORKSPACE = [
 ]
 export interface Workspace {
   /**
-   * Workspace directories.
+   * Workspace directories. Glob patterns are supported.
    * - `auto`: Automatically detect `package.json` files in the workspace.
    * @default 'auto'
    */
-  packages?: Arrayable<string> | 'auto'
+  include?: Arrayable<string> | 'auto'
   /**
-   * Exclude packages from workspace.
+   * Exclude directories from workspace.
    * Defaults to all `node_modules`, `dist`, `test`, `tests`, `temp`, and `tmp` directories.
    */
   exclude?: Arrayable<string>
@@ -395,11 +395,11 @@ async function resolveWorkspace(
   if (workspace === true) {
     workspace = {}
   } else if (typeof workspace === 'string' || Array.isArray(workspace)) {
-    workspace = { packages: workspace }
+    workspace = { include: workspace }
   }
 
   let {
-    packages = 'auto',
+    include: packages = 'auto',
     exclude = DEFAULT_EXCLUDE_WORKSPACE,
     config: workspaceConfig,
   } = workspace
