@@ -281,7 +281,7 @@ export interface Options {
  */
 export type UserConfig = Arrayable<Omit<Options, 'config'>>
 export type UserConfigFn = (cliOptions: Options) => Awaitable<UserConfig>
-export type ResolvedConfigs = Extract<UserConfig, any[]>
+export type NormalizedUserConfig = Exclude<UserConfig, any[]>
 
 export type ResolvedOptions = Omit<
   Overwrite<
@@ -316,6 +316,11 @@ export type ResolvedOptions = Omit<
   'config' | 'fromVite'
 >
 
+// Options (cli)
+//  -> Options + UserConfig (maybe array, maybe promise)
+//  -> Options + NormalizedUserConfig[] (Options without config)
+//  -> ResolvedOptions
+
 export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   file?: string
@@ -331,128 +336,132 @@ export async function resolveOptions(options: Options): Promise<{
   }
 
   const configs = await Promise.all(
-    userConfigs.map(async (subConfig): Promise<ResolvedOptions> => {
-      const subOptions = { ...subConfig, ...options }
-
-      let {
-        entry,
-        format = ['es'],
-        plugins = [],
-        clean = true,
-        silent = false,
-        treeshake = true,
-        platform = 'node',
-        outDir = 'dist',
-        sourcemap = false,
-        dts,
-        unused = false,
-        watch = false,
-        shims = false,
-        skipNodeModulesBundle = false,
-        publint = false,
-        fromVite,
-        alias,
-        tsconfig,
-        report = true,
-        target,
-        env = {},
-        copy,
-        publicDir,
-        hash,
-        cwd = process.cwd(),
-      } = subOptions
-
-      outDir = path.resolve(cwd, outDir)
-      clean = resolveClean(clean, outDir, cwd)
-
-      const pkg = await readPackageJson(cwd)
-      entry = await resolveEntry(entry, cwd)
-      if (dts == null) {
-        dts = !!(pkg?.types || pkg?.typings)
-      }
-      target = resolveTarget(target, pkg)
-
-      tsconfig = await resolveTsconfig(tsconfig, cwd)
-      if (publint === true) publint = {}
-
-      if (publicDir) {
-        if (copy) {
-          throw new TypeError(
-            '`publicDir` is deprecated. Cannot be used with `copy`',
-          )
-        } else {
-          logger.warn(
-            `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
-          )
-        }
-      }
-
-      if (fromVite) {
-        const viteUserConfig = await loadViteConfig(
-          fromVite === true ? 'vite' : fromVite,
-          cwd,
-        )
-        if (viteUserConfig) {
-          // const alias = viteUserConfig.resolve?.alias
-          if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
-            throw new TypeError(
-              'Unsupported resolve.alias in Vite config. Use object instead of array',
-            )
-          }
-
-          if (viteUserConfig.plugins) {
-            plugins = [viteUserConfig.plugins as any, plugins]
-          }
-
-          const viteAlias = viteUserConfig.resolve?.alias
-          if (
-            viteAlias &&
-            !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
-          ) {
-            alias = viteAlias
-          }
-        }
-      }
-
-      const config: ResolvedOptions = {
-        ...subOptions,
-        entry,
-        plugins,
-        format: normalizeFormat(format),
-        target,
-        outDir,
-        clean,
-        silent,
-        treeshake,
-        platform,
-        sourcemap,
-        dts: dts === true ? {} : dts,
-        report: report === true ? {} : report,
-        unused,
-        watch,
-        shims,
-        skipNodeModulesBundle,
-        publint,
-        alias,
-        tsconfig,
-        cwd,
-        env,
-        pkg,
-        copy: publicDir || copy,
-        hash: hash ?? true,
-      }
-
-      return config
-    }),
+    userConfigs.map((userConfig) => resolveConfig(userConfig, options)),
   )
-
   return { configs, file }
+}
+
+async function resolveConfig(
+  userConfig: NormalizedUserConfig,
+  overrides: Options,
+): Promise<ResolvedOptions> {
+  const subOptions = { ...userConfig, ...overrides }
+
+  let {
+    entry,
+    format = ['es'],
+    plugins = [],
+    clean = true,
+    silent = false,
+    treeshake = true,
+    platform = 'node',
+    outDir = 'dist',
+    sourcemap = false,
+    dts,
+    unused = false,
+    watch = false,
+    shims = false,
+    skipNodeModulesBundle = false,
+    publint = false,
+    fromVite,
+    alias,
+    tsconfig,
+    report = true,
+    target,
+    env = {},
+    copy,
+    publicDir,
+    hash,
+    cwd = process.cwd(),
+  } = subOptions
+
+  outDir = path.resolve(cwd, outDir)
+  clean = resolveClean(clean, outDir, cwd)
+
+  const pkg = await readPackageJson(cwd)
+  entry = await resolveEntry(entry, cwd)
+  if (dts == null) {
+    dts = !!(pkg?.types || pkg?.typings)
+  }
+  target = resolveTarget(target, pkg)
+
+  tsconfig = await resolveTsconfig(tsconfig, cwd)
+  if (publint === true) publint = {}
+
+  if (publicDir) {
+    if (copy) {
+      throw new TypeError(
+        '`publicDir` is deprecated. Cannot be used with `copy`',
+      )
+    } else {
+      logger.warn(
+        `${blue`publicDir`} is deprecated. Use ${blue`copy`} instead.`,
+      )
+    }
+  }
+
+  if (fromVite) {
+    const viteUserConfig = await loadViteConfig(
+      fromVite === true ? 'vite' : fromVite,
+      cwd,
+    )
+    if (viteUserConfig) {
+      // const alias = viteUserConfig.resolve?.alias
+      if ((Array.isArray as (arg: any) => arg is readonly any[])(alias)) {
+        throw new TypeError(
+          'Unsupported resolve.alias in Vite config. Use object instead of array',
+        )
+      }
+
+      if (viteUserConfig.plugins) {
+        plugins = [viteUserConfig.plugins as any, plugins]
+      }
+
+      const viteAlias = viteUserConfig.resolve?.alias
+      if (
+        viteAlias &&
+        !(Array.isArray as (arg: any) => arg is readonly any[])(viteAlias)
+      ) {
+        alias = viteAlias
+      }
+    }
+  }
+
+  const config: ResolvedOptions = {
+    ...subOptions,
+    entry,
+    plugins,
+    format: normalizeFormat(format),
+    target,
+    outDir,
+    clean,
+    silent,
+    treeshake,
+    platform,
+    sourcemap,
+    dts: dts === true ? {} : dts,
+    report: report === true ? {} : report,
+    unused,
+    watch,
+    shims,
+    skipNodeModulesBundle,
+    publint,
+    alias,
+    tsconfig,
+    cwd,
+    env,
+    pkg,
+    copy: publicDir || copy,
+    hash: hash ?? true,
+  }
+
+  return config
 }
 
 let loaded = false
 
 async function loadConfigFile(options: Options): Promise<{
-  configs: ResolvedConfigs
+  configs: NormalizedUserConfig[]
   file?: string
 }> {
   let cwd = options.cwd || process.cwd()
