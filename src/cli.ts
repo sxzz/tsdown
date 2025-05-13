@@ -14,6 +14,7 @@ cli.help().version(version)
 cli
   .command('[...files]', 'Bundle files', {
     ignoreOptionDefaultValue: true,
+    allowUnknownOptions: true,
   })
   .option('-c, --config <filename>', 'Use a custom config file')
   .option('--no-config', 'Disable config file')
