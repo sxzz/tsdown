@@ -66,13 +66,18 @@ export function generateColor(name: string = 'default'): Ansis {
   if (colors.has(name)) {
     return colors.get(name)!
   }
-  let hash = 0
-  for (let i = 0; i < name.length; i++)
-    hash = name.charCodeAt(i) + ((hash << 5) - hash)
-  const hue = hash % 360
-  const saturation = 35
-  const lightness = 55
-  const color = rgb(...hslToRgb(hue, saturation, lightness))
+  let color: Ansis
+  if (name === 'default') {
+    color = blue
+  } else {
+    let hash = 0
+    for (let i = 0; i < name.length; i++)
+      hash = name.charCodeAt(i) + ((hash << 5) - hash)
+    const hue = hash % 360
+    const saturation = 35
+    const lightness = 55
+    color = rgb(...hslToRgb(hue, saturation, lightness))
+  }
   colors.set(name, color)
   return color
 }

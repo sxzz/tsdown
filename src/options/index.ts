@@ -475,13 +475,16 @@ async function resolveConfig(
     hash,
     cwd = process.cwd(),
     name,
+    workspace,
   } = userConfig
 
   outDir = path.resolve(cwd, outDir)
   clean = resolveClean(clean, outDir, cwd)
 
   const pkg = await readPackageJson(cwd)
-  name ||= pkg?.name
+  if (workspace) {
+    name ||= pkg?.name
+  }
   entry = await resolveEntry(entry, cwd, name)
   if (dts == null) {
     dts = !!(pkg?.types || pkg?.typings)

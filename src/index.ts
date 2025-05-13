@@ -121,13 +121,14 @@ export async function buildSingle(
     await clean()
 
     let hasErrors = false
+    const isMultiFormat = formats.length > 1
     await Promise.all(
       formats.map(async (format) => {
         try {
-          const isMultiFormat = formats.length > 1
           const buildOptions = await getBuildOptions(
             config,
             format,
+            false,
             isMultiFormat,
           )
           await hooks.callHook('build:before', {
