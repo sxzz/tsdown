@@ -1,27 +1,24 @@
 import path from 'node:path'
 import process from 'node:process'
-import { pathToFileURL } from 'node:url'
-import { blue, underline } from 'ansis'
+import { blue } from 'ansis'
 import Debug from 'debug'
-import { loadConfig } from 'unconfig'
-import { resolveClean } from './features/clean'
-import { resolveEntry } from './features/entry'
-import { resolveTarget } from './features/target'
-import { resolveTsconfig } from './features/tsconfig'
-import { fsStat } from './utils/fs'
-import { toArray } from './utils/general'
-import { logger } from './utils/logger'
-import { normalizeFormat, readPackageJson } from './utils/package'
-import type { CopyOptions, CopyOptionsFn } from './features/copy'
-import type { TsdownHooks } from './features/hooks'
-import type { OutExtensionFactory } from './features/output'
-import type { ReportOptions } from './features/report'
+import { resolveClean } from '../features/clean'
+import { resolveEntry } from '../features/entry'
+import { resolveTarget } from '../features/target'
+import { resolveTsconfig } from '../features/tsconfig'
+import { logger } from '../utils/logger'
+import { normalizeFormat, readPackageJson } from '../utils/package'
+import type { CopyOptions, CopyOptionsFn } from '../features/copy'
+import type { TsdownHooks } from '../features/hooks'
+import type { OutExtensionFactory } from '../features/output'
+import type { ReportOptions } from '../features/report'
 import type {
   Arrayable,
   Awaitable,
   MarkPartial,
   Overwrite,
-} from './utils/types'
+} from '../utils/types'
+import { loadConfigFile, loadViteConfig } from './config'
 import type { Hookable } from 'hookable'
 import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
@@ -36,7 +33,6 @@ import type {
 } from 'rolldown'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
-import type { ConfigEnv, UserConfigExport as ViteUserConfigExport } from 'vite'
 
 const debug = Debug('tsdown:options')
 
@@ -456,105 +452,6 @@ async function resolveConfig(
   }
 
   return config
-}
-
-let loaded = false
-
-async function loadConfigFile(options: Options): Promise<{
-  configs: NormalizedUserConfig[]
-  file?: string
-}> {
-  let cwd = options.cwd || process.cwd()
-  let overrideConfig = false
-
-  let { config: filePath } = options
-  if (filePath === false) return { configs: [] }
-
-  if (typeof filePath === 'string') {
-    const stats = await fsStat(filePath)
-    if (stats) {
-      const resolved = path.resolve(filePath)
-      if (stats.isFile()) {
-        overrideConfig = true
-        filePath = resolved
-        cwd = path.dirname(filePath)
-      } else if (stats.isDirectory()) {
-        cwd = resolved
-      }
-    }
-  }
-
-  const nativeTS =
-    process.features.typescript || process.versions.bun || process.versions.deno
-
-  let { config, sources } = await loadConfig
-    .async<UserConfig | UserConfigFn>({
-      sources: overrideConfig
-        ? [{ files: filePath as string, extensions: [] }]
-        : [
-            {
-              files: 'tsdown.config',
-              extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
-              parser:
-                loaded || !nativeTS
-                  ? 'auto'
-                  : async (filepath) => {
-                      const mod = await import(pathToFileURL(filepath).href)
-                      const config = mod.default || mod
-                      return config
-                    },
-            },
-            {
-              files: 'package.json',
-              extensions: [],
-              rewrite: (config: any) => config?.tsdown,
-            },
-          ],
-      cwd,
-      defaults: {},
-    })
-    .finally(() => (loaded = true))
-
-  const file = sources[0]
-  if (file) {
-    logger.info(`Using tsdown config: ${underline(file)}`)
-  }
-
-  if (typeof config === 'function') {
-    config = await config(options)
-  }
-
-  return {
-    configs: toArray(config),
-    file,
-  }
-}
-
-async function loadViteConfig(prefix: string, cwd: string) {
-  const {
-    config,
-    sources: [source],
-  } = await loadConfig<ViteUserConfigExport>({
-    sources: [
-      {
-        files: `${prefix}.config`,
-        extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
-      },
-    ],
-    cwd,
-    defaults: {},
-  })
-  if (!source) return
-  logger.info(`Using Vite config: ${underline(source)}`)
-
-  const resolved = await config
-  if (typeof resolved === 'function') {
-    return resolved({
-      command: 'build',
-      mode: 'production',
-    } satisfies ConfigEnv)
-  }
-  return resolved
 }
 
 export async function mergeUserOptions<T extends object, A extends unknown[]>(
