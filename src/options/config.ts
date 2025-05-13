@@ -47,7 +47,7 @@ let loaded = false
 
 export async function loadConfigFile(
   options: Options,
-  stopAt?: string,
+  workspace?: string,
 ): Promise<{
   configs: NormalizedUserConfig[]
   file?: string
@@ -99,7 +99,7 @@ export async function loadConfigFile(
             },
           ],
       cwd,
-      stopAt,
+      stopAt: workspace && path.dirname(workspace),
       defaults: {},
     })
     .finally(() => (loaded = true))

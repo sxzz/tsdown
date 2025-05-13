@@ -414,12 +414,15 @@ async function resolveWorkspace(
       .filter((file) => file !== 'package.json') // exclude root package.json
       .map((file) => path.resolve(rootCwd, file, '..'))
   } else {
-    packages = await glob({
-      patterns: packages,
-      ignore: exclude,
-      cwd: rootCwd,
-      onlyDirectories: true,
-    })
+    packages = (
+      await glob({
+        patterns: packages,
+        ignore: exclude,
+        cwd: rootCwd,
+        onlyDirectories: true,
+        absolute: true,
+      })
+    ).map((file) => path.resolve(file))
   }
 
   if (packages.length === 0) {
@@ -435,7 +438,7 @@ async function resolveWorkspace(
             config: workspaceConfig,
             cwd,
           },
-          rootCwd,
+          cwd,
         )
         return configs.map((config) => ({ ...normalized, cwd, ...config }))
       }),
