@@ -101,6 +101,7 @@ export interface TestBuildOptions {
   beforeBuild?: () => Promise<void>
 
   expectDir?: string
+  expectPattern?: string
 }
 
 export async function testBuild({
@@ -110,9 +111,11 @@ export async function testBuild({
   options,
   cwd,
   expectDir = '.',
+  expectPattern,
   beforeBuild,
 }: TestBuildOptions): Promise<{
   testName: string
+  testDir: string
   outputFiles: string[]
   outputDir: string
   snapshot: string
@@ -138,11 +141,12 @@ export async function testBuild({
   const { files: outputFiles, snapshot } = await expectFilesSnapshot(
     path.resolve(outputDir, expectDir),
     path.resolve(snapshotsDir, `${testName}.snap.md`),
-    { expect },
+    { pattern: expectPattern, expect },
   )
 
   return {
     testName,
+    testDir,
     outputFiles,
     outputDir,
     snapshot,

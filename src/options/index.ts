@@ -2,10 +2,12 @@ import path from 'node:path'
 import process from 'node:process'
 import { blue } from 'ansis'
 import Debug from 'debug'
+import { glob } from 'tinyglobby'
 import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
+import { toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
@@ -54,6 +56,31 @@ export type ModuleTypes = Record<
   | 'css'
   | 'asset'
 >
+
+const DEFAULT_EXCLUDE_WORKSPACE = [
+  '**/node_modules/**',
+  '**/dist/**',
+  '**/test?(s)/**',
+  '**/t?(e)mp/**',
+]
+export interface Workspace {
+  /**
+   * Workspace directories.
+   * - `auto`: Automatically detect `package.json` files in the workspace.
+   * @default 'auto'
+   */
+  packages?: Arrayable<string> | 'auto'
+  /**
+   * Exclude packages from workspace.
+   * Defaults to all `node_modules`, `dist`, `test`, `tests`, `temp`, and `tmp` directories.
+   */
+  exclude?: Arrayable<string>
+
+  /**
+   * Path to the workspace configuration file.
+   */
+  config?: boolean | string
+}
 
 /**
  * Options for tsdown.
@@ -147,6 +174,16 @@ export interface Options {
   /** @default true */
   treeshake?: boolean
   plugins?: InputOptions['plugins']
+  /**
+   * Sets how input files are processed.
+   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
+   * Lets you import or require files like images or fonts.
+   * @example
+   * ```json
+   * { '.jpg': 'asset', '.png': 'base64' }
+   * ```
+   */
+  loader?: ModuleTypes
 
   /** @default false */
   silent?: boolean
@@ -256,20 +293,15 @@ export interface Options {
 
   /**
    * The working directory of the config file.
-   * @default process.cwd()
+   * - Defaults to `process.cwd()` for root config.
+   * - Defaults to the package directory for workspace config.
    */
   cwd?: string
 
   /**
-   * Sets how input files are processed.
-   * For example, use 'js' to treat files as JavaScript or 'base64' for images.
-   * Lets you import or require files like images or fonts.
-   * @example
-   * ```json
-   * { '.jpg': 'asset', '.png': 'base64' }
-   * ```
+   * Workspace options.
    */
-  loader?: ModuleTypes
+  workspace?: Workspace | true
 }
 
 /**
@@ -282,7 +314,7 @@ export type NormalizedUserConfig = Exclude<UserConfig, any[]>
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Omit<Options, 'publicDir'>,
+      Omit<Options, 'publicDir' | 'workspace'>,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -315,34 +347,85 @@ export type ResolvedOptions = Omit<
 // Options (cli)
 //  -> Options + UserConfig (maybe array, maybe promise)
 //  -> Options + NormalizedUserConfig[] (Options without config)
+//  -> Options + NormalizedUserConfig[] (Options without config and workspace)
 //  -> ResolvedOptions
+
+// resolved options count = 1 (options) * root config count * workspace count * sub config count (1 minimum)
 
 export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
   file?: string
 }> {
-  const { configs: userConfigs, file } = await loadConfigFile(options)
-  if (userConfigs.length === 0) {
-    userConfigs.push({})
-  }
-
+  const { configs: rootConfigs, file } = await loadConfigFile(options)
   if (file) {
     debug('Loaded config file %s', file)
-    debug('User configs %o', userConfigs)
+    debug('Root configs %o', rootConfigs)
   }
 
-  const configs = await Promise.all(
-    userConfigs.map((userConfig) => resolveConfig(userConfig, options)),
-  )
+  const configs = (
+    await Promise.all(
+      rootConfigs.map(async (rootConfig) => {
+        const workspaceConfigs = await resolveWorkspace(rootConfig, options)
+        return Promise.all(
+          workspaceConfigs.map((config) => resolveConfig(config)),
+        )
+      }),
+    )
+  ).flat()
+  debug('Resolved configs %O', configs)
   return { configs, file }
+}
+
+async function resolveWorkspace(
+  config: NormalizedUserConfig,
+  options: Options,
+): Promise<NormalizedUserConfig[]> {
+  const normalized = { ...config, ...options }
+  const rootCwd = normalized.cwd || process.cwd()
+  const { workspace } = normalized
+  if (!workspace) return [normalized]
+
+  let {
+    packages = 'auto',
+    exclude = DEFAULT_EXCLUDE_WORKSPACE,
+    config: workspaceConfig,
+  } = workspace === true ? {} : workspace
+  if (packages === 'auto') {
+    packages = (
+      await glob({
+        patterns: '**/package.json',
+        ignore: exclude,
+        cwd: rootCwd,
+      })
+    )
+      .filter((file) => file !== 'package.json') // exclude root package.json
+      .map((file) => path.resolve(rootCwd, file, '..'))
+  } else {
+    packages = toArray(packages)
+  }
+
+  const configs = (
+    await Promise.all(
+      packages.map(async (cwd) => {
+        const { configs } = await loadConfigFile(
+          {
+            ...options,
+            config: workspaceConfig,
+            cwd,
+          },
+          rootCwd,
+        )
+        return configs.map((config) => ({ ...normalized, cwd, ...config }))
+      }),
+    )
+  ).flat()
+
+  return configs
 }
 
 async function resolveConfig(
   userConfig: NormalizedUserConfig,
-  overrides: Options,
 ): Promise<ResolvedOptions> {
-  const subOptions = { ...userConfig, ...overrides }
-
   let {
     entry,
     format = ['es'],
@@ -369,7 +452,7 @@ async function resolveConfig(
     publicDir,
     hash,
     cwd = process.cwd(),
-  } = subOptions
+  } = userConfig
 
   outDir = path.resolve(cwd, outDir)
   clean = resolveClean(clean, outDir, cwd)
@@ -424,7 +507,7 @@ async function resolveConfig(
   }
 
   const config: ResolvedOptions = {
-    ...subOptions,
+    ...userConfig,
     entry,
     plugins,
     format: normalizeFormat(format),

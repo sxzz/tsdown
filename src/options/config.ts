@@ -45,7 +45,10 @@ export async function loadViteConfig(
 
 let loaded = false
 
-export async function loadConfigFile(options: Options): Promise<{
+export async function loadConfigFile(
+  options: Options,
+  stopAt?: string,
+): Promise<{
   configs: NormalizedUserConfig[]
   file?: string
 }> {
@@ -53,7 +56,7 @@ export async function loadConfigFile(options: Options): Promise<{
   let overrideConfig = false
 
   let { config: filePath } = options
-  if (filePath === false) return { configs: [] }
+  if (filePath === false) return { configs: [{}] }
 
   if (typeof filePath === 'string') {
     const stats = await fsStat(filePath)
@@ -96,6 +99,7 @@ export async function loadConfigFile(options: Options): Promise<{
             },
           ],
       cwd,
+      stopAt,
       defaults: {},
     })
     .finally(() => (loaded = true))
@@ -108,9 +112,12 @@ export async function loadConfigFile(options: Options): Promise<{
   if (typeof config === 'function') {
     config = await config(options)
   }
-
+  config = toArray(config)
+  if (config.length === 0) {
+    config.push({})
+  }
   return {
-    configs: toArray(config),
+    configs: config,
     file,
   }
 }

@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { beforeEach, expect, test, vi } from 'vitest'
-import { resolveOptions } from '../src/options'
+import { resolveOptions, type Options } from '../src/options'
 import { fsRemove } from '../src/utils/fs'
 import { chdir, getTestDir, testBuild, writeFixtures } from './utils'
 
@@ -427,5 +427,31 @@ test('loader option', async (context) => {
         '.d': 'binary',
       },
     },
+  })
+})
+
+test('workspace option', async (context) => {
+  const files = {
+    'package.json': JSON.stringify({ name: 'workspace' }),
+    'packages/foo/src/index.ts': `export default 10`,
+    'packages/foo/package.json': JSON.stringify({ name: 'foo' }),
+    'packages/bar/index.ts': `export default 12`,
+    'packages/bar/package.json': JSON.stringify({ name: 'bar' }),
+    'packages/bar/tsdown.config.ts': `
+      export default {
+        entry: ['index.ts'],
+      }
+    `,
+  }
+  const options: Options = {
+    workspace: true,
+    entry: ['src/index.ts'],
+  }
+  await testBuild({
+    context,
+    files,
+    options,
+    expectDir: '..',
+    expectPattern: '**/dist',
   })
 })
