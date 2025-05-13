@@ -308,19 +308,23 @@ export interface Options {
    * This allows you to build multiple packages in a monorepo.
    */
   workspace?: Workspace | Arrayable<string> | true
+  /**
+   * Filter workspace packages. This option is only available in workspace mode.
+   */
+  filter?: RegExp | string | string[]
 }
 
 /**
  * Options without specifying config file path.
  */
-export type UserConfig = Arrayable<Omit<Options, 'config'>>
+export type UserConfig = Arrayable<Omit<Options, 'config' | 'filter'>>
 export type UserConfigFn = (cliOptions: Options) => Awaitable<UserConfig>
 export type NormalizedUserConfig = Exclude<UserConfig, any[]>
 
 export type ResolvedOptions = Omit<
   Overwrite<
     MarkPartial<
-      Omit<Options, 'publicDir' | 'workspace'>,
+      Omit<Options, 'publicDir' | 'workspace' | 'filter'>,
       | 'globalName'
       | 'inputOptions'
       | 'outputOptions'
@@ -427,6 +431,27 @@ async function resolveWorkspace(
 
   if (packages.length === 0) {
     throw new Error('No workspace packages found, please check your config')
+  }
+
+  if (options.filter) {
+    if (
+      typeof options.filter === 'string' &&
+      options.filter.length > 2 &&
+      options.filter[0] === '/' &&
+      options.filter.at(-1) === '/'
+    ) {
+      options.filter = new RegExp(options.filter.slice(1, -1))
+    }
+    packages = packages.filter((path) => {
+      return typeof options.filter === 'string'
+        ? path.includes(options.filter)
+        : Array.isArray(options.filter)
+          ? options.filter.some((filter) => path.includes(filter))
+          : options.filter!.test(path)
+    })
+    if (packages.length === 0) {
+      throw new Error('No packages matched the filters')
+    }
   }
 
   const configs = (
