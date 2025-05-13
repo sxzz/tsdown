@@ -1,4 +1,5 @@
 import process from 'node:process'
+import { dim } from 'ansis'
 import Debug from 'debug'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
@@ -12,6 +13,7 @@ export async function publint(options: ResolvedOptions): Promise<void> {
     return
   }
 
+  const t = performance.now()
   debug('Running publint')
   const { publint } = await import('publint')
   const { formatMessage } = await import('publint/utils')
@@ -21,7 +23,10 @@ export async function publint(options: ResolvedOptions): Promise<void> {
   debug('Found %d issues', messages.length)
 
   if (!messages.length) {
-    logger.success('No publint issues found')
+    logger.success(
+      `No publint issues found`,
+      dim`(${Math.round(performance.now() - t)}ms)`,
+    )
   }
   let hasError = false
   for (const message of messages) {
