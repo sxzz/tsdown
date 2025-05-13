@@ -9,7 +9,7 @@ var Lib = (function(exports) {
 const foo = true;
 
 //#endregion
-exports.foo = foo
+exports.foo = foo;
 return exports;
 })({});
 ```
@@ -27,6 +27,6 @@ return exports;
 const foo = true;
 
 //#endregion
-exports.foo = foo
+exports.foo = foo;
 });
 ```

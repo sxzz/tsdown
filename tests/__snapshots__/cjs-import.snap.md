@@ -7,5 +7,5 @@
 const foo = 1;
 
 //#endregion
-exports.foo = foo
+exports.foo = foo;
 ```
