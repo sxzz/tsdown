@@ -9,8 +9,8 @@ export async function resolveEntry(
   cwd: string,
   name?: string,
 ): Promise<Record<string, string>> {
+  const nameLabel = name ? `[${name}] ` : ''
   if (!entry || Object.keys(entry).length === 0) {
-    const nameLabel = name ? `[${name}] ` : ''
     // TODO auto find entry
     throw new Error(
       `${nameLabel}No input files, try "tsdown <your-file>" instead`,
@@ -20,7 +20,7 @@ export async function resolveEntry(
   const entryMap = await toObjectEntry(entry, cwd)
   const entries = Object.values(entryMap)
   if (entries.length === 0) {
-    throw new Error(`Cannot find entry: ${JSON.stringify(entry)}`)
+    throw new Error(`${nameLabel}Cannot find entry: ${JSON.stringify(entry)}`)
   }
   logger.info(
     prettyName(name),
