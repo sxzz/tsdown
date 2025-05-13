@@ -99,6 +99,8 @@ export interface TestBuildOptions {
    * A function that will be called before the build.
    */
   beforeBuild?: () => Promise<void>
+
+  expectDir?: string
 }
 
 export async function testBuild({
@@ -107,8 +109,10 @@ export async function testBuild({
   fixture,
   options,
   cwd,
+  expectDir = '.',
   beforeBuild,
 }: TestBuildOptions): Promise<{
+  testName: string
   outputFiles: string[]
   outputDir: string
   snapshot: string
@@ -132,12 +136,13 @@ export async function testBuild({
 
   const outputDir = path.resolve(workingDir, resolvedOptions.outDir!)
   const { files: outputFiles, snapshot } = await expectFilesSnapshot(
-    outputDir,
+    path.resolve(outputDir, expectDir),
     path.resolve(snapshotsDir, `${testName}.snap.md`),
     { expect },
   )
 
   return {
+    testName,
     outputFiles,
     outputDir,
     snapshot,

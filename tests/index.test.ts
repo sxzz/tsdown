@@ -399,6 +399,7 @@ test('cwd option', async (context) => {
     context,
     files,
     options: (cwd) => ({ cwd: path.join(cwd, 'test') }),
+    expectDir: '../test/dist',
   })
 })
 
