@@ -362,7 +362,7 @@ export async function resolveOptions(options: Options): Promise<{
         cwd = process.cwd(),
       } = subOptions
 
-      outDir = path.resolve(outDir)
+      outDir = path.resolve(cwd, outDir)
       clean = resolveClean(clean, outDir, cwd)
 
       const pkg = await readPackageJson(cwd)
