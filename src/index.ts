@@ -2,7 +2,6 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
-import Debug from 'debug'
 import {
   build as rolldownBuild,
   type BuildOptions,
