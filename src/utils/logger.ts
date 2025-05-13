@@ -61,6 +61,7 @@ export function prettyFormat(format: InternalModuleFormat): string {
   return formatColor(`[${formatText}]`)
 }
 
+// Copied from https://github.com/antfu/vscode-pnpm-catalog-lens - MIT License
 const colors = new Map<string, Ansis>()
 export function generateColor(name: string = 'default'): Ansis {
   if (colors.has(name)) {
