@@ -4,11 +4,11 @@ import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
 import type { FSWatcher } from 'chokidar'
 
-const endsWithPackageJson = /[\\/]package\.json$/
+const endsWithConfig = /[\\/](?:package\.json|tsdown\.config.*)$/
 
 export async function watchBuild(
   options: ResolvedOptions,
-  configFile: string | undefined,
+  configFiles: string[],
   rebuild: () => void,
   restart: () => void,
 ): Promise<FSWatcher> {
@@ -24,7 +24,7 @@ export async function watchBuild(
     typeof options.watch === 'boolean' ? options.cwd : options.watch,
   )
   logger.info(`Watching for changes in ${files.join(', ')}`)
-  if (configFile) files.push(configFile)
+  files.push(...configFiles)
 
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
@@ -36,7 +36,7 @@ export async function watchBuild(
   })
 
   watcher.on('all', (type: string, file: string) => {
-    if (endsWithPackageJson.test(file) || configFile === file) {
+    if (configFiles.includes(file) || endsWithConfig.test(file)) {
       logger.info(`Reload config: ${file}`)
       restart()
       return

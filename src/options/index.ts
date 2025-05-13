@@ -365,36 +365,47 @@ export type ResolvedOptions = Omit<
 
 export async function resolveOptions(options: Options): Promise<{
   configs: ResolvedOptions[]
-  file?: string
+  files: string[]
 }> {
+  const files: string[] = []
+
+  debug('options %O', options)
+  debug('loading config file: %s', options.config)
   const { configs: rootConfigs, file } = await loadConfigFile(options)
   if (file) {
-    debug('Loaded config file %s', file)
-    debug('Root configs %o', rootConfigs)
+    files.push(file)
+    debug('loaded root config file %s', file)
+    debug('root configs %o', rootConfigs)
+  } else {
+    debug('no root config file found')
   }
 
   const configs = (
     await Promise.all(
       rootConfigs.map(async (rootConfig) => {
-        const workspaceConfigs = await resolveWorkspace(rootConfig, options)
+        const { configs: workspaceConfigs, files: workspaceFiles } =
+          await resolveWorkspace(rootConfig, options)
+        if (workspaceFiles) {
+          files.push(...workspaceFiles)
+        }
         return Promise.all(
           workspaceConfigs.map((config) => resolveConfig(config)),
         )
       }),
     )
   ).flat()
-  debug('Resolved configs %O', configs)
-  return { configs, file }
+  debug('resolved configs %O', configs)
+  return { configs, files }
 }
 
 async function resolveWorkspace(
   config: NormalizedUserConfig,
   options: Options,
-): Promise<NormalizedUserConfig[]> {
+): Promise<{ configs: NormalizedUserConfig[]; files?: string[] }> {
   const normalized = { ...config, ...options }
   const rootCwd = normalized.cwd || process.cwd()
   let { workspace } = normalized
-  if (!workspace) return [normalized]
+  if (!workspace) return { configs: [normalized], files: [] }
 
   if (workspace === true) {
     workspace = {}
@@ -454,10 +465,12 @@ async function resolveWorkspace(
     }
   }
 
+  const files: string[] = []
   const configs = (
     await Promise.all(
       packages.map(async (cwd) => {
-        const { configs } = await loadConfigFile(
+        debug('loading workspace config %s', cwd)
+        const { configs, file } = await loadConfigFile(
           {
             ...options,
             config: workspaceConfig,
@@ -465,12 +478,24 @@ async function resolveWorkspace(
           },
           cwd,
         )
-        return configs.map((config) => ({ ...normalized, cwd, ...config }))
+        if (file) {
+          debug('loaded workspace config file %s', file)
+          files.push(file)
+        } else {
+          debug('no workspace config file found in %s', cwd)
+        }
+        return configs.map(
+          (config): NormalizedUserConfig => ({
+            ...normalized,
+            cwd,
+            ...config,
+          }),
+        )
       }),
     )
   ).flat()
 
-  return configs
+  return { configs, files }
 }
 
 async function resolveConfig(

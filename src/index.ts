@@ -34,8 +34,6 @@ import { ShebangPlugin } from './plugins'
 import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
-const debug = Debug('tsdown:main')
-
 /**
  * Build with tsdown.
  */
@@ -44,16 +42,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     logger.setSilent(userOptions.silent)
   }
 
-  debug('Loading config')
-  const { configs, file: configFile } = await resolveOptions(userOptions)
-  if (configFile) {
-    debug('Loaded config:', configFile)
-    configs.forEach((config) => {
-      debug('using resolved config: %O', config)
-    })
-  } else {
-    debug('No config file found')
-  }
+  const { configs, files: configFiles } = await resolveOptions(userOptions)
 
   let cleanPromise: Promise<void> | undefined
   const clean = () => {
@@ -71,7 +60,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
-    const watcher = await watchBuild(config, configFile, rebuild, restart)
+    const watcher = await watchBuild(config, configFiles, rebuild, restart)
     cleanCbs.push(() => watcher.close())
   }
 
