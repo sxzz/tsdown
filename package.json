@@ -94,7 +94,6 @@
     "@sxzz/prettier-config": "catalog:dev",
     "@sxzz/test-utils": "catalog:dev",
     "@types/debug": "catalog:dev",
-    "@types/diff": "catalog:dev",
     "@types/node": "catalog:dev",
     "@types/semver": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:docs",
