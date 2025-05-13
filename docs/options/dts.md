@@ -4,6 +4,9 @@ Declaration files (`.d.ts`) are an essential part of TypeScript libraries, provi
 
 `tsdown` makes it easy to generate and bundle declaration files for your library, ensuring a seamless developer experience for your users.
 
+> [!NOTE]
+> You must install `typescript` in your project for declaration file generation to work properly.
+
 ## How dts Works in tsdown
 
 `tsdown` uses [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts) internally to generate and bundle `.d.ts` files. This plugin is specifically designed to handle declaration file generation efficiently and integrates seamlessly with `tsdown`.

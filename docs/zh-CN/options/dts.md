@@ -4,6 +4,9 @@
 
 `tsdown` 让生成和打包声明文件变得简单，确保为您的用户带来无缝的开发体验。
 
+> [!NOTE]
+> 您必须在项目中安装 `typescript`，声明文件的生成才能正常工作。
+
 ## tsdown 中 dts 的工作原理
 
 `tsdown` 内部使用 [rolldown-plugin-dts](https://github.com/sxzz/rolldown-plugin-dts) 来生成和打包 `.d.ts` 文件。该插件专为高效处理声明文件生成而设计，并与 `tsdown` 无缝集成。
