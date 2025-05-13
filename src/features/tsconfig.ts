@@ -1,8 +1,8 @@
 import path from 'node:path'
-import { blue, underline } from 'ansis'
+import { blue } from 'ansis'
 import { up as findUp } from 'empathic/find'
 import { fsStat } from '../utils/fs'
-import { logger } from '../utils/logger'
+import { generateColor, logger, prettyName } from '../utils/logger'
 import type { Options } from '../options'
 
 export function findTsconfig(
@@ -15,6 +15,7 @@ export function findTsconfig(
 export async function resolveTsconfig(
   tsconfig: Options['tsconfig'],
   cwd: string,
+  name?: string,
 ): Promise<string | false> {
   const original = tsconfig
 
@@ -43,7 +44,10 @@ export async function resolveTsconfig(
     }
 
     if (tsconfig) {
-      logger.info(`Using tsconfig: ${underline(path.relative(cwd, tsconfig))}`)
+      logger.info(
+        prettyName(name),
+        `tsconfig: ${generateColor(name)(path.relative(cwd, tsconfig))}`,
+      )
     }
   }
 

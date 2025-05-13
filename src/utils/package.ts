@@ -1,11 +1,9 @@
 import { readFile } from 'node:fs/promises'
-import { blue, yellow } from 'ansis'
 import Debug from 'debug'
 import { up as findPackage } from 'empathic/package'
 import type { Format, NormalizedFormat } from '../options'
-import { noop, resolveComma, toArray } from './general'
+import { resolveComma, toArray } from './general'
 import type { PackageJson } from 'pkg-types'
-import type { InternalModuleFormat } from 'rolldown'
 
 const debug = Debug('tsdown:package')
 
@@ -45,20 +43,4 @@ export function normalizeFormat(format: Format | Format[]): NormalizedFormat[] {
       }
     },
   )
-}
-
-export function prettyFormat(format: InternalModuleFormat): string {
-  const formatColor = format === 'es' ? blue : format === 'cjs' ? yellow : noop
-
-  let formatText: string
-  switch (format) {
-    case 'es':
-      formatText = 'ESM'
-      break
-    default:
-      formatText = format.toUpperCase()
-      break
-  }
-
-  return formatColor(`[${formatText}]`)
 }

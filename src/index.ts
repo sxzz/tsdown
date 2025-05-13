@@ -32,7 +32,6 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { logger } from './utils/logger'
-import { prettyFormat } from './utils/package'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 const debug = Debug('tsdown:main')
@@ -62,6 +61,7 @@ export async function build(userOptions: Options = {}): Promise<void> {
     return (cleanPromise = cleanOutDir(configs))
   }
 
+  logger.info('Build start')
   const rebuilds = await Promise.all(
     configs.map((options) => buildSingle(options, clean)),
   )
@@ -124,17 +124,21 @@ export async function buildSingle(
     await Promise.all(
       formats.map(async (format) => {
         try {
-          const formatLabel = prettyFormat(format)
-          logger.info(formatLabel, 'Build start')
-
-          const buildOptions = await getBuildOptions(config, format)
+          const isMultiFormat = formats.length > 1
+          const buildOptions = await getBuildOptions(
+            config,
+            format,
+            isMultiFormat,
+          )
           await hooks.callHook('build:before', {
             ...context,
             buildOptions,
           })
           await rolldownBuild(buildOptions)
           if (format === 'cjs' && dts) {
-            await rolldownBuild(await getBuildOptions(config, format, true))
+            await rolldownBuild(
+              await getBuildOptions(config, format, true, isMultiFormat),
+            )
           }
         } catch (error) {
           if (watch) {
@@ -180,6 +184,7 @@ async function getBuildOptions(
   config: ResolvedOptions,
   format: NormalizedFormat,
   cjsDts?: boolean,
+  isMultiFormat?: boolean,
 ): Promise<BuildOptions> {
   const {
     entry,
@@ -202,6 +207,7 @@ async function getBuildOptions(
     env,
     removeNodeProtocol,
     loader,
+    name,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -240,11 +246,11 @@ async function getBuildOptions(
         }),
       )
     }
-    plugins.push(ShebangPlugin(cwd))
+    plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
   }
 
   if (report && !logger.silent) {
-    plugins.push(ReportPlugin(report, cwd, cjsDts))
+    plugins.push(ReportPlugin(report, cwd, cjsDts, name, isMultiFormat))
   }
 
   if (target) {

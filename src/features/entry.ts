@@ -1,13 +1,13 @@
 import path from 'node:path'
-import { blue } from 'ansis'
 import { glob } from 'tinyglobby'
 import { lowestCommonAncestor } from '../utils/fs'
-import { logger } from '../utils/logger'
+import { generateColor, logger, prettyName } from '../utils/logger'
 import type { Options } from '../options'
 
 export async function resolveEntry(
   entry: Options['entry'],
   cwd: string,
+  name?: string,
 ): Promise<Record<string, string>> {
   if (!entry || Object.keys(entry).length === 0) {
     // TODO auto find entry
@@ -20,7 +20,8 @@ export async function resolveEntry(
     throw new Error(`Cannot find entry: ${JSON.stringify(entry)}`)
   }
   logger.info(
-    `entry: ${blue(entries.map((entry) => path.relative(cwd, entry)).join(', '))}`,
+    prettyName(name),
+    `entry: ${generateColor(name)(entries.map((entry) => path.relative(cwd, entry)).join(', '))}`,
   )
   return entryMap
 }

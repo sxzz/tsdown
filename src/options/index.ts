@@ -152,6 +152,12 @@ export interface Options {
   shims?: boolean
 
   /**
+   * The name to show in CLI output. This is useful for monorepos or workspaces.
+   * Defaults to the package name from `package.json`.
+   */
+  name?: string
+
+  /**
    * Use a fixed extension for output files.
    * The extension will always be `.cjs` or `.mjs`.
    * Otherwise, it will depend on the package type.
@@ -330,6 +336,7 @@ export type ResolvedOptions = Omit<
       | 'removeNodeProtocol'
       | 'copy'
       | 'loader'
+      | 'name'
     >,
     {
       format: NormalizedFormat[]
@@ -452,19 +459,21 @@ async function resolveConfig(
     publicDir,
     hash,
     cwd = process.cwd(),
+    name,
   } = userConfig
 
   outDir = path.resolve(cwd, outDir)
   clean = resolveClean(clean, outDir, cwd)
 
   const pkg = await readPackageJson(cwd)
-  entry = await resolveEntry(entry, cwd)
+  name ||= pkg?.name
+  entry = await resolveEntry(entry, cwd, name)
   if (dts == null) {
     dts = !!(pkg?.types || pkg?.typings)
   }
-  target = resolveTarget(target, pkg)
+  target = resolveTarget(target, pkg, name)
+  tsconfig = await resolveTsconfig(tsconfig, cwd, name)
 
-  tsconfig = await resolveTsconfig(tsconfig, cwd)
   if (publint === true) publint = {}
 
   if (publicDir) {
@@ -532,6 +541,7 @@ async function resolveConfig(
     pkg,
     copy: publicDir || copy,
     hash: hash ?? true,
+    name,
   }
 
   return config

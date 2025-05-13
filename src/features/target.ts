@@ -1,12 +1,12 @@
-import { blue } from 'ansis'
 import minVersion from 'semver/ranges/min-version.js'
 import { resolveComma, toArray } from '../utils/general'
-import { logger } from '../utils/logger'
+import { generateColor, logger, prettyName } from '../utils/logger'
 import type { PackageJson } from 'pkg-types'
 
 export function resolveTarget(
   target: string | string[] | false | undefined,
   pkg?: PackageJson,
+  name?: string,
 ): string[] | undefined {
   if (target === false) return
   if (target == null) {
@@ -20,7 +20,8 @@ export function resolveTarget(
   const targets = resolveComma(toArray(target))
   if (targets.length)
     logger.info(
-      `target${targets.length > 1 ? 's' : ''}: ${blue(targets.join(', '))}`,
+      prettyName(name),
+      `target${targets.length > 1 ? 's' : ''}: ${generateColor(name)(targets.join(', '))}`,
     )
 
   return targets
