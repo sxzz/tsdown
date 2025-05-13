@@ -5,7 +5,12 @@ export default defineConfig({
   platform: 'node',
   skipNodeModulesBundle: true,
   shims: true,
-  unused: { level: 'error' },
+  unused: {
+    level: 'error',
+    ignore: [
+      'typescript', // Yarn PnP
+    ],
+  },
   publint: true,
   onSuccess() {
     console.info('🙏 Build succeeded!')
