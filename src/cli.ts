@@ -44,6 +44,7 @@ cli
   .option('--copy <dir>', 'Copy files to output dir')
   .option('--public-dir <dir>', 'Alias for --copy, deprecated')
   .option('--tsconfig <tsconfig>', 'Set tsconfig path')
+  .option('-W, --workspace [dir]', 'Enable workspace mode')
   .action(async (input: string[], flags: Options) => {
     logger.setSilent(!!flags.silent)
     logger.info(

@@ -10,8 +10,11 @@ export async function resolveEntry(
   name?: string,
 ): Promise<Record<string, string>> {
   if (!entry || Object.keys(entry).length === 0) {
+    const nameLabel = name ? `[${name}] ` : ''
     // TODO auto find entry
-    throw new Error(`No input files, try "tsdown <your-file>" instead`)
+    throw new Error(
+      `${nameLabel}No input files, try "tsdown <your-file>" instead`,
+    )
   }
 
   const entryMap = await toObjectEntry(entry, cwd)

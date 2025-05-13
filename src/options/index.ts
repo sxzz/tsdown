@@ -7,7 +7,6 @@ import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
-import { toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
@@ -305,9 +304,10 @@ export interface Options {
   cwd?: string
 
   /**
-   * Workspace options.
+   * **[experimental]** Enable workspace mode.
+   * This allows you to build multiple packages in a monorepo.
    */
-  workspace?: Workspace | true
+  workspace?: Workspace | Arrayable<string> | true
 }
 
 /**
@@ -389,14 +389,20 @@ async function resolveWorkspace(
 ): Promise<NormalizedUserConfig[]> {
   const normalized = { ...config, ...options }
   const rootCwd = normalized.cwd || process.cwd()
-  const { workspace } = normalized
+  let { workspace } = normalized
   if (!workspace) return [normalized]
+
+  if (workspace === true) {
+    workspace = {}
+  } else if (typeof workspace === 'string' || Array.isArray(workspace)) {
+    workspace = { packages: workspace }
+  }
 
   let {
     packages = 'auto',
     exclude = DEFAULT_EXCLUDE_WORKSPACE,
     config: workspaceConfig,
-  } = workspace === true ? {} : workspace
+  } = workspace
   if (packages === 'auto') {
     packages = (
       await glob({
@@ -408,7 +414,16 @@ async function resolveWorkspace(
       .filter((file) => file !== 'package.json') // exclude root package.json
       .map((file) => path.resolve(rootCwd, file, '..'))
   } else {
-    packages = toArray(packages)
+    packages = await glob({
+      patterns: packages,
+      ignore: exclude,
+      cwd: rootCwd,
+      onlyDirectories: true,
+    })
+  }
+
+  if (packages.length === 0) {
+    throw new Error('No workspace packages found, please check your config')
   }
 
   const configs = (

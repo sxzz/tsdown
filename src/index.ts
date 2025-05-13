@@ -31,7 +31,7 @@ import {
   type ResolvedOptions,
 } from './options'
 import { ShebangPlugin } from './plugins'
-import { logger } from './utils/logger'
+import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 const debug = Debug('tsdown:main')
@@ -161,6 +161,7 @@ export async function buildSingle(
     await hooks.callHook('build:done', context)
 
     logger.success(
+      prettyName(config.name),
       `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
     )
 
