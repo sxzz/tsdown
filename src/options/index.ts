@@ -389,7 +389,9 @@ export async function resolveOptions(options: Options): Promise<{
           files.push(...workspaceFiles)
         }
         return Promise.all(
-          workspaceConfigs.map((config) => resolveConfig(config)),
+          workspaceConfigs
+            .filter((config) => !config.workspace || config.entry?.length)
+            .map((config) => resolveConfig(config)),
         )
       }),
     )
