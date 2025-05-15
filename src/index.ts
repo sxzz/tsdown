@@ -19,6 +19,7 @@ import { NodeProtocolPlugin } from './features/node-protocol'
 import { resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
+import { RuntimeHelperCheckPlugin } from './features/runtime-helper-check'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { watchBuild } from './features/watch'
@@ -234,6 +235,7 @@ async function getBuildOptions(
             target,
           },
         }),
+        RuntimeHelperCheckPlugin(target),
       )
     }
     plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
