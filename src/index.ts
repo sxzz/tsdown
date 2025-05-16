@@ -21,6 +21,7 @@ import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
+import { RuntimeHelperCheckPlugin } from './features/target'
 import { watchBuild } from './features/watch'
 import {
   mergeUserOptions,
@@ -234,6 +235,7 @@ async function getBuildOptions(
             target,
           },
         }),
+        RuntimeHelperCheckPlugin(target),
       )
     }
     plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
