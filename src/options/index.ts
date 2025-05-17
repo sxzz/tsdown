@@ -198,6 +198,7 @@ export interface Options {
   config?: boolean | string
   /** @default false */
   watch?: boolean | string | string[]
+  ignoreWatch?: string | string[]
 
   /**
    * You can specify command to be executed after a successful build, specially useful for Watch mode
@@ -516,6 +517,7 @@ async function resolveConfig(
     dts,
     unused = false,
     watch = false,
+    ignoreWatch = [],
     shims = false,
     skipNodeModulesBundle = false,
     publint = false,
@@ -604,6 +606,7 @@ async function resolveConfig(
     report: report === true ? {} : report,
     unused,
     watch,
+    ignoreWatch,
     shims,
     skipNodeModulesBundle,
     publint,

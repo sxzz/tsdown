@@ -38,6 +38,7 @@ cli
   .option('--publint', 'Enable publint', { default: false })
   .option('--unused', 'Enable unused dependencies check', { default: false })
   .option('-w, --watch [path]', 'Watch mode')
+  .option('--ignore-watch <path>', 'Ignore custom paths in watch mode')
   .option('--from-vite [vitest]', 'Reuse config from Vite or Vitest')
   .option('--report', 'Size report', { default: true })
   .option('--env.* <value>', 'Define compile-time env variables')

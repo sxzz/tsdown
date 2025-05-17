@@ -129,6 +129,10 @@ tsdown --tsconfig tsconfig.build.json
 
 另请参阅 [监听模式](../options/watch-mode.md)。
 
+## `--ignore-watch <path>`
+
+在监听模式下忽略指定路径。
+
 ## `--from-vite [vitest]`
 
 复用 Vite 或 Vitest 的配置。这允许您无缝扩展或集成现有的 Vite 或 Vitest 配置。
