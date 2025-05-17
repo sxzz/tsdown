@@ -129,6 +129,10 @@ Enable watch mode to automatically rebuild your project when files change. Optio
 
 See also [Watch Mode](../options/watch-mode.md).
 
+## `--ignore-watch <path>`
+
+Ignore custom paths in watch mode.
+
 ## `--from-vite [vitest]`
 
 Reuse configuration from Vite or Vitest. This allows you to extend or integrate with existing Vite or Vitest configurations seamlessly.

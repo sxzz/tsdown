@@ -32,7 +32,12 @@ export async function watchBuild(
   const watcher = watch(files, {
     ignoreInitial: true,
     ignorePermissionErrors: true,
-    ignored: [/[\\/]\.git[\\/]/, /[\\/]node_modules[\\/]/, options.outDir],
+    ignored: [
+      /[\\/]\.git[\\/]/,
+      /[\\/]node_modules[\\/]/,
+      options.outDir,
+      ...toArray(options.ignoreWatch),
+    ],
   })
 
   watcher.on('all', (type: string, file: string) => {
