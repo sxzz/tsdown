@@ -391,7 +391,7 @@ export async function resolveOptions(options: Options): Promise<{
         }
         return Promise.all(
           workspaceConfigs
-            .filter((config) => !config.workspace || config.entry?.length)
+            .filter((config) => !config.workspace || config.entry)
             .map((config) => resolveConfig(config)),
         )
       }),
