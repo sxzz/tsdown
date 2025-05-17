@@ -29,7 +29,6 @@ export async function watchBuild(
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
-  const customIgnores = toArray(options.ignoreWatch)
   const watcher = watch(files, {
     ignoreInitial: true,
     ignorePermissionErrors: true,
@@ -37,7 +36,7 @@ export async function watchBuild(
       /[\\/]\.git[\\/]/,
       /[\\/]node_modules[\\/]/,
       options.outDir,
-      ...customIgnores,
+      ...toArray(options.ignoreWatch),
     ],
   })
 
