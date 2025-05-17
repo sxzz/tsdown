@@ -234,6 +234,11 @@ async function generateApiReference() {
           pattern: String.raw`\.\.\/type-aliases`,
           replacement: './type-aliases',
         },
+        {
+          type: 'replace',
+          pattern: String.raw`Workspace.md`,
+          replacement: 'workspace.md',
+        },
       ],
     },
     {
