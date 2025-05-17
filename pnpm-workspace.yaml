@@ -8,12 +8,12 @@ catalogs:
     '@types/node': ^22.15.18
     '@types/semver': ^7.7.0
     bumpp: ^10.1.1
-    eslint: ^9.26.0
+    eslint: ^9.27.0
     lightningcss: ^1.30.1
     pkg-types: ^2.1.0
     prettier: ^3.5.3
     publint: ^0.3.12
-    tsup: ^8.4.0
+    tsup: ^8.5.0
     typescript: ~5.8.3
     unplugin-lightningcss: ^0.4.0
     unplugin-unused: ^0.5.0
@@ -39,7 +39,7 @@ catalogs:
     empathic: ^1.1.0
     hookable: ^5.5.3
     rolldown: 1.0.0-beta.8-commit.d95f99e
-    rolldown-plugin-dts: ^0.12.3
+    rolldown-plugin-dts: ^0.13.1
     semver: ^7.7.2
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.13
