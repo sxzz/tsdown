@@ -6,7 +6,12 @@ import { loadConfig } from 'unconfig'
 import { fsStat } from '../utils/fs'
 import { toArray } from '../utils/general'
 import { logger } from '../utils/logger'
-import type { NormalizedUserConfig, Options, UserConfig, UserConfigFn } from '.'
+import type {
+  NormalizedUserConfig,
+  Options,
+  UserConfig,
+  UserConfigFn,
+} from './types'
 import type {
   ConfigEnv,
   UserConfig as ViteUserConfig,

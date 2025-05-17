@@ -11,6 +11,7 @@ export default defineConfig({
 
   lastUpdated: true,
   cleanUrls: true,
+  ignoreDeadLinks: ['./Workspace'],
   themeConfig: {
     search: {
       provider: 'local',
