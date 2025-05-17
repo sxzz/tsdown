@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process'
 import {
   copyFileSync,
   cpSync,
@@ -8,37 +7,27 @@ import {
   rmSync,
   writeFileSync,
 } from 'node:fs'
-import { dirname, join } from 'node:path'
-
-/**
- * Execute a shell command and return the output
- */
-function executeCommand(
-  command: string,
-  options: { cwd?: string } = {},
-): string {
-  try {
-    return execSync(command, {
-      stdio: ['pipe', 'pipe', 'pipe'],
-      encoding: 'utf-8',
-      ...options,
-    }).toString()
-  } catch (error) {
-    console.error(`Error executing command: ${command}`)
-    throw error
-  }
-}
+import { dirname } from 'node:path'
+import * as typedoc from 'typedoc'
 
 /**
  * Run TypeDoc with the specified tsconfig
  */
-function runTypedoc(tsconfigPath: string): void {
-  const typedocPath = join('./node_modules/.bin/typedoc')
-  console.log(`Executing: ${typedocPath} --tsconfig ${tsconfigPath}`)
-  executeCommand(`${typedocPath} --tsconfig ${tsconfigPath}`, {
-    // eslint-disable-next-line node/prefer-global/process
-    cwd: process.cwd(),
+async function runTypedoc(tsconfigPath: string): Promise<void> {
+  // Bootstrap TypeDoc with plugins
+  const app = await typedoc.Application.bootstrapWithPlugins({
+    tsconfig: tsconfigPath,
   })
+
+  // May be undefined if errors are encountered.
+  const project = await app.convert()
+
+  if (project) {
+    // Generate configured outputs
+    await app.generateOutputs(project)
+  } else {
+    throw new Error('Failed to generate TypeDoc output')
+  }
 }
 
 /**
@@ -225,11 +214,11 @@ class FileMapper {
 /**
  * Main function to generate API reference documentation
  */
-function generateApiReference(): void {
+async function generateApiReference() {
   console.log('📚 Generating reference...')
 
   // Generate API documentation
-  runTypedoc('tsconfig.json')
+  await runTypedoc('tsconfig.json')
   console.log('✅ Reference generated successfully!')
   console.log('📚 Beautifying reference structure...')
 
@@ -268,4 +257,6 @@ function generateApiReference(): void {
 }
 
 // Execute the main function
-generateApiReference()
+;(async () => {
+  await generateApiReference()
+})()
