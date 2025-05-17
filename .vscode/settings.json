@@ -3,6 +3,7 @@
   "cSpell.words": ["tsdown"],
   "files.readonlyInclude": {
     "docs/**/config-options.md": true,
+    "docs/**/workspace.md": true,
     "docs/**/type-aliases/*.md": true
   }
 }
