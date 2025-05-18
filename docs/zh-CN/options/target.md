@@ -61,6 +61,12 @@ tsdown --target chrome100 --target node20.18
 npm install @oxc-project/runtime
 ```
 
+如果您希望**内联辅助函数**，而不是从运行时包中导入它们，可以将 `@oxc-project/runtime` 作为开发依赖进行安装：
+
+```bash
+npm install -D @oxc-project/runtime
+```
+
 # CSS 目标
 
 `tsdown` 也可以将 CSS 特性降级以匹配您指定的浏览器目标。例如，如果目标是 `chrome108` 或更低版本，CSS 嵌套的 `&` 选择器将被展开为平铺结构。

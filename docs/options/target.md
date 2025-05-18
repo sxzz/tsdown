@@ -61,6 +61,12 @@ If your target includes features that require these helpers, you may need to ins
 npm install @oxc-project/runtime
 ```
 
+If you want to **inline helper functions** instead of importing them from the runtime package, you can install `@oxc-project/runtime` as a development dependency:
+
+```bash
+npm install -D @oxc-project/runtime
+```
+
 # CSS Targeting
 
 `tsdown` can also downlevel CSS features to match your specified browser targets. For example, a CSS nesting `&` selector will be flattened if the target is `chrome108` or lower.
