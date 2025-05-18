@@ -3,7 +3,6 @@
 ```js
 var Lib = (function(exports) {
 
-"use strict";
 
 //#region index.ts
 const foo = true;
@@ -21,7 +20,6 @@ return exports;
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory((global.Lib = {})));
 })(this, function(exports) {
-"use strict";
 
 //#region index.ts
 const foo = true;

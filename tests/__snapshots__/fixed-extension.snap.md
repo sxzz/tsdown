@@ -1,7 +1,6 @@
 ## index.cjs
 
 ```cjs
-"use strict";
 
 //#region index.ts
 var fixed_extension_default = 10;

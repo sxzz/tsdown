@@ -1,7 +1,6 @@
 ## index.cjs
 
 ```cjs
-"use strict";
 
 //#region index.ts
 const url = require("url").pathToFileURL(__filename).href;

@@ -1,7 +1,6 @@
 ## index.cjs
 
 ```cjs
-"use strict";
 
 //#region index.ts
 var cjs_interop_default = {};
