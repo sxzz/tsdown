@@ -262,6 +262,4 @@ async function generateApiReference() {
 }
 
 // Execute the main function
-;(async () => {
-  await generateApiReference()
-})()
+await generateApiReference()
