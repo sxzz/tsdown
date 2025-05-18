@@ -8,7 +8,6 @@ import {
   type OutputOptions,
   type RolldownPluginOption,
 } from 'rolldown'
-import { transformPlugin } from 'rolldown/experimental'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
@@ -227,16 +226,7 @@ async function getBuildOptions(
       plugins.push(Unused.rolldown(unused === true ? {} : unused))
     }
     if (target) {
-      plugins.push(
-        transformPlugin({
-          include: /\.[cm]?[jt]sx?$/,
-          exclude: /\.d\.[cm]?ts$/,
-          transformOptions: {
-            target,
-          },
-        }),
-        RuntimeHelperCheckPlugin(target),
-      )
+      plugins.push(RuntimeHelperCheckPlugin(target))
     }
     plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
   }
@@ -296,6 +286,7 @@ async function getBuildOptions(
       name: config.globalName,
       sourcemap,
       dir: outDir,
+      target,
       minify,
       entryFileNames,
       chunkFileNames,
