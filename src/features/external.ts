@@ -5,6 +5,7 @@ import type { PackageJson } from 'pkg-types'
 import type { Plugin } from 'rolldown'
 
 const debug = Debug('tsdown:external')
+const warnedDeps = new Set<string>()
 
 export function ExternalPlugin(options: ResolvedOptions): Plugin {
   const deps = options.pkg && Array.from(getProductionDeps(options.pkg))
@@ -41,7 +42,10 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
       }
 
       if (shouldExternal) {
-        debug('External dependency:', id)
+        if (!warnedDeps.has(id)) {
+          warnedDeps.add(id)
+          debug('External dependency:', id)
+        }
         return { id, external: shouldExternal }
       }
     },
