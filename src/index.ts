@@ -209,6 +209,7 @@ async function getBuildOptions(
     removeNodeProtocol,
     loader,
     name,
+    unbundle,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -300,6 +301,7 @@ async function getBuildOptions(
       minify: !cjsDts && minify,
       entryFileNames,
       chunkFileNames,
+      preserveModules: unbundle,
     },
     config.outputOptions,
     [format],

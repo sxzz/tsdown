@@ -151,6 +151,8 @@ export interface Options {
    */
   target?: string | string[] | false
 
+  unbundle?: boolean
+
   define?: Record<string, string>
   /** @default false */
   shims?: boolean
@@ -355,6 +357,7 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
+      | 'unbundle'
     >,
     {
       format: NormalizedFormat[]

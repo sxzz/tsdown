@@ -455,3 +455,22 @@ test('workspace option', async (context) => {
     expectPattern: '**/dist',
   })
 })
+
+test('unbundle', async (context) => {
+  const files = {
+    'index.ts': `
+    export * from './foo.ts'
+    export * from './utils/bar.ts'
+    `,
+    'foo.ts': `export const foo = 1`,
+    'utils/bar.ts': `export const bar = 2`,
+  }
+  await testBuild({
+    context,
+    files,
+    options: {
+      entry: ['index.ts', 'foo.ts'],
+      unbundle: true,
+    },
+  })
+})
