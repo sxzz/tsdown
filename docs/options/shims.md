@@ -17,6 +17,20 @@ console.log(__filename) // Available in ESM when shims are enabled
 
 The generated shims for `__dirname` and `__filename` introduce a very small runtime overhead. However, if these variables are not used in your code, they will be automatically removed during the bundling process, ensuring no unnecessary code is included.
 
+## The `require` Function in ESM
+
+When using the `require` function in ESM output and the `platform` is set to `node`, `tsdown` will **automatically inject a `require` shim using Node.js's `createRequire`**, regardless of the `shims` option. This ensures that you can use `require` in ESM modules in a Node.js environment without manual setup.
+
+For example:
+
+```js
+// const require = createRequire(import.meta.url) [auto injected]
+
+const someModule = require('some-module')
+```
+
+This behavior is always enabled for ESM output targeting Node.js, so you don't need to configure anything extra to use `require` in this scenario.
+
 ## ESM Variables in CommonJS
 
 Even if the `shims` option is **not enabled**, `tsdown` will automatically shim the following ESM-specific variables in CommonJS output:
