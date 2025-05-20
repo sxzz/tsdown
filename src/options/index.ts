@@ -7,6 +7,7 @@ import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
+import { resolveRegex } from '../utils/general'
 import { logger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { Awaitable } from '../utils/types'
@@ -201,6 +202,8 @@ async function resolveConfig(
     cwd = process.cwd(),
     name,
     workspace,
+    external,
+    noExternal,
   } = userConfig
 
   outDir = path.resolve(cwd, outDir)
@@ -216,6 +219,12 @@ async function resolveConfig(
   }
   target = resolveTarget(target, pkg, name)
   tsconfig = await resolveTsconfig(tsconfig, cwd, name)
+  if (typeof external === 'string') {
+    external = resolveRegex(external)
+  }
+  if (typeof noExternal === 'string') {
+    noExternal = resolveRegex(noExternal)
+  }
 
   if (publint === true) publint = {}
 
@@ -286,6 +295,8 @@ async function resolveConfig(
     copy: publicDir || copy,
     hash: hash ?? true,
     name,
+    external,
+    noExternal,
   }
 
   return config
