@@ -83,8 +83,8 @@ catalogs:
       specifier: ^1.5.5
       version: 1.5.5
     vitepress-plugin-llms:
-      specifier: ^1.2.0
-      version: 1.2.0
+      specifier: ^1.3.2
+      version: 1.3.2
     vue:
       specifier: ^3.5.14
       version: 3.5.14
@@ -247,7 +247,7 @@ importers:
         version: 1.5.5(markdown-it@14.1.0)(vite@6.3.5(@types/node@22.15.19)(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.8.0))
       vitepress-plugin-llms:
         specifier: catalog:docs
-        version: 1.2.0
+        version: 1.3.2
       vitest:
         specifier: catalog:dev
         version: 3.1.3(@types/debug@4.1.12)(@types/node@22.15.19)(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.8.0)
@@ -3446,8 +3446,8 @@ packages:
       markdown-it: '>=14'
       vite: '>=3'
 
-  vitepress-plugin-llms@1.2.0:
-    resolution: {integrity: sha512-AEMwSl1EhXFm7bVRTycDFxL0DS7HuJL+xUmgmwJHd01iD0TPfbMzSeQymn0FDe9V+Y7xXIg5VF8MlSfGXML8cQ==}
+  vitepress-plugin-llms@1.3.2:
+    resolution: {integrity: sha512-jZ7tx4tEvnkaU79fXY0fUQocVnQ7RIAIcswu21eH5jAuXxgKhdPAAFu8jMC18LA+4OGWZN9Z8ZWjPU5R/WYhTg==}
 
   vitepress@1.6.3:
     resolution: {integrity: sha512-fCkfdOk8yRZT8GD9BFqusW3+GggWYZ/rYncOfmgcDtP3ualNHCAg+Robxp2/6xfH1WwPHtGpPwv7mbA3qomtBw==}
@@ -7019,7 +7019,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress-plugin-llms@1.2.0:
+  vitepress-plugin-llms@1.3.2:
     dependencies:
       byte-size: 9.0.1
       gray-matter: 4.0.3
