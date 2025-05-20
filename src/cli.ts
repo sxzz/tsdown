@@ -21,7 +21,7 @@ cli
   .option('--format <format>', 'Bundle format: esm, cjs, iife', {
     default: 'esm',
   })
-  .option('--clean', 'Clean output directory')
+  .option('--clean', 'Clean output directory, --no-clean to disable')
   .option('--external <module>', 'Mark dependencies as external')
   .option('--minify', 'Minify output')
   .option('--debug [feat]', 'Show debug logs')
