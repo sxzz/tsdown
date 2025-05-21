@@ -51,6 +51,10 @@ cli
     '-F, --filter <pattern>',
     'Filter workspace packages, e.g. /regex/ or substring',
   )
+  .option(
+    '--exports',
+    'Generate export-related metadata for package.json (experimental)',
+  )
   .action(async (input: string[], flags: Options) => {
     logger.setSilent(!!flags.silent)
     logger.info(
