@@ -99,7 +99,7 @@ export function getLocaleConfig(lang: string) {
     socialLinks: [
       { icon: 'github', link: 'https://github.com/rolldown/tsdown' },
       { icon: 'npm', link: 'https://npmjs.com/package/tsdown' },
-      { icon: 'jsr', link: 'https://jsr.io/@sxzz/tsdown' },
+      // { icon: 'jsr', link: 'https://jsr.io/@sxzz/tsdown' },
     ],
     footer: {
       message: 'Released under the MIT License.',
