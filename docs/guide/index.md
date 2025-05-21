@@ -37,6 +37,8 @@ With its built-in support for [tree shaking](../options/tree-shaking.md), [minif
 
 Ready to dive in? Check out the [Getting Started](./getting-started.md) guide to set up your first project with `tsdown`.
 
+Want to use tsdown from your own scripts? See [Programmatic Usage](../advanced/programmatic-usage.md).
+
 ## Credits
 
 `tsdown` is built on the shoulders of giants. It is powered by [Rolldown](https://rolldown.rs) and inspired by tools like [tsup](https://github.com/egoist/tsup). Special thanks to the open-source community and contributors who make projects like this possible.
