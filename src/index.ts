@@ -11,6 +11,7 @@ import {
   type RolldownPluginOption,
 } from 'rolldown'
 import { exec } from 'tinyexec'
+import { version } from '../package.json'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
 import { writeExports } from './features/exports'
@@ -178,6 +179,7 @@ export async function buildSingle(
     } else {
       await onSuccess?.(config)
     }
+    logger.info(`tsdown v${version}`)
   }
 }
 
