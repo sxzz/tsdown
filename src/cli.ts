@@ -18,7 +18,7 @@ cli
   })
   .option('-c, --config <filename>', 'Use a custom config file')
   .option('--no-config', 'Disable config file')
-  .option('--format <format>', 'Bundle format: esm, cjs, iife', {
+  .option('-f, --format <format>', 'Bundle format: esm, cjs, iife', {
     default: 'esm',
   })
   .option('--clean', 'Clean output directory, --no-clean to disable')
@@ -48,7 +48,7 @@ cli
   .option('--tsconfig <tsconfig>', 'Set tsconfig path')
   .option('-W, --workspace [dir]', 'Enable workspace mode')
   .option(
-    '-f, --filter <pattern>',
+    '-F, --filter <pattern>',
     'Filter workspace packages, e.g. /regex/ or substring',
   )
   .action(async (input: string[], flags: Options) => {
