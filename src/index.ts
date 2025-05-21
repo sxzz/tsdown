@@ -226,7 +226,12 @@ async function getBuildOptions(
       plugins.push(Unused.rolldown(unused === true ? {} : unused))
     }
     if (target) {
-      plugins.push(RuntimeHelperCheckPlugin(target))
+      plugins.push(
+        RuntimeHelperCheckPlugin(target),
+        // Use Lightning CSS to handle CSS input. This is a temporary solution
+        // until Rolldown supports CSS syntax lowering natively.
+        await LightningCSSPlugin({ target }),
+      )
     }
     plugins.push(ShebangPlugin(cwd, name, isMultiFormat))
   }
@@ -235,15 +240,9 @@ async function getBuildOptions(
     plugins.push(ReportPlugin(report, cwd, cjsDts, name, isMultiFormat))
   }
 
-  if (target) {
-    plugins.push(
-      // Use Lightning CSS to handle CSS input. This is a temporary solution
-      // until Rolldown supports CSS syntax lowering natively.
-      await LightningCSSPlugin({ target }),
-    )
+  if (!cjsDts) {
+    plugins.push(userPlugins)
   }
-
-  plugins.push(userPlugins)
 
   const inputOptions = await mergeUserOptions(
     {
