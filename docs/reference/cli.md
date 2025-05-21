@@ -179,3 +179,9 @@ All contents of the `public` directory will be copied to your output directory (
 
 An alias for `--copy`.  
 **Deprecated:** Please use `--copy` instead for better clarity and consistency.
+
+## `--exports`
+
+generate the `exports`, `main`, `module`, and `types` fields in your `package.json`.
+
+See also [Package Exports](../options/package-exports.md).

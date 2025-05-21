@@ -253,7 +253,7 @@ export interface Options {
   report?: boolean | ReportOptions
 
   /**
-   * **[experimental]** Generate exports map for `package.json`.
+   * **[experimental]** Generate package exports for `package.json`.
    *
    * This will set the `main`, `module`, `types`, `exports` fields in `package.json`
    * to point to the generated files.

@@ -23,8 +23,9 @@ export const zhCN = {
   Target: '构建目标（Target）',
   'Tree-shaking': '除屑优化（Tree-shaking）',
   'Watch Mode': '监听模式',
-  Shims: 'Shims（兼容代码）',
+  Shims: '兼容代码（Shims）',
   'Declaration Files (dts)': '声明文件（dts）',
+  'Package Exports': '包导出（Package Exports）',
 
   Recipes: '实践指南',
   'Vue Support': 'Vue 支持',

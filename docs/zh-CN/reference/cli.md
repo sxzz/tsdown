@@ -10,7 +10,7 @@
 tsdown src/index.ts src/util.ts
 ```
 
-这将把 `src/index.ts` 和 `src/util.ts` 作为独立的入口点进行打包。有关更多详细信息，请参阅 [入口文件](../options/entry.md) 文档。
+这将把 `src/index.ts` 和 `src/util.ts` 作为独立的入口点进行打包。有关更多详细信息，请参阅 [入口](../options/entry.md) 文档。
 
 ## `-c, --config <filename>`
 
@@ -52,7 +52,7 @@ tsdown --tsconfig tsconfig.build.json
 
 将模块标记为外部依赖。这会阻止指定的模块被包含在打包文件中。
 
-另请参阅 [依赖](../options/dependencies.md)。
+另请参阅 [依赖处理](../options/dependencies.md)。
 
 ## `--minify`
 
@@ -131,17 +131,17 @@ tsdown --tsconfig tsconfig.build.json
 
 ## `--ignore-watch <path>`
 
-在监听模式下忽略指定路径。
+在监听模式下忽略自定义路径。
 
 ## `--from-vite [vitest]`
 
-复用 Vite 或 Vitest 的配置。这允许您无缝扩展或集成现有的 Vite 或 Vitest 配置。
+重用 Vite 或 Vitest 的配置。这允许您无缝扩展或集成现有的 Vite 或 Vitest 配置。
 
 另请参阅 [扩展 Vite 或 Vitest 配置](../options/config-file.md#extending-vite-or-vitest-config-experimental)。
 
 ## `--report`, `--no-report`
 
-启用或禁用构建报告的生成。默认情况下，报告是启用的，并会将构建产物及其大小列表输出到控制台。这可以快速概览构建结果，帮助你分析输出并识别潜在的优化空间。在需要最小化控制台输出的场景下，可以禁用报告。
+启用或禁用构建报告的生成。默认情况下，报告是启用的，会在控制台输出构建产物列表及其大小，帮助您快速了解构建结果并发现潜在优化空间。在需要极简控制台输出的场景下可以关闭报告。
 
 ## `--env.* <value>`
 
@@ -151,7 +151,7 @@ tsdown --tsconfig tsconfig.build.json
 tsdown --env.NODE_ENV=production
 ```
 
-注意，使用 `--env.VAR_NAME` 设置的环境变量只能以 `import.meta.env.VAR_NAME` 或 `process.env.VAR_NAME` 访问。
+注意，通过 `--env.VAR_NAME` 定义的环境变量只能通过 `import.meta.env.VAR_NAME` 或 `process.env.VAR_NAME` 访问。
 
 ## `--debug [feat]`
 
@@ -159,7 +159,7 @@ tsdown --env.NODE_ENV=production
 
 ## `--on-success <command>`
 
-在构建成功后执行指定命令。此选项在监听模式下尤其有用，可以在每次构建完成后自动触发额外的脚本或操作。
+指定构建成功后要运行的命令。这在监听模式下尤其有用，可以在每次构建完成后自动触发额外脚本或操作。
 
 ```bash
 tsdown --on-success "echo Build finished!"
@@ -167,7 +167,7 @@ tsdown --on-success "echo Build finished!"
 
 ## `--copy <dir>`
 
-将指定目录下的所有文件复制到输出目录。此功能适用于在构建输出中包含静态资源，如图片、样式表或其他资源。
+将指定目录下的所有文件复制到输出目录。适用于在构建输出中包含静态资源，如图片、样式表或其他资源。
 
 ```bash
 tsdown --copy public
@@ -179,3 +179,9 @@ tsdown --copy public
 
 `--copy` 的别名。  
 **已废弃：** 为了更清晰和一致，建议使用 `--copy` 选项。
+
+## `--exports`
+
+自动生成 `package.json` 中的 `exports`、`main`、`module` 和 `types` 字段。
+
+另请参阅 [包导出](../options/package-exports.md)。

@@ -64,6 +64,7 @@ export function getLocaleConfig(lang: string) {
         { text: t('Minification'), link: '/minification.md' },
         { text: t('Silent Mode'), link: '/silent-mode.md' },
         { text: t('Shims'), link: '/shims.md' },
+        { text: t('Package Exports'), link: '/package-exports.md' },
       ],
     },
     {
