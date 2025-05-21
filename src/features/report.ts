@@ -4,6 +4,7 @@ import { promisify } from 'node:util'
 import { brotliCompress, gzip } from 'node:zlib'
 import { bold, dim, green } from 'ansis'
 import Debug from 'debug'
+import { RE_DTS } from 'rolldown-plugin-dts'
 import { formatBytes } from '../utils/format'
 import { noop } from '../utils/general'
 import { logger, prettyFormat, prettyName } from '../utils/logger'
@@ -12,8 +13,6 @@ import type { OutputAsset, OutputChunk, Plugin } from 'rolldown'
 const debug = Debug('tsdown:report')
 const brotliCompressAsync = promisify(brotliCompress)
 const gzipAsync = promisify(gzip)
-
-const RE_DTS = /\.d\.[cm]?ts$/
 
 interface SizeInfo {
   filename: string
