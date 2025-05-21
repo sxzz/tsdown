@@ -236,8 +236,13 @@ async function generateApiReference() {
         },
         {
           type: 'replace',
-          pattern: String.raw`Workspace.md`,
+          pattern: `Workspace.md`,
           replacement: 'workspace.md',
+        },
+        {
+          type: 'replace',
+          pattern: `ExportsOptions.md`,
+          replacement: 'exports-options.md',
         },
       ],
     },
@@ -245,6 +250,11 @@ async function generateApiReference() {
       type: 'file',
       source: './docs/reference/api/interfaces/Workspace.md',
       destination: './docs/reference/workspace.md',
+    },
+    {
+      type: 'file',
+      source: './docs/reference/api/interfaces/ExportsOptions.md',
+      destination: './docs/reference/exports-options.md',
     },
     {
       type: 'folder',
