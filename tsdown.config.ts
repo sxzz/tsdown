@@ -3,8 +3,7 @@ import { defineConfig } from './src/config.ts'
 export default defineConfig({
   entry: ['./src/{index,run,plugins,config}.ts'],
   platform: 'node',
-  skipNodeModulesBundle: true,
-  shims: true,
+  dts: true,
   unused: {
     level: 'error',
     ignore: [
@@ -12,6 +11,7 @@ export default defineConfig({
     ],
   },
   publint: true,
+  exports: true,
   onSuccess() {
     console.info('🙏 Build succeeded!')
   },

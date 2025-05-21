@@ -228,6 +228,14 @@ export interface Options {
   report?: boolean | ReportOptions
 
   /**
+   * Generate exports map for `package.json`.
+   *
+   * This will set the `main`, `module`, `types`, `exports` fields in `package.json`
+   * to point to the generated files.
+   */
+  exports?: boolean
+
+  /**
    * Compile-time env variables.
    * @example
    * ```json
@@ -322,6 +330,7 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
+      | 'exports'
     >,
     {
       format: NormalizedFormat[]

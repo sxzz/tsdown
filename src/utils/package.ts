@@ -14,7 +14,10 @@ export async function readPackageJson(
   if (!packageJsonPath) return
   debug('Reading package.json:', packageJsonPath)
   const contents = await readFile(packageJsonPath, 'utf8')
-  return JSON.parse(contents) as PackageJson
+  return {
+    ...JSON.parse(contents),
+    packageJsonPath,
+  }
 }
 
 export type PackageType = 'module' | 'commonjs' | undefined

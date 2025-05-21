@@ -111,8 +111,8 @@ catalogs:
       specifier: 1.0.0-beta.9
       version: 1.0.0-beta.9
     rolldown-plugin-dts:
-      specifier: ^0.13.3
-      version: 0.13.3
+      specifier: ^0.13.4
+      version: 0.13.4
     semver:
       specifier: ^7.7.2
       version: 7.7.2
@@ -156,7 +156,7 @@ importers:
         version: 1.0.0-beta.9
       rolldown-plugin-dts:
         specifier: catalog:prod
-        version: 0.13.3(rolldown@1.0.0-beta.9)(typescript@5.8.3)
+        version: 0.13.4(rolldown@1.0.0-beta.9)(typescript@5.8.3)
       semver:
         specifier: catalog:prod
         version: 7.7.2
@@ -2879,8 +2879,8 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rolldown-plugin-dts@0.13.3:
-    resolution: {integrity: sha512-l0n0YsO9NI9Ve5Njmb1k2AYoDsgO8go1UEkXYnRgxoJokJXAK1V486XvOMxDpC8FcfgJwfQe71qmwpBjZXUOow==}
+  rolldown-plugin-dts@0.13.4:
+    resolution: {integrity: sha512-2+3GnKj6A3wKfyomUKfONRHjgKE85X4PcgW1b84KkHvuN3mUuUiOMseLKafFLMF6NkqQPAJ3FErwtC4HuwIswg==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       rolldown: ^1.0.0-beta.9
@@ -6225,7 +6225,7 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown-plugin-dts@0.13.3(rolldown@1.0.0-beta.9)(typescript@5.8.3):
+  rolldown-plugin-dts@0.13.4(rolldown@1.0.0-beta.9)(typescript@5.8.3):
     dependencies:
       '@babel/generator': 7.27.1
       '@babel/parser': 7.27.2

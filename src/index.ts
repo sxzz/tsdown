@@ -5,12 +5,15 @@ import { green } from 'ansis'
 import {
   build as rolldownBuild,
   type BuildOptions,
+  type OutputAsset,
+  type OutputChunk,
   type OutputOptions,
   type RolldownPluginOption,
 } from 'rolldown'
 import { exec } from 'tinyexec'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
+import { writeExports } from './features/exports'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
@@ -78,6 +81,10 @@ export async function build(userOptions: Options = {}): Promise<void> {
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 export const pkgRoot: string = path.resolve(dirname, '..')
 
+export type TsdownChunks = Partial<
+  Record<NormalizedFormat, Array<OutputChunk | OutputAsset>>
+>
+
 /**
  * Build a single configuration, without watch and shortcuts features.
  *
@@ -110,24 +117,27 @@ export async function buildSingle(
 
     let hasErrors = false
     const isMultiFormat = formats.length > 1
+    const chunks: TsdownChunks = {}
     await Promise.all(
       formats.map(async (format) => {
         try {
           const buildOptions = await getBuildOptions(
             config,
             format,
-            false,
             isMultiFormat,
+            false,
           )
           await hooks.callHook('build:before', {
             ...context,
             buildOptions,
           })
-          await rolldownBuild(buildOptions)
+          const { output } = await rolldownBuild(buildOptions)
+          chunks[format] = output
           if (format === 'cjs' && dts) {
-            await rolldownBuild(
-              await getBuildOptions(config, format, true, isMultiFormat),
+            const { output } = await rolldownBuild(
+              await getBuildOptions(config, format, isMultiFormat, true),
             )
+            chunks[format].push(...output)
           }
         } catch (error) {
           if (watch) {
@@ -144,6 +154,7 @@ export async function buildSingle(
       return
     }
 
+    await writeExports(config, chunks)
     await publint(config)
     await copy(config)
 
@@ -173,8 +184,8 @@ export async function buildSingle(
 async function getBuildOptions(
   config: ResolvedOptions,
   format: NormalizedFormat,
-  cjsDts?: boolean,
   isMultiFormat?: boolean,
+  cjsDts?: boolean,
 ): Promise<BuildOptions> {
   const {
     entry,
