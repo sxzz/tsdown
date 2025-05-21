@@ -286,7 +286,7 @@ async function getBuildOptions(
       sourcemap,
       dir: outDir,
       target,
-      minify,
+      minify: !cjsDts && minify,
       entryFileNames,
       chunkFileNames,
     },
