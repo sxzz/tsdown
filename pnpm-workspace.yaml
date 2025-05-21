@@ -13,7 +13,6 @@ catalogs:
     pkg-types: ^2.1.0
     prettier: ^3.5.3
     publint: ^0.3.12
-    tsup: ^8.5.0
     typescript: ~5.8.3
     unplugin-lightningcss: ^0.4.0
     unplugin-unused: ^0.5.0
