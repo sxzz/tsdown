@@ -204,6 +204,7 @@ async function resolveConfig(
     workspace,
     external,
     noExternal,
+    exports = false,
   } = userConfig
 
   outDir = path.resolve(cwd, outDir)
@@ -227,6 +228,7 @@ async function resolveConfig(
   }
 
   if (publint === true) publint = {}
+  if (exports === true) exports = {}
 
   if (publicDir) {
     if (copy) {
@@ -297,6 +299,7 @@ async function resolveConfig(
     name,
     external,
     noExternal,
+    exports,
   }
 
   return config

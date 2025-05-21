@@ -1,8 +1,13 @@
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { RE_DTS } from 'rolldown-plugin-dts'
+import { slash } from '../utils/general'
 import type { TsdownChunks } from '..'
-import type { NormalizedFormat, ResolvedOptions } from '../options'
+import type {
+  ExportsOptions,
+  NormalizedFormat,
+  ResolvedOptions,
+} from '../options'
 import type { PackageJson } from 'pkg-types'
 import type { OutputAsset, OutputChunk } from 'rolldown'
 
@@ -17,7 +22,23 @@ export async function writeExports(
     throw new Error('`package.json` not found, cannot write exports')
   }
 
-  const generated = generateExports(pkg, outDir, chunks)
+  const { publishExports, ...generated } = await generateExports(
+    pkg,
+    outDir,
+    chunks,
+    options.exports,
+  )
+
+  const updatedPkg = {
+    ...pkg,
+    ...generated,
+    packageJsonPath: undefined,
+  }
+
+  if (publishExports) {
+    updatedPkg.publishConfig ||= {}
+    updatedPkg.publishConfig.exports = publishExports
+  }
 
   await writeFile(
     pkg.packageJsonPath,
@@ -29,24 +50,29 @@ export async function writeExports(
   )
 }
 
-export function generateExports(
+type SubExport = Partial<Record<'cjs' | 'es' | 'src', string>>
+
+export async function generateExports(
   pkg: PackageJson,
   outDir: string,
   chunks: TsdownChunks,
-): {
+  { devExports, all, customExports }: ExportsOptions,
+): Promise<{
   main: string | undefined
   module: string | undefined
   types: string | undefined
   exports: Record<string, any>
-} {
-  const packageJsonPath = pkg.packageJsonPath as string
-  const basePath = path.relative(path.dirname(packageJsonPath), outDir)
+  publishExports?: Record<string, any>
+}> {
+  const pkgJsonPath = pkg.packageJsonPath as string
+  const pkgRoot = path.dirname(pkgJsonPath)
+  const outDirRelative = slash(path.relative(pkgRoot, outDir))
 
   let main: string | undefined,
     module: string | undefined,
     cjsTypes: string | undefined,
     esmTypes: string | undefined
-  const exportsMap: Map<string, Map<'cjs' | 'es', string>> = new Map()
+  const exportsMap: Map<string, SubExport> = new Map()
 
   for (const [format, chunksByFormat] of Object.entries(chunks) as [
     NormalizedFormat,
@@ -64,8 +90,6 @@ export function generateExports(
     for (const chunk of chunksByFormat) {
       if (chunk.type !== 'chunk' || !chunk.isEntry) continue
 
-      const distFile = `./${path.join(basePath, chunk.fileName)}`
-
       const ext = path.extname(chunk.fileName)
       let name = chunk.fileName.slice(0, -ext.length)
 
@@ -73,7 +97,8 @@ export function generateExports(
       if (isDts) {
         name = name.slice(0, -2)
       }
-      const isIndex = name === 'index' || onlyOneEntry
+      const isIndex = onlyOneEntry || name === 'index'
+      const distFile = `${outDirRelative ? `./${outDirRelative}` : '.'}/${chunk.fileName}`
 
       if (isIndex) {
         name = '.'
@@ -94,39 +119,61 @@ export function generateExports(
         name = `./${name}`
       }
 
-      let map = exportsMap.get(name)
-      if (!map) {
-        map = new Map()
-        exportsMap.set(name, map)
+      let subExport = exportsMap.get(name)
+      if (!subExport) {
+        subExport = {}
+        exportsMap.set(name, subExport)
       }
 
-      if (!isDts && !RE_DTS.test(chunk.fileName)) {
-        map.set(format, distFile)
+      if (!isDts) {
+        subExport[format] = distFile
+        if (chunk.facadeModuleId && !subExport.src) {
+          subExport.src = `./${slash(path.relative(pkgRoot, chunk.facadeModuleId))}`
+        }
       }
     }
   }
 
-  const exports = Object.fromEntries(
-    Array.from(exportsMap.entries())
-      .sort(([a], [b]) => {
-        if (a === 'index') return -1
-        return a.localeCompare(b)
-      })
-      .map(([name, map]) => {
-        let value
-        if (map.size === 1) {
-          value = map.get('cjs') || map.get('es')
-        } else {
-          value = {
-            import: map.get('es'),
-            require: map.get('cjs'),
-          }
-        }
-        return [name, value]
-      }),
+  const sorttedExportsMap = Array.from(exportsMap.entries()).sort(
+    ([a], [b]) => {
+      if (a === 'index') return -1
+      return a.localeCompare(b)
+    },
   )
-  if (!exports['./package.json']) {
-    exports['./package.json'] = './package.json'
+
+  let exports: Record<string, any> = Object.fromEntries(
+    sorttedExportsMap.map(([name, subExport]) => [
+      name,
+      genSubExport(devExports, subExport),
+    ]),
+  )
+  exportMeta(exports, all)
+  if (customExports) {
+    exports = await customExports(exports, {
+      pkg,
+      outDir,
+      chunks,
+      isPublish: false,
+    })
+  }
+
+  let publishExports: Record<string, any> | undefined
+  if (devExports) {
+    publishExports = Object.fromEntries(
+      sorttedExportsMap.map(([name, subExport]) => [
+        name,
+        genSubExport(false, subExport),
+      ]),
+    )
+    exportMeta(publishExports, all)
+    if (customExports) {
+      publishExports = await customExports(publishExports, {
+        pkg,
+        outDir,
+        chunks,
+        isPublish: true,
+      })
+    }
   }
 
   return {
@@ -134,5 +181,38 @@ export function generateExports(
     module: module || pkg.module,
     types: cjsTypes || esmTypes || pkg.types,
     exports,
+    publishExports,
+  }
+}
+
+function genSubExport(
+  devExports: string | boolean | undefined,
+  { src, es, cjs }: SubExport,
+) {
+  if (devExports === true) {
+    return src!
+  }
+
+  let value: any
+  const dualFormat = es && cjs
+  if (!dualFormat && !devExports) {
+    value = cjs || es
+  } else {
+    value = {}
+    if (typeof devExports === 'string') {
+      value[devExports] = src
+    }
+    if (es) value[dualFormat ? 'import' : 'default'] = es
+    if (cjs) value[dualFormat ? 'require' : 'default'] = cjs
+  }
+
+  return value
+}
+
+function exportMeta(exports: Record<string, any>, all?: boolean) {
+  if (all) {
+    exports['./*'] = './*'
+  } else {
+    exports['./package.json'] = './package.json'
   }
 }

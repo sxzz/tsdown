@@ -1,3 +1,4 @@
+import type { TsdownChunks } from '..'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
 import type { TsdownHooks } from '../features/hooks'
 import type { OutExtensionFactory } from '../features/output'
@@ -59,6 +60,30 @@ export interface Workspace {
    * Path to the workspace configuration file.
    */
   config?: boolean | string
+}
+
+export interface ExportsOptions {
+  /**
+   * Generate exports that link to source code during development.
+   * - string: add as a custom condition.
+   * - true: all conditions point to source files, and add dist exports to `publishConfig`.
+   */
+  devExports?: boolean | string
+
+  /**
+   * Exports for all files.
+   */
+  all?: boolean
+
+  customExports?: (
+    exports: Record<string, any>,
+    context: {
+      pkg: PackageJson
+      chunks: TsdownChunks
+      outDir: string
+      isPublish: boolean
+    },
+  ) => Awaitable<Record<string, any>>
 }
 
 /**
@@ -233,7 +258,7 @@ export interface Options {
    * This will set the `main`, `module`, `types`, `exports` fields in `package.json`
    * to point to the generated files.
    */
-  exports?: boolean
+  exports?: boolean | ExportsOptions
 
   /**
    * Compile-time env variables.
@@ -330,7 +355,6 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
-      | 'exports'
     >,
     {
       format: NormalizedFormat[]
@@ -340,6 +364,7 @@ export type ResolvedOptions = Omit<
       report: false | ReportOptions
       tsconfig: string | false
       pkg?: PackageJson
+      exports: false | ExportsOptions
     }
   >,
   'config' | 'fromVite'

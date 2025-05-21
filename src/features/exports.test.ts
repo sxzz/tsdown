@@ -11,25 +11,31 @@ const FAKE_PACKAGE_JSON = {
 }
 
 describe('generateExports', () => {
-  test('no entries', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {})
-    expect(results).toMatchInlineSnapshot(`
+  test('no entries', async () => {
+    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {}, {})
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           "./package.json": "./package.json",
         },
         "main": undefined,
         "module": undefined,
+        "publishExports": undefined,
         "types": undefined,
       }
     `)
   })
 
-  test('only one entry', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('main.js')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('only one entry', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('main.js')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           ".": "./main.js",
@@ -37,16 +43,22 @@ describe('generateExports', () => {
         },
         "main": "./main.js",
         "module": "./main.js",
+        "publishExports": undefined,
         "types": undefined,
       }
     `)
   })
 
-  test('index entry', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('index.js'), genChunk('foo.js')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('index entry', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('index.js'), genChunk('foo.js')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           ".": "./index.js",
@@ -55,16 +67,22 @@ describe('generateExports', () => {
         },
         "main": "./index.js",
         "module": "./index.js",
+        "publishExports": undefined,
         "types": undefined,
       }
     `)
   })
 
-  test('multiple entries', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('foo.js'), genChunk('bar.js')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('multiple entries', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('foo.js'), genChunk('bar.js')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           "./bar": "./bar.js",
@@ -73,17 +91,23 @@ describe('generateExports', () => {
         },
         "main": undefined,
         "module": undefined,
+        "publishExports": undefined,
         "types": undefined,
       }
     `)
   })
 
-  test('dual formats', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('foo.js')],
-      cjs: [genChunk('foo.cjs')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('dual formats', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('foo.js')],
+        cjs: [genChunk('foo.cjs')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           ".": {
@@ -94,17 +118,23 @@ describe('generateExports', () => {
         },
         "main": "./foo.cjs",
         "module": "./foo.js",
+        "publishExports": undefined,
         "types": undefined,
       }
     `)
   })
 
-  test('dts', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('foo.js'), genChunk('foo.d.ts')],
-      cjs: [genChunk('foo.cjs'), genChunk('foo.d.cts')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('dts', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('foo.js'), genChunk('foo.d.ts')],
+        cjs: [genChunk('foo.cjs'), genChunk('foo.d.cts')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           ".": {
@@ -115,17 +145,23 @@ describe('generateExports', () => {
         },
         "main": "./foo.cjs",
         "module": "./foo.js",
+        "publishExports": undefined,
         "types": "./foo.d.cts",
       }
     `)
   })
 
-  test('fixed extension', () => {
-    const results = generateExports(FAKE_PACKAGE_JSON, cwd, {
-      es: [genChunk('index.mjs'), genChunk('index.d.mts')],
-      cjs: [genChunk('index.cjs'), genChunk('index.d.cts')],
-    })
-    expect(results).toMatchInlineSnapshot(`
+  test('fixed extension', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('index.mjs'), genChunk('index.d.mts')],
+        cjs: [genChunk('index.cjs'), genChunk('index.d.cts')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
       {
         "exports": {
           ".": {
@@ -136,7 +172,125 @@ describe('generateExports', () => {
         },
         "main": "./index.cjs",
         "module": "./index.mjs",
+        "publishExports": undefined,
         "types": "./index.d.cts",
+      }
+    `)
+  })
+
+  test('dev exports: dev condition', async () => {
+    const results = await generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      { es: [genChunk('index.js')], cjs: [genChunk('index.cjs')] },
+      { devExports: 'dev' },
+    )
+    // key order matters
+    expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
+      "{
+        "main": "./index.cjs",
+        "module": "./index.js",
+        "exports": {
+          ".": {
+            "dev": "./SRC/index.js",
+            "import": "./index.js",
+            "require": "./index.cjs"
+          },
+          "./package.json": "./package.json"
+        },
+        "publishExports": {
+          ".": {
+            "import": "./index.js",
+            "require": "./index.cjs"
+          },
+          "./package.json": "./package.json"
+        }
+      }"
+    `)
+  })
+
+  test('dev exports: all conditions', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      { es: [genChunk('index.js')], cjs: [genChunk('index.cjs')] },
+      { devExports: true },
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": "./SRC/index.js",
+          "./package.json": "./package.json",
+        },
+        "main": "./index.cjs",
+        "module": "./index.js",
+        "publishExports": {
+          ".": {
+            "import": "./index.js",
+            "require": "./index.cjs",
+          },
+          "./package.json": "./package.json",
+        },
+        "types": undefined,
+      }
+    `)
+  })
+
+  test('customExports', async () => {
+    const results = await generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      { es: [genChunk('index.js')] },
+      {
+        devExports: 'dev',
+        customExports(exports) {
+          exports['./TEST'] = './TEST'
+          return Promise.resolve(exports)
+        },
+      },
+    )
+    // key order matters
+    expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
+      "{
+        "main": "./index.js",
+        "module": "./index.js",
+        "exports": {
+          ".": {
+            "dev": "./SRC/index.js",
+            "default": "./index.js"
+          },
+          "./package.json": "./package.json",
+          "./TEST": "./TEST"
+        },
+        "publishExports": {
+          ".": "./index.js",
+          "./package.json": "./package.json",
+          "./TEST": "./TEST"
+        }
+      }"
+    `)
+  })
+
+  test('export all', async () => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      { es: [genChunk('index.js')], cjs: [genChunk('index.cjs')] },
+      { all: true },
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": {
+            "import": "./index.js",
+            "require": "./index.cjs",
+          },
+          "./*": "./*",
+        },
+        "main": "./index.cjs",
+        "module": "./index.js",
+        "publishExports": undefined,
+        "types": undefined,
       }
     `)
   })
@@ -144,5 +298,10 @@ describe('generateExports', () => {
 
 function genChunk(fileName: string) {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  return { type: 'chunk', fileName, isEntry: true } as OutputChunk
+  return {
+    type: 'chunk',
+    fileName,
+    isEntry: true,
+    facadeModuleId: `./SRC/${fileName}`,
+  } as OutputChunk
 }
