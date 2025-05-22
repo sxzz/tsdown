@@ -1,7 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
-import { describe } from 'node:test'
-import { expect, test } from 'vitest'
+import { describe, test } from 'vitest'
 import { generateExports } from './exports'
 import type { OutputChunk } from 'rolldown'
 
@@ -10,8 +9,8 @@ const FAKE_PACKAGE_JSON = {
   packageJsonPath: path.join(cwd, 'package.json'),
 }
 
-describe('generateExports', () => {
-  test('no entries', async () => {
+describe.concurrent('generateExports', () => {
+  test('no entries', async ({ expect }) => {
     const results = generateExports(FAKE_PACKAGE_JSON, cwd, {}, {})
     await expect(results).resolves.toMatchInlineSnapshot(`
       {
@@ -26,7 +25,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('only one entry', async () => {
+  test('only one entry', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -49,7 +48,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('index entry', async () => {
+  test('index entry', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -73,7 +72,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('multiple entries', async () => {
+  test('multiple entries', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -97,7 +96,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('dual formats', async () => {
+  test('dual formats', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -124,7 +123,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('dts', async () => {
+  test('dts', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -151,7 +150,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('fixed extension', async () => {
+  test('fixed extension', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -178,7 +177,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('dev exports: dev condition', async () => {
+  test('dev exports: dev condition', async ({ expect }) => {
     const results = await generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -209,7 +208,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('dev exports: all conditions', async () => {
+  test('dev exports: all conditions', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -236,7 +235,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('customExports', async () => {
+  test('customExports', async ({ expect }) => {
     const results = await generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
@@ -271,7 +270,7 @@ describe('generateExports', () => {
     `)
   })
 
-  test('export all', async () => {
+  test('export all', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
       cwd,

@@ -154,7 +154,7 @@ export async function testBuild({
 }
 
 function filenamify(input: string) {
-  return input.replaceAll(/[^\da-z]/gi, '-')
+  return input.replaceAll(/\W+/g, '-')
 }
 
 export function chdir(dir: string) {
