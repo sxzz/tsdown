@@ -13,7 +13,7 @@ const snapshotsDir = path.resolve(dirname, '__snapshots__')
 const fixturesDir = path.resolve(dirname, 'fixtures')
 
 function getTestFilename(task: RunnerTask) {
-  return filenamify(task.name)
+  return filenamify((task.suite ? `${task.suite.name}-` : '') + task.name)
 }
 
 export function getTestDir(testName: RunnerTask | string): string {

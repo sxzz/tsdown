@@ -1,7 +1,7 @@
 ## foo.js
 
 ```js
-//#region foo.ts
+//#region src/foo.ts
 const foo = 1;
 
 //#endregion
@@ -18,7 +18,7 @@ export { bar, foo };
 ## utils/bar.js
 
 ```js
-//#region utils/bar.ts
+//#region src/utils/bar.ts
 const bar = 2;
 
 //#endregion
