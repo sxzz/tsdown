@@ -14,7 +14,7 @@ catalogs:
     prettier: ^3.5.3
     publint: ^0.3.12
     typescript: ~5.8.3
-    unplugin-lightningcss: ^0.4.0
+    unplugin-lightningcss: ^0.4.1
     unplugin-unused: ^0.5.0
     vitest: ^3.1.4
 
