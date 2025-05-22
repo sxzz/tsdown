@@ -1,6 +1,6 @@
 # Dependencies
 
-When bundling with `tsdown`, dependencies are handled intelligently to ensure your library remains lightweight and easy to consume. Here's how `tsdown` processes different types of dependencies and how you can customize this behavior.
+When bundling with `tsdown`, dependencies are handled intelligently to ensure your library remains lightweight and easy to consume. Here’s how `tsdown` processes different types of dependencies and how you can customize this behavior.
 
 ## Default Behavior
 
@@ -11,14 +11,12 @@ By default, `tsdown` **does not bundle dependencies** listed in your `package.js
 - **`dependencies`**: These are treated as external and will not be included in the bundle. Instead, they will be installed automatically by npm (or other package managers) when your library is installed.
 - **`peerDependencies`**: These are also treated as external. Users of your library are expected to install these dependencies manually, although some package managers may handle this automatically.
 
-### Other Dependencies
+### `devDependencies` and Phantom Dependencies
 
-All other dependencies, including:
+- **`devDependencies`**: Dependencies listed under `devDependencies` in your `package.json` will **only be bundled if they are actually imported or required by your source code**.
+- **Phantom Dependencies**: Dependencies that exist in your `node_modules` folder but are not explicitly listed in your `package.json` will **only be bundled if they are actually used in your code**.
 
-- **`devDependencies`**: Dependencies listed under `devDependencies` in your `package.json`.
-- **Phantom Dependencies**: Dependencies that exist in your `node_modules` folder but are not explicitly listed in your `package.json`.
-
-These will be bundled into your library by default.
+In other words, only the `devDependencies` and phantom dependencies that are actually referenced in your project will be included in the bundle.
 
 ## Customizing Dependency Handling
 
@@ -76,7 +74,7 @@ In this example, type definitions for `lodash` and all packages under the `@type
 
 - **Default Behavior**:
   - `dependencies` and `peerDependencies` are treated as external and not bundled.
-  - All other dependencies (`devDependencies` and phantom dependencies) are bundled.
+  - `devDependencies` and phantom dependencies are only bundled if they are actually used in your code.
 - **Customization**:
   - Use `external` to mark specific dependencies as external.
   - Use `noExternal` to force specific dependencies to be bundled.
