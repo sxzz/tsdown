@@ -40,7 +40,9 @@ export async function toObjectEntry(
     return entry
   }
 
-  const resolvedEntry = await glob(entry, { cwd, absolute: true })
+  const resolvedEntry = (await glob(entry, { cwd })).map((file) =>
+    path.resolve(cwd, file),
+  )
   const base = lowestCommonAncestor(...resolvedEntry)
   return Object.fromEntries(
     resolvedEntry.map((file) => {
