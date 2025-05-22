@@ -33,9 +33,9 @@ import {
   type ResolvedOptions,
 } from './options'
 import { ShebangPlugin } from './plugins'
+import { lowestCommonAncestor } from './utils/fs'
 import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
-import { lowestCommonAncestor } from './utils/fs'
 
 /**
  * Build with tsdown.
