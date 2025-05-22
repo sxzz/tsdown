@@ -151,6 +151,13 @@ export interface Options {
    */
   target?: string | string[] | false
 
+  /**
+   * Determines whether unbundle mode is enabled.
+   * When set to true, the output files will mirror the input file structure.
+   * @default false
+   */
+  unbundle?: boolean
+
   define?: Record<string, string>
   /** @default false */
   shims?: boolean
@@ -355,6 +362,7 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
+      | 'unbundle'
     >,
     {
       format: NormalizedFormat[]

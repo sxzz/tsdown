@@ -46,6 +46,7 @@ cli
   .option('--copy <dir>', 'Copy files to output dir')
   .option('--public-dir <dir>', 'Alias for --copy, deprecated')
   .option('--tsconfig <tsconfig>', 'Set tsconfig path')
+  .option('--unbundle', 'Unbundle mode')
   .option('-W, --workspace [dir]', 'Enable workspace mode')
   .option(
     '-F, --filter <pattern>',
