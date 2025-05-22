@@ -24,9 +24,6 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js",
-    "./config": "./dist/config.js",
-    "./plugins": "./dist/plugins.js",
-    "./run": "./dist/run.js",
     "./package.json": "./package.json"
   },
   "typesVersions": {

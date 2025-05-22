@@ -35,6 +35,7 @@ import {
 import { ShebangPlugin } from './plugins'
 import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
+import { lowestCommonAncestor } from './utils/fs'
 
 /**
  * Build with tsdown.
@@ -302,6 +303,9 @@ async function getBuildOptions(
       entryFileNames,
       chunkFileNames,
       preserveModules: unbundle,
+      preserveModulesRoot: unbundle
+        ? lowestCommonAncestor(...Object.values(entry))
+        : undefined,
     },
     config.outputOptions,
     [format],
