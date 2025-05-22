@@ -26,6 +26,7 @@ export const zhCN = {
   Shims: '兼容代码（Shims）',
   'Declaration Files (dts)': '声明文件（dts）',
   'Package Exports': '包导出（Package Exports）',
+  Unbundle: '非打包模式（Unbundle）',
 
   Recipes: '实践指南',
   'Vue Support': 'Vue 支持',
