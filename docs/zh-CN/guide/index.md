@@ -39,4 +39,12 @@
 
 ## 致谢
 
-`tsdown` 是站在巨人肩膀上的成果。它由 [Rolldown](https://rolldown.rs) 提供支持，并受到 [tsup](https://github.com/egoist/tsup) 等工具的启发。特别感谢开源社区和贡献者们，让这样的项目成为可能。
+`tsdown` 的诞生离不开开源社区以及 JavaScript 和 TypeScript 生态中众多创新工具的支持。我们感谢所有为本项目奠定基础的贡献者和维护者。
+
+### 先驱项目
+
+- **Rollup**：为现代 JavaScript 打包和强大的插件系统提供了最初的灵感。
+- **esbuild**：展示了原生高速打包的强大能力，并推动了构建工具对性能的追求。
+- **tsup**：为开箱即用的开发体验、众多 CLI 选项以及部分实现细节提供了重要参考。
+- **unbuild**：为 tsdown 当前灵活的钩子系统提供了启发。
+- **Rolldown**：作为高性能、基于 Rust 的核心引擎，为 tsdown 提供了强大动力，并实现了许多高级特性。

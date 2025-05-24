@@ -41,4 +41,12 @@ Want to use tsdown from your own scripts? See [Programmatic Usage](../advanced/p
 
 ## Credits
 
-`tsdown` is built on the shoulders of giants. It is powered by [Rolldown](https://rolldown.rs) and inspired by tools like [tsup](https://github.com/egoist/tsup). Special thanks to the open-source community and contributors who make projects like this possible.
+`tsdown` is made possible by the open-source community and the many innovative tools in the JavaScript and TypeScript ecosystem. We extend our gratitude to all contributors and maintainers whose work has laid the foundation for this project.
+
+### Prior Arts
+
+- **Rollup**: Provided the original inspiration for modern JavaScript bundling and a robust plugin system.
+- **esbuild**: Demonstrated the power of fast, native bundling and influenced the pursuit of performance in build tools.
+- **tsup**: Inspired the out-of-the-box developer experience and many CLI options, as well as some implementation details.
+- **unbuild**: Inspired the flexible hooks system now available in tsdown.
+- **Rolldown**: Serves as the high-performance, Rust-based core engine that powers tsdown and enables many of its advanced features.
