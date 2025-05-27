@@ -44,8 +44,6 @@ bun add -D tsdown
 
 To get started even faster, you can use the [create-tsdown](https://github.com/gugustinette/create-tsdown) CLI, which provides a set of starter templates for building pure TypeScript libraries, as well as frontend libraries like React and Vue.
 
-Clone the repository:
-
 ::: code-group
 
 ```sh [npm]
@@ -66,7 +64,7 @@ bun create tsdown@latest
 
 :::
 
-These templates includes ready-to-use configurations and best practices for building TypeScript libraries.
+These templates includes ready-to-use configurations and best practices for building, testing and linting TypeScript projects.
 
 ### Try Online
 
