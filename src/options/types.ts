@@ -101,7 +101,17 @@ export interface Options {
       ) => boolean | null | undefined | void)
   alias?: Record<string, string>
   tsconfig?: string | boolean
-  /** @default 'node' */
+  /**
+   * Specifies the target runtime platform for the build.
+   *
+   * - `node`: Node.js and compatible runtimes (e.g., Deno, Bun).
+   *   For CJS format, this is always set to `node` and cannot be changed.
+   * - `neutral`: A platform-agnostic target with no specific runtime assumptions.
+   * - `browser`: Web browsers.
+   *
+   * @default 'node'
+   * @see https://tsdown.dev/options/platform
+   */
   platform?: 'node' | 'neutral' | 'browser'
   inputOptions?:
     | InputOptions
