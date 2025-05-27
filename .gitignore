@@ -4,6 +4,7 @@ dist
 *.log
 .DS_Store
 .eslintcache
+tsdown-*.tgz
 
 temp
 
