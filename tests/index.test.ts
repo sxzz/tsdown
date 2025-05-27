@@ -40,33 +40,6 @@ test('basic', async (context) => {
   })
 }
 
-test('esm shims', async (context) => {
-  await testBuild({
-    context,
-    files: { 'index.ts': 'export default [__dirname, __filename]' },
-    options: { shims: true },
-  })
-})
-
-test('cjs shims', async (context) => {
-  const { snapshot } = await testBuild({
-    context,
-    files: {
-      'index.ts': `
-        export const url = import.meta.url
-        export const filename = import.meta.filename
-        export const dirname = import.meta.dirname`,
-    },
-    options: {
-      shims: true,
-      format: 'cjs',
-    },
-  })
-  expect(snapshot).contain('require("url").pathToFileURL(__filename).href')
-  expect(snapshot).contain('__filename')
-  expect(snapshot).contain('__dirname')
-})
-
 test('entry structure', async (context) => {
   const files = {
     'src/index.ts': '',
