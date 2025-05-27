@@ -277,6 +277,9 @@ async function getBuildOptions(
           return acc
         }, Object.create(null)),
       },
+      transform: {
+        target,
+      },
       plugins,
       inject: {
         ...(shims && !cjsDts && getShimsInject(format, platform)),
@@ -298,7 +301,6 @@ async function getBuildOptions(
       name: config.globalName,
       sourcemap,
       dir: outDir,
-      target,
       minify: !cjsDts && minify,
       entryFileNames,
       chunkFileNames,
