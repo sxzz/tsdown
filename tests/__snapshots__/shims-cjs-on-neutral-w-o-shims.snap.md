@@ -6,9 +6,9 @@
 var shims_cjs_on_neutral_w_o_shims_default = [
 	__dirname,
 	__filename,
-	import.meta.url,
-	import.meta.filename,
-	import.meta.dirname,
+	require("url").pathToFileURL(__filename).href,
+	__filename,
+	__dirname,
 	void 0
 ];
 

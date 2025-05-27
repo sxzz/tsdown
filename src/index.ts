@@ -267,7 +267,7 @@ async function getBuildOptions(
         tsconfigFilename: tsconfig || undefined,
       },
       treeshake,
-      platform,
+      platform: cjsDts || format === 'cjs' ? 'node' : platform,
       define: {
         ...define,
         ...Object.keys(env).reduce((acc, key) => {

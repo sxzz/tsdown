@@ -34,7 +34,7 @@ describe('shims', () => {
     expect(snapshot).not.contain('import.meta')
   })
 
-  test.fails('cjs on neutral w/o shims', async (context) => {
+  test('cjs on neutral w/o shims', async (context) => {
     const { snapshot } = await testBuild({
       context,
       files: { 'index.ts': code },
