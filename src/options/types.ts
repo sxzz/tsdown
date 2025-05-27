@@ -91,6 +91,9 @@ export interface ExportsOptions {
  */
 export interface Options {
   /// build options
+  /**
+   * Defaults to `'src/index.ts'` if it exists.
+   */
   entry?: InputOption
   external?: ExternalOption
   noExternal?:

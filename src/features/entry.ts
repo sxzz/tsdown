@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { glob } from 'tinyglobby'
-import { lowestCommonAncestor } from '../utils/fs'
+import { fsExists, lowestCommonAncestor } from '../utils/fs'
 import { generateColor, logger, prettyName } from '../utils/logger'
 import type { Options } from '../options'
 
@@ -11,10 +11,15 @@ export async function resolveEntry(
 ): Promise<Record<string, string>> {
   const nameLabel = name ? `[${name}] ` : ''
   if (!entry || Object.keys(entry).length === 0) {
-    // TODO auto find entry
-    throw new Error(
-      `${nameLabel}No input files, try "tsdown <your-file>" instead`,
-    )
+    const defaultEntry = path.resolve(cwd, 'src/index.ts')
+
+    if (await fsExists(defaultEntry)) {
+      entry = { index: defaultEntry }
+    } else {
+      throw new Error(
+        `${nameLabel}No input files, try "tsdown <your-file>" or create src/index.ts`,
+      )
+    }
   }
 
   const entryMap = await toObjectEntry(entry, cwd)
