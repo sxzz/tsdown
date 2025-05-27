@@ -13,7 +13,6 @@ module.exports = fixed_extension_default;
 ```cts
 //#region index.d.ts
 declare const _default: number;
-
 //#endregion
 export { _default as default };
 ```
@@ -22,7 +21,6 @@ export { _default as default };
 ```mts
 //#region index.d.ts
 declare const _default: number;
-
 //#endregion
 export { _default as default };
 ```

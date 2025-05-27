@@ -3,7 +3,6 @@
 ```mts
 //#region index.d.ts
 declare const _default: number;
-
 //#endregion
 export { _default as default };
 ```

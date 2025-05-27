@@ -3,8 +3,12 @@
 ```ts
 export * from "unconfig";
 
-//#region ../../../node_modules/.pnpm/tinyglobby@0.2.13/node_modules/tinyglobby/dist/index.d.mts
+//#region ../../../node_modules/.pnpm/tinyglobby@0.2.14/node_modules/tinyglobby/dist/index.d.mts
 
+//#endregion
+//#region src/index.d.ts
+// #endregion
+// #region log
 interface GlobOptions {
   absolute?: boolean;
   cwd?: string;
@@ -18,7 +22,8 @@ interface GlobOptions {
   onlyDirectories?: boolean;
   onlyFiles?: boolean;
   debug?: boolean;
-} //#endregion
+}
+//#endregion
 export { GlobOptions };
 ```
 ## index.js

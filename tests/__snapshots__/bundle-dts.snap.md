@@ -3,11 +3,9 @@
 ```ts
 //#region src/utils/types.d.ts
 declare let str: string;
-
 //#endregion
 //#region src/utils/shared.d.ts
 declare let shared: number;
-
 //#endregion
 export { shared, str };
 ```

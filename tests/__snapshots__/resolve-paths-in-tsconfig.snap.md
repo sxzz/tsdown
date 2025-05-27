@@ -3,7 +3,6 @@
 ```ts
 //#region mod.d.ts
 declare const mod = 42;
-
 //#endregion
 export { mod };
 ```
