@@ -1,11 +1,9 @@
 import { createHooks as create, type Hookable } from 'hookable'
 import type { ResolvedOptions } from '../options'
-import type { PackageJson } from 'pkg-types'
 import type { BuildOptions } from 'rolldown'
 
 export interface BuildContext {
   options: ResolvedOptions
-  pkg?: PackageJson
   hooks: Hookable<TsdownHooks>
 }
 
@@ -35,10 +33,7 @@ export interface TsdownHooks {
   'build:done': (ctx: BuildContext) => void | Promise<void>
 }
 
-export async function createHooks(
-  options: ResolvedOptions,
-  pkg?: PackageJson,
-): Promise<{
+export async function createHooks(options: ResolvedOptions): Promise<{
   hooks: Hookable<TsdownHooks>
   context: BuildContext
 }> {
@@ -50,7 +45,6 @@ export async function createHooks(
   }
   const context: BuildContext = {
     options,
-    pkg,
     hooks,
   }
   return { hooks, context }
