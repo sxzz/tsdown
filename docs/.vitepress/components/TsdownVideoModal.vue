@@ -1,76 +1,98 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { onKeyStroke, } from '@vueuse/core';
+import { onKeyStroke } from '@vueuse/core'
+import { ref, watch } from 'vue'
 
 // SOURCE: https://github.com/rolldown/rolldown/blob/main/docs/.vitepress/theme/components/RolldownVideoModal.vue
 
-const VIDEO_ID = 'FF1oZqv_UYo';
+const VIDEO_ID = 'FF1oZqv_UYo'
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close'])
 
-const isModalVisible = ref(false);
+const isModalVisible = ref(false)
 
 // Scroll lock
-watch(isModalVisible, (value) => {
-  if(typeof document === 'undefined') {
-    return
-  }
+watch(
+  isModalVisible,
+  (value) => {
+    if (typeof document === 'undefined') {
+      return
+    }
 
-  const newOverflowValue = value ? 'hidden' : 'auto';
-  document.documentElement.style.overflow = newOverflowValue;
-},
-  { immediate: true }
-);
+    const newOverflowValue = value ? 'hidden' : 'auto'
+    document.documentElement.style.overflow = newOverflowValue
+  },
+  { immediate: true },
+)
 
 const openModal = () => {
-  isModalVisible.value = true;
-};
+  isModalVisible.value = true
+}
 
 const closeModal = () => {
-  isModalVisible.value = false;
-  emit('close');
-};
+  isModalVisible.value = false
+  emit('close')
+}
 
 onKeyStroke('Escape', () => {
   if (isModalVisible.value) {
-    closeModal();
+    closeModal()
   }
-});
+})
 </script>
 
 <template>
-  <button @click="openModal" class="open-modal-button">
+  <button class="open-modal-button" @click="openModal">
     What is tsdown?
-    <svg class="icon-play" aria-labelledby="simpleicons-play-icon" role="img" viewBox="0 0 100 125" fill="#FFFFFF">
-      <title id="simpleicons-play-icon" lang="en" data-v-bf2d099b="">Play icon</title>
+    <svg
+      class="icon-play"
+      aria-labelledby="simpleicons-play-icon"
+      role="img"
+      viewBox="0 0 100 125"
+      fill="#FFFFFF"
+    >
+      <title id="simpleicons-play-icon" lang="en" data-v-bf2d099b="">
+        Play icon
+      </title>
       <path
         d="M50,3.8C24.5,3.8,3.8,24.5,3.8,50S24.5,96.2,50,96.2S96.2,75.5,96.2,50S75.5,3.8,50,3.8z M71.2,53.3l-30.8,18  c-0.6,0.4-1.3,0.5-1.9,0.5c-0.6,0-1.3-0.1-1.9-0.5c-1.2-0.6-1.9-1.9-1.9-3.3V32c0-1.4,0.8-2.7,1.9-3.3c1.2-0.6,2.7-0.6,3.8,0  l30.8,18c1.2,0.6,1.9,1.9,1.9,3.3S72.3,52.7,71.2,53.3z"
-        data-v-bf2d099b=""></path>
+        data-v-bf2d099b=""
+      />
     </svg>
   </button>
-  <Teleport to="body" v-if="isModalVisible">
-    <transition name="modal-fade">
-      <dialog class="modal-overlay" @click="closeModal" open aria-modal="true">
-        <div class="modal-container" @click.stop>
-          <div class="modal-header">
-            <button class="close-button" @click="closeModal" aria-label="Close modal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <div class="modal-content">
-            <iframe class="video-iframe"
-              :src="`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&modestbranding=1&rel=0`"
-              title="YouTube video player" frameborder="0" allow="autoplay; picture-in-picture"
-              allowfullscreen></iframe>
-            </div>
-            <div class="modal-footer">
-              <a class="vp-external-link-icon" href="https://vite.dev/rolldown" target="_blank" rel="noopener noreferrer">
-                Read the guide and try <code>rolldown-vite</code> now!
-              </a>
-            </div>
+  <Teleport v-if="isModalVisible" to="body">
+    <dialog class="modal-overlay" open aria-modal="true" @click="closeModal">
+      <div class="modal-container" @click.stop>
+        <div class="modal-header">
+          <button
+            class="close-button"
+            aria-label="Close modal"
+            @click="closeModal"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </dialog>
-    </transition>
+        <div class="modal-content">
+          <iframe
+            class="video-iframe"
+            :src="`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&modestbranding=1&rel=0`"
+            title="YouTube video player"
+            frameborder="0"
+            allow="autoplay; picture-in-picture"
+            allowfullscreen
+          />
+        </div>
+        <div class="modal-footer">
+          <a
+            class="vp-external-link-icon"
+            href="https://vite.dev/rolldown"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read the guide and try <code>rolldown-vite</code> now!
+          </a>
+        </div>
+      </div>
+    </dialog>
   </Teleport>
 </template>
 
@@ -165,9 +187,13 @@ onKeyStroke('Escape', () => {
   text-align: center;
   white-space: nowrap;
   border: 1px solid transparent;
-  background: linear-gradient(var(--vp-c-bg), var(--vp-c-bg)) padding-box,
+  background:
+    linear-gradient(var(--vp-c-bg), var(--vp-c-bg)) padding-box,
     linear-gradient(45deg, var(--vp-c-brand-1), #d1a656) border-box;
-  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background-color 0.25s;
 
   &:hover {
     border-color: var(--vp-c-brand-3);

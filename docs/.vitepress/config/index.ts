@@ -1,7 +1,7 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import { groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 import { getLocaleConfig } from './theme'
-import { fileURLToPath } from 'node:url'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -51,7 +51,7 @@ export default defineConfig({
         {
           find: /^.*\/VPHero\.vue$/,
           replacement: fileURLToPath(
-            new URL('../components/overrides/VPHero.vue', import.meta.url),
+            new URL('../components/overrides/vp-hero.vue', import.meta.url),
           ),
         },
       ],
