@@ -1,5 +1,6 @@
 catalogs:
   dev:
+    '@arethetypeswrong/core': ^0.18.1
     '@oxc-node/core': ^0.0.27
     '@sxzz/eslint-config': ^7.0.1
     '@sxzz/prettier-config': ^2.2.1

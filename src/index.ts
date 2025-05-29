@@ -11,6 +11,7 @@ import {
   type RolldownPluginOption,
 } from 'rolldown'
 import { exec } from 'tinyexec'
+import { attw } from './features/attw'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
 import { writeExports } from './features/exports'
@@ -157,6 +158,7 @@ export async function buildSingle(
 
     await writeExports(config, chunks)
     await publint(config)
+    await attw(config)
     await copy(config)
 
     await hooks.callHook('build:done', context)

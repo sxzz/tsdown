@@ -94,6 +94,7 @@
     "unconfig": "catalog:prod"
   },
   "devDependencies": {
+    "@arethetypeswrong/core": "catalog:dev",
     "@oxc-node/core": "catalog:dev",
     "@sxzz/eslint-config": "catalog:dev",
     "@sxzz/prettier-config": "catalog:dev",

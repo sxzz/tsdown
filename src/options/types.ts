@@ -9,6 +9,7 @@ import type {
   MarkPartial,
   Overwrite,
 } from '../utils/types'
+import type { CheckPackageOptions as AttwOptions } from '@arethetypeswrong/core'
 import type { Hookable } from 'hookable'
 import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
@@ -267,6 +268,12 @@ export interface Options {
    * @default false
    */
   publint?: boolean | PublintOptions
+
+  /**
+   * Run attw after bundling.
+   * @default false
+   */
+  attw?: boolean | AttwOptions
 
   /**
    * Enable size reporting after bundling.
