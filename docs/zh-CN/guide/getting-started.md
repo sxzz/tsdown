@@ -1,10 +1,18 @@
 # 快速上手
 
-:::warning 🚧 Beta 软件  
-[Rolldown](https://rolldown.rs) 当前处于测试版状态。虽然它已经可以处理大多数生产环境的使用场景，但可能仍然存在一些漏洞和不完善之处。特别是，内置的压缩功能仍在开发中。  
+:::warning 🚧 测试版软件
+[Rolldown](https://rolldown.rs) 当前处于测试阶段。虽然它已经可以满足大多数生产环境的使用需求，但仍可能存在一些 bug 或不完善之处。尤其是内置的压缩功能仍在开发中。
 :::
 
 ## 安装
+
+有多种方式可以开始使用 `tsdown`：
+
+- [手动安装](#manual-installation)：将其作为开发依赖添加到您的项目中。
+- 使用 [起步模板](#starter-templates)：快速搭建新项目。
+- 通过 [StackBlitz 在线体验](#try-online)。
+
+### 手动安装 {#manual-installation}
 
 使用您喜欢的包管理器将 `tsdown` 安装为开发依赖：
 
@@ -29,31 +37,42 @@ bun add -D tsdown
 :::
 
 :::tip 兼容性说明
-`tsdown` 需要 Node.js 18 或更高。请确保您的开发环境满足此要求后再进行安装。
-`tsdown` 主要在 Node.js 下测试，但对 Deno 和 Bun 的支持仍为实验性，可能无法正常工作。
+`tsdown` 需要 Node.js 18 或更高版本。请确保您的开发环境满足此要求后再进行安装。虽然 `tsdown` 主要在 Node.js 下测试，但对 Deno 和 Bun 的支持仍为实验性，可能无法正常工作。
 :::
 
-## 起步模板
+### 起步模板 {#starter-templates}
 
-为了更快速地开始，您可以使用 [ts-starter](https://github.com/sxzz/ts-starter) 模板。这个起步项目已经为使用 `tsdown` 进行 TypeScript 库开发预先配置好，让您可以快速上手。
+为了更快速地开始，您可以使用 [create-tsdown](https://github.com/gugustinette/create-tsdown) CLI，它提供了一系列起步模板，适用于构建纯 TypeScript 库以及如 React、Vue 等前端库。
 
-克隆仓库：
+::: code-group
 
-```bash
-git clone https://github.com/sxzz/ts-starter my-library
-cd my-library
-pnpm install
+```sh [npm]
+npm create tsdown@latest
 ```
 
-该模板包含一个可直接使用的配置以及构建 TypeScript 库的最佳实践。
+```sh [pnpm]
+pnpm create tsdown@latest
+```
 
-## 在线体验
+```sh [yarn]
+yarn create tsdown@latest
+```
 
-你可以通过 StackBlitz 在线试用 tsdown：
+```sh [bun]
+bun create tsdown@latest
+```
+
+:::
+
+这些模板包含了可直接使用的配置和构建、测试、代码规范等最佳实践。
+
+### 在线体验 {#try-online}
+
+您可以通过 StackBlitz 在浏览器中直接体验 tsdown：
 
 [![tsdown-starter-stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/rolldown/tsdown-starter-stackblitz)
 
-该模板已预配置好 tsdown，无需本地环境即可快速体验和测试。
+该模板已为 tsdown 预先配置，无需本地环境即可快速试用和上手。
 
 ## 使用 CLI
 
@@ -140,7 +159,7 @@ npm run build
 
 ## 使用插件
 
-`tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
+`tsdown` 支持通过插件扩展其功能。您可以无缝使用 Rolldown 插件、Unplugin 插件以及大多数 Rollup 插件。要使用插件，请将它们添加到配置文件的 `plugins` 数组中。例如：
 
 ```ts [tsdown.config.ts]
 import SomePlugin from 'some-plugin'
