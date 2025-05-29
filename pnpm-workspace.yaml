@@ -20,6 +20,7 @@ catalogs:
 
   docs:
     '@unocss/eslint-plugin': ^66.1.2
+    '@vueuse/core': '^13.3.0'
     typedoc: ^0.28.5
     typedoc-plugin-markdown: ^4.6.3
     unocss: ^66.1.2

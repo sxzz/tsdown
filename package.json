@@ -102,6 +102,7 @@
     "@types/node": "catalog:dev",
     "@types/semver": "catalog:dev",
     "@unocss/eslint-plugin": "catalog:docs",
+    "@vueuse/core": "catalog:docs",
     "bumpp": "catalog:dev",
     "eslint": "catalog:dev",
     "lightningcss": "catalog:dev",

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 import { getLocaleConfig } from './theme'
+import { fileURLToPath } from 'node:url'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -41,6 +42,19 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
+    },
+  },
+
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/VPHero\.vue$/,
+          replacement: fileURLToPath(
+            new URL('../components/overrides/VPHero.vue', import.meta.url),
+          ),
+        },
+      ],
     },
   },
 })
