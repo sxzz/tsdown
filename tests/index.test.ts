@@ -322,6 +322,20 @@ test('remove node protocol', async (context) => {
   expect(snapshot).not.contains('node:')
 })
 
+test('remove node protocol for require polyfill', async (context) => {
+  const files = {
+    'index.ts': `export const fn = require.resolve`,
+  }
+  const { snapshot } = await testBuild({
+    context,
+    files,
+    options: {
+      removeNodeProtocol: true,
+    },
+  })
+  expect(snapshot).not.contains('node:')
+})
+
 test('without hash and filename conflict', async (context) => {
   const files = {
     'index.ts': `

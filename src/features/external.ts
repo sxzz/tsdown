@@ -1,3 +1,4 @@
+import { isBuiltin } from 'node:module'
 import Debug from 'debug'
 import { toArray } from '../utils/general'
 import type { ResolvedOptions } from '../options'
@@ -42,7 +43,12 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
 
       if (shouldExternal) {
         debug('External dependency:', id)
-        return { id, external: shouldExternal }
+        return {
+          id,
+          external: shouldExternal,
+          moduleSideEffects:
+            id.startsWith('node:') || isBuiltin(id) ? false : undefined,
+        }
       }
     },
   }
