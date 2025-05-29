@@ -1,18 +1,18 @@
 # Getting Started
 
-:::warning 🚧 Beta Software  
-[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still a work in progress.  
+:::warning 🚧 Beta Software
+[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still a work in progress.
 :::
 
 ## Installation
 
-There are severals ways to get started with `tsdown`, you can either :
+There are several ways to get started with `tsdown`. You can:
 
 - [Manually install](#manual-installation) it as a development dependency in your project.
 - Use the [starter templates](#starter-templates) to quickly scaffold a new project.
 - Try it online using [StackBlitz](#try-online).
 
-### Manual Installation
+### Manual Installation {#manual-installation}
 
 Install `tsdown` as a development dependency using your preferred package manager:
 
@@ -40,7 +40,7 @@ bun add -D tsdown
 `tsdown` requires Node.js version 18 or higher. Please ensure your development environment meets this requirement before installing. While `tsdown` is primarily tested with Node.js, support for Deno and Bun is experimental and may not work as expected.
 :::
 
-### Starter Templates
+### Starter Templates {#starter-templates}
 
 To get started even faster, you can use the [create-tsdown](https://github.com/gugustinette/create-tsdown) CLI, which provides a set of starter templates for building pure TypeScript libraries, as well as frontend libraries like React and Vue.
 
@@ -66,7 +66,7 @@ bun create tsdown@latest
 
 These templates includes ready-to-use configurations and best practices for building, testing and linting TypeScript projects.
 
-### Try Online
+### Try Online {#try-online}
 
 You can try tsdown directly in your browser using StackBlitz:
 
