@@ -81,16 +81,6 @@ onKeyStroke('Escape', () => {
             allowfullscreen
           />
         </div>
-        <div class="modal-footer">
-          <a
-            class="vp-external-link-icon"
-            href="https://vite.dev/rolldown"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read the guide and try <code>rolldown-vite</code> now!
-          </a>
-        </div>
       </div>
     </dialog>
   </Teleport>
