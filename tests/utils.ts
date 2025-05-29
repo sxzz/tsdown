@@ -13,7 +13,10 @@ const snapshotsDir = path.resolve(dirname, '__snapshots__')
 const fixturesDir = path.resolve(dirname, 'fixtures')
 
 function getTestFilename(task: RunnerTask) {
-  return filenamify((task.suite ? `${task.suite.name}-` : '') + task.name)
+  return (
+    (task.suite ? `${filenamify(task.suite.name)}/` : '') +
+    filenamify(task.name)
+  )
 }
 
 export function getTestDir(testName: RunnerTask | string): string {
@@ -154,7 +157,7 @@ export async function testBuild({
 }
 
 function filenamify(input: string) {
-  return input.replaceAll(/\W+/g, '-')
+  return input.replace(/^\W+/, '').replaceAll(/\W+/g, '-')
 }
 
 export function chdir(dir: string) {

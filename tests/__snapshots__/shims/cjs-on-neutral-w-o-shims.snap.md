@@ -3,7 +3,7 @@
 ```cjs
 
 //#region index.ts
-var shims_cjs_on_neutral_w_o_shims_default = [
+var cjs_on_neutral_w_o_shims_default = [
 	__dirname,
 	__filename,
 	require("url").pathToFileURL(__filename).href,
@@ -13,5 +13,5 @@ var shims_cjs_on_neutral_w_o_shims_default = [
 ];
 
 //#endregion
-module.exports = shims_cjs_on_neutral_w_o_shims_default;
+module.exports = cjs_on_neutral_w_o_shims_default;
 ```
