@@ -2,7 +2,7 @@
 import { VPButton, VPImage, type DefaultTheme } from 'vitepress/theme'
 // Based on https://github.com/vuejs/vitepress/blob/1ec84c15040bc3865461c61b651e487f72c3c271/src/client/theme-default/components/VPHero.vue
 import { inject, type Ref } from 'vue'
-import TsdownVideoModal from '../TsdownVideoModal.vue'
+import VideoModal from '../VideoModal.vue'
 
 export interface HeroAction {
   theme?: 'brand' | 'alt'
@@ -21,7 +21,7 @@ defineProps<{
   actions?: HeroAction[]
 }>()
 
-const heroImageSlotExists = inject('hero-image-slot-exists') as Ref<boolean>
+const heroImageSlotExists = inject<Ref<boolean>>('hero-image-slot-exists')!
 </script>
 
 <template>
@@ -50,7 +50,7 @@ const heroImageSlotExists = inject('hero-image-slot-exists') as Ref<boolean>
               :target="action.target"
               :rel="action.rel"
             />
-            <TsdownVideoModal v-else />
+            <VideoModal v-else />
           </div>
         </div>
         <slot name="home-hero-actions-after" />
