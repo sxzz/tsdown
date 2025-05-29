@@ -1,6 +1,7 @@
+<!-- prettier-ignore-start -->
 # Interface: ExportsOptions
 
-Defined in: [types.ts:65](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L65)
+Defined in: [types.ts:65](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L65)
 
 ## Properties
 
@@ -8,7 +9,7 @@ Defined in: [types.ts:65](https://github.com/rolldown/tsdown/blob/a3947963053f5e
 
 > `optional` **all**: `boolean`
 
-Defined in: [types.ts:76](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L76)
+Defined in: [types.ts:76](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L76)
 
 Exports for all files.
 
@@ -18,7 +19,7 @@ Exports for all files.
 
 > `optional` **customExports**: (`exports`, `context`) => `Awaitable`\<`Record`\<`string`, `any`\>\>
 
-Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L78)
+Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L78)
 
 #### Parameters
 
@@ -30,7 +31,7 @@ Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/a3947963053f5e
 
 ###### chunks
 
-`Partial`
+`TsdownChunks`
 
 ###### isPublish
 
@@ -54,8 +55,10 @@ Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/a3947963053f5e
 
 > `optional` **devExports**: `string` \| `boolean`
 
-Defined in: [types.ts:71](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L71)
+Defined in: [types.ts:71](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L71)
 
 Generate exports that link to source code during development.
 - string: add as a custom condition.
 - true: all conditions point to source files, and add dist exports to `publishConfig`.
+
+<!-- prettier-ignore-end -->

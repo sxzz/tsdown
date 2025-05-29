@@ -33,5 +33,5 @@ npm install -D unplugin-vue vue-tsc
 - **`unplugin-vue`** 会将 `.vue` 单文件组件编译为 JavaScript 并提取 CSS，使其可以直接打包。
 - **`rolldown-plugin-dts`**（配合 `vue: true`）和 **`vue-tsc`** 协同工作，为您的 Vue 组件生成准确的 TypeScript 声明文件，确保库的使用者获得完整的类型支持。
 
-> [!TIP]  
+> [!TIP]
 > 建议将 `platform` 设置为 `'neutral'`，以最大化兼容性，方便您的库同时用于浏览器和 Node.js 环境。

@@ -1,6 +1,7 @@
+<!-- prettier-ignore-start -->
 # Interface: Workspace
 
-Defined in: [types.ts:46](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L46)
+Defined in: [types.ts:46](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L46)
 
 ## Properties
 
@@ -8,7 +9,7 @@ Defined in: [types.ts:46](https://github.com/rolldown/tsdown/blob/a3947963053f5e
 
 > `optional` **config**: `string` \| `boolean`
 
-Defined in: [types.ts:62](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L62)
+Defined in: [types.ts:62](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L62)
 
 Path to the workspace configuration file.
 
@@ -18,7 +19,7 @@ Path to the workspace configuration file.
 
 > `optional` **exclude**: `Arrayable`\<`string`\>
 
-Defined in: [types.ts:57](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L57)
+Defined in: [types.ts:57](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L57)
 
 Exclude directories from workspace.
 Defaults to all `node_modules`, `dist`, `test`, `tests`, `temp`, and `tmp` directories.
@@ -29,7 +30,7 @@ Defaults to all `node_modules`, `dist`, `test`, `tests`, `temp`, and `tmp` direc
 
 > `optional` **include**: `Arrayable`\<`string`\>
 
-Defined in: [types.ts:52](https://github.com/rolldown/tsdown/blob/a3947963053f5e4edcfa56a84454370df143e046/src/options/types.ts#L52)
+Defined in: [types.ts:52](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L52)
 
 Workspace directories. Glob patterns are supported.
 - `auto`: Automatically detect `package.json` files in the workspace.
@@ -39,3 +40,5 @@ Workspace directories. Glob patterns are supported.
 ```ts
 'auto'
 ```
+
+<!-- prettier-ignore-end -->

@@ -4,7 +4,7 @@
 
 例如，如果目标是 `es5` 或更低版本，箭头函数 `() => this` 将被转换为等效的 `function` 表达式。
 
-> [!WARNING] 仅限语法降级  
+> [!WARNING] 仅限语法降级
 > `target` 选项仅影响语法转换。它不会为目标环境中可能不存在的 API 提供运行时 polyfill 或 shim。例如，如果您的代码使用了 `Promise`，但目标环境不支持原生 `Promise`，则不会自动添加 polyfill。
 
 ## 默认目标行为

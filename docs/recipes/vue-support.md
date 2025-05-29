@@ -33,5 +33,5 @@ npm install -D unplugin-vue vue-tsc
 - **`unplugin-vue`** compiles `.vue` single-file components into JavaScript and extracts CSS, making them ready for bundling.
 - **`rolldown-plugin-dts`** (with `vue: true`) and **`vue-tsc`** work together to generate accurate TypeScript declaration files for your Vue components, ensuring consumers of your library get full type support.
 
-> [!TIP]  
+> [!TIP]
 > Set `platform: 'neutral'` to maximize compatibility for libraries that may be used in both browser and Node.js environments.

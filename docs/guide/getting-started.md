@@ -1,7 +1,7 @@
 # Getting Started
 
 :::warning 🚧 Beta Software
-[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges. Most notably, the built-in minification feature is still a work in progress.
+[Rolldown](https://rolldown.rs) is currently in beta status. While it can already handle most production use cases, there may still be bugs and rough edges.
 :::
 
 ## Installation

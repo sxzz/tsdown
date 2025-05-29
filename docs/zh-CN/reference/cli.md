@@ -177,7 +177,7 @@ tsdown --copy public
 
 ## `--public-dir <dir>`
 
-`--copy` 的别名。  
+`--copy` 的别名。
 **已废弃：** 为了更清晰和一致，建议使用 `--copy` 选项。
 
 ## `--exports`

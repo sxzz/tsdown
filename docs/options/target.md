@@ -4,7 +4,7 @@ The `target` setting determines which JavaScript and CSS features are downlevele
 
 For example, an arrow function `() => this` will be transformed into an equivalent `function` expression if the target is `es5` or lower.
 
-> [!WARNING] Syntax Downgrade Only  
+> [!WARNING] Syntax Downgrade Only
 > The `target` option only affects syntax transformations. It does not include runtime polyfills or shims for APIs that may not exist in the target environment. For example, if your code uses `Promise`, it will not be polyfilled for environments that lack native `Promise` support.
 
 ## Default Target Behavior

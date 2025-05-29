@@ -8,8 +8,8 @@ You can enable minification in `tsdown` using the `--minify` option:
 tsdown --minify
 ```
 
-> [!WARNING]
-> The minification feature is currently **experimental**. While it can be used, it may not handle all edge cases perfectly. Use it with caution, and thoroughly test your output in production environments.
+> [!NOTE]
+> The minification feature is based on [Oxc](https://oxc.rs/docs/contribute/minifier), which is currently in alpha and can still have bugs. We recommend thoroughly testing your output in production environments.
 
 ### Example
 

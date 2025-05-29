@@ -34,7 +34,7 @@ async function runTypedoc(tsconfigPath: string): Promise<void> {
  * Type definitions for file operations
  */
 type FileOperation = {
-  type: 'delete-lines' | 'replace'
+  type: 'delete-lines' | 'replace' | 'prepend' | 'append'
   lineStart?: number
   lineEnd?: number
   pattern?: string | RegExp
@@ -93,6 +93,10 @@ class FileMapper {
           new RegExp(op.pattern, 'g'),
           op.replacement,
         )
+      } else if (op.type === 'prepend' && op.replacement !== undefined) {
+        content = `${op.replacement}\n${content}`
+      } else if (op.type === 'append' && op.replacement !== undefined) {
+        content = `${content}\n${op.replacement}\n`
       }
     }
 
@@ -146,8 +150,16 @@ class FileMapper {
     additionalOps: FileOperation[] = [],
   ): void {
     // Common operation: remove first 6 lines
-    const operations = [
-      { type: 'delete-lines' as const, lineStart: 1, lineEnd: 6 },
+    const operations: FileOperation[] = [
+      { type: 'delete-lines', lineStart: 1, lineEnd: 6 },
+      {
+        type: 'prepend',
+        replacement: '<!-- prettier-ignore-start -->',
+      },
+      {
+        type: 'append',
+        replacement: '<!-- prettier-ignore-end -->',
+      },
       ...additionalOps,
     ]
     this.modifyFile(filePath, operations)

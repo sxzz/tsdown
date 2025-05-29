@@ -177,7 +177,7 @@ All contents of the `public` directory will be copied to your output directory (
 
 ## `--public-dir <dir>`
 
-An alias for `--copy`.  
+An alias for `--copy`.
 **Deprecated:** Please use `--copy` instead for better clarity and consistency.
 
 ## `--exports`
