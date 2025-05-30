@@ -228,7 +228,7 @@ export interface Options {
   /**
    * You can specify command to be executed after a successful build, specially useful for Watch mode
    */
-  onSuccess?: string | ((config: ResolvedOptions) => void | Promise<void>)
+  onSuccess?: string | ((config: ResolvedOptions, signal: AbortSignal) => void | Promise<void>)
 
   /**
    * Skip bundling `node_modules`.

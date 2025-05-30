@@ -99,7 +99,7 @@ export async function buildSingle(
   clean: () => Promise<void>,
 ): Promise<(() => Promise<void>) | undefined> {
   const { format: formats, dts, watch, onSuccess } = config
-  let onSuccessCleanup: (() => any) | undefined
+  let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
 
@@ -112,7 +112,7 @@ export async function buildSingle(
     const startTime = performance.now()
 
     await hooks.callHook('build:prepare', context)
-    onSuccessCleanup?.()
+    ab?.abort()
 
     await clean()
 
@@ -165,19 +165,19 @@ export async function buildSingle(
       prettyName(config.name),
       `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
     )
-
+    ab = new AbortController()
     if (typeof onSuccess === 'string') {
       const p = exec(onSuccess, [], {
         nodeOptions: { shell: true, stdio: 'inherit' },
+        signal: ab.signal,
       })
       p.then(({ exitCode }) => {
         if (exitCode) {
           process.exitCode = exitCode
         }
       })
-      onSuccessCleanup = () => p.kill('SIGTERM')
     } else {
-      await onSuccess?.(config)
+      await onSuccess?.(config, ab.signal)
     }
   }
 }
