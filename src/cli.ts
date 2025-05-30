@@ -36,6 +36,7 @@ cli
   })
   .option('--dts', 'Generate dts files')
   .option('--publint', 'Enable publint', { default: false })
+  .option('--attw', 'Enable attw', { default: false })
   .option('--unused', 'Enable unused dependencies check', { default: false })
   .option('-w, --watch [path]', 'Watch mode')
   .option('--ignore-watch <path>', 'Ignore custom paths in watch mode')
