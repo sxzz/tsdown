@@ -12,7 +12,7 @@ const isModalVisible = defineModel({ default: false })
 watch(
   isModalVisible,
   (value) => {
-    if (!document) return
+    if (!globalThis.document) return
 
     const newOverflowValue = value ? 'hidden' : 'auto'
     document.documentElement.style.overflow = newOverflowValue

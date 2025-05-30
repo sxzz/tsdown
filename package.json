@@ -125,5 +125,9 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "resolutions": {
+    "rolldown": "catalog:prod",
+    "vite": "catalog:docs"
+  },
   "prettier": "@sxzz/prettier-config"
 }
