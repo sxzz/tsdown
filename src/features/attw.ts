@@ -38,7 +38,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
       }
     } else {
       logger.success(
-        `No ATTW problems found`,
+        `No Are the types wrong problems found`,
         dim`(${Math.round(performance.now() - t)}ms)`,
       )
     }
