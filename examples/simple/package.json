@@ -1,5 +1,5 @@
 {
-  "name": "example-lib",
+  "name": "tsdown-simple-example",
   "version": "0.0.0",
   "private": true,
   "description": "A simple example library built by tsdown",
