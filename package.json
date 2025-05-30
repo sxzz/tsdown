@@ -66,6 +66,9 @@
     "unplugin-unused": "^0.5.0"
   },
   "peerDependenciesMeta": {
+    "@arethetypeswrong/core": {
+      "optional": true
+    },
     "publint": {
       "optional": true
     },
