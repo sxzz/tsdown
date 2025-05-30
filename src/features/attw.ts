@@ -34,7 +34,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
 
     if ('problems' in checkResult && checkResult.problems.length > 0) {
       for (const problem of checkResult.problems) {
-        logger.warn('ATTW promble:', problem)
+        logger.warn('Are the types wrong problem:', problem)
       }
     } else {
       logger.success(
