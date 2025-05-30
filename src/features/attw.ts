@@ -18,9 +18,15 @@ export async function attw(options: ResolvedOptions): Promise<void> {
   const t = performance.now()
   debug('Running attw check')
 
+  let tarballPath
   try {
     const tarballName = execSync('npm pack --json', { encoding: 'utf-8' })
-    const tarballPath = JSON.parse(tarballName)[0].filename as string
+    const parsed = JSON.parse(tarballName)
+    if (!Array.isArray(parsed) || !parsed[0]?.filename) {
+      throw new Error('Invalid npm pack output format')
+    }
+    tarballPath = parsed[0].filename
+
     const tarball = fs.readFileSync(tarballPath)
     const { checkPackage, createPackageFromTarballData } = await import(
       '@arethetypeswrong/core'
@@ -42,11 +48,13 @@ export async function attw(options: ResolvedOptions): Promise<void> {
         dim`(${Math.round(performance.now() - t)}ms)`,
       )
     }
-
-    fs.unlinkSync(tarballPath)
   } catch (error) {
     logger.error('ATTW check failed:', error)
     debug('Found errors, setting exit code to 1')
     process.exitCode = 1
+  } finally {
+    if (tarballPath && fs.existsSync(tarballPath)) {
+      fs.unlinkSync(tarballPath)
+    }
   }
 }

@@ -156,10 +156,12 @@ export async function buildSingle(
       return
     }
 
-    await writeExports(config, chunks)
-    await publint(config)
-    await attw(config)
-    await copy(config)
+    await Promise.all([
+      writeExports(config, chunks),
+      publint(config),
+      attw(config),
+      copy(config),
+    ])
 
     await hooks.callHook('build:done', context)
 
