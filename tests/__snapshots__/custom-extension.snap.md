@@ -1,4 +1,4 @@
-## index.d.some.d.mts
+## index.some.d.mts
 
 ```mts
 //#region index.d.ts

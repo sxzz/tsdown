@@ -118,7 +118,7 @@ test('custom extension', async (context) => {
   })
   expect(outputFiles).toMatchInlineSnapshot(`
     [
-      "index.d.some.d.mts",
+      "index.some.d.mts",
       "index.some.mjs",
     ]
   `)
