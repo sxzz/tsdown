@@ -190,6 +190,7 @@ async function resolveConfig(
     shims = false,
     skipNodeModulesBundle = false,
     publint = false,
+    attw = false,
     fromVite,
     alias,
     tsconfig,
@@ -228,6 +229,7 @@ async function resolveConfig(
   }
 
   if (publint === true) publint = {}
+  if (attw === true) attw = {}
   if (exports === true) exports = {}
 
   if (publicDir) {
@@ -289,6 +291,7 @@ async function resolveConfig(
     shims,
     skipNodeModulesBundle,
     publint,
+    attw,
     alias,
     tsconfig,
     cwd,

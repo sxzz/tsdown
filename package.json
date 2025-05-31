@@ -59,12 +59,16 @@
     "docs:generate": "node --import @oxc-node/core/register ./docs/.vitepress/scripts/docs-generate.ts"
   },
   "peerDependencies": {
+    "@arethetypeswrong/core": "^0.18.1",
     "publint": "^0.3.0",
     "typescript": "^5.0.0",
     "unplugin-lightningcss": "^0.4.0",
     "unplugin-unused": "^0.5.0"
   },
   "peerDependenciesMeta": {
+    "@arethetypeswrong/core": {
+      "optional": true
+    },
     "publint": {
       "optional": true
     },
@@ -94,6 +98,7 @@
     "unconfig": "catalog:prod"
   },
   "devDependencies": {
+    "@arethetypeswrong/core": "catalog:dev",
     "@oxc-node/core": "catalog:dev",
     "@sxzz/eslint-config": "catalog:dev",
     "@sxzz/prettier-config": "catalog:dev",
