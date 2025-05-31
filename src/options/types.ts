@@ -270,8 +270,11 @@ export interface Options {
   publint?: boolean | PublintOptions
 
   /**
-   * Run attw after bundling.
+   * Run `arethetypeswrong` after bundling.
+   * Requires `@arethetypeswrong/core` to be installed.
+   *
    * @default false
+   * @see https://github.com/arethetypeswrong/arethetypeswrong.github.io
    */
   attw?: boolean | AttwOptions
 
