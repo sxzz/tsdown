@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import { onMounted, ref } from 'vue'
 
 const { lang } = useData()
+
+const sponsors = ref<string>()
+
+onMounted(async () => {
+  sponsors.value = await fetch(
+    'https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg',
+  ).then((res) => res.text())
+})
 </script>
 
 <template>
@@ -23,10 +32,13 @@ const { lang } = useData()
       </h2>
     </div>
 
-    <img
-      mt12
-      src="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg"
-    />
+    <div mt12>
+      <div v-if="sponsors" v-html="sponsors" />
+      <img
+        v-else
+        src="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg"
+      />
+    </div>
   </div>
 </template>
 
