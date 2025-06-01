@@ -168,8 +168,11 @@ export async function buildSingle(
     ab = new AbortController()
     if (typeof onSuccess === 'string') {
       const p = exec(onSuccess, [], {
-        nodeOptions: { shell: true, stdio: 'inherit' },
-        signal: ab.signal,
+        nodeOptions: {
+          shell: true,
+          stdio: 'inherit',
+          signal: ab.signal,
+        },
       })
       p.then(({ exitCode }) => {
         if (exitCode) {
