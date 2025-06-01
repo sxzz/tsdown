@@ -22,6 +22,14 @@ export function getLocaleConfig(lang: string) {
     ['meta', { property: 'og:url', content: docsLink }],
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { property: 'twitter:image', content: ogImage }],
+    [
+      'script',
+      {
+        src: 'https://cdn.usefathom.com/script.js',
+        'data-site': 'KEZOQJNE',
+        defer: '',
+      },
+    ],
   ]
 
   const nav: DefaultTheme.NavItem[] = [
