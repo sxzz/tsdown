@@ -19,14 +19,14 @@
     "dist",
     "esm-shims.js"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./dist/index.js",
-    "./config": "./dist/config.js",
-    "./plugins": "./dist/plugins.js",
-    "./run": "./dist/run.js",
+    ".": "./dist/index.mjs",
+    "./config": "./dist/config.mjs",
+    "./plugins": "./dist/plugins.mjs",
+    "./run": "./dist/run.mjs",
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -38,7 +38,7 @@
     }
   },
   "bin": {
-    "tsdown": "./dist/run.js"
+    "tsdown": "./dist/run.mjs"
   },
   "publishConfig": {
     "access": "public"

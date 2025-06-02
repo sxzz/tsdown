@@ -12,6 +12,7 @@ export default defineConfig({
   },
   publint: true,
   exports: true,
+  fixedExtension: true,
   onSuccess() {
     console.info('🙏 Build succeeded!')
   },
