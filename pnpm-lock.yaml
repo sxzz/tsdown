@@ -111,8 +111,8 @@ catalogs:
       specifier: ^5.5.3
       version: 5.5.3
     rolldown-plugin-dts:
-      specifier: ^0.13.6
-      version: 0.13.6
+      specifier: ^0.13.7
+      version: 0.13.7
     semver:
       specifier: ^7.7.2
       version: 7.7.2
@@ -160,7 +160,7 @@ importers:
         version: 1.0.0-beta.10-commit.87188ed
       rolldown-plugin-dts:
         specifier: catalog:prod
-        version: 0.13.6(rolldown@1.0.0-beta.10-commit.87188ed)(typescript@5.8.3)
+        version: 0.13.7(rolldown@1.0.0-beta.10-commit.87188ed)(typescript@5.8.3)
       semver:
         specifier: catalog:prod
         version: 7.7.2
@@ -2805,8 +2805,8 @@ packages:
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
 
-  rolldown-plugin-dts@0.13.6:
-    resolution: {integrity: sha512-eeiRAhGWK/v3hFFSWQ1FeE+tvRIIKxGH7uA/THMC1FD3HuTtltxx79+8TqAuD4msfgApJyB9k4Gu3YSWPwkTIQ==}
+  rolldown-plugin-dts@0.13.7:
+    resolution: {integrity: sha512-D1ite1Ye8OaNi0utY4yoC/anZMmAjd2vBAYDEKuTrcz5B1hK0/CXiQAsiaPp8RIrsotFAOklj7LvT5i3p0HV6w==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       rolldown: 1.0.0-beta.10-commit.87188ed
@@ -6090,7 +6090,7 @@ snapshots:
 
   rfdc@1.4.1: {}
 
-  rolldown-plugin-dts@0.13.6(rolldown@1.0.0-beta.10-commit.87188ed)(typescript@5.8.3):
+  rolldown-plugin-dts@0.13.7(rolldown@1.0.0-beta.10-commit.87188ed)(typescript@5.8.3):
     dependencies:
       '@babel/generator': 7.27.3
       '@babel/parser': 7.27.3

@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { RE_DTS } from 'rolldown-plugin-dts'
+import { RE_DTS } from 'rolldown-plugin-dts/filename'
 import { slash } from '../utils/general'
 import type { TsdownChunks } from '..'
 import type {
