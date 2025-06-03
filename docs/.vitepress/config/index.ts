@@ -8,6 +8,7 @@ export default defineConfig({
   locales: {
     root: getLocaleConfig('en'),
     'zh-CN': getLocaleConfig('zh-CN'),
+    ru: { label: "Russian (Community)", link: "https://tsdown.ru" },
   },
 
   lastUpdated: true,
