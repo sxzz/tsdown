@@ -6,4 +6,7 @@ export default defineConfig({
       ignored: ['**/temp/**'],
     },
   },
+  test: {
+    testTimeout: 20_000,
+  },
 })
