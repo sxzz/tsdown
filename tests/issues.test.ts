@@ -82,4 +82,39 @@ describe('issues', () => {
       },
     })
   })
+
+  test('#286', async (context) => {
+    await testBuild({
+      context,
+      files: {
+        'src/dom/dom.ts': `export const dom = 1`,
+        'src/node/node.ts': `export const node = 2`,
+        'tsconfig.json': JSON.stringify({
+          references: [
+            { path: './tsconfig.node.json' },
+            { path: './tsconfig.dom.json' },
+          ],
+          include: [],
+        }),
+        'tsconfig.node.json': JSON.stringify({
+          compilerOptions: {
+            outDir: 'temp/tsc/node',
+            composite: true,
+          },
+          include: ['src/node/**/*.ts'],
+        }),
+        'tsconfig.dom.json': JSON.stringify({
+          compilerOptions: {
+            outDir: 'temp/tsc/dom',
+            composite: true,
+          },
+          include: ['src/dom/**/*.ts'],
+        }),
+      },
+      options: {
+        entry: ['src/dom/dom.ts', 'src/node/node.ts'],
+        dts: true,
+      },
+    })
+  })
 })
