@@ -150,6 +150,48 @@ describe.concurrent('generateExports', () => {
     `)
   })
 
+  test('dual formats & dts with multiple entries', async ({ expect }) => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [
+          genChunk('index.js'),
+          genChunk('index.d.ts'),
+          genChunk('foo.js'),
+          genChunk('foo.d.ts'),
+        ],
+        cjs: [
+          genChunk('index.cjs'),
+          genChunk('index.d.cts'),
+          genChunk('foo.cjs'),
+          genChunk('foo.d.cts'),
+        ],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": {
+            "import": "./index.js",
+            "require": "./index.cjs",
+          },
+          "./foo": {
+            "import": "./foo.js",
+            "require": "./foo.cjs",
+            "types": "./foo.d.cts",
+          },
+          "./package.json": "./package.json",
+        },
+        "main": "./index.cjs",
+        "module": "./index.js",
+        "publishExports": undefined,
+        "types": "./index.d.cts",
+      }
+    `)
+  })
+
   test('fixed extension', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,

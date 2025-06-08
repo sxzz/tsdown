@@ -50,7 +50,9 @@ export async function writeExports(
   )
 }
 
-type SubExport = Partial<Record<'cjs' | 'es' | 'src', string>>
+type SubExport = Partial<
+  Record<'cjs' | 'es' | 'src' | 'cjsTypes' | 'esmTypes', string>
+>
 
 export async function generateExports(
   pkg: PackageJson,
@@ -130,6 +132,8 @@ export async function generateExports(
         if (chunk.facadeModuleId && !subExport.src) {
           subExport.src = `./${slash(path.relative(pkgRoot, chunk.facadeModuleId))}`
         }
+      } else if (!isIndex && (format === 'cjs' || format === 'es')) {
+        subExport[format === 'cjs' ? 'cjsTypes' : 'esmTypes'] = distFile
       }
     }
   }
@@ -187,7 +191,7 @@ export async function generateExports(
 
 function genSubExport(
   devExports: string | boolean | undefined,
-  { src, es, cjs }: SubExport,
+  { src, es, cjs, cjsTypes, esmTypes }: SubExport,
 ) {
   if (devExports === true) {
     return src!
@@ -204,6 +208,7 @@ function genSubExport(
     }
     if (es) value[dualFormat ? 'import' : 'default'] = es
     if (cjs) value[dualFormat ? 'require' : 'default'] = cjs
+    if (cjsTypes || esmTypes) value.types = cjsTypes || esmTypes
   }
 
   return value
