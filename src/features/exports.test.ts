@@ -123,7 +123,29 @@ describe.concurrent('generateExports', () => {
     `)
   })
 
-  test('dts', async ({ expect }) => {
+  test('dts with single entry', async ({ expect }) => {
+    const results = await generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('foo.js'), genChunk('foo.d.ts')],
+      },
+      { types: true },
+    )
+    expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
+      "{
+        "main": "./foo.js",
+        "module": "./foo.js",
+        "types": "./foo.d.ts",
+        "exports": {
+          ".": "./foo.js",
+          "./package.json": "./package.json"
+        }
+      }"
+    `)
+  })
+
+  test('dts with multiple entries', async ({ expect }) => {
     const results = await generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
