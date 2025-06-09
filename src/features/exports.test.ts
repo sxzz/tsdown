@@ -133,42 +133,25 @@ describe.concurrent('generateExports', () => {
       },
       {},
     )
-    expect(results).toMatchInlineSnapshot(`
-      {
+    // key order matters
+    expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
+      "{
+        "main": "./foo.cjs",
+        "module": "./foo.js",
+        "types": "./foo.d.cts",
         "exports": {
           ".": {
             "import": {
-              "default": "./foo.js",
               "types": "./foo.d.ts",
+              "default": "./foo.js"
             },
             "require": {
-              "default": "./foo.cjs",
               "types": "./foo.d.cts",
-            },
+              "default": "./foo.cjs"
+            }
           },
-          "./package.json": "./package.json",
-        },
-        "main": "./foo.cjs",
-        "module": "./foo.js",
-        "publishExports": undefined,
-        "types": "./foo.d.cts",
-      }
-    `)
-    // key order matters
-    expect(JSON.stringify(results.exports, undefined, 2))
-      .toMatchInlineSnapshot(`
-      "{
-        ".": {
-          "import": {
-            "types": "./foo.d.ts",
-            "default": "./foo.js"
-          },
-          "require": {
-            "types": "./foo.d.cts",
-            "default": "./foo.cjs"
-          }
-        },
-        "./package.json": "./package.json"
+          "./package.json": "./package.json"
+        }
       }"
     `)
   })
@@ -183,42 +166,25 @@ describe.concurrent('generateExports', () => {
       },
       {},
     )
-    expect(results).toMatchInlineSnapshot(`
-      {
+    // key order matters
+    expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
+      "{
+        "main": "./index.cjs",
+        "module": "./index.mjs",
+        "types": "./index.d.cts",
         "exports": {
           ".": {
             "import": {
-              "default": "./index.mjs",
               "types": "./index.d.mts",
+              "default": "./index.mjs"
             },
             "require": {
-              "default": "./index.cjs",
               "types": "./index.d.cts",
-            },
+              "default": "./index.cjs"
+            }
           },
-          "./package.json": "./package.json",
-        },
-        "main": "./index.cjs",
-        "module": "./index.mjs",
-        "publishExports": undefined,
-        "types": "./index.d.cts",
-      }
-    `)
-    // key order matters
-    expect(JSON.stringify(results.exports, undefined, 2))
-      .toMatchInlineSnapshot(`
-      "{
-        ".": {
-          "import": {
-            "types": "./index.d.mts",
-            "default": "./index.mjs"
-          },
-          "require": {
-            "types": "./index.d.cts",
-            "default": "./index.cjs"
-          }
-        },
-        "./package.json": "./package.json"
+          "./package.json": "./package.json"
+        }
       }"
     `)
   })
