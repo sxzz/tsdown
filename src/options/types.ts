@@ -76,6 +76,11 @@ export interface ExportsOptions {
    */
   all?: boolean
 
+  /**
+   * Explicit types field for exports.
+   */
+  types?: boolean
+
   customExports?: (
     exports: Record<string, any>,
     context: {

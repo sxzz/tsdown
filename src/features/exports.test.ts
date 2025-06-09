@@ -131,7 +131,7 @@ describe.concurrent('generateExports', () => {
         es: [genChunk('foo.js'), genChunk('foo.d.ts')],
         cjs: [genChunk('foo.cjs'), genChunk('foo.d.cts')],
       },
-      {},
+      { types: true },
     )
     // key order matters
     expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`
@@ -164,7 +164,7 @@ describe.concurrent('generateExports', () => {
         es: [genChunk('index.mjs'), genChunk('index.d.mts')],
         cjs: [genChunk('index.cjs'), genChunk('index.d.cts')],
       },
-      {},
+      { types: true },
     )
     // key order matters
     expect(JSON.stringify(results, undefined, 2)).toMatchInlineSnapshot(`

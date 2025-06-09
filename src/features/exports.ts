@@ -58,7 +58,7 @@ export async function generateExports(
   pkg: PackageJson,
   outDir: string,
   chunks: TsdownChunks,
-  { devExports, all, customExports }: ExportsOptions,
+  { devExports, all, customExports, types }: ExportsOptions,
 ): Promise<{
   main: string | undefined
   module: string | undefined
@@ -148,7 +148,7 @@ export async function generateExports(
   let exports: Record<string, any> = Object.fromEntries(
     sorttedExportsMap.map(([name, subExport]) => [
       name,
-      genSubExport(devExports, subExport),
+      genSubExport(devExports, subExport, types),
     ]),
   )
   exportMeta(exports, all)
@@ -166,7 +166,7 @@ export async function generateExports(
     publishExports = Object.fromEntries(
       sorttedExportsMap.map(([name, subExport]) => [
         name,
-        genSubExport(false, subExport),
+        genSubExport(false, subExport, types),
       ]),
     )
     exportMeta(publishExports, all)
@@ -192,6 +192,7 @@ export async function generateExports(
 function genSubExport(
   devExports: string | boolean | undefined,
   { src, es, cjs, cjsTypes, esmTypes }: SubExport,
+  types?: boolean,
 ) {
   if (devExports === true) {
     return src!
@@ -210,7 +211,7 @@ function genSubExport(
       if (!dualFormat && !esmTypes) {
         value.default = es
       } else {
-        value.import = esmTypes ? { types: esmTypes, default: es } : es
+        value.import = types && esmTypes ? { types: esmTypes, default: es } : es
       }
     }
 
@@ -218,7 +219,8 @@ function genSubExport(
       if (!dualFormat && !cjsTypes) {
         value.default = cjs
       } else {
-        value.require = cjsTypes ? { types: cjsTypes, default: cjs } : cjs
+        value.require =
+          types && cjsTypes ? { types: cjsTypes, default: cjs } : cjs
       }
     }
   }
