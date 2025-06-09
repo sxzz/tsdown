@@ -132,7 +132,7 @@ export async function generateExports(
         if (chunk.facadeModuleId && !subExport.src) {
           subExport.src = `./${slash(path.relative(pkgRoot, chunk.facadeModuleId))}`
         }
-      } else if (!isIndex && (format === 'cjs' || format === 'es')) {
+      } else if (format === 'cjs' || format === 'es') {
         subExport[format === 'cjs' ? 'cjsTypes' : 'esmTypes'] = distFile
       }
     }
@@ -206,9 +206,21 @@ function genSubExport(
     if (typeof devExports === 'string') {
       value[devExports] = src
     }
-    if (es) value[dualFormat ? 'import' : 'default'] = es
-    if (cjs) value[dualFormat ? 'require' : 'default'] = cjs
-    if (cjsTypes || esmTypes) value.types = cjsTypes || esmTypes
+    if (es) {
+      if (!dualFormat && !esmTypes) {
+        value.default = es
+      } else {
+        value.import = esmTypes ? { types: esmTypes, default: es } : es
+      }
+    }
+
+    if (cjs) {
+      if (!dualFormat && !cjsTypes) {
+        value.default = cjs
+      } else {
+        value.require = cjsTypes ? { types: cjsTypes, default: cjs } : cjs
+      }
+    }
   }
 
   return value

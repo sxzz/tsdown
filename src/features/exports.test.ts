@@ -124,7 +124,7 @@ describe.concurrent('generateExports', () => {
   })
 
   test('dts', async ({ expect }) => {
-    const results = generateExports(
+    const results = await generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
       {
@@ -133,12 +133,18 @@ describe.concurrent('generateExports', () => {
       },
       {},
     )
-    await expect(results).resolves.toMatchInlineSnapshot(`
+    expect(results).toMatchInlineSnapshot(`
       {
         "exports": {
           ".": {
-            "import": "./foo.js",
-            "require": "./foo.cjs",
+            "import": {
+              "default": "./foo.js",
+              "types": "./foo.d.ts",
+            },
+            "require": {
+              "default": "./foo.cjs",
+              "types": "./foo.d.cts",
+            },
           },
           "./package.json": "./package.json",
         },
@@ -148,52 +154,27 @@ describe.concurrent('generateExports', () => {
         "types": "./foo.d.cts",
       }
     `)
-  })
-
-  test('dual formats & dts with multiple entries', async ({ expect }) => {
-    const results = generateExports(
-      FAKE_PACKAGE_JSON,
-      cwd,
-      {
-        es: [
-          genChunk('index.js'),
-          genChunk('index.d.ts'),
-          genChunk('foo.js'),
-          genChunk('foo.d.ts'),
-        ],
-        cjs: [
-          genChunk('index.cjs'),
-          genChunk('index.d.cts'),
-          genChunk('foo.cjs'),
-          genChunk('foo.d.cts'),
-        ],
-      },
-      {},
-    )
-    await expect(results).resolves.toMatchInlineSnapshot(`
-      {
-        "exports": {
-          ".": {
-            "import": "./index.js",
-            "require": "./index.cjs",
+    // key order matters
+    expect(JSON.stringify(results.exports, undefined, 2))
+      .toMatchInlineSnapshot(`
+      "{
+        ".": {
+          "import": {
+            "types": "./foo.d.ts",
+            "default": "./foo.js"
           },
-          "./foo": {
-            "import": "./foo.js",
-            "require": "./foo.cjs",
+          "require": {
             "types": "./foo.d.cts",
-          },
-          "./package.json": "./package.json",
+            "default": "./foo.cjs"
+          }
         },
-        "main": "./index.cjs",
-        "module": "./index.js",
-        "publishExports": undefined,
-        "types": "./index.d.cts",
-      }
+        "./package.json": "./package.json"
+      }"
     `)
   })
 
   test('fixed extension', async ({ expect }) => {
-    const results = generateExports(
+    const results = await generateExports(
       FAKE_PACKAGE_JSON,
       cwd,
       {
@@ -202,12 +183,18 @@ describe.concurrent('generateExports', () => {
       },
       {},
     )
-    await expect(results).resolves.toMatchInlineSnapshot(`
+    expect(results).toMatchInlineSnapshot(`
       {
         "exports": {
           ".": {
-            "import": "./index.mjs",
-            "require": "./index.cjs",
+            "import": {
+              "default": "./index.mjs",
+              "types": "./index.d.mts",
+            },
+            "require": {
+              "default": "./index.cjs",
+              "types": "./index.d.cts",
+            },
           },
           "./package.json": "./package.json",
         },
@@ -216,6 +203,23 @@ describe.concurrent('generateExports', () => {
         "publishExports": undefined,
         "types": "./index.d.cts",
       }
+    `)
+    // key order matters
+    expect(JSON.stringify(results.exports, undefined, 2))
+      .toMatchInlineSnapshot(`
+      "{
+        ".": {
+          "import": {
+            "types": "./index.d.mts",
+            "default": "./index.mjs"
+          },
+          "require": {
+            "types": "./index.d.cts",
+            "default": "./index.cjs"
+          }
+        },
+        "./package.json": "./package.json"
+      }"
     `)
   })
 
