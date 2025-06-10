@@ -8,10 +8,22 @@ import { blue, dim } from 'ansis'
 import Debug from 'debug'
 import { fsRemove } from '../utils/fs'
 import { logger } from '../utils/logger'
-import type { ResolvedOptions } from '../options'
+import type { ResolvedOptions, AttwOptions } from '../options'
 
 const debug = Debug('tsdown:attw')
 const exec = promisify(child_process.exec)
+
+/**
+ * ATTW profiles.
+ * Defines the resolution modes to ignore for each profile.
+ *
+ * @see https://github.com/arethetypeswrong/core#profiles
+ */
+const profiles = {
+  strict: [],
+  node16: ['node10'],
+  esmOnly: ['node10', 'node16-cjs'],
+} as Record<Required<AttwOptions>['profile'], string[]>
 
 export async function attw(options: ResolvedOptions): Promise<void> {
   if (!options.attw) return
@@ -38,7 +50,10 @@ export async function attw(options: ResolvedOptions): Promise<void> {
   try {
     const { stdout: tarballInfo } = await exec(
       `npm pack --json ----pack-destination ${tempDir}`,
-      { encoding: 'utf-8' },
+      {
+        encoding: 'utf-8',
+        cwd: options.cwd || process.cwd(),
+      },
     )
     const parsed = JSON.parse(tarballInfo)
     if (!Array.isArray(parsed) || !parsed[0]?.filename) {
@@ -48,14 +63,25 @@ export async function attw(options: ResolvedOptions): Promise<void> {
     const tarball = await readFile(tarballPath)
 
     const pkg = attwCore.createPackageFromTarballData(tarball)
-    const checkResult = await attwCore.checkPackage(
-      pkg,
-      options.attw === true ? {} : options.attw,
-    )
+    const attwOptions = options.attw === true ? {} : options.attw
+    const checkResult = await attwCore.checkPackage(pkg, attwOptions)
+    const profile = attwOptions.profile ?? 'strict'
+    const level = attwOptions.level ?? 'warn'
 
     if (checkResult.types !== false && checkResult.problems) {
-      for (const problem of checkResult.problems) {
-        logger.warn('Are the types wrong problem:', problem)
+      const problems = checkResult.problems.filter((problem) => !profiles[profile]?.includes(problem.resolutionKind))
+      const hasProblems = problems.length > 0
+      if (hasProblems) {
+        const problemList = problems.map((problem) => (
+          `  - ${problem.kind}(${problem.resolutionKind}): ${problem.entrypoint}`
+        )).join('\n')
+        const problemMessage = `Are the types wrong problem:\n${problemList}`
+
+        if (level === 'error') {
+          throw new Error(problemMessage)
+        }
+
+        logger.warn(problemMessage)
       }
     } else {
       logger.success(

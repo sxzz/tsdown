@@ -9,7 +9,7 @@ import type {
   MarkPartial,
   Overwrite,
 } from '../utils/types'
-import type { CheckPackageOptions as AttwOptions } from '@arethetypeswrong/core'
+import type { CheckPackageOptions } from '@arethetypeswrong/core'
 import type { Hookable } from 'hookable'
 import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
@@ -85,6 +85,31 @@ export interface ExportsOptions {
       isPublish: boolean
     },
   ) => Awaitable<Record<string, any>>
+}
+
+export interface AttwOptions extends CheckPackageOptions {
+  /**
+   * Profiles select a set of resolution modes to require/ignore. All are evaluated but failures outside
+   * of those required are ignored.
+   *
+   * The available profiles are:
+   * - `strict`: requires all resolutions
+   * - `node16`: ignores node10 resolution failures
+   * - `esmOnly`: ignores CJS resolution failures
+   *
+   * @default 'strict'
+   */
+  profile?: 'strict' | 'node16' | 'esmOnly'
+  /**
+   * The level of the check.
+   *
+   * The available levels are:
+   * - `error`: fails the build
+   * - `warn`: warns the build
+   *
+   * @default 'warn'
+   */
+  level?: 'error' | 'warn'
 }
 
 /**
