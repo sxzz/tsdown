@@ -1,7 +1,7 @@
 <!-- prettier-ignore-start -->
 # Interface: ExportsOptions
 
-Defined in: [types.ts:65](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L65)
+Defined in: [src/options/types.ts:66](https://github.com/rolldown/tsdown/blob/7f1dc291202c80e452396a792c1bce4fe3085aa1/src/options/types.ts#L66)
 
 ## Properties
 
@@ -9,7 +9,7 @@ Defined in: [types.ts:65](https://github.com/rolldown/tsdown/blob/96c38d9d1821d8
 
 > `optional` **all**: `boolean`
 
-Defined in: [types.ts:76](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L76)
+Defined in: [src/options/types.ts:77](https://github.com/rolldown/tsdown/blob/7f1dc291202c80e452396a792c1bce4fe3085aa1/src/options/types.ts#L77)
 
 Exports for all files.
 
@@ -19,7 +19,7 @@ Exports for all files.
 
 > `optional` **customExports**: (`exports`, `context`) => `Awaitable`\<`Record`\<`string`, `any`\>\>
 
-Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L78)
+Defined in: [src/options/types.ts:79](https://github.com/rolldown/tsdown/blob/7f1dc291202c80e452396a792c1bce4fe3085aa1/src/options/types.ts#L79)
 
 #### Parameters
 
@@ -55,7 +55,7 @@ Defined in: [types.ts:78](https://github.com/rolldown/tsdown/blob/96c38d9d1821d8
 
 > `optional` **devExports**: `string` \| `boolean`
 
-Defined in: [types.ts:71](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L71)
+Defined in: [src/options/types.ts:72](https://github.com/rolldown/tsdown/blob/7f1dc291202c80e452396a792c1bce4fe3085aa1/src/options/types.ts#L72)
 
 Generate exports that link to source code during development.
 - string: add as a custom condition.

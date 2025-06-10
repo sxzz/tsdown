@@ -3,6 +3,6 @@
 
 > **Sourcemap** = `boolean` \| `"inline"` \| `"hidden"`
 
-Defined in: [types.ts:27](https://github.com/rolldown/tsdown/blob/96c38d9d1821d84b8a238b5a77ff1b157ea1f11f/src/options/types.ts#L27)
+Defined in: [src/options/types.ts:28](https://github.com/rolldown/tsdown/blob/7f1dc291202c80e452396a792c1bce4fe3085aa1/src/options/types.ts#L28)
 
 <!-- prettier-ignore-end -->
