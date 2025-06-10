@@ -7,8 +7,10 @@ import { promisify } from 'node:util'
 import { blue, dim } from 'ansis'
 import Debug from 'debug'
 import { fsRemove } from '../utils/fs'
+
 import { logger } from '../utils/logger'
-import type { ResolvedOptions, AttwOptions } from '../options'
+import type { AttwOptions, ResolvedOptions } from '../options'
+import type { Problem } from '@arethetypeswrong/core'
 
 const debug = Debug('tsdown:attw')
 const exec = promisify(child_process.exec)
@@ -19,11 +21,68 @@ const exec = promisify(child_process.exec)
  *
  * @see https://github.com/arethetypeswrong/core#profiles
  */
-const profiles = {
+const profiles: Record<Required<AttwOptions>['profile'], string[]> = {
   strict: [],
   node16: ['node10'],
   esmOnly: ['node10', 'node16-cjs'],
-} as Record<Required<AttwOptions>['profile'], string[]>
+}
+
+/**
+ * Format an ATTW problem for display
+ */
+function formatProblem(problem: Problem): string {
+  const resolutionKind = 'resolutionKind' in problem ? ` (${problem.resolutionKind})` : ''
+  const entrypoint = 'entrypoint' in problem ? ` at ${problem.entrypoint}` : ''
+
+  switch (problem.kind) {
+    case 'NoResolution':
+      return `  ❌ No resolution${resolutionKind}${entrypoint}`
+
+    case 'UntypedResolution':
+      return `  ⚠️  Untyped resolution${resolutionKind}${entrypoint}`
+
+    case 'FalseESM':
+      return `  🔄 False ESM: Types indicate ESM (${problem.typesModuleKind}) but implementation is CJS (${problem.implementationModuleKind})\n     Types: ${problem.typesFileName} | Implementation: ${problem.implementationFileName}`
+
+    case 'FalseCJS':
+      return `  🔄 False CJS: Types indicate CJS (${problem.typesModuleKind}) but implementation is ESM (${problem.implementationModuleKind})\n     Types: ${problem.typesFileName} | Implementation: ${problem.implementationFileName}`
+
+    case 'CJSResolvesToESM':
+      return `  ⚡ CJS resolves to ESM${resolutionKind}${entrypoint}`
+
+    case 'NamedExports': {
+      const missingExports =
+        problem.missing?.length > 0
+          ? ` Missing: ${problem.missing.join(', ')}`
+          : ''
+      const allMissing = problem.isMissingAllNamed
+        ? ' (all named exports missing)'
+        : ''
+      return `  📤 Named exports problem${allMissing}${missingExports}\n     Types: ${problem.typesFileName} | Implementation: ${problem.implementationFileName}`
+    }
+
+    case 'FallbackCondition':
+      return `  🎯 Fallback condition used${resolutionKind}${entrypoint}`
+
+    case 'FalseExportDefault':
+      return `  🎭 False export default\n     Types: ${problem.typesFileName} | Implementation: ${problem.implementationFileName}`
+
+    case 'MissingExportEquals':
+      return `  📝 Missing export equals\n     Types: ${problem.typesFileName} | Implementation: ${problem.implementationFileName}`
+
+    case 'InternalResolutionError':
+      return `  💥 Internal resolution error in ${problem.fileName} (${problem.resolutionOption})\n     Module: ${problem.moduleSpecifier} | Mode: ${problem.resolutionMode}`
+
+    case 'UnexpectedModuleSyntax':
+      return `  📋 Unexpected module syntax in ${problem.fileName}\n     Expected: ${problem.moduleKind} | Found: ${problem.syntax === 99 ? 'ESM' : 'CJS'}`
+
+    case 'CJSOnlyExportsDefault':
+      return `  🏷️  CJS only exports default in ${problem.fileName}`
+
+    default:
+      return `  ❓ Unknown problem: ${JSON.stringify(problem)}`
+  }
+}
 
 export async function attw(options: ResolvedOptions): Promise<void> {
   if (!options.attw) return
@@ -69,13 +128,18 @@ export async function attw(options: ResolvedOptions): Promise<void> {
     const level = attwOptions.level ?? 'warn'
 
     if (checkResult.types !== false && checkResult.problems) {
-      const problems = checkResult.problems.filter((problem) => !profiles[profile]?.includes(problem.resolutionKind))
+      const problems = checkResult.problems.filter((problem) => {
+        // Only apply profile filter to problems that have resolutionKind
+        if ('resolutionKind' in problem) {
+          return !profiles[profile]?.includes(problem.resolutionKind)
+        }
+        // Include all other problem types
+        return true
+      })
       const hasProblems = problems.length > 0
       if (hasProblems) {
-        const problemList = problems.map((problem) => (
-          `  - ${problem.kind}(${problem.resolutionKind}): ${problem.entrypoint}`
-        )).join('\n')
-        const problemMessage = `Are the types wrong problem:\n${problemList}`
+        const problemList = problems.map(formatProblem).join('\n')
+        const problemMessage = `Are the types wrong problems found:\n${problemList}`
 
         if (level === 'error') {
           throw new Error(problemMessage)
