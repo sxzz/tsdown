@@ -256,11 +256,6 @@ async function generateApiReference() {
           pattern: `ExportsOptions.md`,
           replacement: 'exports-options.md',
         },
-        {
-          type: 'replace',
-          pattern: `AttwOptions.md`,
-          replacement: 'attw-options.md',
-        },
       ],
     },
     {
