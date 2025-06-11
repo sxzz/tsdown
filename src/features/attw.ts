@@ -111,7 +111,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
       `npm pack --json ----pack-destination ${tempDir}`,
       {
         encoding: 'utf-8',
-        cwd: options.cwd || process.cwd(),
+        cwd: options.cwd,
       },
     )
     const parsed = JSON.parse(tarballInfo)
