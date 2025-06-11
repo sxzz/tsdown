@@ -31,7 +31,8 @@ const profiles: Record<Required<AttwOptions>['profile'], string[]> = {
  * Format an ATTW problem for display
  */
 function formatProblem(problem: Problem): string {
-  const resolutionKind = 'resolutionKind' in problem ? ` (${problem.resolutionKind})` : ''
+  const resolutionKind =
+    'resolutionKind' in problem ? ` (${problem.resolutionKind})` : ''
   const entrypoint = 'entrypoint' in problem ? ` at ${problem.entrypoint}` : ''
 
   switch (problem.kind) {
