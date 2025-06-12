@@ -18,7 +18,7 @@ const exec = promisify(child_process.exec)
  * ATTW profiles.
  * Defines the resolution modes to ignore for each profile.
  *
- * @see https://github.com/arethetypeswrong/core#profiles
+ * @see https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/packages/cli/README.md#profiles
  */
 const profiles: Record<Required<AttwOptions>['profile'], string[]> = {
   strict: [],
