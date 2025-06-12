@@ -7,7 +7,6 @@ import { promisify } from 'node:util'
 import { blue, dim } from 'ansis'
 import Debug from 'debug'
 import { fsRemove } from '../utils/fs'
-
 import { logger } from '../utils/logger'
 import type { AttwOptions, ResolvedOptions } from '../options'
 import type { Problem } from '@arethetypeswrong/core'
@@ -110,10 +109,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
   try {
     const { stdout: tarballInfo } = await exec(
       `npm pack --json ----pack-destination ${tempDir}`,
-      {
-        encoding: 'utf-8',
-        cwd: options.cwd,
-      },
+      { encoding: 'utf-8', cwd: options.cwd },
     )
     const parsed = JSON.parse(tarballInfo)
     if (!Array.isArray(parsed) || !parsed[0]?.filename) {
@@ -137,8 +133,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
         // Include all other problem types
         return true
       })
-      const hasProblems = problems.length > 0
-      if (hasProblems) {
+      if (problems.length) {
         const problemList = problems.map(formatProblem).join('\n')
         const problemMessage = `Are the types wrong problems found:\n${problemList}`
 
