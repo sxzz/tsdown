@@ -172,6 +172,12 @@ export interface Options {
    */
   unbundle?: boolean
 
+  /**
+   * @deprecated Use `unbundle` instead.
+   * @default true
+   */
+  bundle?: boolean
+
   define?: Record<string, string>
   /** @default false */
   shims?: boolean
@@ -387,7 +393,7 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
-      | 'unbundle'
+      | 'bundle'
     >,
     {
       format: NormalizedFormat[]

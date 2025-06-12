@@ -206,7 +206,13 @@ async function resolveConfig(
     external,
     noExternal,
     exports = false,
+    bundle,
+    unbundle = typeof bundle === 'boolean' ? !bundle : false,
   } = userConfig
+
+  if (typeof bundle === 'boolean') {
+    logger.warn('`bundle` option is deprecated. Use `unbundle` instead.')
+  }
 
   outDir = path.resolve(cwd, outDir)
   clean = resolveClean(clean, outDir, cwd)
@@ -303,6 +309,7 @@ async function resolveConfig(
     external,
     noExternal,
     exports,
+    unbundle,
   }
 
   return config
