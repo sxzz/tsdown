@@ -45,7 +45,7 @@ describe('issues', () => {
         dts: true,
       },
       beforeBuild: async () => {
-        await exec('pnpm', ['install'], {
+        await exec('pnpm', ['install', '--prefer-offline'], {
           nodeOptions: {
             stdio: ['ignore', 'ignore', 'inherit'],
           },
