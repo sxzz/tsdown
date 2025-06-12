@@ -1,5 +1,6 @@
-import type { TsdownChunks } from '..'
+import type { AttwOptions } from '../features/attw'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
+import type { ExportsOptions } from '../features/exports'
 import type { TsdownHooks } from '../features/hooks'
 import type { OutExtensionFactory } from '../features/output'
 import type { ReportOptions } from '../features/report'
@@ -9,7 +10,6 @@ import type {
   MarkPartial,
   Overwrite,
 } from '../utils/types'
-import type { CheckPackageOptions } from '@arethetypeswrong/core'
 import type { Hookable } from 'hookable'
 import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
@@ -61,55 +61,6 @@ export interface Workspace {
    * Path to the workspace configuration file.
    */
   config?: boolean | string
-}
-
-export interface ExportsOptions {
-  /**
-   * Generate exports that link to source code during development.
-   * - string: add as a custom condition.
-   * - true: all conditions point to source files, and add dist exports to `publishConfig`.
-   */
-  devExports?: boolean | string
-
-  /**
-   * Exports for all files.
-   */
-  all?: boolean
-
-  customExports?: (
-    exports: Record<string, any>,
-    context: {
-      pkg: PackageJson
-      chunks: TsdownChunks
-      outDir: string
-      isPublish: boolean
-    },
-  ) => Awaitable<Record<string, any>>
-}
-
-export interface AttwOptions extends CheckPackageOptions {
-  /**
-   * Profiles select a set of resolution modes to require/ignore. All are evaluated but failures outside
-   * of those required are ignored.
-   *
-   * The available profiles are:
-   * - `strict`: requires all resolutions
-   * - `node16`: ignores node10 resolution failures
-   * - `esmOnly`: ignores CJS resolution failures
-   *
-   * @default 'strict'
-   */
-  profile?: 'strict' | 'node16' | 'esmOnly'
-  /**
-   * The level of the check.
-   *
-   * The available levels are:
-   * - `error`: fails the build
-   * - `warn`: warns the build
-   *
-   * @default 'warn'
-   */
-  level?: 'error' | 'warn'
 }
 
 /**

@@ -8,11 +8,36 @@ import { blue, dim } from 'ansis'
 import Debug from 'debug'
 import { fsRemove } from '../utils/fs'
 import { logger } from '../utils/logger'
-import type { AttwOptions, ResolvedOptions } from '../options'
-import type { Problem } from '@arethetypeswrong/core'
+import type { ResolvedOptions } from '../options'
+import type { CheckPackageOptions, Problem } from '@arethetypeswrong/core'
 
 const debug = Debug('tsdown:attw')
 const exec = promisify(child_process.exec)
+
+export interface AttwOptions extends CheckPackageOptions {
+  /**
+   * Profiles select a set of resolution modes to require/ignore. All are evaluated but failures outside
+   * of those required are ignored.
+   *
+   * The available profiles are:
+   * - `strict`: requires all resolutions
+   * - `node16`: ignores node10 resolution failures
+   * - `esmOnly`: ignores CJS resolution failures
+   *
+   * @default 'strict'
+   */
+  profile?: 'strict' | 'node16' | 'esmOnly'
+  /**
+   * The level of the check.
+   *
+   * The available levels are:
+   * - `error`: fails the build
+   * - `warn`: warns the build
+   *
+   * @default 'warn'
+   */
+  level?: 'error' | 'warn'
+}
 
 /**
  * ATTW profiles.
@@ -90,6 +115,11 @@ export async function attw(options: ResolvedOptions): Promise<void> {
     logger.warn('attw is enabled but package.json is not found')
     return
   }
+  const {
+    profile = 'strict',
+    level = 'warn',
+    ...attwOptions
+  } = options.attw === true ? {} : options.attw
 
   const t = performance.now()
   debug('Running attw check')
@@ -109,7 +139,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
   try {
     const { stdout: tarballInfo } = await exec(
       `npm pack --json ----pack-destination ${tempDir}`,
-      { encoding: 'utf-8', cwd: options.cwd },
+      { encoding: 'utf8', cwd: options.cwd },
     )
     const parsed = JSON.parse(tarballInfo)
     if (!Array.isArray(parsed) || !parsed[0]?.filename) {
@@ -119,10 +149,7 @@ export async function attw(options: ResolvedOptions): Promise<void> {
     const tarball = await readFile(tarballPath)
 
     const pkg = attwCore.createPackageFromTarballData(tarball)
-    const attwOptions = options.attw === true ? {} : options.attw
     const checkResult = await attwCore.checkPackage(pkg, attwOptions)
-    const profile = attwOptions.profile ?? 'strict'
-    const level = attwOptions.level ?? 'warn'
 
     if (checkResult.types !== false && checkResult.problems) {
       const problems = checkResult.problems.filter((problem) => {
