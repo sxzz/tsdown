@@ -11,6 +11,7 @@ export async function watchBuild(
   configFiles: string[],
   rebuild: () => void,
   restart: () => void,
+  ignoreWatch: string[] = [],
 ): Promise<FSWatcher> {
   if (typeof options.watch === 'boolean' && options.outDir === options.cwd) {
     throw new Error(
@@ -32,12 +33,7 @@ export async function watchBuild(
   const watcher = watch(files, {
     ignoreInitial: true,
     ignorePermissionErrors: true,
-    ignored: [
-      /[\\/]\.git[\\/]/,
-      /[\\/]node_modules[\\/]/,
-      options.outDir,
-      ...toArray(options.ignoreWatch),
-    ],
+    ignored: [/[\\/]\.git[\\/]/, /[\\/]node_modules[\\/]/, ...ignoreWatch],
   })
 
   watcher.on('all', (type: string, file: string) => {
