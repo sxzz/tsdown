@@ -1,4 +1,4 @@
-import { isBuiltin } from 'node:module'
+import { builtinModules } from 'node:module'
 import Debug from 'debug'
 import { toArray } from '../utils/general'
 import type { ResolvedOptions } from '../options'
@@ -47,7 +47,9 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
           id,
           external: shouldExternal,
           moduleSideEffects:
-            id.startsWith('node:') || isBuiltin(id) ? false : undefined,
+            id.startsWith('node:') || builtinModules.includes(id)
+              ? false
+              : undefined,
         }
       }
     },
