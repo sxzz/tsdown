@@ -1,4 +1,4 @@
-import { isBuiltin } from 'node:module'
+import { builtinModules } from 'node:module'
 import Debug from 'debug'
 import { toArray } from '../utils/general'
 import type { ResolvedOptions } from '../options'
@@ -22,7 +22,11 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
         const noExternalPatterns = toArray(noExternal)
         if (
           noExternalPatterns.some((pattern) => {
-            return pattern instanceof RegExp ? pattern.test(id) : id === pattern
+            if (pattern instanceof RegExp) {
+              pattern.lastIndex = 0
+              return pattern.test(id)
+            }
+            return id === pattern
           })
         )
           return
@@ -47,7 +51,9 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
           id,
           external: shouldExternal,
           moduleSideEffects:
-            id.startsWith('node:') || isBuiltin(id) ? false : undefined,
+            id.startsWith('node:') || builtinModules.includes(id)
+              ? false
+              : undefined,
         }
       }
     },

@@ -1,5 +1,6 @@
-import type { TsdownChunks } from '..'
+import type { AttwOptions } from '../features/attw'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
+import type { ExportsOptions } from '../features/exports'
 import type { TsdownHooks } from '../features/hooks'
 import type { OutExtensionFactory } from '../features/output'
 import type { ReportOptions } from '../features/report'
@@ -9,7 +10,6 @@ import type {
   MarkPartial,
   Overwrite,
 } from '../utils/types'
-import type { CheckPackageOptions as AttwOptions } from '@arethetypeswrong/core'
 import type { Hookable } from 'hookable'
 import type { PackageJson } from 'pkg-types'
 import type { Options as PublintOptions } from 'publint'
@@ -61,35 +61,6 @@ export interface Workspace {
    * Path to the workspace configuration file.
    */
   config?: boolean | string
-}
-
-export interface ExportsOptions {
-  /**
-   * Generate exports that link to source code during development.
-   * - string: add as a custom condition.
-   * - true: all conditions point to source files, and add dist exports to `publishConfig`.
-   */
-  devExports?: boolean | string
-
-  /**
-   * Exports for all files.
-   */
-  all?: boolean
-
-  /**
-   * Explicit types field for exports.
-   */
-  types?: boolean
-
-  customExports?: (
-    exports: Record<string, any>,
-    context: {
-      pkg: PackageJson
-      chunks: TsdownChunks
-      outDir: string
-      isPublish: boolean
-    },
-  ) => Awaitable<Record<string, any>>
 }
 
 /**
@@ -176,6 +147,12 @@ export interface Options {
    * @default false
    */
   unbundle?: boolean
+
+  /**
+   * @deprecated Use `unbundle` instead.
+   * @default true
+   */
+  bundle?: boolean
 
   define?: Record<string, string>
   /** @default false */
@@ -392,7 +369,7 @@ export type ResolvedOptions = Omit<
       | 'copy'
       | 'loader'
       | 'name'
-      | 'unbundle'
+      | 'bundle'
     >,
     {
       format: NormalizedFormat[]

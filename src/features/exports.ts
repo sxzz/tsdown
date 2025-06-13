@@ -3,13 +3,39 @@ import path from 'node:path'
 import { RE_DTS } from 'rolldown-plugin-dts/filename'
 import { slash } from '../utils/general'
 import type { TsdownChunks } from '..'
-import type {
-  ExportsOptions,
-  NormalizedFormat,
-  ResolvedOptions,
-} from '../options'
+import type { NormalizedFormat, ResolvedOptions } from '../options'
+import type { Awaitable } from '../utils/types'
 import type { PackageJson } from 'pkg-types'
 import type { OutputAsset, OutputChunk } from 'rolldown'
+
+export interface ExportsOptions {
+  /**
+   * Generate exports that link to source code during development.
+   * - string: add as a custom condition.
+   * - true: all conditions point to source files, and add dist exports to `publishConfig`.
+   */
+  devExports?: boolean | string
+
+  /**
+   * Exports for all files.
+   */
+  all?: boolean
+
+  /**
+   * Explicit type fields for exports.
+   */
+  types?: boolean
+
+  customExports?: (
+    exports: Record<string, any>,
+    context: {
+      pkg: PackageJson
+      chunks: TsdownChunks
+      outDir: string
+      isPublish: boolean
+    },
+  ) => Awaitable<Record<string, any>>
+}
 
 export async function writeExports(
   options: ResolvedOptions,
