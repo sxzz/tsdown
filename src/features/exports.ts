@@ -183,7 +183,7 @@ export async function generateExports(
   return {
     main: main || module || pkg.main,
     module: module || pkg.module,
-    types: cjsTypes || esmTypes || pkg.types,
+    types: types ? cjsTypes || esmTypes || pkg.types : undefined,
     exports,
     publishExports,
   }
