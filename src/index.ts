@@ -35,6 +35,7 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { lowestCommonAncestor } from './utils/fs'
+import { toArray } from './utils/general'
 import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -59,12 +60,35 @@ export async function build(userOptions: Options = {}): Promise<void> {
     configs.map((options) => buildSingle(options, clean)),
   )
   const cleanCbs: (() => Promise<void>)[] = []
-
+  const outDirs = configs.map((config) => config.outDir)
+  const ignoreWatchList = configs.map((config) => {
+    const ignore = [...toArray(config.ignoreWatch), ...outDirs]
+    const ignoreEntry = configs
+      .filter((c) => c !== config)
+      .flatMap((c) => {
+        const entry: string[] = []
+        if (typeof c.entry === 'string') {
+          entry.push(c.entry)
+        } else if (Array.isArray(c.entry)) {
+          entry.push(...c.entry)
+        } else if (typeof c.entry === 'object') {
+          entry.push(...Object.values(c.entry))
+        }
+        return entry
+      })
+    return ignore.concat(...ignoreEntry)
+  })
   for (const [i, config] of configs.entries()) {
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
-    const watcher = await watchBuild(config, configFiles, rebuild, restart)
+    const watcher = await watchBuild(
+      config,
+      configFiles,
+      rebuild,
+      restart,
+      ignoreWatchList[i],
+    )
     cleanCbs.push(() => watcher.close())
   }
 
