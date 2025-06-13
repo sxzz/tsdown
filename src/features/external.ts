@@ -47,7 +47,9 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
           id,
           external: shouldExternal,
           moduleSideEffects:
-            id.startsWith('node:') || builtinModules.includes(id) ? false : undefined,
+            id.startsWith('node:') || builtinModules.includes(id)
+              ? false
+              : undefined,
         }
       }
     },
