@@ -22,7 +22,11 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
         const noExternalPatterns = toArray(noExternal)
         if (
           noExternalPatterns.some((pattern) => {
-            return pattern instanceof RegExp ? pattern.test(id) : id === pattern
+            if (pattern instanceof RegExp) {
+              pattern.lastIndex = 0
+              return pattern.test(id)
+            }
+            return id === pattern
           })
         )
           return
