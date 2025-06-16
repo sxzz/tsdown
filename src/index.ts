@@ -323,6 +323,11 @@ async function getBuildOptions(
 }
 
 export { defineConfig } from './config'
-export type { Options, UserConfig, UserConfigFn } from './options'
+export type {
+  Options,
+  ResolvedOptions,
+  UserConfig,
+  UserConfigFn,
+} from './options'
 export type { BuildContext, TsdownHooks } from './features/hooks'
 export { logger }
