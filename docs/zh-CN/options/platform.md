@@ -17,7 +17,7 @@ tsdown --platform neutral
 - **`neutral`：** 与平台无关的目标，不对特定运行时环境做假设。如果您的代码需要在多个环境中运行，或者您希望完全控制运行时行为，可以选择此选项。特别适合用于 Node.js 和浏览器环境的库或共享代码。
 
 > [!NOTE]
-> 对于 CJS 格式，平台始终为 `'node'`，无法更改。
+> 对于 CJS 格式，平台始终为 `'node'`，无法更改。 [为什么？](https://github.com/rolldown/rolldown/pull/4693#issuecomment-2912229545)
 
 ### 示例
 
