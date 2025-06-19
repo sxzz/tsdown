@@ -7,7 +7,7 @@ import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
-import { resolveRegex } from '../utils/general'
+import { resolveRegex, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { Awaitable } from '../utils/types'
@@ -302,7 +302,7 @@ async function resolveConfig(
     report: report === true ? {} : report,
     unused,
     watch,
-    ignoreWatch,
+    ignoreWatch: toArray(ignoreWatch),
     shims,
     skipNodeModulesBundle,
     publint,

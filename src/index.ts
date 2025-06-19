@@ -295,7 +295,7 @@ async function getBuildOptions(
   }
 
   if (watch) {
-    plugins.push(WatchPlugin(configFiles, restart))
+    plugins.push(WatchPlugin(config, configFiles, restart))
   }
 
   plugins.push(OutputPlugin(resolveChunks))
