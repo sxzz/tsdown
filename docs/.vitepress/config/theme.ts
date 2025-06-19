@@ -89,6 +89,7 @@ export function getLocaleConfig(lang: string) {
         { text: t('Hooks'), link: '/hooks.md' },
         { text: t('Rolldown Options'), link: '/rolldown-options.md' },
         { text: t('Programmatic Usage'), link: '/programmatic-usage.md' },
+        { text: t('Benchmark'), link: '/benchmark.md' },
       ],
     },
     {
