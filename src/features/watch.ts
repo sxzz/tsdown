@@ -1,11 +1,12 @@
 import { resolveComma, toArray } from '../utils/general'
 import { logger, prettyName } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
-import type { Plugin } from 'rolldown'
+import type { OutputAsset, OutputChunk, Plugin } from 'rolldown'
 
 const endsWithConfig = /[\\/](?:package\.json|tsdown\.config.*)$/
 
 export function WatchPlugin(
+  chunks: Array<OutputChunk | OutputAsset>,
   options: ResolvedOptions,
   configFiles: string[],
   restart: () => void,
@@ -29,14 +30,17 @@ export function WatchPlugin(
         }
       }
     },
-    watchChange(id, event) {
+    watchChange(id) {
       if (configFiles.includes(id) || endsWithConfig.test(id)) {
         logger.info(prettyName(options.name), `Reload config: ${id}`)
         restart()
-      } else {
-        console.info('')
-        logger.info(prettyName(options.name), `File ${event.event}d: ${id}`)
       }
+    },
+    generateBundle: {
+      order: 'post',
+      handler(_outputOptions, bundle) {
+        chunks.push(...Object.values(bundle))
+      },
     },
   }
 }

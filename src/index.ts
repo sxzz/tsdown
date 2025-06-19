@@ -1,7 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { green } from 'ansis'
+import { bold } from 'ansis'
 import {
   build as rolldownBuild,
   watch as rolldownWatch,
@@ -16,7 +16,7 @@ import { exec } from 'tinyexec'
 import { attw } from './features/attw'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
-import { OutputPlugin, writeExports } from './features/exports'
+import { writeExports } from './features/exports'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
@@ -37,8 +37,7 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { lowestCommonAncestor } from './utils/fs'
-import { withResolver } from './utils/general'
-import { logger, prettyName } from './utils/logger'
+import { logger } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 /**
@@ -105,112 +104,137 @@ export async function buildSingle(
   let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
-  const watchers: RolldownWatcher[] = []
-
-  const startTime = performance.now()
+  let watcher: RolldownWatcher
 
   await hooks.callHook('build:prepare', context)
   ab?.abort()
 
   await clean()
 
-  let hasErrors = false
   const isMultiFormat = formats.length > 1
   const chunks: TsdownChunks = {}
 
   async function buildByFormat(format: NormalizedFormat) {
-    try {
-      const [chunksPromise, resolve] =
-        withResolver<Array<OutputChunk | OutputAsset>>()
-      const buildOptions = await getBuildOptions(
-        config,
-        format,
-        configFiles,
-        restart,
-        resolve,
-        isMultiFormat,
-        false,
-      )
-      await hooks.callHook('build:before', {
-        ...context,
-        buildOptions,
-      })
-      if (watch) {
-        watchers.push(rolldownWatch(buildOptions))
-      } else {
-        await rolldownBuild(buildOptions)
-      }
-      chunks[format] = await chunksPromise
+    const buildOptions = await getBuildOptions(
+      config,
+      format,
+      configFiles,
+      restart,
+      (chunks[format] = []),
+      isMultiFormat,
+      false,
+    )
+    await hooks.callHook('build:before', {
+      ...context,
+      buildOptions,
+    })
 
-      // build cjs dts
-      if (format === 'cjs' && dts) {
-        const [chunksPromise, resolve] =
-          withResolver<Array<OutputChunk | OutputAsset>>()
-
-        const buildOptions = await getBuildOptions(
+    const buildOptionsList = [buildOptions]
+    if (format === 'cjs' && dts) {
+      buildOptionsList.push(
+        await getBuildOptions(
           config,
           format,
           configFiles,
           restart,
-          resolve,
+          chunks[format],
           isMultiFormat,
           true,
-        )
-        if (watch) {
-          watchers.push(rolldownWatch(buildOptions))
-        } else {
-          await rolldownBuild(buildOptions)
+        ),
+      )
+    }
+
+    if (watch) {
+      watcher = rolldownWatch(buildOptionsList)
+      const changedFile: string[] = []
+      let hasError = false
+      watcher.on('change', (id, event) => {
+        if (event.event === 'update') {
+          changedFile.push(id)
         }
-        chunks[format].push(...(await chunksPromise))
-      }
-    } catch (error) {
-      if (watch) {
-        logger.error(error)
-        hasErrors = true
-        return
-      }
-      throw error
+      })
+      watcher.on('event', async (event) => {
+        switch (event.code) {
+          case 'START': {
+            chunks[format]!.length = 0
+            hasError = false
+            break
+          }
+
+          case 'END': {
+            if (!hasError) {
+              await postBuild()
+            }
+            break
+          }
+
+          case 'BUNDLE_START': {
+            if (changedFile.length > 0) {
+              console.info('')
+              logger.info(
+                `Found ${bold(changedFile.join(', '))} changed, rebuilding...`,
+              )
+            }
+            changedFile.length = 0
+            break
+          }
+
+          case 'BUNDLE_END': {
+            await event.result.close()
+            logger.success(`Rebuilt in ${event.duration}ms.`)
+            break
+          }
+
+          case 'ERROR': {
+            await event.result.close()
+            logger.error(event.error)
+            hasError = true
+            break
+          }
+        }
+      })
+    } else {
+      const output = (await rolldownBuild(buildOptionsList)).flatMap(
+        ({ output }) => output,
+      )
+      chunks[format] = output
     }
   }
   await Promise.all(formats.map(buildByFormat))
-
-  if (hasErrors) return
-
-  await Promise.all([writeExports(config, chunks), copy(config)])
-  await Promise.all([publint(config), attw(config)])
-
-  await hooks.callHook('build:done', context)
-
-  logger.success(
-    prettyName(config.name),
-    `Build complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
-  )
-  ab = new AbortController()
-  if (typeof onSuccess === 'string') {
-    const p = exec(onSuccess, [], {
-      nodeOptions: {
-        shell: true,
-        stdio: 'inherit',
-        signal: ab.signal,
-      },
-    })
-    p.then(({ exitCode }) => {
-      if (exitCode) {
-        process.exitCode = exitCode
-      }
-    })
-  } else {
-    await onSuccess?.(config, ab.signal)
-  }
 
   if (watch) {
     return {
       async [Symbol.asyncDispose]() {
         ab?.abort()
-        for (const watcher of watchers) {
-          await watcher.close()
-        }
+        await watcher.close()
       },
+    }
+  } else {
+    await postBuild()
+  }
+
+  async function postBuild() {
+    await Promise.all([writeExports(config, chunks), copy(config)])
+    await Promise.all([publint(config), attw(config)])
+
+    await hooks.callHook('build:done', context)
+
+    ab = new AbortController()
+    if (typeof onSuccess === 'string') {
+      const p = exec(onSuccess, [], {
+        nodeOptions: {
+          shell: true,
+          stdio: 'inherit',
+          signal: ab.signal,
+        },
+      })
+      p.then(({ exitCode }) => {
+        if (exitCode) {
+          process.exitCode = exitCode
+        }
+      })
+    } else {
+      await onSuccess?.(config, ab.signal)
     }
   }
 }
@@ -220,7 +244,7 @@ async function getBuildOptions(
   format: NormalizedFormat,
   configFiles: string[],
   restart: () => void,
-  resolveChunks: (chunks: Array<OutputChunk | OutputAsset>) => void,
+  chunks: Array<OutputChunk | OutputAsset>,
   isMultiFormat?: boolean,
   cjsDts?: boolean,
 ): Promise<BuildOptions> {
@@ -295,10 +319,8 @@ async function getBuildOptions(
   }
 
   if (watch) {
-    plugins.push(WatchPlugin(config, configFiles, restart))
+    plugins.push(WatchPlugin(chunks!, config, configFiles, restart))
   }
-
-  plugins.push(OutputPlugin(resolveChunks))
 
   const inputOptions = await mergeUserOptions(
     {
