@@ -6,7 +6,7 @@ import type { TsdownChunks } from '..'
 import type { NormalizedFormat, ResolvedOptions } from '../options'
 import type { Awaitable } from '../utils/types'
 import type { PackageJson } from 'pkg-types'
-import type { OutputAsset, OutputChunk, Plugin } from 'rolldown'
+import type { OutputAsset, OutputChunk } from 'rolldown'
 
 export interface ExportsOptions {
   /**
@@ -237,23 +237,5 @@ function exportMeta(exports: Record<string, any>, all?: boolean) {
     exports['./*'] = './*'
   } else {
     exports['./package.json'] = './package.json'
-  }
-}
-
-export function OutputPlugin(
-  resolveChunks: (chunks: Array<OutputChunk | OutputAsset>) => void,
-): Plugin {
-  let chunks: Array<OutputChunk | OutputAsset>
-  return {
-    name: 'tsdown:output',
-    generateBundle: {
-      order: 'post',
-      handler(_outputOptions, bundle) {
-        chunks = Object.values(bundle)
-      },
-    },
-    closeBundle() {
-      resolveChunks(chunks)
-    },
   }
 }
