@@ -140,48 +140,47 @@ export async function buildSingle(
     let hasErrors = false
     const isMultiFormat = formats.length > 1
     const chunks: TsdownChunks = {}
-    await Promise.all(
-      formats.map(async (format) => {
-        try {
-          const buildOptions = await getBuildOptions(
-            config,
-            format,
-            isMultiFormat,
-            false,
-          )
-          await hooks.callHook('build:before', {
-            ...context,
-            buildOptions,
-          })
-          if (watch) {
-            rolldownWatchers.push(rolldownWatch(buildOptions))
-            if (format === 'cjs' && dts) {
-              rolldownWatchers.push(
-                rolldownWatch(
-                  await getBuildOptions(config, format, isMultiFormat, true),
-                ),
-              )
-            }
-          } else {
-            const { output } = await rolldownBuild(buildOptions)
-            chunks[format] = output
-            if (format === 'cjs' && dts) {
-              const { output } = await rolldownBuild(
+    async function buildByFormat(format: NormalizedFormat) {
+      try {
+        const buildOptions = await getBuildOptions(
+          config,
+          format,
+          isMultiFormat,
+          false,
+        )
+        await hooks.callHook('build:before', {
+          ...context,
+          buildOptions,
+        })
+        if (watch) {
+          rolldownWatchers.push(rolldownWatch(buildOptions))
+          if (format === 'cjs' && dts) {
+            rolldownWatchers.push(
+              rolldownWatch(
                 await getBuildOptions(config, format, isMultiFormat, true),
-              )
-              chunks[format].push(...output)
-            }
+              ),
+            )
           }
-        } catch (error) {
-          if (watch) {
-            logger.error(error)
-            hasErrors = true
-            return
+        } else {
+          const { output } = await rolldownBuild(buildOptions)
+          chunks[format] = output
+          if (format === 'cjs' && dts) {
+            const { output } = await rolldownBuild(
+              await getBuildOptions(config, format, isMultiFormat, true),
+            )
+            chunks[format].push(...output)
           }
-          throw error
         }
-      }),
-    )
+      } catch (error) {
+        if (watch) {
+          logger.error(error)
+          hasErrors = true
+          return
+        }
+        throw error
+      }
+    }
+    await Promise.all(formats.map(buildByFormat))
 
     if (hasErrors) return
 
