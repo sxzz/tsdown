@@ -154,21 +154,24 @@ export async function buildSingle(
         })
         if (watch) {
           rolldownWatchers.push(rolldownWatch(buildOptions))
-          if (format === 'cjs' && dts) {
-            rolldownWatchers.push(
-              rolldownWatch(
-                await getBuildOptions(config, format, isMultiFormat, true),
-              ),
-            )
-          }
         } else {
           const { output } = await rolldownBuild(buildOptions)
           chunks[format] = output
-          if (format === 'cjs' && dts) {
-            const { output } = await rolldownBuild(
-              await getBuildOptions(config, format, isMultiFormat, true),
-            )
-            chunks[format].push(...output)
+        }
+
+        // build cjs dts
+        if (format === 'cjs' && dts) {
+          const buildOptions = await getBuildOptions(
+            config,
+            format,
+            isMultiFormat,
+            true,
+          )
+          if (watch) {
+            rolldownWatchers.push(rolldownWatch(buildOptions))
+          } else {
+            const { output } = await rolldownBuild(buildOptions)
+            chunks[format]!.push(...output)
           }
         }
       } catch (error) {
@@ -184,7 +187,7 @@ export async function buildSingle(
 
     if (hasErrors) return
 
-    await Promise.all([writeExports(config, chunks), copy(config)])
+    await Promise.all([!watch && writeExports(config, chunks), copy(config)])
     await Promise.all([publint(config), attw(config)])
 
     await hooks.callHook('build:done', context)
