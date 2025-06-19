@@ -38,7 +38,7 @@ export function WatchPlugin(
     },
     generateBundle: {
       order: 'post',
-      handler(_outputOptions, bundle) {
+      handler(outputOptions, bundle) {
         chunks.push(...Object.values(bundle))
       },
     },
