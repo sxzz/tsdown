@@ -243,13 +243,17 @@ function exportMeta(exports: Record<string, any>, all?: boolean) {
 export function OutputPlugin(
   resolveChunks: (chunks: Array<OutputChunk | OutputAsset>) => void,
 ): Plugin {
+  let chunks: Array<OutputChunk | OutputAsset>
   return {
     name: 'tsdown:output',
     generateBundle: {
       order: 'post',
       handler(_outputOptions, bundle) {
-        resolveChunks(Object.values(bundle))
+        chunks = Object.values(bundle)
       },
+    },
+    closeBundle() {
+      resolveChunks(chunks)
     },
   }
 }
