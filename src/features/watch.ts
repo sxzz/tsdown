@@ -1,6 +1,7 @@
 import { debounce, resolveComma, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
+import type { Plugin } from 'rolldown'
 
 const endsWithConfig = /[\\/](?:package\.json|tsdown\.config.*)$/
 
@@ -42,5 +43,14 @@ export async function watchBuild(
 
   return {
     [Symbol.asyncDispose]: () => watcher.close(),
+  }
+}
+
+export function WatchPlugin(): Plugin {
+  return {
+    name: 'tsdown:watch',
+    watchChange(id) {
+      logger.info(`Change detected: ${id}`)
+    },
   }
 }
