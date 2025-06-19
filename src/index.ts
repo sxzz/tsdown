@@ -4,11 +4,13 @@ import { fileURLToPath } from 'node:url'
 import { green } from 'ansis'
 import {
   build as rolldownBuild,
+  watch as rolldownWatch,
   type BuildOptions,
   type OutputAsset,
   type OutputChunk,
   type OutputOptions,
   type RolldownPluginOption,
+  type RolldownWatcher,
 } from 'rolldown'
 import { exec } from 'tinyexec'
 import { attw } from './features/attw'
@@ -64,8 +66,16 @@ export async function build(userOptions: Options = {}): Promise<void> {
     const rebuild = rebuilds[i]
     if (!rebuild) continue
 
-    const watcher = await watchBuild(config, configFiles, rebuild, restart)
-    cleanCbs.push(() => watcher.close())
+    const tsdownWatcher = await watchBuild(
+      config,
+      configFiles,
+      rebuild,
+      restart,
+    )
+    cleanCbs.push(async () => {
+      await tsdownWatcher[Symbol.asyncDispose]()
+      rebuild[Symbol.asyncDispose]?.()
+    })
   }
 
   if (cleanCbs.length) {
@@ -98,18 +108,28 @@ export type TsdownChunks = Partial<
 export async function buildSingle(
   config: ResolvedOptions,
   clean: () => Promise<void>,
-): Promise<(() => Promise<void>) | undefined> {
+): Promise<(AsyncDisposable & (() => Promise<void>)) | undefined> {
   const { format: formats, dts, watch, onSuccess } = config
   let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
 
-  await rebuild(true)
-  if (watch) {
-    return () => rebuild()
+  const rolldownWatchers: RolldownWatcher[] = []
+  async function dispose() {
+    ab?.abort()
+    for (const watcher of rolldownWatchers) {
+      await watcher.close()
+    }
   }
 
-  async function rebuild(first?: boolean) {
+  await rebuild(true)
+  if (watch) {
+    const rebuildFn = () => rebuild()
+    rebuildFn[Symbol.asyncDispose] = dispose
+    return rebuildFn
+  }
+
+  async function rebuild(first?: boolean): Promise<void> {
     const startTime = performance.now()
 
     await hooks.callHook('build:prepare', context)
@@ -133,13 +153,24 @@ export async function buildSingle(
             ...context,
             buildOptions,
           })
-          const { output } = await rolldownBuild(buildOptions)
-          chunks[format] = output
-          if (format === 'cjs' && dts) {
-            const { output } = await rolldownBuild(
-              await getBuildOptions(config, format, isMultiFormat, true),
-            )
-            chunks[format].push(...output)
+          if (watch) {
+            rolldownWatchers.push(rolldownWatch(buildOptions))
+            if (format === 'cjs' && dts) {
+              rolldownWatchers.push(
+                rolldownWatch(
+                  await getBuildOptions(config, format, isMultiFormat, true),
+                ),
+              )
+            }
+          } else {
+            const { output } = await rolldownBuild(buildOptions)
+            chunks[format] = output
+            if (format === 'cjs' && dts) {
+              const { output } = await rolldownBuild(
+                await getBuildOptions(config, format, isMultiFormat, true),
+              )
+              chunks[format].push(...output)
+            }
           }
         } catch (error) {
           if (watch) {
@@ -152,9 +183,7 @@ export async function buildSingle(
       }),
     )
 
-    if (hasErrors) {
-      return
-    }
+    if (hasErrors) return
 
     await Promise.all([writeExports(config, chunks), copy(config)])
     await Promise.all([publint(config), attw(config)])

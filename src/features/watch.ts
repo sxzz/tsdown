@@ -1,8 +1,6 @@
-import { blue } from 'ansis'
-import { debounce, toArray } from '../utils/general'
+import { debounce, resolveComma, toArray } from '../utils/general'
 import { logger } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
-import type { FSWatcher } from 'chokidar'
 
 const endsWithConfig = /[\\/](?:package\.json|tsdown\.config.*)$/
 
@@ -11,20 +9,12 @@ export async function watchBuild(
   configFiles: string[],
   rebuild: () => void,
   restart: () => void,
-): Promise<FSWatcher> {
-  if (typeof options.watch === 'boolean' && options.outDir === options.cwd) {
-    throw new Error(
-      `Watch is enabled, but output directory is the same as the current working directory.` +
-        `Please specify a different watch directory using ${blue`watch`} option,` +
-        `or set ${blue`outDir`} to a different directory.`,
-    )
-  }
-
-  const files = toArray(
-    typeof options.watch === 'boolean' ? options.cwd : options.watch,
+): Promise<AsyncDisposable> {
+  const files = resolveComma(
+    toArray(typeof options.watch === 'string' ? options.watch : []),
   )
-  logger.info(`Watching for changes in ${files.join(', ')}`)
   files.push(...configFiles)
+  logger.info(`Watching for changes...`)
 
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
@@ -35,7 +25,6 @@ export async function watchBuild(
     ignored: [
       /[\\/]\.git[\\/]/,
       /[\\/]node_modules[\\/]/,
-      options.outDir,
       ...toArray(options.ignoreWatch),
     ],
   })
@@ -51,5 +40,7 @@ export async function watchBuild(
     debouncedRebuild()
   })
 
-  return watcher
+  return {
+    [Symbol.asyncDispose]: () => watcher.close(),
+  }
 }
