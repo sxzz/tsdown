@@ -16,7 +16,7 @@ import { exec } from 'tinyexec'
 import { attw } from './features/attw'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
-import { writeExports } from './features/exports'
+import { OutputPlugin, writeExports } from './features/exports'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
@@ -27,7 +27,7 @@ import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { RuntimeHelperCheckPlugin } from './features/target'
-import { watchBuild } from './features/watch'
+import { watchBuild, WatchPlugin } from './features/watch'
 import {
   mergeUserOptions,
   resolveOptions,
@@ -37,6 +37,7 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { lowestCommonAncestor } from './utils/fs'
+import { withResolver } from './utils/general'
 import { logger, prettyName } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
@@ -140,11 +141,15 @@ export async function buildSingle(
     let hasErrors = false
     const isMultiFormat = formats.length > 1
     const chunks: TsdownChunks = {}
+
     async function buildByFormat(format: NormalizedFormat) {
       try {
+        const [chunksPromise, resolve] =
+          withResolver<Array<OutputChunk | OutputAsset>>()
         const buildOptions = await getBuildOptions(
           config,
           format,
+          resolve,
           isMultiFormat,
           false,
         )
@@ -155,24 +160,28 @@ export async function buildSingle(
         if (watch) {
           rolldownWatchers.push(rolldownWatch(buildOptions))
         } else {
-          const { output } = await rolldownBuild(buildOptions)
-          chunks[format] = output
+          await rolldownBuild(buildOptions)
         }
+        chunks[format] = await chunksPromise
 
         // build cjs dts
         if (format === 'cjs' && dts) {
+          const [chunksPromise, resolve] =
+            withResolver<Array<OutputChunk | OutputAsset>>()
+
           const buildOptions = await getBuildOptions(
             config,
             format,
+            resolve,
             isMultiFormat,
             true,
           )
           if (watch) {
             rolldownWatchers.push(rolldownWatch(buildOptions))
           } else {
-            const { output } = await rolldownBuild(buildOptions)
-            chunks[format]!.push(...output)
+            await rolldownBuild(buildOptions)
           }
+          chunks[format].push(...(await chunksPromise))
         }
       } catch (error) {
         if (watch) {
@@ -187,7 +196,7 @@ export async function buildSingle(
 
     if (hasErrors) return
 
-    await Promise.all([!watch && writeExports(config, chunks), copy(config)])
+    await Promise.all([writeExports(config, chunks), copy(config)])
     await Promise.all([publint(config), attw(config)])
 
     await hooks.callHook('build:done', context)
@@ -219,6 +228,7 @@ export async function buildSingle(
 async function getBuildOptions(
   config: ResolvedOptions,
   format: NormalizedFormat,
+  resolveChunks: (chunks: Array<OutputChunk | OutputAsset>) => void,
   isMultiFormat?: boolean,
   cjsDts?: boolean,
 ): Promise<BuildOptions> {
@@ -245,6 +255,7 @@ async function getBuildOptions(
     loader,
     name,
     unbundle,
+    watch,
   } = config
 
   const plugins: RolldownPluginOption = []
@@ -290,6 +301,12 @@ async function getBuildOptions(
   if (!cjsDts) {
     plugins.push(userPlugins)
   }
+
+  if (watch) {
+    plugins.push(WatchPlugin())
+  }
+
+  plugins.push(OutputPlugin(resolveChunks))
 
   const inputOptions = await mergeUserOptions(
     {
