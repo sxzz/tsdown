@@ -1,8 +1,8 @@
 <!-- prettier-ignore-start -->
 # Type Alias: Format
 
-> **Format** = `Exclude`\<`ModuleFormat`, `"experimental-app"`\>
+> **Format** = `ModuleFormat`
 
-Defined in: [types.ts:29](https://github.com/rolldown/tsdown/blob/b2453d085741771a389c70fb326a0e04a8352056/src/options/types.ts#L29)
+Defined in: [types.ts:29](https://github.com/rolldown/tsdown/blob/0978c68bd505c76d7e3097572cd652f81c23f97e/src/options/types.ts#L29)
 
 <!-- prettier-ignore-end -->

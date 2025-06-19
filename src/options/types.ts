@@ -26,8 +26,8 @@ import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 import type { Options as UnusedOptions } from 'unplugin-unused'
 
 export type Sourcemap = boolean | 'inline' | 'hidden'
-export type Format = Exclude<ModuleFormat, 'experimental-app'>
-export type NormalizedFormat = Exclude<InternalModuleFormat, 'app'>
+export type Format = ModuleFormat
+export type NormalizedFormat = InternalModuleFormat
 export type ModuleTypes = Record<
   string,
   | 'js'
