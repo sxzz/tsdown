@@ -27,7 +27,7 @@ import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
 import { shortcuts } from './features/shortcuts'
 import { RuntimeHelperCheckPlugin } from './features/target'
-import { watchBuild, WatchPlugin } from './features/watch'
+import { WatchPlugin } from './features/watch'
 import {
   mergeUserOptions,
   resolveOptions,
@@ -57,37 +57,26 @@ export async function build(userOptions: Options = {}): Promise<void> {
     return (cleanPromise = cleanOutDir(configs))
   }
 
+  let restarting = false
+
   logger.info('Build start')
-  const rebuilds = await Promise.all(
-    configs.map((options) => buildSingle(options, clean)),
+  const task = Promise.all(
+    configs.map((options) => buildSingle(options, clean, configFiles, restart)),
   )
-  const cleanCbs: (() => Promise<void>)[] = []
-
-  for (const [i, config] of configs.entries()) {
-    const rebuild = rebuilds[i]
-    if (!rebuild) continue
-
-    const tsdownWatcher = await watchBuild(
-      config,
-      configFiles,
-      rebuild,
-      restart,
-    )
-    cleanCbs.push(async () => {
-      await tsdownWatcher[Symbol.asyncDispose]()
-      rebuild[Symbol.asyncDispose]?.()
-    })
-  }
-
-  if (cleanCbs.length) {
+  if ((await task).some((d) => !!d)) {
     shortcuts(restart)
   }
 
   async function restart() {
-    for (const clean of cleanCbs) {
-      await clean()
+    if (restarting) return
+
+    restarting = true
+    for (const dispose of await task) {
+      await dispose?.[Symbol.asyncDispose]?.()
     }
+    logger.info('Restarting build...\n')
     build(userOptions)
+    restarting = false
   }
 }
 
@@ -109,118 +98,119 @@ export type TsdownChunks = Partial<
 export async function buildSingle(
   config: ResolvedOptions,
   clean: () => Promise<void>,
-): Promise<(AsyncDisposable & (() => Promise<void>)) | undefined> {
+  configFiles: string[],
+  restart: () => void,
+): Promise<AsyncDisposable | undefined> {
   const { format: formats, dts, watch, onSuccess } = config
   let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
+  const watchers: RolldownWatcher[] = []
 
-  const rolldownWatchers: RolldownWatcher[] = []
-  async function dispose() {
-    ab?.abort()
-    for (const watcher of rolldownWatchers) {
-      await watcher.close()
-    }
-  }
+  const startTime = performance.now()
 
-  await rebuild(true)
-  if (watch) {
-    const rebuildFn = () => rebuild()
-    rebuildFn[Symbol.asyncDispose] = dispose
-    return rebuildFn
-  }
+  await hooks.callHook('build:prepare', context)
+  ab?.abort()
 
-  async function rebuild(first?: boolean): Promise<void> {
-    const startTime = performance.now()
+  await clean()
 
-    await hooks.callHook('build:prepare', context)
-    ab?.abort()
+  let hasErrors = false
+  const isMultiFormat = formats.length > 1
+  const chunks: TsdownChunks = {}
 
-    await clean()
+  async function buildByFormat(format: NormalizedFormat) {
+    try {
+      const [chunksPromise, resolve] =
+        withResolver<Array<OutputChunk | OutputAsset>>()
+      const buildOptions = await getBuildOptions(
+        config,
+        format,
+        configFiles,
+        restart,
+        resolve,
+        isMultiFormat,
+        false,
+      )
+      await hooks.callHook('build:before', {
+        ...context,
+        buildOptions,
+      })
+      if (watch) {
+        watchers.push(rolldownWatch(buildOptions))
+      } else {
+        await rolldownBuild(buildOptions)
+      }
+      chunks[format] = await chunksPromise
 
-    let hasErrors = false
-    const isMultiFormat = formats.length > 1
-    const chunks: TsdownChunks = {}
-
-    async function buildByFormat(format: NormalizedFormat) {
-      try {
+      // build cjs dts
+      if (format === 'cjs' && dts) {
         const [chunksPromise, resolve] =
           withResolver<Array<OutputChunk | OutputAsset>>()
+
         const buildOptions = await getBuildOptions(
           config,
           format,
+          configFiles,
+          restart,
           resolve,
           isMultiFormat,
-          false,
+          true,
         )
-        await hooks.callHook('build:before', {
-          ...context,
-          buildOptions,
-        })
         if (watch) {
-          rolldownWatchers.push(rolldownWatch(buildOptions))
+          watchers.push(rolldownWatch(buildOptions))
         } else {
           await rolldownBuild(buildOptions)
         }
-        chunks[format] = await chunksPromise
-
-        // build cjs dts
-        if (format === 'cjs' && dts) {
-          const [chunksPromise, resolve] =
-            withResolver<Array<OutputChunk | OutputAsset>>()
-
-          const buildOptions = await getBuildOptions(
-            config,
-            format,
-            resolve,
-            isMultiFormat,
-            true,
-          )
-          if (watch) {
-            rolldownWatchers.push(rolldownWatch(buildOptions))
-          } else {
-            await rolldownBuild(buildOptions)
-          }
-          chunks[format].push(...(await chunksPromise))
-        }
-      } catch (error) {
-        if (watch) {
-          logger.error(error)
-          hasErrors = true
-          return
-        }
-        throw error
+        chunks[format].push(...(await chunksPromise))
       }
+    } catch (error) {
+      if (watch) {
+        logger.error(error)
+        hasErrors = true
+        return
+      }
+      throw error
     }
-    await Promise.all(formats.map(buildByFormat))
+  }
+  await Promise.all(formats.map(buildByFormat))
 
-    if (hasErrors) return
+  if (hasErrors) return
 
-    await Promise.all([writeExports(config, chunks), copy(config)])
-    await Promise.all([publint(config), attw(config)])
+  await Promise.all([writeExports(config, chunks), copy(config)])
+  await Promise.all([publint(config), attw(config)])
 
-    await hooks.callHook('build:done', context)
+  await hooks.callHook('build:done', context)
 
-    logger.success(
-      prettyName(config.name),
-      `${first ? 'Build' : 'Rebuild'} complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
-    )
-    ab = new AbortController()
-    if (typeof onSuccess === 'string') {
-      const p = exec(onSuccess, [], {
-        nodeOptions: {
-          shell: true,
-          stdio: 'inherit',
-          signal: ab.signal,
-        },
-      })
-      p.then(({ exitCode }) => {
-        if (exitCode) {
-          process.exitCode = exitCode
+  logger.success(
+    prettyName(config.name),
+    `Build complete in ${green(`${Math.round(performance.now() - startTime)}ms`)}`,
+  )
+  ab = new AbortController()
+  if (typeof onSuccess === 'string') {
+    const p = exec(onSuccess, [], {
+      nodeOptions: {
+        shell: true,
+        stdio: 'inherit',
+        signal: ab.signal,
+      },
+    })
+    p.then(({ exitCode }) => {
+      if (exitCode) {
+        process.exitCode = exitCode
+      }
+    })
+  } else {
+    await onSuccess?.(config, ab.signal)
+  }
+
+  if (watch) {
+    return {
+      async [Symbol.asyncDispose]() {
+        ab?.abort()
+        for (const watcher of watchers) {
+          await watcher.close()
         }
-      })
-    } else {
-      await onSuccess?.(config, ab.signal)
+      },
     }
   }
 }
@@ -228,6 +218,8 @@ export async function buildSingle(
 async function getBuildOptions(
   config: ResolvedOptions,
   format: NormalizedFormat,
+  configFiles: string[],
+  restart: () => void,
   resolveChunks: (chunks: Array<OutputChunk | OutputAsset>) => void,
   isMultiFormat?: boolean,
   cjsDts?: boolean,
@@ -303,7 +295,7 @@ async function getBuildOptions(
   }
 
   if (watch) {
-    plugins.push(WatchPlugin())
+    plugins.push(WatchPlugin(configFiles, restart))
   }
 
   plugins.push(OutputPlugin(resolveChunks))
