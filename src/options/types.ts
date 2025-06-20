@@ -311,6 +311,7 @@ export interface Options {
    * If enabled, strips the `node:` protocol prefix from import source.
    *
    * @default false
+   * @deprecated Use `nodeProtocol: 'strip'` instead.
    *
    * @example
    * // With removeNodeProtocol enabled:
