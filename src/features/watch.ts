@@ -3,7 +3,7 @@ import { logger, prettyName } from '../utils/logger'
 import type { ResolvedOptions } from '../options'
 import type { OutputAsset, OutputChunk, Plugin } from 'rolldown'
 
-const endsWithConfig = /[\\/](?:package\.json|tsdown\.config.*)$/
+const endsWithConfig = /[\\/]tsdown\.config.*$/
 
 export function WatchPlugin(
   chunks: Array<OutputChunk | OutputAsset>,
