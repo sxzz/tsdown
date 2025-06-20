@@ -104,7 +104,6 @@ export async function buildSingle(
   let ab: AbortController | undefined
 
   const { hooks, context } = await createHooks(config)
-  let watcher: RolldownWatcher
 
   await hooks.callHook('build:prepare', context)
   ab?.abort()
@@ -113,8 +112,9 @@ export async function buildSingle(
 
   const isMultiFormat = formats.length > 1
   const chunks: TsdownChunks = {}
+  const watchers: RolldownWatcher[] = []
 
-  async function buildByFormat(format: NormalizedFormat) {
+  async function buildOptionsByFormat(format: NormalizedFormat) {
     const buildOptions = await getBuildOptions(
       config,
       format,
@@ -129,9 +129,13 @@ export async function buildSingle(
       buildOptions,
     })
 
-    const buildOptionsList = [buildOptions]
+    const buildOptionsList: [
+      format: NormalizedFormat,
+      buildOptions: BuildOptions,
+    ][] = [[format, buildOptions]]
     if (format === 'cjs' && dts) {
-      buildOptionsList.push(
+      buildOptionsList.push([
+        format,
         await getBuildOptions(
           config,
           format,
@@ -141,72 +145,85 @@ export async function buildSingle(
           isMultiFormat,
           true,
         ),
-      )
+      ])
     }
 
-    if (watch) {
-      watcher = rolldownWatch(buildOptionsList)
-      const changedFile: string[] = []
-      let hasError = false
-      watcher.on('change', (id, event) => {
-        if (event.event === 'update') {
-          changedFile.push(id)
-        }
-      })
-      watcher.on('event', async (event) => {
-        switch (event.code) {
-          case 'START': {
+    return buildOptionsList
+  }
+  const buildOptionsList = (
+    await Promise.all(formats.map(buildOptionsByFormat))
+  ).flat()
+
+  if (watch) {
+    const watcher = rolldownWatch(buildOptionsList.map((item) => item[1]))
+    const changedFile: string[] = []
+    let hasError = false
+    watcher.on('change', (id, event) => {
+      if (event.event === 'update') {
+        changedFile.push(id)
+      }
+    })
+    watcher.on('event', async (event) => {
+      switch (event.code) {
+        case 'START': {
+          for (const format of formats) {
             chunks[format]!.length = 0
-            hasError = false
-            break
           }
-
-          case 'END': {
-            if (!hasError) {
-              await postBuild()
-            }
-            break
-          }
-
-          case 'BUNDLE_START': {
-            if (changedFile.length > 0) {
-              console.info('')
-              logger.info(
-                `Found ${bold(changedFile.join(', '))} changed, rebuilding...`,
-              )
-            }
-            changedFile.length = 0
-            break
-          }
-
-          case 'BUNDLE_END': {
-            await event.result.close()
-            logger.success(`Rebuilt in ${event.duration}ms.`)
-            break
-          }
-
-          case 'ERROR': {
-            await event.result.close()
-            logger.error(event.error)
-            hasError = true
-            break
-          }
+          hasError = false
+          break
         }
-      })
-    } else {
-      const output = (await rolldownBuild(buildOptionsList)).flatMap(
-        ({ output }) => output,
-      )
-      chunks[format] = output
+
+        case 'END': {
+          if (!hasError) {
+            await postBuild()
+          }
+          break
+        }
+
+        case 'BUNDLE_START': {
+          if (changedFile.length > 0) {
+            console.info('')
+            logger.info(
+              `Found ${bold(changedFile.join(', '))} changed, rebuilding...`,
+            )
+          }
+          changedFile.length = 0
+          break
+        }
+
+        case 'BUNDLE_END': {
+          await event.result.close()
+          logger.success(`Rebuilt in ${event.duration}ms.`)
+          break
+        }
+
+        case 'ERROR': {
+          await event.result.close()
+          logger.error(event.error)
+          hasError = true
+          break
+        }
+      }
+    })
+    watchers.push(watcher)
+  } else {
+    const outputs = (
+      await rolldownBuild(buildOptionsList.map((item) => item[1]))
+    ).map(({ output }) => output)
+    for (const [i, output] of outputs.entries()) {
+      const format = buildOptionsList[i][0]
+      chunks[format] ||= []
+      chunks[format].push(...output)
     }
   }
-  await Promise.all(formats.map(buildByFormat))
 
   if (watch) {
     return {
       async [Symbol.asyncDispose]() {
         ab?.abort()
-        await watcher.close()
+        for (const watcher of watchers) {
+          await watcher.close()
+        }
       },
     }
   } else {
