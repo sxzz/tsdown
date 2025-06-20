@@ -14,6 +14,8 @@ export function NodeProtocolPlugin(
     // `removeNodeProtocol: false` means keeping the `node:` protocol which equales to `nodeProtocol: false` (ignore it)
     (options.removeNodeProtocol ? 'strip' : false)
 
+  if (!nodeProtocolOption) return {} as unknown as Plugin
+
   return {
     name: 'tsdown:node-protocol',
     resolveId: {
