@@ -319,6 +319,24 @@ export interface Options {
   removeNodeProtocol?: boolean
 
   /**
+   * - If true, add `node:` prefix to built-in modules.
+   * - If 'strip', strips the `node:` protocol prefix from import source.
+   * - If false, does not modify the import source.
+   *
+   * @default false
+   *
+   * @example
+   * // With nodeProtocol enabled:
+   * import('fs'); // becomes import('node:fs')
+   * // With nodeProtocol set to 'strip':
+   * import('node:fs'); // becomes import('fs')
+   * // With nodeProtocol set to false:
+   * import('node:fs'); // remains import('node:fs')
+   *
+   */
+  nodeProtocol?: 'strip' | boolean
+
+  /**
    * If enabled, appends hash to chunk filenames.
    * @default true
    */
@@ -366,6 +384,7 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
+      | 'nodeProtocol'
       | 'copy'
       | 'loader'
       | 'name'
