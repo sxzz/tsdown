@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import picomatch from 'picomatch'
 import { RE_DTS } from 'rolldown-plugin-dts/filename'
 import { slash } from '../utils/general'
 import type { TsdownChunks } from '..'
@@ -20,6 +21,18 @@ export interface ExportsOptions {
    * Exports for all files.
    */
   all?: boolean
+
+  /**
+   * Define globs or regexes to exclude files from exports.
+   * This is useful for excluding files that should not be part of the package exports,
+   * such as test files or internal utilities.
+   *
+   * @example
+   * ```js
+   * exclude: ['**\/*.test.ts', '**\/*.spec.ts', '**\/internal\/**']
+   * ```
+   */
+  exclude?: (RegExp | string)[]
 
   customExports?: (
     exports: Record<string, any>,
@@ -73,11 +86,26 @@ export async function writeExports(
 
 type SubExport = Partial<Record<'cjs' | 'es' | 'src', string>>
 
+function shouldExclude(
+  fileName: string,
+  exclude?: (RegExp | string)[],
+): boolean {
+  if (!exclude || exclude.length === 0) return false
+
+  return exclude.some((pattern) => {
+    if (pattern instanceof RegExp) {
+      return pattern.test(fileName)
+    }
+    const isMatch = picomatch(pattern)
+    return isMatch(fileName)
+  })
+}
+
 export async function generateExports(
   pkg: PackageJson,
   outDir: string,
   chunks: TsdownChunks,
-  { devExports, all, customExports }: ExportsOptions,
+  { devExports, all, exclude, customExports }: ExportsOptions,
 ): Promise<{
   main: string | undefined
   module: string | undefined
@@ -101,14 +129,22 @@ export async function generateExports(
   ][]) {
     if (format !== 'es' && format !== 'cjs') continue
 
+    // Filter out excluded chunks
+    const filteredChunks = chunksByFormat.filter(
+      (chunk) =>
+        chunk.type !== 'chunk' ||
+        !chunk.isEntry ||
+        !shouldExclude(chunk.fileName, exclude),
+    )
+
     const onlyOneEntry =
-      chunksByFormat.filter(
+      filteredChunks.filter(
         (chunk) =>
           chunk.type === 'chunk' &&
           chunk.isEntry &&
           !RE_DTS.test(chunk.fileName),
       ).length === 1
-    for (const chunk of chunksByFormat) {
+    for (const chunk of filteredChunks) {
       if (chunk.type !== 'chunk' || !chunk.isEntry) continue
 
       const ext = path.extname(chunk.fileName)
@@ -155,15 +191,13 @@ export async function generateExports(
     }
   }
 
-  const sorttedExportsMap = Array.from(exportsMap.entries()).sort(
-    ([a], [b]) => {
-      if (a === 'index') return -1
-      return a.localeCompare(b)
-    },
-  )
+  const sortedExportsMap = Array.from(exportsMap.entries()).sort(([a], [b]) => {
+    if (a === 'index') return -1
+    return a.localeCompare(b)
+  })
 
   let exports: Record<string, any> = Object.fromEntries(
-    sorttedExportsMap.map(([name, subExport]) => [
+    sortedExportsMap.map(([name, subExport]) => [
       name,
       genSubExport(devExports, subExport),
     ]),
@@ -181,7 +215,7 @@ export async function generateExports(
   let publishExports: Record<string, any> | undefined
   if (devExports) {
     publishExports = Object.fromEntries(
-      sorttedExportsMap.map(([name, subExport]) => [
+      sortedExportsMap.map(([name, subExport]) => [
         name,
         genSubExport(false, subExport),
       ]),
