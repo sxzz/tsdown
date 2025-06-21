@@ -2,7 +2,6 @@ import path from 'node:path'
 import { getPackageType, type PackageType } from '../utils/package'
 import type {
   BannerOrFooter,
-  BannerOrFooterOptions,
   NormalizedFormat,
   ResolvedOptions,
 } from '../options'
