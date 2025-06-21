@@ -1,6 +1,17 @@
+import path from 'node:path'
 import { getPackageType, type PackageType } from '../utils/package'
-import type { NormalizedFormat, ResolvedOptions } from '../options'
-import type { InputOptions, PreRenderedChunk } from 'rolldown'
+import type {
+  BannerOrFooter,
+  BannerOrFooterOptions,
+  NormalizedFormat,
+  ResolvedOptions,
+} from '../options'
+import type {
+  AddonFunction,
+  InputOptions,
+  PreRenderedChunk,
+  RenderedChunk,
+} from 'rolldown'
 
 export interface OutExtensionContext {
   options: InputOptions
@@ -75,4 +86,36 @@ function createChunkFilename(
   return (chunk: PreRenderedChunk) => {
     return `${basename}${chunk.name.endsWith('.d') ? dtsExtension : jsExtension}`
   }
+}
+
+export function resolveBannerOrFooter(
+  bannerOrFooter: BannerOrFooter,
+  format: NormalizedFormat,
+): AddonFunction | undefined {
+  return bannerOrFooter
+    ? (chunk: RenderedChunk) => {
+        const fileName = chunk.fileName
+        const extension = path.extname(fileName)
+
+        if (typeof bannerOrFooter === 'function') {
+          const option = bannerOrFooter({ format })
+
+          if (option && 'js' in option && extension === '.js') {
+            return option.js
+          }
+          if (option && 'css' in option && extension === '.css') {
+            return option.css
+          }
+        } else {
+          if ('js' in bannerOrFooter && extension === '.js') {
+            return bannerOrFooter.js
+          }
+          if ('css' in bannerOrFooter && extension === '.css') {
+            return bannerOrFooter.css
+          }
+        }
+
+        return '' // fallback
+      }
+    : undefined
 }

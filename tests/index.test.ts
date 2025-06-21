@@ -408,3 +408,24 @@ test('workspace option', async (context) => {
     expectPattern: '**/dist',
   })
 })
+
+test('banner and footer option', async (context) => {
+  const content = `console.log("Hello, world!")`
+  const { snapshot } = await testBuild({
+    context,
+    files: {
+      'index.ts': content,
+    },
+    options: {
+      banner: {
+        js: '// banner',
+      },
+      footer: {
+        js: '// footer',
+      },
+    },
+  })
+  expect(snapshot).toContain('// banner')
+  expect(snapshot).toContain('// footer')
+  expect(snapshot).toContain(content)
+})

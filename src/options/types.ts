@@ -63,6 +63,15 @@ export interface Workspace {
   config?: boolean | string
 }
 
+export type BannerOrFooterOptions =
+  | { js: string }
+  | { css: string }
+  | { js: string; css: string }
+
+export type BannerOrFooter =
+  | BannerOrFooterOptions
+  | ((ctx: { format: Format }) => BannerOrFooterOptions | undefined)
+
 /**
  * Options for tsdown.
  */
@@ -118,7 +127,7 @@ export interface Options {
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
   /**
-   * Specifies the compilation target environment(s).
+   * Specifies the compilation target environAnt(s).
    *
    * Determines the JavaScript version or runtime(s) for which the code should be compiled.
    * If not set, defaults to the value of `engines.node` in your project's `package.json`.
@@ -359,6 +368,8 @@ export interface Options {
    * Filter workspace packages. This option is only available in workspace mode.
    */
   filter?: RegExp | string | string[]
+  footer?: BannerOrFooter
+  banner?: BannerOrFooter
 }
 
 /**
