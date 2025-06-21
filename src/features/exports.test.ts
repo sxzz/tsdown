@@ -270,6 +270,79 @@ describe.concurrent('generateExports', () => {
     `)
   })
 
+  test('exclude via regex', async ({ expect }) => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('index.js'), genChunk('foo.js'), genChunk('bar.js')],
+      },
+      { exclude: [/bar/] },
+    )
+
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": "./index.js",
+          "./foo": "./foo.js",
+          "./package.json": "./package.json",
+        },
+        "main": "./index.js",
+        "module": "./index.js",
+        "publishExports": undefined,
+        "types": undefined,
+      }
+    `)
+  })
+
+  test('exclude via glob', async ({ expect }) => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('index.js'), genChunk('foo.js'), genChunk('abc/bar.js')],
+      },
+      { exclude: ['**/bar.js'] },
+    )
+
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": "./index.js",
+          "./foo": "./foo.js",
+          "./package.json": "./package.json",
+        },
+        "main": "./index.js",
+        "module": "./index.js",
+        "publishExports": undefined,
+        "types": undefined,
+      }
+    `)
+  })
+
+  test('multiple excludes', async ({ expect }) => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('foo.js'), genChunk('abc/bar.js')],
+      },
+      { exclude: ['**/bar.js', /foo/] },
+    )
+
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          "./package.json": "./package.json",
+        },
+        "main": undefined,
+        "module": undefined,
+        "publishExports": undefined,
+        "types": undefined,
+      }
+    `)
+  })
+
   test('export all', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
