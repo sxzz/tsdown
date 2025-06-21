@@ -385,7 +385,6 @@ export type ResolvedOptions = Omit<
       | 'outExtensions'
       | 'hooks'
       | 'removeNodeProtocol'
-      | 'nodeProtocol'
       | 'copy'
       | 'loader'
       | 'name'
@@ -400,6 +399,7 @@ export type ResolvedOptions = Omit<
       tsconfig: string | false
       pkg?: PackageJson
       exports: false | ExportsOptions
+      nodeProtocol: 'strip' | boolean
     }
   >,
   'config' | 'fromVite'
