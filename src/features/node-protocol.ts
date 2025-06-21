@@ -1,5 +1,4 @@
 import { builtinModules } from 'node:module'
-import type { ResolvedOptions } from '..'
 import type { Plugin } from 'rolldown'
 
 /**
@@ -7,14 +6,8 @@ import type { Plugin } from 'rolldown'
  * @see https://nodejs.org/api/esm.html#node-imports
  */
 export function NodeProtocolPlugin(
-  options: Pick<ResolvedOptions, 'nodeProtocol' | 'removeNodeProtocol'>,
+  nodeProtocolOption: 'strip' | boolean,
 ): Plugin {
-  const nodeProtocolOption =
-    options.nodeProtocol ??
-    // `removeNodeProtocol: true` means stripping the `node:` protocol which equales to `nodeProtocol: 'strip'`
-    // `removeNodeProtocol: false` means keeping the `node:` protocol which equales to `nodeProtocol: false` (ignore it)
-    (options.removeNodeProtocol ? 'strip' : false)
-
   const name = 'tsdown:node-protocol'
 
   // if `nodePrrotocol` is not set or set to `false`, we don't need this plugin
