@@ -127,7 +127,7 @@ export interface Options {
   /** @default false */
   minify?: boolean | 'dce-only' | MinifyOptions
   /**
-   * Specifies the compilation target environAnt(s).
+   * Specifies the compilation target environment(s).
    *
    * Determines the JavaScript version or runtime(s) for which the code should be compiled.
    * If not set, defaults to the value of `engines.node` in your project's `package.json`.
