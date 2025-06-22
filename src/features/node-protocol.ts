@@ -5,19 +5,10 @@ import type { Plugin } from 'rolldown'
  * The `node:` protocol was added in Node.js v14.18.0.
  * @see https://nodejs.org/api/esm.html#node-imports
  */
-export function NodeProtocolPlugin(
-  nodeProtocolOption: 'strip' | boolean,
-): Plugin {
-  const name = 'tsdown:node-protocol'
-
-  // if `nodePrrotocol` is not set or set to `false`, we don't need this plugin
-  if (!nodeProtocolOption) {
-    return { name } satisfies Plugin
-  }
-
+export function NodeProtocolPlugin(nodeProtocolOption: 'strip' | true): Plugin {
   if (nodeProtocolOption === 'strip') {
     return {
-      name,
+      name: 'tsdown:node-protocol:strip',
       resolveId: {
         order: 'pre',
         filter: { id: /^node:/ },
@@ -32,14 +23,12 @@ export function NodeProtocolPlugin(
     }
   }
 
-  nodeProtocolOption satisfies true
-
   // create regex from builtin modules
   // filter without `node:` prefix
   const builtinModulesRegex = new RegExp(`^(${builtinModules.join('|')})$`)
 
   return {
-    name,
+    name: 'tsdown:node-protocol:add',
     resolveId: {
       order: 'pre',
       filter: { id: builtinModulesRegex },
