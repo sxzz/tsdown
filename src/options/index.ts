@@ -217,7 +217,7 @@ async function resolveConfig(
   }
 
   // Resolve nodeProtocol option with backward compatibility for removeNodeProtocol
-  const resolvedNodeProtocol =
+  nodeProtocol =
     nodeProtocol ??
     // `removeNodeProtocol: true` means stripping the `node:` protocol which equals to `nodeProtocol: 'strip'`
     // `removeNodeProtocol: false` means keeping the `node:` protocol which equals to `nodeProtocol: false` (ignore it)
@@ -319,7 +319,7 @@ async function resolveConfig(
     noExternal,
     exports,
     unbundle,
-    nodeProtocol: resolvedNodeProtocol,
+    nodeProtocol,
   }
 
   return config
