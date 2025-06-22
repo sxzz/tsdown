@@ -1,6 +1,6 @@
 # 从 tsup 迁移
 
-[tsup](https://tsup.egoist.dev/) 是一个功能强大且广泛使用的打包器，与 `tsdown` 有许多相似之处。但 `tsup` 基于 [esbuild](https://esbuild.github.io/) 构建，而 `tsdown` 则依托 [Rolldown](https://rolldown.rs/) 的强大功能，提供了更**快速**且更**强大**的打包体验。
+[tsup](https://tsup.egoist.dev/) 是一个功能强大且广泛使用的打包器，与 `tsdown` 有许多相似之处。`tsup` 基于 [esbuild](https://esbuild.github.io/) 构建，而 `tsdown` 则利用了 [Rolldown](https://rolldown.rs/) 的强大能力，带来更**快速**、更**强大**的打包体验。
 
 ## 迁移指南
 
