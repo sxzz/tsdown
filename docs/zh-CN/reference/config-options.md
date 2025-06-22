@@ -447,28 +447,6 @@ false
 
 ***
 
-### removeNodeProtocol?
-
-> `optional` **removeNodeProtocol**: `boolean`
-
-Defined in: [types.ts:319](https://github.com/rolldown/tsdown/blob/0978c68bd505c76d7e3097572cd652f81c23f97e/src/options/types.ts#L319)
-
-If enabled, strips the `node:` protocol prefix from import source.
-
-#### Default
-
-```ts
-false
-```
-
-#### Example
-
-```ts
-// With removeNodeProtocol enabled:
-import('node:fs'); // becomes import('fs')
-```
-
-***
 
 ### report?
 
