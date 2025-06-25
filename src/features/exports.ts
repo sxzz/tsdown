@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { RE_DTS } from 'rolldown-plugin-dts/filename'
 import { slash } from '../utils/general'
@@ -61,14 +61,16 @@ export async function writeExports(
     updatedPkg.publishConfig.exports = publishExports
   }
 
-  await writeFile(
-    pkg.packageJsonPath,
-    `${JSON.stringify(
-      { ...pkg, ...generated, packageJsonPath: undefined },
-      null,
-      2,
-    )}\n`,
+  const original = await readFile(pkg.packageJsonPath, 'utf8')
+  let contents = JSON.stringify(
+    updatedPkg,
+    null,
+    original.includes('\t') ? '\t' : 2,
   )
+  if (original.endsWith('\n')) contents += '\n'
+  if (contents !== original) {
+    await writeFile(pkg.packageJsonPath, contents, 'utf8')
+  }
 }
 
 type SubExport = Partial<Record<'cjs' | 'es' | 'src', string>>
