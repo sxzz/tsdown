@@ -136,6 +136,7 @@ describe('node protocol', () => {
       files,
       options: {
         nodeProtocol: true,
+        external: ['express'],
       },
     })
     expect(snapshot).toMatch(/from ['"]node:fs['"]/)
@@ -183,7 +184,7 @@ describe('node protocol', () => {
       'index.ts': `
     import { readFile } from 'fs/promises'
     import { fileURLToPath } from 'url'
-    
+
     export { readFile, fileURLToPath }
     `,
     }
