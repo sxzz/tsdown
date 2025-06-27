@@ -110,6 +110,7 @@
     "bumpp": "catalog:dev",
     "eslint": "catalog:dev",
     "lightningcss": "catalog:dev",
+    "oxc-minify": "catalog:docs",
     "pkg-types": "catalog:dev",
     "prettier": "catalog:dev",
     "publint": "catalog:dev",

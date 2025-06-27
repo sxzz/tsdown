@@ -22,11 +22,12 @@ catalogs:
   docs:
     '@unocss/eslint-plugin': ^66.2.3
     '@vueuse/core': ^13.4.0
+    oxc-minify: ^0.75.0
     typedoc: ^0.28.5
     typedoc-plugin-markdown: ^4.7.0
     unocss: ^66.2.3
     vite: npm:rolldown-vite@latest
-    vitepress: ^1.6.3
+    vitepress: ^2.0.0-alpha.7
     vitepress-plugin-group-icons: ^1.6.0
     vitepress-plugin-llms: ^1.5.1
     vue: ^3.5.17
