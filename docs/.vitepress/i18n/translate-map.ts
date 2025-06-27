@@ -36,7 +36,7 @@ export const zhCN = {
   Plugins: '插件',
   Hooks: '钩子（Hooks）',
   'Programmatic Usage': '编程使用',
-  Benchmark: 'Benchmark',
+  Benchmark: '性能基准',
   FAQ: '常见问题',
 
   'Config Options': '配置选项',
