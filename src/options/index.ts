@@ -210,11 +210,20 @@ async function resolveConfig(
     unbundle = typeof bundle === 'boolean' ? !bundle : false,
     banner = () => undefined,
     footer = () => undefined,
+    removeNodeProtocol,
+    nodeProtocol,
   } = userConfig
 
   if (typeof bundle === 'boolean') {
     logger.warn('`bundle` option is deprecated. Use `unbundle` instead.')
   }
+
+  // Resolve nodeProtocol option with backward compatibility for removeNodeProtocol
+  nodeProtocol =
+    nodeProtocol ??
+    // `removeNodeProtocol: true` means stripping the `node:` protocol which equals to `nodeProtocol: 'strip'`
+    // `removeNodeProtocol: false` means keeping the `node:` protocol which equals to `nodeProtocol: false` (ignore it)
+    (removeNodeProtocol ? 'strip' : false)
 
   outDir = path.resolve(cwd, outDir)
   clean = resolveClean(clean, outDir, cwd)
@@ -314,6 +323,7 @@ async function resolveConfig(
     unbundle,
     banner,
     footer,
+    nodeProtocol,
   }
 
   return config
