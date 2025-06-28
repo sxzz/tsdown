@@ -208,6 +208,8 @@ async function resolveConfig(
     exports = false,
     bundle,
     unbundle = typeof bundle === 'boolean' ? !bundle : false,
+    banner = () => undefined,
+    footer = () => undefined,
     removeNodeProtocol,
     nodeProtocol,
   } = userConfig
@@ -319,6 +321,8 @@ async function resolveConfig(
     noExternal,
     exports,
     unbundle,
+    banner,
+    footer,
     nodeProtocol,
   }
 

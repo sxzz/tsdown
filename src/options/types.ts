@@ -63,6 +63,15 @@ export interface Workspace {
   config?: boolean | string
 }
 
+export type BannerOrFooterOptions =
+  | { js: string }
+  | { css: string }
+  | { js: string; css: string }
+
+export type BannerOrFooter =
+  | BannerOrFooterOptions
+  | ((ctx: { format: Format }) => BannerOrFooterOptions | undefined)
+
 /**
  * Options for tsdown.
  */
@@ -359,6 +368,8 @@ export interface Options {
    * Filter workspace packages. This option is only available in workspace mode.
    */
   filter?: RegExp | string | string[]
+  footer?: BannerOrFooter
+  banner?: BannerOrFooter
 }
 
 /**
