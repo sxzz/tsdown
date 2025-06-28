@@ -81,7 +81,8 @@ export async function build(userOptions: Options = {}): Promise<void> {
 }
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-export const pkgRoot: string = path.resolve(dirname, '..')
+const pkgRoot: string = path.resolve(dirname, '..')
+export const shimFile: string = path.resolve(pkgRoot, 'esm-shims.js')
 
 export type TsdownChunks = Partial<
   Record<NormalizedFormat, Array<OutputChunk | OutputAsset>>
