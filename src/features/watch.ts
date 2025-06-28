@@ -21,7 +21,13 @@ export async function watchBuild(
   }
 
   const files = toArray(
-    typeof options.watch === 'boolean' ? options.cwd : options.watch,
+    typeof options.watch === 'boolean'
+      ? options.cwd
+      : typeof options.watch === 'object' && 'path' in options.watch
+        ? options.watch.path
+        : typeof options.watch === 'object'
+          ? options.cwd
+          : options.watch,
   )
   logger.info(`Watching for changes in ${files.join(', ')}`)
   files.push(...configFiles)
@@ -29,7 +35,19 @@ export async function watchBuild(
   const { watch } = await import('chokidar')
   const debouncedRebuild = debounce(rebuild, 100)
 
+  const usePolling =
+    typeof options.watch === 'object' &&
+    'usePolling' in options.watch &&
+    options.watch?.usePolling
+
+  const atomic =
+    typeof options.watch === 'object' &&
+    'atomic' in options.watch &&
+    options.watch?.atomic
+
   const watcher = watch(files, {
+    usePolling,
+    atomic,
     ignoreInitial: true,
     ignorePermissionErrors: true,
     ignored: [

@@ -205,7 +205,35 @@ export interface Options {
    */
   config?: boolean | string
   /** @default false */
-  watch?: boolean | string | string[]
+  watch?:
+    | boolean
+    | string
+    | string[]
+    | {
+        /**
+         * The directory or files to watch for changes.
+         * If set to `true`, it will watch the current working directory.
+         * If set to `false`, it will not watch any files.
+         */
+        path: string | string[]
+
+        /**
+         * Whether to use fs.watchFile (backed by polling), or fs.watch. If polling leads to high CPU
+         * utilization, consider setting this to `false`. It is typically necessary to **set this to
+         * `true` to successfully watch files over a network**, and it may be necessary to successfully
+         * watch files in other non-standard situations.
+         */
+        usePolling?: boolean
+
+        /**
+         * `true` if `usePolling` is `false`. Automatically filters out artifacts
+         * that occur when using editors that use "atomic writes" instead of writing directly to the
+         * source file. If a file is re-added within 100 ms of being deleted, Chokidar emits a `change`
+         * event rather than `unlink` then `add`. If the default of 100 ms does not work well for you,
+         * you can override it by setting `atomic` to a custom value, in milliseconds.
+         */
+        atomic?: boolean | number
+      }
   ignoreWatch?: string | string[]
 
   /**
