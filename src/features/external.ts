@@ -1,5 +1,6 @@
 import { builtinModules } from 'node:module'
 import Debug from 'debug'
+import { shimFile } from '../index'
 import { toArray } from '../utils/general'
 import type { ResolvedOptions } from '../options'
 import type { PackageJson } from 'pkg-types'
@@ -13,6 +14,7 @@ export function ExternalPlugin(options: ResolvedOptions): Plugin {
     name: 'tsdown:external',
     async resolveId(id, importer, extraOptions) {
       if (extraOptions.isEntry) return
+      if (id === shimFile) return
 
       const { noExternal } = options
       if (typeof noExternal === 'function' && noExternal(id, importer)) {
