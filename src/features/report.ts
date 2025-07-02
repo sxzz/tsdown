@@ -112,7 +112,7 @@ export function ReportPlugin(
         logger.info(
           nameLabel,
           formatLabel,
-          dim(`${outDir}/`) +
+          dim(outDir + path.sep) +
             filenameColor((size.isEntry ? bold : noop)(size.filename)),
           ` `.repeat(filenameLength - size.filename.length),
           dim(size.rawText),
