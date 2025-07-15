@@ -117,14 +117,7 @@ async function resolveWorkspace(
   }
 
   if (options.filter) {
-    if (
-      typeof options.filter === 'string' &&
-      options.filter.length > 2 &&
-      options.filter[0] === '/' &&
-      options.filter.at(-1) === '/'
-    ) {
-      options.filter = new RegExp(options.filter.slice(1, -1))
-    }
+    options.filter = resolveRegex(options.filter)
     packages = packages.filter((path) => {
       return typeof options.filter === 'string'
         ? path.includes(options.filter)

@@ -16,8 +16,13 @@ export function resolveComma<T extends string>(arr: T[]): T[] {
   return arr.flatMap((format) => format.split(',') as T[])
 }
 
-export function resolveRegex(str: string): string | RegExp {
-  if (str.length > 2 && str[0] === '/' && str.at(-1) === '/') {
+export function resolveRegex<T>(str: T): T | RegExp {
+  if (
+    typeof str === 'string' &&
+    str.length > 2 &&
+    str[0] === '/' &&
+    str.at(-1) === '/'
+  ) {
     return new RegExp(str.slice(1, -1))
   }
   return str
