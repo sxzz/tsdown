@@ -3,6 +3,7 @@ import process from 'node:process'
 import { blue } from 'ansis'
 import Debug from 'debug'
 import { glob } from 'tinyglobby'
+import { normalizePath } from 'vite'
 import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
@@ -99,7 +100,7 @@ async function resolveWorkspace(
       })
     )
       .filter((file) => file !== 'package.json') // exclude root package.json
-      .map((file) => path.resolve(rootCwd, file, '..'))
+      .map((file) => normalizePath(path.resolve(rootCwd, file, '..')))
   } else {
     packages = (
       await glob({
@@ -109,7 +110,7 @@ async function resolveWorkspace(
         onlyDirectories: true,
         absolute: true,
       })
-    ).map((file) => path.resolve(file))
+    ).map((file) => normalizePath(path.resolve(file)))
   }
 
   if (packages.length === 0) {
