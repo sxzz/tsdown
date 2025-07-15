@@ -9,6 +9,7 @@ import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
 import { resolveRegex, slash } from '../utils/general'
 import { logger } from '../utils/logger'
+import { normalizePathFor } from '../utils/normalize-path'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { Awaitable } from '../utils/types'
 import { loadConfigFile, loadViteConfig } from './config'
@@ -115,6 +116,10 @@ async function resolveWorkspace(
   if (packages.length === 0) {
     throw new Error('No workspace packages found, please check your config')
   }
+
+  // Normalize for windows paths
+  packages = normalizePathFor(packages)
+  options.filter = normalizePathFor(options.filter)
 
   if (options.filter) {
     options.filter = resolveRegex(options.filter)
