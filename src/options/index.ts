@@ -7,7 +7,7 @@ import { resolveClean } from '../features/clean'
 import { resolveEntry } from '../features/entry'
 import { resolveTarget } from '../features/target'
 import { resolveTsconfig } from '../features/tsconfig'
-import { resolveRegex } from '../utils/general'
+import { resolveRegex, slash } from '../utils/general'
 import { logger } from '../utils/logger'
 import { normalizeFormat, readPackageJson } from '../utils/package'
 import type { Awaitable } from '../utils/types'
@@ -99,7 +99,7 @@ async function resolveWorkspace(
       })
     )
       .filter((file) => file !== 'package.json') // exclude root package.json
-      .map((file) => path.resolve(rootCwd, file, '..'))
+      .map((file) => slash(path.resolve(rootCwd, file, '..')))
   } else {
     packages = (
       await glob({
@@ -109,7 +109,7 @@ async function resolveWorkspace(
         onlyDirectories: true,
         absolute: true,
       })
-    ).map((file) => path.resolve(file))
+    ).map((file) => slash(path.resolve(file)))
   }
 
   if (packages.length === 0) {
