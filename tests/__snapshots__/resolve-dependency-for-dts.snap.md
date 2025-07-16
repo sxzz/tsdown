@@ -24,7 +24,7 @@ interface GlobOptions {
   debug?: boolean;
 }
 //#endregion
-export { GlobOptions };
+export { type GlobOptions };
 ```
 ## index.js
 
