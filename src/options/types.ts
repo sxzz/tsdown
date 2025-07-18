@@ -2,7 +2,7 @@ import type { AttwOptions } from '../features/attw'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
 import type { ExportsOptions } from '../features/exports'
 import type { TsdownHooks } from '../features/hooks'
-import type { OutExtensionFactory } from '../features/output'
+import type { ChunkAddon, OutExtensionFactory } from '../features/output'
 import type { ReportOptions } from '../features/report'
 import type {
   Arrayable,
@@ -62,15 +62,6 @@ export interface Workspace {
    */
   config?: boolean | string
 }
-
-export interface ChunkAddonObject {
-  js?: string
-  css?: string
-}
-export type ChunkAddonFunction = (ctx: {
-  format: Format
-}) => ChunkAddonObject | undefined
-export type ChunkAddon = ChunkAddonObject | ChunkAddonFunction
 
 /**
  * Options for tsdown.

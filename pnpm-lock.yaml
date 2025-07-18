@@ -16,8 +16,8 @@ catalogs:
       specifier: ^2.2.3
       version: 2.2.3
     '@sxzz/test-utils':
-      specifier: ^0.5.6
-      version: 0.5.6
+      specifier: ^0.5.7
+      version: 0.5.7
     '@types/debug':
       specifier: ^4.1.12
       version: 4.1.12
@@ -188,7 +188,7 @@ importers:
         version: 2.2.3
       '@sxzz/test-utils':
         specifier: catalog:dev
-        version: 0.5.6(esbuild@0.25.6)(rolldown@1.0.0-beta.27)(rollup@4.41.1)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.0.14)(esbuild@0.25.6)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0))
+        version: 0.5.7(esbuild@0.25.6)(rolldown@1.0.0-beta.27)(rollup@4.41.1)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.0.14)(esbuild@0.25.6)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0))
       '@types/debug':
         specifier: catalog:dev
         version: 4.1.12
@@ -1142,8 +1142,8 @@ packages:
   '@sxzz/prettier-config@2.2.3':
     resolution: {integrity: sha512-J7pmxgW21XYjCRWD+yFjrgnBJPQOXFwSIMQtgZgixfmNS2K9cI7LBEpQwkU43AvYj0eJrm3JvZ6goXLSMGqq1A==}
 
-  '@sxzz/test-utils@0.5.6':
-    resolution: {integrity: sha512-BikHJPOsAqwKIwG5Eg9s8STJMIlg0USi1AdKqTkj9oXt2b/fAK+fV2EVgL1CKD3WQq1622G21AZXWqVLHKC+Lg==}
+  '@sxzz/test-utils@0.5.7':
+    resolution: {integrity: sha512-3NqMKSegD2QmBShLKCIlXdQa1SN7K3QWw6zUMUSbkGp+iKmo/pv6XekOvqeiPeu9qyqVJTKdp9DL4wBX4YfpJg==}
     engines: {node: '>=20.18.0'}
     peerDependencies:
       esbuild: '>=0.20.0'
@@ -4212,7 +4212,7 @@ snapshots:
     dependencies:
       '@prettier/plugin-oxc': 0.0.4
 
-  '@sxzz/test-utils@0.5.6(esbuild@0.25.6)(rolldown@1.0.0-beta.27)(rollup@4.41.1)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.0.14)(esbuild@0.25.6)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0))':
+  '@sxzz/test-utils@0.5.7(esbuild@0.25.6)(rolldown@1.0.0-beta.27)(rollup@4.41.1)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.0.14)(esbuild@0.25.6)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0))':
     dependencies:
       tinyglobby: 0.2.14
       unplugin-utils: 0.2.4

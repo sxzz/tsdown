@@ -3,7 +3,7 @@ catalogs:
     '@arethetypeswrong/core': ^0.18.2
     '@sxzz/eslint-config': ^7.0.6
     '@sxzz/prettier-config': ^2.2.3
-    '@sxzz/test-utils': ^0.5.6
+    '@sxzz/test-utils': ^0.5.7
     '@types/debug': ^4.1.12
     '@types/node': ^24.0.14
     '@types/semver': ^7.7.0

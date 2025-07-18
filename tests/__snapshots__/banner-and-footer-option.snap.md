@@ -1,10 +1,15 @@
+## index.d.ts
+
+```ts
+export { };
+```
 ## index.js
 
 ```js
-// banner
+// js banner
 //#region index.ts
 console.log("Hello, world!");
 
 //#endregion
-// footer
+// js footer
 ```
