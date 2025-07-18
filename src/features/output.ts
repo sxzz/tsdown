@@ -84,22 +84,22 @@ function createChunkFilename(
 }
 
 export function resolveChunkAddon(
-  bannerOrFooter: ChunkAddon | undefined,
+  chunkAddon: ChunkAddon | undefined,
   format: NormalizedFormat,
 ): AddonFunction | undefined {
-  if (!bannerOrFooter) return
+  if (!chunkAddon) return
 
   return (chunk: RenderedChunk) => {
     const extension = path.extname(chunk.fileName)
 
-    if (typeof bannerOrFooter === 'function') {
-      bannerOrFooter = bannerOrFooter({ format })
+    if (typeof chunkAddon === 'function') {
+      chunkAddon = chunkAddon({ format })
     }
 
     if (extension === '.js') {
-      return bannerOrFooter?.js || ''
+      return chunkAddon?.js || ''
     } else if (extension === '.css') {
-      return bannerOrFooter?.css || ''
+      return chunkAddon?.css || ''
     }
 
     return ''
