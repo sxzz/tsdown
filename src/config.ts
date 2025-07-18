@@ -3,9 +3,9 @@ import type { UserConfig, UserConfigFn } from './options'
 /**
  * Defines the configuration for tsdown.
  */
-export function defineConfig(
-  options: UserConfig | UserConfigFn,
-): UserConfig | UserConfigFn {
+export function defineConfig<const T extends UserConfig | UserConfigFn>(
+  options: T,
+): T {
   return options
 }
 
