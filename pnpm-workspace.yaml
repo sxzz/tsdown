@@ -22,14 +22,14 @@ catalogs:
   docs:
     '@unocss/eslint-plugin': ^66.3.3
     '@vueuse/core': ^13.5.0
-    oxc-minify: ^0.77.0
+    oxc-minify: ^0.77.2
     typedoc: ^0.28.7
     typedoc-plugin-markdown: ^4.7.0
     unocss: ^66.3.3
     vite: npm:rolldown-vite@latest
     vitepress: ^2.0.0-alpha.7
     vitepress-plugin-group-icons: ^1.6.1
-    vitepress-plugin-llms: ^1.7.0
+    vitepress-plugin-llms: ^1.7.1
     vue: ^3.5.17
 
   prod:
@@ -40,8 +40,8 @@ catalogs:
     diff: ^8.0.2
     empathic: ^2.0.0
     hookable: ^5.5.3
-    rolldown: ^1.0.0-beta.27
-    rolldown-plugin-dts: ^0.13.14
+    rolldown: ^1.0.0-beta.28
+    rolldown-plugin-dts: ^0.14.0
     semver: ^7.7.2
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.14
