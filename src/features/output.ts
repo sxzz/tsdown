@@ -1,6 +1,12 @@
+import { RE_CSS, RE_DTS, RE_JS } from 'rolldown-plugin-dts/filename'
 import { getPackageType, type PackageType } from '../utils/package'
-import type { NormalizedFormat, ResolvedOptions } from '../options'
-import type { InputOptions, PreRenderedChunk } from 'rolldown'
+import type { Format, NormalizedFormat, ResolvedOptions } from '../options'
+import type {
+  AddonFunction,
+  InputOptions,
+  PreRenderedChunk,
+  RenderedChunk,
+} from 'rolldown'
 
 export interface OutExtensionContext {
   options: InputOptions
@@ -74,5 +80,39 @@ function createChunkFilename(
   if (!dtsExtension) return `${basename}${jsExtension}`
   return (chunk: PreRenderedChunk) => {
     return `${basename}${chunk.name.endsWith('.d') ? dtsExtension : jsExtension}`
+  }
+}
+
+export interface ChunkAddonObject {
+  js?: string
+  css?: string
+  dts?: string
+}
+export type ChunkAddonFunction = (ctx: {
+  format: Format
+}) => ChunkAddonObject | undefined
+export type ChunkAddon = ChunkAddonObject | ChunkAddonFunction
+
+export function resolveChunkAddon(
+  chunkAddon: ChunkAddon | undefined,
+  format: NormalizedFormat,
+): AddonFunction | undefined {
+  if (!chunkAddon) return
+
+  return (chunk: RenderedChunk) => {
+    if (typeof chunkAddon === 'function') {
+      chunkAddon = chunkAddon({ format })
+    }
+
+    switch (true) {
+      case RE_JS.test(chunk.fileName):
+        return chunkAddon?.js || ''
+      case RE_CSS.test(chunk.fileName):
+        return chunkAddon?.css || ''
+      case RE_DTS.test(chunk.fileName):
+        return chunkAddon?.dts || ''
+      default:
+        return ''
+    }
   }
 }

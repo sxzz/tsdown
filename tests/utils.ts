@@ -122,6 +122,7 @@ export async function testBuild({
   outputFiles: string[]
   outputDir: string
   snapshot: string
+  fileMap: Record<string, string>
 }> {
   const { expect } = context
   const { testName, testDir } = await writeFixtures(context, files, fixture)
@@ -141,7 +142,11 @@ export async function testBuild({
   restoreCwd()
 
   const outputDir = path.resolve(workingDir, resolvedOptions.outDir!)
-  const { files: outputFiles, snapshot } = await expectFilesSnapshot(
+  const {
+    files: outputFiles,
+    snapshot,
+    fileMap,
+  } = await expectFilesSnapshot(
     path.resolve(outputDir, expectDir),
     path.resolve(snapshotsDir, `${testName}.snap.md`),
     { pattern: expectPattern, expect },
@@ -153,6 +158,7 @@ export async function testBuild({
     outputFiles,
     outputDir,
     snapshot,
+    fileMap,
   }
 }
 

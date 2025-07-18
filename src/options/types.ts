@@ -2,7 +2,7 @@ import type { AttwOptions } from '../features/attw'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
 import type { ExportsOptions } from '../features/exports'
 import type { TsdownHooks } from '../features/hooks'
-import type { OutExtensionFactory } from '../features/output'
+import type { ChunkAddon, OutExtensionFactory } from '../features/output'
 import type { ReportOptions } from '../features/report'
 import type {
   Arrayable,
@@ -359,6 +359,8 @@ export interface Options {
    * Filter workspace packages. This option is only available in workspace mode.
    */
   filter?: RegExp | string | string[]
+  footer?: ChunkAddon
+  banner?: ChunkAddon
 }
 
 /**
@@ -389,6 +391,8 @@ export type ResolvedOptions = Omit<
       | 'loader'
       | 'name'
       | 'bundle'
+      | 'banner'
+      | 'footer'
     >,
     {
       format: NormalizedFormat[]

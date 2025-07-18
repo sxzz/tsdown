@@ -408,3 +408,30 @@ test('workspace option', async (context) => {
     expectPattern: '**/dist',
   })
 })
+
+test('banner and footer option', async (context) => {
+  const content = `console.log("Hello, world!")`
+  const { fileMap } = await testBuild({
+    context,
+    files: {
+      'index.ts': content,
+    },
+    options: {
+      dts: true,
+      banner: {
+        js: '// js banner',
+        dts: '// dts banner',
+      },
+      footer: {
+        js: '// js footer',
+        dts: '// dts footer',
+      },
+    },
+  })
+
+  expect(fileMap['index.js']).toContain('// js banner')
+  expect(fileMap['index.js']).toContain('// js footer')
+
+  // expect(fileMap['index.d.ts']).toContain('// dts banner')
+  // expect(fileMap['index.d.ts']).toContain('// dts footer')
+})
