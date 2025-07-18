@@ -63,14 +63,14 @@ export interface Workspace {
   config?: boolean | string
 }
 
-export type BannerOrFooterOptions =
-  | { js: string }
-  | { css: string }
-  | { js: string; css: string }
-
-export type BannerOrFooter =
-  | BannerOrFooterOptions
-  | ((ctx: { format: Format }) => BannerOrFooterOptions | undefined)
+export interface ChunkAddonObject {
+  js?: string
+  css?: string
+}
+export type ChunkAddonFunction = (ctx: {
+  format: Format
+}) => ChunkAddonObject | undefined
+export type ChunkAddon = ChunkAddonObject | ChunkAddonFunction
 
 /**
  * Options for tsdown.
@@ -368,8 +368,8 @@ export interface Options {
    * Filter workspace packages. This option is only available in workspace mode.
    */
   filter?: RegExp | string | string[]
-  footer?: BannerOrFooter
-  banner?: BannerOrFooter
+  footer?: ChunkAddon
+  banner?: ChunkAddon
 }
 
 /**
@@ -400,6 +400,8 @@ export type ResolvedOptions = Omit<
       | 'loader'
       | 'name'
       | 'bundle'
+      | 'banner'
+      | 'footer'
     >,
     {
       format: NormalizedFormat[]

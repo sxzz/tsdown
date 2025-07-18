@@ -1,10 +1,6 @@
 import path from 'node:path'
 import { getPackageType, type PackageType } from '../utils/package'
-import type {
-  BannerOrFooter,
-  NormalizedFormat,
-  ResolvedOptions,
-} from '../options'
+import type { ChunkAddon, NormalizedFormat, ResolvedOptions } from '../options'
 import type {
   AddonFunction,
   InputOptions,
@@ -87,34 +83,25 @@ function createChunkFilename(
   }
 }
 
-export function resolveBannerOrFooter(
-  bannerOrFooter: BannerOrFooter,
+export function resolveChunkAddon(
+  bannerOrFooter: ChunkAddon | undefined,
   format: NormalizedFormat,
 ): AddonFunction | undefined {
-  return bannerOrFooter
-    ? (chunk: RenderedChunk) => {
-        const fileName = chunk.fileName
-        const extension = path.extname(fileName)
+  if (!bannerOrFooter) return
 
-        if (typeof bannerOrFooter === 'function') {
-          const option = bannerOrFooter({ format })
+  return (chunk: RenderedChunk) => {
+    const extension = path.extname(chunk.fileName)
 
-          if (option && 'js' in option && extension === '.js') {
-            return option.js
-          }
-          if (option && 'css' in option && extension === '.css') {
-            return option.css
-          }
-        } else {
-          if ('js' in bannerOrFooter && extension === '.js') {
-            return bannerOrFooter.js
-          }
-          if ('css' in bannerOrFooter && extension === '.css') {
-            return bannerOrFooter.css
-          }
-        }
+    if (typeof bannerOrFooter === 'function') {
+      bannerOrFooter = bannerOrFooter({ format })
+    }
 
-        return '' // fallback
-      }
-    : undefined
+    if (extension === '.js') {
+      return bannerOrFooter?.js || ''
+    } else if (extension === '.css') {
+      return bannerOrFooter?.css || ''
+    }
+
+    return ''
+  }
 }

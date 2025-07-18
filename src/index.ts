@@ -19,7 +19,7 @@ import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
 import { NodeProtocolPlugin } from './features/node-protocol'
-import { resolveBannerOrFooter, resolveChunkFilename } from './features/output'
+import { resolveChunkAddon, resolveChunkFilename } from './features/output'
 import { publint } from './features/publint'
 import { ReportPlugin } from './features/report'
 import { getShimsInject } from './features/shims'
@@ -314,8 +314,8 @@ async function getBuildOptions(
       preserveModulesRoot: unbundle
         ? lowestCommonAncestor(...Object.values(entry))
         : undefined,
-      banner: resolveBannerOrFooter(banner, format),
-      footer: resolveBannerOrFooter(footer, format),
+      banner: resolveChunkAddon(banner, format),
+      footer: resolveChunkAddon(footer, format),
     },
     config.outputOptions,
     [format],
