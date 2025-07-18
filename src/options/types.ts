@@ -98,6 +98,7 @@ export interface Options {
     | ((
         options: InputOptions,
         format: NormalizedFormat,
+        context: { cjsDts: boolean },
       ) => Awaitable<InputOptions | void | null>)
 
   /// output options
@@ -182,6 +183,7 @@ export interface Options {
     | ((
         options: OutputOptions,
         format: NormalizedFormat,
+        context: { cjsDts: boolean },
       ) => Awaitable<OutputOptions | void | null>)
 
   /** @default true */

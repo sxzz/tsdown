@@ -263,6 +263,7 @@ async function getBuildOptions(
     plugins.push(userPlugins)
   }
 
+  cjsDts = !!cjsDts
   const inputOptions = await mergeUserOptions(
     {
       input: entry,
@@ -293,7 +294,7 @@ async function getBuildOptions(
       moduleTypes: loader,
     },
     config.inputOptions,
-    [format],
+    [format, { cjsDts }],
   )
 
   const [entryFileNames, chunkFileNames] = resolveChunkFilename(
@@ -318,7 +319,7 @@ async function getBuildOptions(
       footer: resolveChunkAddon(footer, format),
     },
     config.outputOptions,
-    [format],
+    [format, { cjsDts }],
   )
 
   return {
