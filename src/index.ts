@@ -33,7 +33,7 @@ import {
 } from './options'
 import { ShebangPlugin } from './plugins'
 import { lowestCommonAncestor } from './utils/fs'
-import { logger, prettyName } from './utils/logger'
+import { logger, prettyName, type Logger } from './utils/logger'
 import type { Options as DtsOptions } from 'rolldown-plugin-dts'
 
 /**
@@ -332,4 +332,4 @@ export type {
   UserConfigFn,
 } from './options'
 export * from './options/types'
-export { logger }
+export { logger, type Logger }

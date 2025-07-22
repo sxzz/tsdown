@@ -1,5 +1,5 @@
 import type { AttwOptions } from '../features/attw'
-import type { CopyOptions, CopyOptionsFn } from '../features/copy'
+import type { CopyEntry, CopyOptions, CopyOptionsFn } from '../features/copy'
 import type { ExportsOptions, TsdownChunks } from '../features/exports'
 import type {
   BuildContext,
@@ -61,6 +61,7 @@ export type {
   ChunkAddon,
   ChunkAddonFunction,
   ChunkAddonObject,
+  CopyEntry,
   CopyOptions,
   CopyOptionsFn,
   DtsOptions,
