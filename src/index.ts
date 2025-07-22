@@ -335,5 +335,6 @@ export type {
   UserConfig,
   UserConfigFn,
 } from './options'
-export type { BuildContext, TsdownHooks } from './features/hooks'
+export * from './options/types'
+export type { BuildContext, RolldownContext } from './features/hooks'
 export { logger }

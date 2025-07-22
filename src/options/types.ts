@@ -43,6 +43,17 @@ export type ModuleTypes = Record<
   | 'css'
   | 'asset'
 >
+export type {
+  AttwOptions,
+  ChunkAddon,
+  CopyOptions,
+  DtsOptions,
+  ExportsOptions,
+  PublintOptions,
+  ReportOptions,
+  TsdownHooks,
+  UnusedOptions,
+}
 
 export interface Workspace {
   /**
