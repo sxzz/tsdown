@@ -10,4 +10,6 @@ temp
 
 docs/.vitepress/dist
 docs/.vitepress/cache
+
 docs/reference/api
+docs/zh-CN/reference/api

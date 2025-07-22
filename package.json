@@ -117,6 +117,7 @@
     "tsx": "catalog:dev",
     "typedoc": "catalog:docs",
     "typedoc-plugin-markdown": "catalog:docs",
+    "typedoc-vitepress-theme": "catalog:docs",
     "typescript": "catalog:dev",
     "unocss": "catalog:docs",
     "unplugin-lightningcss": "catalog:dev",

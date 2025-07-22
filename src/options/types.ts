@@ -1,9 +1,21 @@
 import type { AttwOptions } from '../features/attw'
 import type { CopyOptions, CopyOptionsFn } from '../features/copy'
-import type { ExportsOptions } from '../features/exports'
-import type { TsdownHooks } from '../features/hooks'
-import type { ChunkAddon, OutExtensionFactory } from '../features/output'
+import type { ExportsOptions, TsdownChunks } from '../features/exports'
+import type {
+  BuildContext,
+  RolldownContext,
+  TsdownHooks,
+} from '../features/hooks'
+import type {
+  ChunkAddon,
+  ChunkAddonFunction,
+  ChunkAddonObject,
+  OutExtensionContext,
+  OutExtensionFactory,
+  OutExtensionObject,
+} from '../features/output'
 import type { ReportOptions } from '../features/report'
+import type { PackageType } from '../utils/package'
 import type {
   Arrayable,
   Awaitable,
@@ -45,12 +57,22 @@ export type ModuleTypes = Record<
 >
 export type {
   AttwOptions,
+  BuildContext,
   ChunkAddon,
+  ChunkAddonFunction,
+  ChunkAddonObject,
   CopyOptions,
+  CopyOptionsFn,
   DtsOptions,
   ExportsOptions,
+  OutExtensionContext,
+  OutExtensionFactory,
+  OutExtensionObject,
+  PackageType,
   PublintOptions,
   ReportOptions,
+  RolldownContext,
+  TsdownChunks,
   TsdownHooks,
   UnusedOptions,
 }

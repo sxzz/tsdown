@@ -76,6 +76,9 @@ catalogs:
     typedoc-plugin-markdown:
       specifier: ^4.7.0
       version: 4.7.0
+    typedoc-vitepress-theme:
+      specifier: ^1.1.2
+      version: 1.1.2
     unocss:
       specifier: ^66.3.3
       version: 66.3.3
@@ -234,6 +237,9 @@ importers:
       typedoc-plugin-markdown:
         specifier: catalog:docs
         version: 4.7.0(typedoc@0.28.7(typescript@5.8.3))
+      typedoc-vitepress-theme:
+        specifier: catalog:docs
+        version: 1.1.2(typedoc-plugin-markdown@4.7.0(typedoc@0.28.7(typescript@5.8.3)))
       typescript:
         specifier: catalog:dev
         version: 5.8.3
@@ -3207,6 +3213,11 @@ packages:
     engines: {node: '>= 18'}
     peerDependencies:
       typedoc: 0.28.x
+
+  typedoc-vitepress-theme@1.1.2:
+    resolution: {integrity: sha512-hQvCZRr5uKDqY1bRuY1+eNTNn6d4TE4OP5pnw65Y7WGgajkJW9X1/lVJK2UJpcwCmwkdjw1QIO49H9JQlxWhhw==}
+    peerDependencies:
+      typedoc-plugin-markdown: '>=4.4.0'
 
   typedoc@0.28.7:
     resolution: {integrity: sha512-lpz0Oxl6aidFkmS90VQDQjk/Qf2iw0IUvFqirdONBdj7jPSN9mGXhy66BcGNDxx5ZMyKKiBVAREvPEzT6Uxipw==}
@@ -6589,6 +6600,10 @@ snapshots:
   typedoc-plugin-markdown@4.7.0(typedoc@0.28.7(typescript@5.8.3)):
     dependencies:
       typedoc: 0.28.7(typescript@5.8.3)
+
+  typedoc-vitepress-theme@1.1.2(typedoc-plugin-markdown@4.7.0(typedoc@0.28.7(typescript@5.8.3))):
+    dependencies:
+      typedoc-plugin-markdown: 4.7.0(typedoc@0.28.7(typescript@5.8.3))
 
   typedoc@0.28.7(typescript@5.8.3):
     dependencies:

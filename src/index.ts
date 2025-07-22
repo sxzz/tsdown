@@ -5,8 +5,6 @@ import { green } from 'ansis'
 import {
   build as rolldownBuild,
   type BuildOptions,
-  type OutputAsset,
-  type OutputChunk,
   type OutputOptions,
   type RolldownPluginOption,
 } from 'rolldown'
@@ -14,7 +12,7 @@ import { exec } from 'tinyexec'
 import { attw } from './features/attw'
 import { cleanOutDir } from './features/clean'
 import { copy } from './features/copy'
-import { writeExports } from './features/exports'
+import { writeExports, type TsdownChunks } from './features/exports'
 import { ExternalPlugin } from './features/external'
 import { createHooks } from './features/hooks'
 import { LightningCSSPlugin } from './features/lightningcss'
@@ -83,10 +81,6 @@ export async function build(userOptions: Options = {}): Promise<void> {
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const pkgRoot: string = path.resolve(dirname, '..')
 export const shimFile: string = path.resolve(pkgRoot, 'esm-shims.js')
-
-export type TsdownChunks = Partial<
-  Record<NormalizedFormat, Array<OutputChunk | OutputAsset>>
->
 
 /**
  * Build a single configuration, without watch and shortcuts features.
@@ -336,5 +330,4 @@ export type {
   UserConfigFn,
 } from './options'
 export * from './options/types'
-export type { BuildContext, RolldownContext } from './features/hooks'
 export { logger }

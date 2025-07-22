@@ -1,5 +1,26 @@
+import { existsSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { createTranslate } from '../i18n/utils'
 import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
+
+async function getTypedocSidebar() {
+  const filepath = path.resolve(
+    import.meta.dirname,
+    '../../reference/api/typedoc-sidebar.json',
+  )
+  if (!existsSync(filepath)) return []
+
+  try {
+    return JSON.parse(
+      await readFile(filepath, 'utf8'),
+    ) as DefaultTheme.SidebarItem[]
+  } catch {
+    return []
+  }
+}
+
+const typedocSidebar = await getTypedocSidebar()
 
 export function getLocaleConfig(lang: string) {
   const t = createTranslate(lang)
@@ -96,8 +117,18 @@ export function getLocaleConfig(lang: string) {
       text: t('API Reference'),
       base: `${urlPrefix}/reference`,
       items: [
-        { text: t('Config Options'), link: '/config-options.md' },
         { text: t('Command Line Interface'), link: '/cli.md' },
+        {
+          text: t('Config Options'),
+          link: '/api/Interface.Options.md',
+        },
+        {
+          text: t('Type Definitions'),
+          items: typedocSidebar
+            .flatMap((i) => i.items!)
+            .filter((i) => i.text !== 'Options'),
+          collapsed: true,
+        },
       ],
     },
   ]
