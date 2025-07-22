@@ -1,5 +1,4 @@
 import { existsSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { createTranslate } from '../i18n/utils'
 import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
@@ -12,10 +11,10 @@ async function getTypedocSidebar() {
   if (!existsSync(filepath)) return []
 
   try {
-    return JSON.parse(
-      await readFile(filepath, 'utf8'),
-    ) as DefaultTheme.SidebarItem[]
-  } catch {
+    return (await import(filepath, { with: { type: 'json' } }))
+      .default as DefaultTheme.SidebarItem[]
+  } catch (error) {
+    console.error('Failed to load typedoc sidebar:', error)
     return []
   }
 }

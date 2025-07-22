@@ -5,6 +5,8 @@ export default {
   plugin: ['typedoc-plugin-markdown', 'typedoc-vitepress-theme'],
   out: './docs/reference/api',
   entryPoints: ['./src/index.ts'],
+  excludeInternal: true,
+
   hideBreadcrumbs: true,
   useCodeBlocks: true,
   formatWithPrettier: true,

@@ -80,6 +80,8 @@ export async function build(userOptions: Options = {}): Promise<void> {
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const pkgRoot: string = path.resolve(dirname, '..')
+
+/** @internal */
 export const shimFile: string = path.resolve(pkgRoot, 'esm-shims.js')
 
 /**
