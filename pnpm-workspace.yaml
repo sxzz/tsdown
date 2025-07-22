@@ -54,3 +54,7 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - esbuild
+
+overrides:
+  'rolldown': 'catalog:prod'
+  'vite': 'catalog:docs'
