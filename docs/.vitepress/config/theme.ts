@@ -58,7 +58,7 @@ export function getLocaleConfig(lang: string) {
     { text: t('Guide'), link: `${urlPrefix}/guide/` },
     {
       text: t('API Reference'),
-      link: `${urlPrefix}/reference/config-options.md`,
+      link: `${urlPrefix}/reference/api/Interface.Options.md`,
     },
     { text: t('FAQ'), link: `${urlPrefix}/guide/faq.md` },
   ]
