@@ -172,7 +172,8 @@ export interface Options {
 
   /**
    * The name to show in CLI output. This is useful for monorepos or workspaces.
-   * Defaults to the package name from `package.json`.
+   * When using workspace mode, this option defaults to the package name from package.json.
+   * In non-workspace mode, this option must be set explicitly for the name to show in the CLI output.
    */
   name?: string
 
