@@ -1,3 +1,6 @@
+overrides:
+  rolldown: 'catalog:prod'
+  vite: 'catalog:docs'
 catalogs:
   dev:
     '@arethetypeswrong/core': ^0.18.2
@@ -54,7 +57,3 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - esbuild
-
-overrides:
-  'rolldown': 'catalog:prod'
-  'vite': 'catalog:docs'
