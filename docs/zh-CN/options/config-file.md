@@ -32,16 +32,16 @@ export default defineConfig({
 ```ts [tsdown.config.ts]
 import { defineConfig } from 'tsdown/config'
 
-export default [
-  defineConfig({
+export default defineConfig([
+  {
     entry: 'src/entry1.ts',
     platform: 'node',
-  }),
-  defineConfig({
+  },
+  {
     entry: 'src/entry2.ts',
     platform: 'browser',
-  }),
-]
+  },
+])
 ```
 
 ## 指定自定义配置文件
