@@ -142,7 +142,8 @@ export async function generateExports(
           }
         }
       } else {
-        name = `./${name}`
+        const isDirIndex = name.endsWith('/index')
+        name = isDirIndex ? `./${name.slice(0, -6)}` : `./${name}`
       }
 
       let subExport = exportsMap.get(name)
