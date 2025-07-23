@@ -72,6 +72,30 @@ describe.concurrent('generateExports', () => {
     `)
   })
 
+  test('index entry in dir', async ({ expect }) => {
+    const results = generateExports(
+      FAKE_PACKAGE_JSON,
+      cwd,
+      {
+        es: [genChunk('index.js'), genChunk('foo/index.js')],
+      },
+      {},
+    )
+    await expect(results).resolves.toMatchInlineSnapshot(`
+      {
+        "exports": {
+          ".": "./index.js",
+          "./foo": "./foo/index.js",
+          "./package.json": "./package.json",
+        },
+        "main": "./index.js",
+        "module": "./index.js",
+        "publishExports": undefined,
+        "types": undefined,
+      }
+    `)
+  })
+
   test('multiple entries', async ({ expect }) => {
     const results = generateExports(
       FAKE_PACKAGE_JSON,
